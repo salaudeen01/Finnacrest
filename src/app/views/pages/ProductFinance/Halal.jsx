@@ -302,9 +302,11 @@ tabbed = (id) => {
             </Button>
             </Grid>
             <Grid item lg={1} md={1} sm={4} xs={4}> 
+            <Link to="/detail/cart">
             <Button style={{float:'right',color:'black'}}>
                    <ShoppingCartIcon/> ({count})
           </Button>
+          </Link>
           </Grid>
           </Grid>
           
