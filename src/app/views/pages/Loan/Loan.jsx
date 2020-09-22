@@ -85,6 +85,8 @@ class Loan extends Component {
         save_card:false,
         card_id:"0"
     },
+      formList:["name2"],
+      index:3,
       user:user,
       token:token,
       loan_bal:0,
@@ -511,6 +513,23 @@ handleChange(event) {
   }
   
 }
+//incrementation of form
+IncrementItem = (index) => {
+  let { formList} = this.state
+  this.setState({formList:[...formList, "name"+index], index:index+1})
+}
+DecreaseItem = (index) => {
+  this.state.formList.splice("name"+index,1)
+  this.setState({formList:this.state.formList})
+}
+//incrementation of form end
+handleChangeG(event) {
+  const { name, value } = event.target;
+  const { group_data } = this.state;
+  this.setState({
+      group_data: {...group_data, [name]: value }
+  });
+}
 handleChangeGroup(event) {
   const { name, value } = event.target;
   const { group_data } = this.state;
@@ -844,7 +863,7 @@ approvalTab(){
 }
 
 render(){
-  const {repayment_details, loan_approval, add_card, id, showSave, cards, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
+  const {repayment_details, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
   return (
     <div className="m-sm-30">
        <div className="mb-sm-30">
@@ -1063,19 +1082,75 @@ render(){
                   errorMessages={["this field is required"]}
                 />
                 <TextField
-                className="mb-4 w-full"
-                  select
-                  label="Select Loan Group"
-                  name="loan_group"
-                  value={data.loan_group}
-                  onChange={this.handleChangeLoan}
-                  helperText="Please select Loan Group"
-                >
-                    <MenuItem value={""}>Select Loan Group</MenuItem>
-                  {group_name.map((name, index) => (
-                    <MenuItem value={name.group_name}>{name.group_name}</MenuItem>
-                  ))}
-                </TextField>
+                 className="mb-4 w-full"
+                 select
+                 label="Select Loan Guarantor"
+                 name="loan_group"
+                 value={data.loan_group}
+                 onChange={this.handleChangeLoan}
+                 helperText="Please select Loan Guarantor"
+             >
+               <MenuItem value={"Member"}>Member</MenuItem>
+               <MenuItem value={"Loan Group"}> Loan Group</MenuItem>
+             </TextField>
+             {data.loan_group == "Loan Group" &&
+               <TextField
+                 className="mb-4 w-full"
+                 select
+                 label="Select Loan Group"
+                 name="loan_group"
+                 value={data.loan_group}
+                 onChange={this.handleChangeLoan}
+                 helperText="Please select Loan Group"
+               >
+                   <MenuItem value={""}>Select Loan Group</MenuItem>
+                 {group_name.map((name, index) => (
+                   <MenuItem value={name.group_name}>{name.group_name}</MenuItem>
+                 ))}
+               </TextField>
+             }
+             {data.loan_group == "Member" &&
+            
+               <Grid container spacing={2}>
+                 <Grid item lg={12} md={12} sm={12} xs={12}>
+                 <Button style={{background:"blue",color:"white",fontWeight:"bold",}} 
+                   onClick={()=>this.IncrementItem(index)}>+</Button>
+                 <Button style={{background:"red",color:"white",fontWeight:"bold"}}  
+                   onClick={()=>this.DecreaseItem(index)}>-</Button>
+                 </Grid>
+               {formList.map((list, i)=>(
+               <>              
+               <Grid item lg={6} md={6} sm={6} xs={6}>
+                 <TextValidator
+                   className="mb-4 w-full"
+                   label="Member Name"
+                   onChange={this.handleChangeLoan}
+                   type="text"
+                   name={list}
+                   value={data[list]}
+                   validators={[
+                     "required"
+                   ]}
+                   errorMessages={["this field is required"]}
+                 />
+               </Grid>
+               <Grid item lg={6} md={6} sm={6} xs={6}>
+                 <TextValidator
+                   className="mb-4 w-full"
+                   label="Amount"
+                   onChange={this.handleChangeLoan}
+                   type="number"
+                   value={data["amount"+i+2]}
+                   name={"amount"+ i+2}
+                   validators={[
+                     "required"
+                   ]}
+                   errorMessages={["this field is required"]}
+                 />
+               </Grid>
+               </>))}            
+             </Grid>
+             }
                 <Typography>Choose Card</Typography>
                 <PayCard cards={cards} id={id} value={data.card_id} open={this.handleQuickSave} handleChange={this.handleChangeLoan}/>
                 {this.props.savings && data.card_id &&

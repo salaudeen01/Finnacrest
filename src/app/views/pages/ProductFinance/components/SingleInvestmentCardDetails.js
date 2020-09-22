@@ -85,6 +85,11 @@ class SingleInvestmentCardDetails extends Component {
                             <Button onClick={this.props.increment}>+</Button>
                         </ButtonGroup>
                     </Grid>
+                    <Grid className="pt-4 mb-4 px-2 bg-default">
+                    <Button>
+                    <ShoppingCartIcon/>{newz.quantity} in stock
+                     </Button>
+                    </Grid>
                     <Divider/>
                     <Grid className="pt-4 mb-4 px-2">                    
                     <Button className="uppercase"
