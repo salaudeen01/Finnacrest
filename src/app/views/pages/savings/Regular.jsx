@@ -370,11 +370,12 @@ handleClose() {
           <Loading />
         </div>:
         <>
-        <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#0d60d8", borderBottomRightRadius:20,
+        {/* <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#0d60d8", borderBottomRightRadius:20,
              borderTopLeftRadius:20,}} >
           <Grid container spacing={8}>
               <Grid item lg={9} md={9} sm={12} xs={12}>
-                <StatCards2 title={"Regular Balance"} color={"#0d60d8"} icon={"account_balance_wallet"} amount={numberFormat(balance)} />
+                <StatCards2 title={"Regular Balance"} color={"#0d60d8"} icon={"account_balance_wallet"} 
+                amount={numberFormat(balance)} />
               </Grid>
               <Grid item lg={3} md={3} sm={12} xs={12}>
                 <Button className="uppercase"
@@ -397,7 +398,7 @@ handleClose() {
                 </Button>
               </Grid>
           </Grid>
-        </div>
+        </div> */}
         <div className="py-3" />
         <Grid container spacing={3}>
               <Grid item lg={6} md={6} sm={12} xs={12}>

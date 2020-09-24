@@ -74,7 +74,7 @@ export const userService = {
 
   // Shareholdings
   addFundShareholdings,
-
+  updateUserCart,
   deleteFromCart,
   addToCart
 };
@@ -647,6 +647,17 @@ function deleteFromCart(cart_id) {
     // body: JSON.stringify(id),
   };
   return fetch(getConfig("deleteFromCart")+cart_id+"?token="+user.token, requestOptions).then(
+    handleResponse
+  );
+}
+function updateUserCart(cart_id) {
+  let user = JSON.parse(localStorage.getItem("user"));
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    // body: JSON.stringify(id),
+  };
+  return fetch(getConfig("updateUserCart")+cart_id+"?token="+user.token, requestOptions).then(
     handleResponse
   );
 }

@@ -475,13 +475,14 @@ completeTab(){
           <Loading />
         </div>:
         <>
-        <Grid container spacing={2}>
+        {/* <Grid container spacing={2}>
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#e74398", borderBottomRightRadius:20,
              borderTopLeftRadius:20}}>
               <Grid container spacing={4}>
                   <Grid item lg={9} md={9} sm={12} xs={12}>
-                    <StatCards2 title={"Target Balance"} color={"#e74398"} icon={"account_balance_wallet"} amount={numberFormat(balance)}/>
+                    <StatCards2 title={"Target Balance"} color={"#e74398"} icon={"account_balance_wallet"} 
+                    amount={numberFormat(balance)}/>
                   </Grid>
                   <Grid item lg={3} md={3} sm={6} xs={6}>
                     {tdetails.length != 0 && <Button className="uppercase"
@@ -506,7 +507,7 @@ completeTab(){
               </Grid>
             </div>
           </Grid>
-        </Grid>
+        </Grid> */}
         <Grid container spacing={3}>
           <Grid item lg={8} md={8} sm={12} xs={12}>
             <Button size="small"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, useEffect, useState } from "react";
 import { numberFormat } from '../../../../config/config';
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -20,20 +20,40 @@ import {
   Paper
 } from "@material-ui/core";
 
-const CartTable = (props) => {
-  const { products, deleteCart, loading, ...rest} = props;
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [page, setPage] = React.useState(0);
+class CartTable extends Component{
+  constructor(props){
+    super(props)
+  const { products} = this.props;
+    this.state = {
+      product:products,
+      page:0,
+      rowsPerPage:5
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    }
+    this.handleDelete =this.handleDelete.bind(this)
+    this.incrementItem =this.incrementItem.bind(this)
+  // const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  // const [page, setPage] = React.useState(0);
+  
+  }
+
+  componentDidUpdate(){
+    const { products} = this.props;
+    if(this.state.product == []){
+      this.setState({product:products})
+    }
+    
+  }
+
+handleChangePage = (event, newPage) => {
+    this.setState({page:newPage});
+  };
+  
+ handleChangeRowsPerPage = event => {
+    this.setState({rowsPerPage:event.target.value});
   };
 
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(+event.target.value);
-  };
-
-  const handleDelete = (id) => {
+ handleDelete = (id) => {
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this file!",
@@ -43,7 +63,7 @@ const CartTable = (props) => {
     })
     .then((willDelete) => {
       if (willDelete) {
-        props.deleteFromCart(id);
+        this.props.deleteFromCart(id);
         console.log(id)
         swal("Loading...",{   
           buttons:false
@@ -51,7 +71,19 @@ const CartTable = (props) => {
       }
     });
     }
+     
+incrementItem = (id) =>{
+  const { product} = this.state;
+  const elementIndex = product.findIndex(prod=> prod.cart_id == id);
+  let newArray = [...product];
+  newArray[elementIndex] = {...newArray[elementIndex], cart_quantity: newArray[elementIndex].cart_quantity+1}
+  this.setState({product:newArray })
+  console.log(product)
+}
 
+render(){
+  const { products, deleteCart, loading} = this.props;
+  const { product } =this.state
   return (
     <Card elevation={3} className="pt-5 mb-6">
     <div className="overflow-auto">
@@ -75,7 +107,7 @@ const CartTable = (props) => {
                   />
             </div>: 
         <TableBody>
-          {products.map(dat => ( 
+          {product.map(dat => ( 
               <TableRow key={dat.id}>
                 <TableCell className="px-0 capitalize" align="left" colSpan={3}>
                 <img style={{width:100,height:50}} src={dat.image}/>
@@ -89,7 +121,7 @@ const CartTable = (props) => {
                   <Button>
                     {dat.cart_quantity}
                   </Button>
-                  <Button>+</Button>
+                  <Button onClick={this.incrementItem(dat.cart_id)}>+</Button>
                 </ButtonGroup>
                 </TableCell>
                 <TableCell className="px-0 capitalize" align="left" colSpan={3}>
@@ -98,7 +130,7 @@ const CartTable = (props) => {
                 <TableCell className="px-0 capitalize" colSpan={3}>
                 <Button style={{backgroundColor:'#ef1616', color:'#ffffff'}}
                  startIcon={<DeleteIcon/>}
-                 onClick={()=> handleDelete(dat.cart_id)}
+                 onClick={()=> this.handleDelete(dat.cart_id)}
                  >
                   Remove
                 </Button>
@@ -127,13 +159,14 @@ const CartTable = (props) => {
       /> */}
     </div>
     </Card>
-  );
+  )
 };
-
+};
 const actionCreators = {
   timeOut: userActions.timeOut,
   logout: userActions.logout,
   deleteFromCart: userActions.deleteFromCart,
+  updateUserCart: userActions.updateUserCart,
 };
 
 function mapState(state) {

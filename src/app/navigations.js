@@ -45,22 +45,27 @@ export const navigations = [
       },
     ],
   },
+  // {
+  //   name: "Save",
+  //   icon: "payments",
+  //   // path: "/savings",
+  //   children: [
+  //     {
+  //       name: "Regular Savings",
+  //       path: "/regular",
+  //       iconText: "B",
+  //     },
+  //     {
+  //       name: "Target Savings",
+  //       path: "/target",
+  //       iconText: "B",
+  //     },
+  //   ],
+  // },
   {
     name: "Save",
     icon: "payments",
-    // path: "/savings",
-    children: [
-      {
-        name: "Regular Savings",
-        path: "/regular",
-        iconText: "B",
-      },
-      {
-        name: "Target Savings",
-        path: "/target",
-        iconText: "B",
-      },
-    ],
+    path: "/savings-tab/regular"
   },
   {
     name: "Shareholdings",

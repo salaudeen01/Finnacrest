@@ -109,20 +109,21 @@ const serverVars = {
   removeCard:"deleteCards/",
   verifyWithdrawalPassword:"verifyPasswordBeforeWithdrawal",
   confirmWithdraw:"paystackWithdrawalToBank",
-  //Cart issues
   addToCart: "addToCart/",
-  getAllProductInCart:"allProductsInUserCart?token=",
+  getAllProductInCart:"allProductsInUserCart?token=",  
+  totalCartPerUser:"totalCartPerUser?token=", 
   deleteFromCart: "deleteFromCart/",
   userCartCount:"userCartCount?token=",
   getHalaiCat: "allFinanceCategories?token=", 
   getInvestmentCat: "show_category?token=",
   getHalaiNews: "allFinanceProducts?token=", 
   getSingleHalai: "singleProduct/",
+  updateUserCart: "updateUserCart/",
   // Shareholdings
   addFundShareholdings: "addShareHoldingsFunds?token=",
   getTransactionsShareholdings: "shareHoldingsTransactions/",
   getTotalBalanceShareholdings: "shareHoldingsTotalBalance?token=",
-  getAccountShareholdings: "share_holding?token=",  
+  getAccountShareholdings: "share_holding?token=", 
 };
 
 export const numberFormat = (value) =>
@@ -399,6 +400,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.addToCart ;      
     case "getAllProductInCart":
       return serverVars.baseUrl + serverVars.getAllProductInCart;
+    case "totalCartPerUser":
+      return serverVars.baseUrl + serverVars.totalCartPerUser;      
     case "userCartCount":
       return serverVars.baseUrl + serverVars.userCartCount;      
     case "getInvestmentCat":
@@ -411,6 +414,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.getSingleHalai;           
     case "deleteFromCart":
       return serverVars.baseUrl + serverVars.deleteFromCart; 
+    case "updateUserCart":
+      return serverVars.baseUrl + serverVars.updateUserCart; 
           // Shareholdings api
     case "addFundShareholdings":
       return serverVars.baseUrl + serverVars.addFundShareholdings + user.token;

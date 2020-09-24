@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 
 const CartSummary = (props) => {
+  const {count, total, loading, ...rest} = props;
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(0);
 
@@ -33,7 +34,7 @@ const CartSummary = (props) => {
                 </Grid>
                 <Grid item lg={6} md={6} sm={6} xs={6} style={{textAlign:'right'}}>
                     <b>
-                        1 item
+                       {count} item
                     </b>
                 </Grid>
             </ListItem>
@@ -44,7 +45,7 @@ const CartSummary = (props) => {
                 </Grid>
                 <Grid item lg={6} md={6} sm={6} xs={6} style={{textAlign:'right'}}>
                     <b>
-                        ₦42,000
+                    {numberFormat(total.total_cart)}
                     </b>
                 </Grid>
             </ListItem>

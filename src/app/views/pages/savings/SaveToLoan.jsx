@@ -304,11 +304,13 @@ handleClose() {
           <Loading />
         </div>:
         <>
-        <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#2295f2", borderBottomRightRadius:20,
+        {/* <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#2295f2", borderBottomRightRadius:20,
              borderTopLeftRadius:20}}>
           <Grid container spacing={8}>
               <Grid item lg={9} md={9} sm={12} xs={12}>
-                <StatCards2 other_title={"Loan Investment Balance"} title={"Save To Loan Balance"} color={"#2295f2"} icon={"account_balance_wallet"} amount={numberFormat(balance)} investment_amount={numberFormat(other_balance)}/>
+                <StatCards2 other_title={"Loan Investment Balance"} title={"Save To Loan Balance"} 
+                color={"#2295f2"} icon={"account_balance_wallet"} amount={numberFormat(balance)} 
+                investment_amount={numberFormat(other_balance)}/>
               </Grid>
               <Grid item lg={3} md={3} sm={12} xs={12}>
                 <Button className="uppercase"
@@ -332,6 +334,7 @@ handleClose() {
               </Grid>
           </Grid>
         </div>
+         */}
         <div className="py-3" />
         <Grid container spacing={3}>
               <Grid item lg={6} md={6} sm={12} xs={12}>

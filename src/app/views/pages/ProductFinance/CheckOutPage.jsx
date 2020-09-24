@@ -32,19 +32,13 @@ class CheckOutPage extends Component {
     this.state = {
       loading:true,
       products:[],
-      count:[]
+      count:[],
+      totalbalance:0,
+      cart_quantity:[]
     }
-    // this.handleDelete = this.handleDelete.bind(this);
-    // this.deleteCart = this.deleteCart.bind(this);
-    // this.handleDelete();
-  }
 
-// fetchUsers = () =>{
-//   const requestOptions = {
-//       method: 'GET',
-//       headers: { ...authHeader(), 'Content-Type': 'application/json' },
-//   };
-  componentDidMount(){
+  }
+componentDidMount(){
     const {id} = this.state
     let user = JSON.parse(localStorage.getItem('user'));
     const requestOptions = {
@@ -60,8 +54,14 @@ class CheckOutPage extends Component {
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
   }
-  console.log(data)
+  // console.log(data.my_carts)
   this.setState({products: data.my_carts, loading:false });
+  let quantity= []
+  data.my_carts.forEach(dat => {
+      quantity.push(dat.cart_quantity)
+  })
+  this.setState({cart_quantity: quantity})
+  console.log(quantity)  
 })
 .catch(error => {
   if (error === "Unauthorized") {
@@ -89,11 +89,35 @@ fetch(getConfig("userCartCount"), requestOptions)
         this.props.timeOut()
       }
     });
+    fetch(getConfig('totalCartPerUser'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+    console.log(response)
+    const error = (data && data.message) || response.statusText;
+    return Promise.reject(error);
+    }
+    
+    console.log(data)
+    this.setState({totalbalance: data[0], loading:false });
+    })  
+
+    .catch(error => {
+    if (error === "Unauthorized") {
+      this.props.logout()
+    }
+    this.setState({loading:false, err : "internet error" });
+    console.error('There was an error!', error);
+    });
 }
 
+// incrementItem() {
+//   const { cart_quantity, id} = this.state 
+//   this.setState({cart_quantity:{...cart_quantity}})
+// }
   
 render(){
- const {loading, products, count, handleDelete} = this.state
+ const {loading, products, count, totalbalance, handleDelete, incrementItem} = this.state
   return (
     <div className="m-sm-30">
         <AppBar color="default" style={{position: "relative"}} className="mb-sm-30">
@@ -118,12 +142,12 @@ render(){
                 Back Shopping
                 </Button> 
                 </Link>
-                </Grid>
+                </Grid>                
                 <Grid item lg={9} md={9} sm={12} xs={12}>
-                    <CartTable products={products} loading={loading} />
+                    <CartTable products={products} loading={loading}/>
                 </Grid>
                 <Grid item lg={3} md={3} sm={12} xs={12}>
-                    <CartSummary/>
+                    <CartSummary count={count} total={totalbalance}/>
                 </Grid>
             </Grid>
       </div>

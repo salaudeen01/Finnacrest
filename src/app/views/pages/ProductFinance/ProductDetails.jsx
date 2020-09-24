@@ -41,6 +41,7 @@ class ProductDetails extends Component {
     }
     this.addToCart = this.addToCart.bind(this);
     this.increment = this.increment.bind(this);
+    this.Decrease = this.Decrease.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
   
@@ -121,22 +122,35 @@ class ProductDetails extends Component {
         });    
   }
  
-  addToCart(event) {
-    const {id} = this.state;   
-      event.preventDefault();
+  addToCart(where) {  
       const { cart } = this.state;
       console.log(cart);
       if ( cart.price && cart.id && cart.quantity) {
-        this.props.addToCart(cart, id);
+        this.props.addToCart(cart, where);
       }
 
   }
     increment() {
       let { cart, quantity, id} = this.state
-      this.setState({cart:{...cart, quantity: cart.quantity+1}})
-     
+      this.setState({cart:{...cart, quantity: cart.quantity+1}})     
     }
+    Decrease() {
+      let { cart, quantity, id} = this.state
+      if(cart.quantity){      
+        this.setState({cart:{...cart, quantity: cart.quantity-1}}) 
+      }else{
+        this.setState({cart:{...cart, quantity:cart.quantity= 1}});
+    }
+  }
 
+    // IncrementItem = (index) => {
+    //   let { formList} = this.state
+    //   this.setState({formList:[...formList, "name"+index], index:index+1})
+    // }
+    // DecreaseItem = (index) => {
+    //   this.state.formList.splice("name"+index,1)
+    //   this.setState({formList:this.state.formList})
+    // }
     // increment() {
     //   this.setState({
     //     cart: this.state.cart.quantity + 1
@@ -144,7 +158,7 @@ class ProductDetails extends Component {
     // };
 
 render(){
- const {total, halal, singleNews, cart, count, singleInvestment, addToCart, increment, isLoading} = this.state
+ const {total, halal, singleNews, cart, count, singleInvestment, addToCart,Decrease, increment, isLoading} = this.state
   return (
     <div className="m-sm-30">        
          {/* View Dialog start */}        
@@ -175,8 +189,9 @@ render(){
               <Grid container spacing={2}>
                 <Grid item lg={9} md={9} sm={12} xs={12}>
                   <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
-                    <SingleInvestmentcardDetails investment={singleInvestment} cart={this.state.cart} addToCart={this.addToCart}
-                    increment={this.increment} handleChange={this.handleChange}/>
+                    <SingleInvestmentcardDetails investment={singleInvestment} cart={this.state.cart} addToCart={()=>this.addToCart(true)}
+                    continueShopping={()=>this.addToCart(false)}
+                    increment={this.increment} handleChange={this.handleChange} Decrease={this.Decrease}/>
                   </div>
                 </Grid>
                 {/* <Grid>

@@ -74,7 +74,7 @@ export const userActions = {
 
   // Shareholdings
   addFundShareholdings,
-
+  updateUserCart,
   deleteFromCart,
   addToCart
 };
@@ -170,7 +170,7 @@ function createRegularSavings(user) {
     userService.createRegularSavings(user).then(
       (user) => {
           dispatch(success());
-          history.push("/regular");
+          history.push("/savings-tab/regular");
         if(user.success){
           dispatch(alertActions.success(user.message));
         }else{
@@ -260,7 +260,7 @@ function withdrawRegularSavings(user) {
       (user) => {
           dispatch(success());
         if(user.success){
-          history.push("/regular");
+          history.push("/savings-tab/regular");
           dispatch(alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -284,7 +284,7 @@ function addFundRegularSavings(user) {
       (user) => {
         dispatch(success());
         if(user.success){
-          history.push("/regular");
+          history.push("/savings-tab/regular");
           dispatch( alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -307,7 +307,7 @@ function editRegularSavings(user) {
       (user) => {
           dispatch(success());
         if(user.success){
-          history.push("/regular");
+          history.push("/savings-tab/regular");
           dispatch(alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -330,7 +330,7 @@ function deactivateAutoSaveLoan(user) {
       (user) => {
           dispatch(success());
         if(user.success){
-          history.push("/savetoloan");
+          history.push("/savings-tab/savetoloan");
           dispatch( alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -352,7 +352,7 @@ function deactivateAutoSave(user) {
       (user) => {
           dispatch(success());
         if(user.message){
-          history.push("/regular");
+          history.push("/savings-tab/regular");
           dispatch( alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -376,7 +376,7 @@ function createSaveToLoanSavings(user) {
       (user) => {
           dispatch(success());
         if(user.success){
-          history.push("/savetoloan");
+          history.push("/savings-tab/savetoloan");
           dispatch( alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -399,7 +399,7 @@ function withdrawSaveToLoanSavings(user) {
       (user) => {
         dispatch(success());
         if(user.success){
-          history.push("/savetoloan");
+          history.push("/savings-tab/savetoloan");
           dispatch(alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -422,7 +422,7 @@ function addFundSaveToLoanSavings(user) {
       (user) => {
         dispatch(success());
         if(user.success){
-          history.push("/savetoloan");
+          history.push("/savings-tab/savetoloan");
           dispatch( alertActions.success( user.message));
         }else{
           dispatch( alertActions.error( user.message));
@@ -445,7 +445,7 @@ function editSaveToLoanSavings(user) {
       (user) => {
         dispatch(success());
         if(user.success){
-          history.push("/savetoloan");
+          history.push("/savings-tab/savetoloan");
           dispatch( alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -468,7 +468,7 @@ function exitLoanSavings(loan_id) {
       (user) => {
         dispatch(success());
         if(user.success){
-          history.push("/savetoloan");
+          history.push("/savings-tab/savetoloan");
           dispatch( alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -778,7 +778,7 @@ function createTargetSavings(user) {
         dispatch(success());
         if(user.success){
           dispatch( alertActions.success(user.message));
-          history.push("/target");
+          history.push("/savings-tab/target");
         }else{
           dispatch(alertActions.error(user.message));
         }
@@ -801,7 +801,7 @@ function withdrawTargetSavings(user) {
         dispatch(success());
         if(user.success){
           dispatch( alertActions.success(user.message));
-          history.push("/target");
+          history.push("/savings-tab/target");
         }else{
           dispatch(alertActions.error(user.message));
         }
@@ -823,7 +823,7 @@ function addFundTargetSavings(user) {
       (user) => {
         dispatch(success());
         if(user.success){
-          history.push("/target");
+          history.push("/savings-tab/target");
           dispatch(alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -847,7 +847,7 @@ function editTargetSavings(user) {
         dispatch(success());
         if(user.success){
           dispatch( alertActions.success(user.message));
-          history.push("/target");
+          history.push("/savings-tab/target");
         }else{
           dispatch(alertActions.error(user.message));
         }
@@ -870,7 +870,7 @@ function exitTargetSavings(user) {
         dispatch(success());
         if(user.success){
           dispatch( alertActions.success(user.message));
-          history.push("/target");
+          history.push("/savings-tab/target");
         }else{
           dispatch(alertActions.error(user.message));
         }
@@ -893,7 +893,7 @@ function activateTargetAutosave(user) {
         dispatch(success());
         if(user.success){
           dispatch( alertActions.success(user.message));
-          history.push("/target");
+          history.push("/savings-tab/target");
         }else{
           dispatch(alertActions.error(user.message));
         }
@@ -916,7 +916,7 @@ function deactivateTargetAutosave(user) {
         dispatch(success());
         if(user.success){
           dispatch( alertActions.success(user.message));
-          history.push("/target");
+          history.push("/savings-tab/target");
         }else{
           dispatch(alertActions.error(user.message));
         }
@@ -1284,7 +1284,7 @@ function updatePicture(user) {
 
 //add to Cart
 
-function addToCart(user) {
+function addToCart(user, where) {
   return (dispatch) => {
     dispatch(request(user));
     userService.addToCart(user).then(
@@ -1292,6 +1292,13 @@ function addToCart(user) {
         dispatch(success());
         // history.push("/details");
         dispatch(alertActions.success(user.message));
+        if(where){
+          history.push("/detail/cart");
+          window.location.reload();
+        }else{
+          history.push("/halal");
+          window.location.reload();
+        }
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1317,11 +1324,41 @@ function deleteFromCart(cart_id) {
     userService.deleteFromCart(cart_id).then(
       (user) => {
         dispatch(success());
-        // history.push("/detail/cart");
+        history.push("/detail/cart");
         dispatch(
           alertActions.success(user.message)
         );
-        // window.location.reload();
+        window.location.reload();
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
+
+function updateUserCart(cart_id) {  
+  return (dispatch) => {
+    dispatch(request(cart_id));
+    userService.updateUserCart(cart_id).then(
+      (user) => {
+        dispatch(success());
+        history.push("/detail/cart");
+        dispatch(
+          alertActions.success(user.message)
+        );
+        window.location.reload();
       },
       (error) => {
         dispatch(failure(error.toString()));
