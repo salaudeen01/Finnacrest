@@ -266,7 +266,7 @@ fetchSingleTargetTransaction=(order_id)=>{
           open={showView}
           onClose={this.handleCloseView}
         >
-            <AppBar color="primary" style={{position: "relative", backgroundColor:"#e74398"}}>
+            <AppBar color="primary" className="text-white" style={{position: "relative"}}>
               <Toolbar>
                 <IconButton
                   edge="start"
@@ -276,7 +276,7 @@ fetchSingleTargetTransaction=(order_id)=>{
                 >
                   <CloseIcon />
                 </IconButton>
-                <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
+                <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
                   Order Details
                 </Typography>
               </Toolbar>

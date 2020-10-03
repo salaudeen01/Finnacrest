@@ -1319,7 +1319,7 @@ function addToCart(user, where) {
           history.push("/detail/cart");
           window.location.reload();
         }else{
-          history.push("/halal");
+          history.push("/product_financing");
           window.location.reload();
         }
       },

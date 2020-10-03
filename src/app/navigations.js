@@ -85,7 +85,7 @@ export const navigations = [
     children: [
       {
         name: "Products",
-        path: "/halal",
+        path: "/product_financing",
         iconText: "A",
       },
       {

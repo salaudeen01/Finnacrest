@@ -45,7 +45,7 @@ class StatCards extends Component {
         </Link>
         </Grid>
         <Grid item xs={12} md={4}>
-        <Link to ="/halal">
+        <Link to ="/product_financing">
           <Card className="play-card" style={{backgroundColor:"#"}} elevation={6}>
           <CardActionArea>
               <CardContent style={{backgroundColor:"#19a6ff"}}>

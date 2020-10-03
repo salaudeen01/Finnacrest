@@ -47,7 +47,7 @@ const pageRoutes = [
   //   component: React.lazy(() => import("./investments/FinanceTab"))
   // },
   {
-    path: "/halal",
+    path: "/product_financing",
     component: React.lazy(() => import("./ProductFinance/Halal")),
   },
   {
