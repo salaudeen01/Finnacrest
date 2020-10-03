@@ -6,7 +6,7 @@ import {
   Grid,
   Button,
   CircularProgress,
-  Typography,
+  Typography,Hidden
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -88,7 +88,8 @@ class SignUp extends Component {
       <div
         className='signup flex justify-center w-full h-full-screen'
         style={{
-          backgroundColor: "#0a131b",
+          // backgroundColor: "#0a131b",
+          backgroundImage: `url(${"/assets/images/homebg.png"})`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
           backgroundSize: "cover",
@@ -106,7 +107,7 @@ class SignUp extends Component {
             <Grid lg={11} md={11} sm={11} xs={11}>
               <Card className='' style={{ background: "#224459" }}>
                 <Grid container className='p-2' spacing={3}>
-                  <Grid lg={4} md={4} sm={6} xs={6}>
+                  <Grid lg={4} md={4} sm={12} xs={12}>
                     <Card className='signup-card '>
                       <Grid
                         container
@@ -114,7 +115,7 @@ class SignUp extends Component {
                         justify='center'
                         alignItems='center'
                       >
-                        <div className='p-4 mt-6'>
+                        <div className='p-4 mt-4'>
                           <Grid
                             container
                             className='p-2 '
@@ -143,7 +144,7 @@ class SignUp extends Component {
                           <Grid item lg={12} md={12} sm={12} xs={12}>
                             <div className='p-9 h-full position-relative'>
                               <TextValidator
-                                className='mb-6 w-full'
+                                className='mb-3 w-full'
                                 variant='outlined'
                                 label='First Name'
                                 onChange={this.handleChange}
@@ -154,7 +155,7 @@ class SignUp extends Component {
                                 errorMessages={["this field is required"]}
                               />
                               <TextValidator
-                                className='mb-6 w-full'
+                                className='mb-3 w-full'
                                 variant='outlined'
                                 label='Last Name'
                                 onChange={this.handleChange}
@@ -165,18 +166,18 @@ class SignUp extends Component {
                                 errorMessages={["this field is required"]}
                               />
                               <TextValidator
-                                className='mb-4 w-full'
+                                className='mb-3 w-full'
                                 variant='outlined'
                                 label='Phone Number'
                                 onChange={this.handleChange}
                                 type='type'
-                                name='phone_number'
+                                name='phone_no'
                                 value={data.phone_no}
                                 validators={["required"]}
                                 errorMessages={["this field is required"]}
                               />
                               <TextValidator
-                                className='mb-6 w-full'
+                                className='mb-3 w-full'
                                 variant='outlined'
                                 label='Email'
                                 onChange={this.handleChange}
@@ -190,7 +191,7 @@ class SignUp extends Component {
                                 ]}
                               />
                               <TextValidator
-                                className='mb-4 w-full'
+                                className='mb-3 w-full'
                                 variant='outlined'
                                 label='Password'
                                 onChange={this.handleChange}
@@ -201,38 +202,37 @@ class SignUp extends Component {
                                 errorMessages={["this field is required"]}
                               />
                               <TextValidator
-                                className='mb-4 w-full'
+                                className='mb-3 w-full'
                                 variant='outlined'
                                 label='Confirm Password'
                                 onChange={this.handleChange}
                                 type='password'
                                 name='confirm_password'
-                                value={data.password}
+                                value={confirm_password}
                                 validators={["required"]}
                                 errorMessages={["this field is required"]}
-                              />
-                            </div>
+                              />                            
                             <Grid
                               item
                               lg={12}
                               md={12}
                               sm={12}
                               xs={12}
-                              className='mb-4'
+                              className='mb-3'
                             >
                               <Button
                                 variant='contained'
                                 color='warning'
                                 disabled={this.props.loggingIn}
                                 type='submit'
-                                className='capitalize font-medium'
+                                className='capitalize font-medium w-full'
                                 style={{
                                   background: "#04956b",
                                   color: "#fff",
-                                  width: "84%",
+                                  // width: "84%",
                                   padding: 10,
-                                  marginLeft: 36,
-                                  marginRight: 36,
+                                  // marginLeft: 36,
+                                  // marginRight: 36,
                                 }}
                               >
                                 Sign Up
@@ -244,7 +244,7 @@ class SignUp extends Component {
                                 />
                               )}
                             </Grid>
-
+                            </div>
                             <Grid
                               item
                               lg={12}
@@ -271,7 +271,8 @@ class SignUp extends Component {
                       </Grid>
                     </Card>
                   </Grid>
-                  <Grid lg={8} md={8} sm={6} xs={6}>
+                  <Grid lg={7} md={7} sm={6} xs={6}>
+                  <Hidden xsDown smDown>
                     <Grid
                       container
                       className='p-2 mt-8'
@@ -283,10 +284,10 @@ class SignUp extends Component {
                         className='text-center text-white mt-25'
                         style={{ fontWeight: "bold", width: "10" }}
                       >
-                        Welcome to <br />
-                        SESIS <br /> Co-OPERATIVE SOCIETY
+                        Welcome To <br />
+							          SESIS <br /> CO-OPERATIVE SOCIETY
                       </Typography>
-                    </Grid>
+                    </Grid></Hidden>
                   </Grid>
                 </Grid>
               </Card>

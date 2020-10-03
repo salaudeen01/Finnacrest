@@ -109,6 +109,7 @@ const serverVars = {
   removeCard:"deleteCards/",
   verifyWithdrawalPassword:"verifyPasswordBeforeWithdrawal",
   confirmWithdraw:"paystackWithdrawalToBank",
+
   addToCart: "addToCart/",
   getAllProductInCart:"allProductsInUserCart?token=",  
   totalCartPerUser:"totalCartPerUser?token=", 
@@ -119,11 +120,15 @@ const serverVars = {
   getHalaiNews: "allFinanceProducts?token=", 
   getSingleHalai: "singleProduct/",
   updateUserCart: "updateUserCart/",
+  checkOut: "checkOut",
+  fetchUserProducts:"fetchUserProducts?token=",
+  getOrderDetails:"fetchOrderDetails/",
+  orderRepayments:"orderRepayments/",
   // Shareholdings
   addFundShareholdings: "addShareHoldingsFunds?token=",
-  getTransactionsShareholdings: "shareHoldingsTransactions/",
+  getTransactionsShareholdings: "shareHoldingsTransactions",
   getTotalBalanceShareholdings: "shareHoldingsTotalBalance?token=",
-  getAccountShareholdings: "share_holding?token=", 
+  getAccountShareholdings: "share_holding", 
 };
 
 export const numberFormat = (value) =>
@@ -416,21 +421,28 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.deleteFromCart; 
     case "updateUserCart":
       return serverVars.baseUrl + serverVars.updateUserCart; 
-          // Shareholdings api
+    case "checkOut":
+      return serverVars.baseUrl + serverVars.checkOut;
+    case "fetchUserProducts":
+      return serverVars.baseUrl + serverVars.fetchUserProducts; 
+    case "getOrderDetails":
+      return serverVars.baseUrl + serverVars.getOrderDetails;       
+    case "orderRepayments":
+      return serverVars.baseUrl + serverVars.orderRepayments;  
+        // Shareholdings api
     case "addFundShareholdings":
       return serverVars.baseUrl + serverVars.addFundShareholdings + user.token;
     case "getTransactionsShareholdings":
-      return serverVars.baseUrl + serverVars.getTransactionsShareholdings;
-    case "getTotalBalanceShareholdings":
-      return (
-        serverVars.baseUrl +
-        serverVars.getTotalBalanceShareholdings +
-        user.token
-      );
+      return serverVars.baseUrl + serverVars.getTransactionsShareholdings;   
+      case "getTotalBalanceShareholdings":
+        return (
+          serverVars.baseUrl +
+          serverVars.getTotalBalanceShareholdings +
+          user.token
+        );
     case "getAccountShareholdings":
-      return (
-        serverVars.baseUrl + serverVars.getAccountShareholdings + user.token
-      );
+      return serverVars.baseUrl + serverVars.getAccountShareholdings;
+    
     default:
       return null;
   }

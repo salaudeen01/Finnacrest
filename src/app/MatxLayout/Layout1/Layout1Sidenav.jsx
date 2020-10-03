@@ -21,7 +21,7 @@ const styles = theme => ({});
 
 const IconButtonWhite = withStyles(theme => ({
   root: {
-    backgroundColor: "transparent",
+    backgroundColor: theme.palette.primary.main,
     padding: "5px"
   }
 }))(IconButton);
@@ -111,7 +111,7 @@ class Layout1Sidenav extends Component {
     let { user } = this.props;
     const {profile_image, name} = this.state
     return (
-      <div className="sidenav__user">
+      <div className="sidenav__user" style={{backgroundColor:"#191f38"}}>
         <div className="username-photo">
           <img src={profile_image == ""? "/assets/images/dummy.jpg": profile_image} alt="user" />
         </div>

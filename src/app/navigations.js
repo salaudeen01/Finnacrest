@@ -9,42 +9,44 @@ export const navigations = [
     icon: "account_balance_wallet",
     path: "/wallet",
   },
-  {
-    name: "Application",
-    icon: "list_alt",
-    children: [
-      {
-        name: "Target Contributions",
-        path: "/applications/target-contribution",
-        iconText: "B",
-      },
-      {
-        name: "Monthly Contribution",
-        path: "/applications/monthly-contribution",
-        iconText: "B",
-      },
-      {
-        name: "Procurement Repayment",
-        path: "/applications/procurement",
-        iconText: "E",
-      },
-      {
-        name: "Loan Repayment",
-        path: "/applications/loan-repayment",
-        iconText: "E",
-      },
-      {
-        name: "Shares Contribution",
-        path: "/applications/shares-capital",
-        iconText: "E",
-      },
-      {
-        name: "Wallet Contribution",
-        path: "/applications/wallet-contribution",
-        iconText: "E",
-      },
-    ],
-  },
+  // {
+  //   name: "Application",
+  //   icon: "list_alt",
+  //   children: [
+  //     {
+  //       name: "Target Contributions",
+  //       path: "/applications/target-contribution",
+  //       iconText: "B",
+  //     },
+  //     {
+  //       name: "Monthly Contribution",
+  //       path: "/applications/monthly-contribution",
+  //       iconText: "B",
+  //     },
+  //     {
+  //       name: "Procurement Repayment",
+  //       path: "/applications/procurement",
+  //       iconText: "E",
+  //     },
+  //     {
+  //       name: "Loan Repayment",
+  //       path: "/applications/loan-repayment",
+  //       iconText: "E",
+  //     },
+  //     {
+  //       name: "Shares Contribution",
+  //       path: "/applications/shares-capital",
+  //       iconText: "E",
+  //     },
+  //     {
+  //       name: "Wallet Contribution",
+  //       path: "/applications/wallet-contribution",
+  //       iconText: "E",
+  //     },
+  //   ],
+ 
+ 
+  // },
   // {
   //   name: "Save",
   //   icon: "payments",

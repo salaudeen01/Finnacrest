@@ -4,6 +4,10 @@ import {numberFormat} from '../../../../config/config';
 import { Grid, Card, Button, ButtonGroup, CardMedia, Typography, IconButton, Toolbar, AppBar, Dialog,
          MenuItem, TextField, Divider, }
  from '@material-ui/core';
+ import { withRouter } from "react-router-dom";
+ import { connect } from "react-redux";
+ import { userActions } from "../../../../redux/actions/user.actions";
+ import { withStyles } from "@material-ui/styles";
  import CloseIcon from "@material-ui/icons/Close";
  import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
  import dateFormat from "dateformat"
@@ -135,9 +139,9 @@ class SingleInvestmentCardDetails extends Component {
                     </Typography>                    
                     </Grid>                    
                     <Grid item lg={6} md={6} sm={6} xs={6}>
-                    {this.props.savings &&
+                    {/* {this.props.savings &&
                         <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                    }
+                    } */}
                     <Button className="uppercase"
                         size="large"
                         fullWidth
@@ -148,10 +152,10 @@ class SingleInvestmentCardDetails extends Component {
                             Continue Shopping
                         </Button>
                     </Grid>
-                    <Grid item lg={6} md={6} sm={6} xs={6}>
                     {this.props.savings &&
                         <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                     }
+                    <Grid item lg={6} md={6} sm={6} xs={6}>                    
                     <Button className="uppercase"
                         size="large"
                         onClick={this.props.addToCart}
@@ -171,8 +175,14 @@ class SingleInvestmentCardDetails extends Component {
     }
 }
 
+const actionCreators = {
+    timeOut: userActions.timeOut,
+  };
+
 function mapState(state) {
     const { savings } = state.savings;
     return { savings };
   }
-export default SingleInvestmentCardDetails
+  export default withStyles({}, { withTheme: true })(
+    withRouter(connect(mapState,  actionCreators)(SingleInvestmentCardDetails))
+  );

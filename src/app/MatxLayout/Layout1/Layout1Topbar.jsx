@@ -14,7 +14,8 @@ import ShoppingCart from "../SharedCompoents/ShoppingCart";
 const styles = theme => ({
   topbar: {
     "& .topbar-hold": {
-      backgroundColor: theme.palette.default,
+      // backgroundColor: theme.palette.secondary.main,
+      backgroundColor: "#222943",
       height: "80px",
       "&.fixed": {
         boxShadow: theme.shadows[8],
@@ -96,9 +97,9 @@ class Layout1Topbar extends Component {
                 onClick={this.handleSidebarToggle}
                 className="hide-on-pc"
               >
-                <Icon style={{ color: "black" }}>menu</Icon>
+                <Icon style={{ color: "white" }}>menu</Icon>
               </IconButton>
-              <Icon className="sidenav__toggle show-on-pc" onClick={this.handleSidenavToggle} color="primary">menu</Icon>
+              <Icon className="sidenav__toggle show-on-pc" onClick={this.handleSidenavToggle} style={{ color: "white" }}>menu</Icon>
               {/* <div className="hide-on-mobile">
                 <IconButton >
                   <Icon>mail_outline</Icon>

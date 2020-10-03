@@ -169,9 +169,9 @@ componentDidMount() {
     if(data.success == false){
       this.setState({news: [], category: []})
     }else{
-      this.setState({news: data.products, category: data.products})
+      this.setState({news: data.products.data, category: data.products.data})
     }
-    console.log(data)
+    // console.log(data)
 })
 .catch(error => {
    if (error === "Unauthorized") {
@@ -186,13 +186,12 @@ fetch(getConfig("getHalaiCat"), requestOptions)
     if (!response.ok) {
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
-    }
+    }console.log(data)
     if(data.success == false){
       this.setState({ categories: []});
     }else{
-      this.setState({ categories: data.categories});
+      this.setState({ categories: data});
     }    
-    console.log(data)
   })
   .catch((error) => {
     if (error === "Unauthorized") {
@@ -276,8 +275,8 @@ investTab(){
 tabbed = (id) => {
   this.setState({
     category: id == 0? this.state.news : this.state.news.filter((ne) =>ne.category_id == id),
-    current_index: id
-  })
+    current_index: id   
+  }) 
 };
   render(){
     const {theme} =this.props
@@ -287,7 +286,7 @@ tabbed = (id) => {
         <AppBar color="default" position="static">
         <Toolbar>
           <Grid container>
-            <Grid item lg={9} md={9} sm={8} xs={8}>
+            <Grid item lg={9} md={9} sm={12} xs={12}>
             <div className="">
               <Breadcrumb
                 routeSegments={[
@@ -296,7 +295,7 @@ tabbed = (id) => {
               />
             </div>
             </Grid>
-            <Grid item lg={2} md={2} sm={4} xs={4}>            
+            <Grid item lg={2} md={2} sm={8} xs={8}>            
             <Button style={{backgroundColor:'#224459', color:'white'}} onClick={this.handleRequest}>
               Make Request
             </Button>
@@ -358,8 +357,8 @@ tabbed = (id) => {
             <MarketCard 
                 data={ne}
                 status={true}
-                // invest={()=>this.handleShowInvest(ne.id)} 
-                // view={()=>this.handleShowView(ne.id, ne.current_values)}
+                invest={()=>this.handleShowInvest(ne.id)} 
+                view={()=>this.handleShowView(ne.id, ne.current_values)}
                 />
               </Link>              
             </Grid>

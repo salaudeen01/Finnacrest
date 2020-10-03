@@ -76,7 +76,9 @@ export const userActions = {
   addFundShareholdings,
   updateUserCart,
   deleteFromCart,
-  addToCart
+  addToCart,
+  orderRepayments,
+  checkOut,
 };
 
 function login(username, password) {
@@ -1281,7 +1283,28 @@ function updatePicture(user) {
   };
 
 }
+function checkOut(user) {
+  return (dispatch) => {
+    dispatch(request(user));
 
+    userService.checkOut(user).then(
+      (user) => {
+        dispatch(success());
+        if(user.success){
+          history.push("/detail/cart");
+          dispatch( alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+}
 //add to Cart
 
 function addToCart(user, where) {
@@ -1348,15 +1371,44 @@ function deleteFromCart(cart_id) {
   }
 }
 
-function updateUserCart(cart_id) {  
+function updateUserCart(cart_id, quantity) {  
   return (dispatch) => {
     dispatch(request(cart_id));
-    userService.updateUserCart(cart_id).then(
+    userService.updateUserCart(cart_id, quantity).then(
       (user) => {
         dispatch(success());
-        history.push("/detail/cart");
+        // history.push("/detail/cart");
         dispatch(
-          alertActions.success(user.message)
+          alertActions.error(user.message)
+        );
+        // window.location.reload();
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+};
+function orderRepayments(order_id) {  
+  return (dispatch) => {
+    dispatch(request(order_id));
+    userService.orderRepayments(order_id).then(
+      (user) => {
+        dispatch(success());
+        history.push("/products");
+        dispatch(
+          alertActions.error(user.message)
         );
         window.location.reload();
       },
@@ -1377,7 +1429,6 @@ function updateUserCart(cart_id) {
     return { type: userConstants.SAVINGS_FAILURE, error };
   }
 }
-
 
 function addFundShareholdings(user) {
   return (dispatch) => {

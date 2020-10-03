@@ -5,6 +5,8 @@ import {authHeader} from '../../../../redux/logic'
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../../../redux/actions/user.actions";
+import CustomCarousel from "../../investments/components/CustomCarousel";
+import {Link} from 'react-router-dom';
 import { withStyles } from "@material-ui/styles";
 import Loading from "matx/components/MatxLoading/MatxLoading";
 import {
@@ -120,24 +122,10 @@ class SesisSavingTop extends Component{
           <Loading />
         </div>:
         <> */}
-        <div className="pb-7 pt-7 px-8 " style={{background:"#222943"}}>
-        {/* <Grid container>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
-              <StatCards2 title={"Wallet Balance"} icon={"account_balance_wallet"} 
-              amount={numberFormat(wallet_bal)}/>
-            </Grid>
-              <Grid item lg={4} md={4} sm={12} xs={12}>
-                <StatCards2 title={"Regular Balance"} color={"#0d60d8"} icon={"account_balance_wallet"} 
-                amount={numberFormat(balanceRegular)} />
-              </Grid>
-              <Grid item lg={4} md={4} sm={12} xs={12}>
-                    <StatCards2 title={"Target Balance"} color={"#e74398"} icon={"account_balance_wallet"} 
-                    amount={numberFormat(balance)}/>
-                </Grid>
-        </Grid> */}
+        <div className="pb-7 pt-7 px-8 " style={{background:"#222943"}}>       
         <Grid container spacing={3} className="mb-3">
             <Grid item xs={12} md={4}>
-                <Card className="play-card p-sm-24" style={{backgroundColor:"#224459"}} elevation={6}>
+                <Card className="play-card p-sm-24" style={{backgroundColor:"#002288",height:171}} elevation={6}>
                     <div className="flex items-center p-3">
                     <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>payments</Icon>
                     <div className="ml-3">
@@ -148,7 +136,7 @@ class SesisSavingTop extends Component{
                 </Card>
             </Grid>    
             <Grid item xs={12} md={4}>
-                <Card className="play-card p-sm-24" style={{backgroundColor:"#224459"}} elevation={6}>
+                <Card className="play-card p-sm-24" style={{backgroundColor:"#1999ff",height:171}} elevation={6}>
                     <div className="flex items-cente p-3">
                     <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>track_changes</Icon>
                     <div className="ml-3">
@@ -157,6 +145,13 @@ class SesisSavingTop extends Component{
                     </div>
                     </div>
                 </Card>
+            </Grid>
+            <Grid item lg={4} md={4} xs={12} sm={12}>
+                    <div className="flex items-cente">
+                  <CustomCarousel />
+                {/* <Link to="/savings-tab/regular"><img src="/assets/images/savings-banner.jpeg" alt="upgrade" /></Link> */}
+              {/* </Card> */}
+              </div>
             </Grid>           
         </Grid>
         </div>     

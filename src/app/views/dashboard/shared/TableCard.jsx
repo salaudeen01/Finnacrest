@@ -10,7 +10,8 @@ import {
   TableBody
 } from "@material-ui/core";
 import { Component } from "react";
-import { numberFormat } from '../../../config/config'
+import { numberFormat } from '../../../config/config';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import dateFormat from "dateformat"
 
 class TableCard extends Component{
@@ -79,10 +80,10 @@ class TableCard extends Component{
                     <TableCell className="px-0 capitalize" colSpan={4} align="left">
                     {product.transaction_category == 1 ? "Regular Savings": 
                     (product.transaction_category == 2) ? "Target Savings":
-                    (product.transaction_category == 3) ? "Save To Loan":
+                    (product.transaction_category == 9) ? "Product Financing":
                     (product.transaction_category == 4) ? "Loan":
-                    (product.transaction_category == 5) ? "Market Investment":
-                    (product.transaction_category == 6) ? "Halal Financing":
+                    (product.transaction_category == 3) ? "Shareholding":
+                    // (product.transaction_category == 6) ? "Halal Financing":
                     (product.transaction_category == 7) ? (product.transaction_type == "credit")?"Wallet Funding":" Wallet Withdrawal": ""}
                     </TableCell>
                     <TableCell className="px-0" colSpan={2} >
@@ -98,7 +99,11 @@ class TableCard extends Component{
                 ))}
               </TableBody>
             </Table>
-            <Button href="/transactions" variant="contained" size="small" color="secondary">See All </Button>
+            {/* <ArrowForwardIcon> */}
+              <Button href="/transactions" variant="contained" size="small" className="text-white" color="primary">
+              See All<ArrowForwardIcon/> 
+              </Button>
+              {/* </ArrowForwardIcon> */}
           </div>
         </Card>
       );

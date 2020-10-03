@@ -4,7 +4,8 @@ import {
   Grid,
   Button,
   CircularProgress,
-  Typography
+  Typography,
+  Hidden
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
@@ -45,40 +46,87 @@ class VerifyEmail extends Component {
   render() {
     let { classes } = this.props;
     return (
-      <div className="signup flex justify-center w-full h-full-screen" style={{
-        backgroundImage: `url(${"/assets/images/bg.png"})`,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-        backgroundSize: "cover",
-        backgroundAttachment: "fixed",
-        }}>
-        <div className="block mt-10">
-          <div className="p-8">
-            <Grid container className="p-2 " justify="center" alignItems="center">
-              <Grid lg={6} md={6} sm={6} xs={6}>
-                <img src="/assets/images/Group24.png"/>
-              </Grid>
+      <div
+      className='signup flex justify-center w-full h-full-screen'
+      style={{
+        backgroundColor: '#0a131b',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center center',
+        backgroundSize: 'cover',
+        backgroundAttachment: 'fixed',
+      }}>
+    <div className='p-4 flex w-full h-full-screen'>
+    <Grid
+      container
+      className='p-2'
+      spacing={3}
+      justify='center'
+      alignItems='center'>
+      <Grid lg={11} md={11} sm={11} xs={11}>
+        <Card className='' style={{ background: '#224459' }}>
+          <Grid container className='p-2' spacing={3}>
+            <Grid lg={4} md={4} sm={12} xs={12}>
+              <Card className='signup-card '>
+                <Grid
+                  container
+                  className='p-2 bg-light-gray'
+                  justify='center'
+                  alignItems='center'>
+                  <div className='p-4 mt-10'>
+                    <Grid
+                      container
+                      className='p-2 '
+                      justify='center'
+                      alignItems='center'>
+                      <Grid lg={6} md={6} sm={6} xs={6}>
+                        <img src='/assets/images/sesis.jpg' />
+                      </Grid>
+                    </Grid>
+                  </div>
+                  <Grid lg={12} md={12} sm={12} xs={12}>
+                  <Typography variant="h6" className="text-center text-gray mt-5 mb-5">
+                    Click the button below to complete your registration.
+                  </Typography>
+                  </Grid>
+                </Grid>
+                <Grid container className='bg-light-gray justify-center w-full'>
+                <Grid lg={12} md={12} sm={12} xs={12} >
+                  <Button onClick={this.handleFormSubmit} variant="contained" style={{background:'#04956b'}} 
+                  className="mt-5 text-white" size="large">Complete Registration</Button>
+                  {this.props.loggingIn && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />)}
+                </Grid>
+                </Grid>
+              </Card>
             </Grid>
-          </div>
-        <div className="p-4">
-          <Card className="signup-card ">
-            <Grid container className="p-5 bg-light-gray" direction="column" justify="center" alignItems="center">
-              <Grid lg={12} md={12} sm={12} xs={12}>
-                <Typography variant="h6" className="text-center text-gray mt-5 mb-5">Click the button below to complete your registration.</Typography>
-              </Grid>
-              <Grid lg={12} md={12} sm={12} xs={12} >
-                <Button onClick={this.handleFormSubmit} variant="contained" style={{background:'#04956b'}} className="mt-5 text-white" size="large">Complete Registration</Button>
-                {this.props.loggingIn && (
-                  <CircularProgress
-                    size={24}
-                    className={classes.buttonProgress}
-                  />)}
-              </Grid>
+            <Grid lg={8} md={8} sm={1} xs={1}>
+            <Hidden xsDown smDown>
+              <Grid
+                container
+                className='p-2 mt-8'
+                justify='center'
+                alignItems='center'>
+              
+                <Typography
+                  variant='h4'
+                  className='text-center text-white mt-25'
+                  style={{ fontWeight: 'bold', width: '10' }}>
+                  Welcome To <br />
+                  SESIS <br /> CO-OPERATIVE SOCIETY
+                </Typography>
+              </Grid></Hidden>
             </Grid>
-          </Card>
-        </div>
-      </div>
-      </div>
+          </Grid>
+        </Card>
+      </Grid>
+    </Grid>
+  
+    </div>
+  </div>
+  
     );
   }
 }

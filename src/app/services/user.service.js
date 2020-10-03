@@ -76,7 +76,9 @@ export const userService = {
   addFundShareholdings,
   updateUserCart,
   deleteFromCart,
-  addToCart
+  orderRepayments,
+  addToCart,
+  checkOut
 };
 
 function login(email, password) {
@@ -650,14 +652,35 @@ function deleteFromCart(cart_id) {
     handleResponse
   );
 }
-function updateUserCart(cart_id) {
+function updateUserCart(cart_id, quantity) {
   let user = JSON.parse(localStorage.getItem("user"));
   const requestOptions = {
     method: "POST",
     headers: { ...authHeader(), "Content-Type": "application/json" },
-    // body: JSON.stringify(id),
+    body: JSON.stringify({quantity}),
   };
   return fetch(getConfig("updateUserCart")+cart_id+"?token="+user.token, requestOptions).then(
+    handleResponse
+  );
+}
+function orderRepayments(order_id) {
+  let user = JSON.parse(localStorage.getItem("user"));
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    // body: JSON.stringify({quantity}),
+  };
+  return fetch(getConfig("orderRepayments")+order_id+"?token="+user.token, requestOptions).then(
+    handleResponse
+  );
+}
+function checkOut(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(getConfig("checkOut"), requestOptions).then(
     handleResponse
   );
 }

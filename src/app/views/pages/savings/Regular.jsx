@@ -3,7 +3,7 @@ import StatCards2 from "../../dashboard/shared/StatCards2";
 import {getConfig, numberFormat, setLastUrl, payID} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { Grid, Card, Button, Switch, IconButton, TextField, MenuItem,
+import { Grid, Card, Button, ButtonGroup, Switch, IconButton, TextField, MenuItem,
   Typography,
   Toolbar,
   AppBar,
@@ -370,35 +370,27 @@ handleClose() {
           <Loading />
         </div>:
         <>
-        {/* <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#0d60d8", borderBottomRightRadius:20,
-             borderTopLeftRadius:20,}} >
-          <Grid container spacing={8}>
-              <Grid item lg={9} md={9} sm={12} xs={12}>
-                <StatCards2 title={"Regular Balance"} color={"#0d60d8"} icon={"account_balance_wallet"} 
-                amount={numberFormat(balance)} />
-              </Grid>
+          <Grid container spacing={1}>              
               <Grid item lg={3} md={3} sm={12} xs={12}>
+              {/* <ButtonGroup color="primary" aria-label="outlined primary button group"> */}
                 <Button className="uppercase"
-                  size="large"
+                  size="small"
                   variant="contained"
-                  style={{backgroundColor:"#0d60d8", color:"white", borderBottomRightRadius:10, borderTopLeftRadius:10}}
+                  style={{backgroundColor:"#222943", color:"white"}}
                   onClick={this.handleQuickSave}>
                    Quick Save
                 </Button>
-              </Grid>
-          </Grid>
-          <Grid container spacing={8}>
-              <Grid item lg={8} md={8} sm={4} xs={4}>
                 <Button className="uppercase"
                   size="small"
                   variant="outlined"
-                  style={{borderBottomRightRadius:10, borderTopLeftRadius:10,borderColor:"#0d60d8"}}
+                  style={{borderColor:"#0d60d8"}}
                   onClick={this.handleWithdraw}>
                     Withdraw
                 </Button>
+        {/* </ButtonGroup> */}
               </Grid>
           </Grid>
-        </div> */}
+        
         <div className="py-3" />
         <Grid container spacing={3}>
               <Grid item lg={6} md={6} sm={12} xs={12}>

@@ -147,6 +147,7 @@ render(){
         <LinearProgress
           value={this.props.completeness}
           variant="determinate"
+          color='secondary'
         />
       </div>
       <Divider />

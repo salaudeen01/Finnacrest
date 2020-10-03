@@ -5,7 +5,7 @@ class TodoList extends Component {
     render() {
         return (
             <div>
-                <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20, width:"auto"}} >
+                <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderRadius:10, width:"auto"}} >
                 <FormControl component="fieldset">
                     <FormLabel component="legend">To Do List</FormLabel>
                     <RadioGroup

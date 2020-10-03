@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { userActions } from "../../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
 import swal from 'sweetalert';
+import TableContainer from '@material-ui/core/TableContainer';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {
   FormControl,
@@ -25,24 +26,15 @@ class CartTable extends Component{
     super(props)
   const { products} = this.props;
     this.state = {
-      product:products,
+      products:products,
       page:0,
       rowsPerPage:5
 
     }
     this.handleDelete =this.handleDelete.bind(this)
-    this.incrementItem =this.incrementItem.bind(this)
   // const [rowsPerPage, setRowsPerPage] = React.useState(5);
   // const [page, setPage] = React.useState(0);
   
-  }
-
-  componentDidUpdate(){
-    const { products} = this.props;
-    if(this.state.product == []){
-      this.setState({product:products})
-    }
-    
   }
 
 handleChangePage = (event, newPage) => {
@@ -72,29 +64,22 @@ handleChangePage = (event, newPage) => {
     });
     }
      
-incrementItem = (id) =>{
-  const { product} = this.state;
-  const elementIndex = product.findIndex(prod=> prod.cart_id == id);
-  let newArray = [...product];
-  newArray[elementIndex] = {...newArray[elementIndex], cart_quantity: newArray[elementIndex].cart_quantity+1}
-  this.setState({product:newArray })
-  console.log(product)
-}
-
 render(){
   const { products, deleteCart, loading} = this.props;
   const { product } =this.state
   return (
     <Card elevation={3} className="pt-5 mb-6">
     <div className="overflow-auto">
-      <Table className=" product-table">
+    <TableContainer component={Paper}>
+      {/* <Table className=" product-table"> */}
+      <Table style={{minWidth:680}} aria-label="simple table">
         <TableHead>
           <TableRow>
-          <TableCell className="px-6" colSpan={3}>Items</TableCell>
-          <TableCell className="px-6" colSpan={4}>Items Name</TableCell>
-            <TableCell className="px-0" colSpan={3}>Quantity</TableCell>
-            <TableCell className="px-0" colSpan={3}>Item Price</TableCell>
-            <TableCell className="px-0" colSpan={3}>Action</TableCell>
+          <TableCell className="px-4" colSpan={4}>Items</TableCell>
+          <TableCell className="px-4" colSpan={6}>Items Name</TableCell>
+            <TableCell className="px-4" colSpan={5}>Quantity</TableCell>
+            <TableCell className="px-4" colSpan={4}>Item Price</TableCell>
+            <TableCell className="px-4" colSpan={4}>Action</TableCell>
           </TableRow>
         </TableHead>
           {loading?
@@ -107,27 +92,29 @@ render(){
                   />
             </div>: 
         <TableBody>
-          {product.map(dat => ( 
+          {this.props.products.length != [] ?
+                this.props.products.map(dat => (
+          // {this.props.products.map(dat => ( 
               <TableRow key={dat.id}>
-                <TableCell className="px-0 capitalize" align="left" colSpan={3}>
+                <TableCell className="px-1 capitalize" align="left" colSpan={4}>
                 <img style={{width:100,height:50}} src={dat.image}/>
                 </TableCell>
-                <TableCell className="px-0 capitalize" align="left" colSpan={4}>
+                <TableCell className="px-4 capitalize" align="left" component="th" scope="row" colSpan={6}>
                  {dat.product_name}
                 </TableCell>
-                <TableCell className="px-0 capitalize" align="left" colSpan={3}>
+                <TableCell className="px-4 capitalize" align="left" colSpan={5}>
                 <ButtonGroup size="small" aria-label="small outlined button group">
-                  <Button>-</Button>
+                  <Button onClick={()=>this.props.DecrementItem(dat.cart_id)}>-</Button>
                   <Button>
                     {dat.cart_quantity}
                   </Button>
-                  <Button onClick={this.incrementItem(dat.cart_id)}>+</Button>
+                  <Button onClick={()=>this.props.incrementItem(dat.cart_id)}>+</Button>
                 </ButtonGroup>
                 </TableCell>
-                <TableCell className="px-0 capitalize" align="left" colSpan={3}>
+                <TableCell className="px-4 capitalize" align="left" colSpan={4}>
                   {numberFormat(dat.cart_price)}
                 </TableCell>
-                <TableCell className="px-0 capitalize" colSpan={3}>
+                <TableCell className="px-4 capitalize" align="left" colSpan={4}>
                 <Button style={{backgroundColor:'#ef1616', color:'#ffffff'}}
                  startIcon={<DeleteIcon/>}
                  onClick={()=> this.handleDelete(dat.cart_id)}
@@ -136,11 +123,19 @@ render(){
                 </Button>
                 </TableCell>
               </TableRow>
-            ))}
+            )):
+            <TableRow>
+                <TableCell colSpan={4}></TableCell>
+                <TableCell colSpan={4}></TableCell>
+                <TableCell className="px-4 capitalize" align="left" colSpan={8}>
+                  <b>Your cart is empty.</b>  
+                </TableCell>                
+                </TableRow>
+          }
         </TableBody>
          }
       </Table>
-
+    </TableContainer>
       {/* <TablePagination
         className="px-4"
         rowsPerPageOptions={[5, 10, 25]}

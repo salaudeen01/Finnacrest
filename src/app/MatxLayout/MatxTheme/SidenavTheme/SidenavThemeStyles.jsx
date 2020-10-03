@@ -9,15 +9,16 @@ const styles = theme => ({
       "& .sidenav__hold": {
         opacity: "1 !important",
         "&::after": {
-          background: theme.palette.primary.main,
+          // background: theme.palette.primary.main,
+          background: "#f4f4f4",
           opacity: .96
         },
         "& .nav-item:not(.badge)": {
-          color: theme.palette.text.primary
+          color: "black"
         },
         "& .nav-item": {
           "&.active, &.active:hover": {
-            background: theme.palette.secondary.main
+            background: theme.palette.primary.main
           },
           "& .icon-text::after": {
             background: theme.palette.text.primary

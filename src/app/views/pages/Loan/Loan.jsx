@@ -27,6 +27,7 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 import LoanApprovalCard from "./components/LoanApprovalCard";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import AddCardDialog from "app/views/dashboard/shared/AddCardDialog";
+import CustomTab from "./components/CustomTab";
 
 class Loan extends Component {
   constructor(props){
@@ -878,8 +879,7 @@ render(){
           <Loading />
         </div>:
         <>
-        <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20,
-             borderTopLeftRadius:20}} >
+        <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderRadius:10}} >
           <Grid container spacing={5} direction="row" justify="space-between">
               <Grid item lg={9} md={9} sm={12} xs={12}>
                 {group_table ?
@@ -887,12 +887,12 @@ render(){
                 <TodoList />}
               </Grid>
           </Grid>
-          <Grid container spacing={2}>
+          {/* <Grid container spacing={1}>
               <Grid item lg={8} md={8} sm={6} xs={6}>
                 <Button className="uppercase"
                   size="small"
                   variant="contained"
-                  style={{borderBottomRightRadius:10, borderTopLeftRadius:10, backgroundColor:"#04956a",color:"white"}}
+                  style={{borderRadius:10, backgroundColor:"#04956a",color:"white"}}
                   onClick={this.handleCreateGroup}>
                     Create Group
                 </Button>
@@ -902,14 +902,35 @@ render(){
                 <Button className="uppercase"
                   size="small"
                   variant="contained"
-                  style={{backgroundColor:"#04956a", color:"white", borderBottomRightRadius:10, borderTopLeftRadius:10}}
+                  style={{backgroundColor:"#04956a", color:"white", borderRadius:10}}
                   onClick={this.handleCreateLoan}>
                    Request Loan
-                </Button>}
+                </Button>
+                 } 
+               </Grid> 
+          </Grid> */}
+          <Grid container spacing={1}>              
+              <Grid item lg={3} md={3} sm={12} xs={12}>
+              {/* <ButtonGroup color="primary" aria-label="outlined primary button group"> */}
+                <Button className="uppercase"
+                  size="small"
+                  variant="contained"
+                  style={{backgroundColor:"#222943", color:"white"}}
+                  onClick={this.handleCreateGroup}>
+                   Create Group
+                </Button>
+                <Button className="uppercase"
+                  size="small"
+                  variant="outlined"
+                  style={{backgroundColor:"#04956a",color:"white"}}
+                  onClick={this.handleCreateLoan}>
+                   Request Loan
+                </Button>
+        {/* </ButtonGroup> */}
               </Grid>
           </Grid>
       </div>
-        <div className="py-3" />
+        {/* <div className="py-3" />
         <Grid container >
             <Grid item lg={12} md={12} sm={12} xs={12}>
               <Typography variant="h6">My Groups</Typography>
@@ -927,16 +948,13 @@ render(){
               exit={()=>this.confirmAlert("exit", data.group_id, 0, 0)}
               join={()=>this.confirmAlert("join", data.code, 0, 0)}
               approval={()=>this.handleShowApproval(data.group_id)}
-              // actions={()=>this.handleShowAction(data.group_id, data.request_id, data.code, data.member_status, data.request_status)}
               />
             ))}
             </div>
             </Grid>
-            {/* <Grid item lg={4} md={4} sm={12} xs={12}>
-              <Link to="/savings-tab/save-to-loan"><CustomCarousel /></Link>
-            </Grid> */}
         </Grid>
-        <div className="py-3" />
+        */}
+        {/* <div className="py-3" />
         <Grid container >
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <Typography variant="h6">My Loans</Typography>
@@ -949,14 +967,14 @@ render(){
                     variant={tab == 0 ? "contained" : tab == 1 ?"outlined": "outlined"}
                     style={{backgroundColor: tab == 0 ? "#04956a":tab == 1 ?"":"", color:tab == 0 ? "#fff":tab == 1 ?"":"#000"}}
                     onClick={this.ongoingTab}
-                    >Ongoing</Button>
+                    >Ongoing</Button> */}
                 {/* <Button 
                     size="small"
                     variant={tab == 0 ? "outlined" : tab == 1 ?"outlined": "contained"}
                     style={{backgroundColor: tab == 0 ? "":tab == 1 ?"":"#04956a", color:tab == 0 ? "#000":tab == 1 ?"#000":"#fff"}}
                     onClick={this.approvalTab}
                     >Approvals</Button> */}
-                <Button 
+                {/* <Button 
                     size="small"
                     variant={tab == 0 ? "outlined" : tab == 1 ?"contained": "outlined"}
                     style={{backgroundColor: tab == 0 ? "":tab == 1 ?"#04956a":"", color:tab == 0 ? "#000":tab == 1 ?"#fff":"#000"}}
@@ -977,8 +995,8 @@ render(){
                 <Typography variant="p" className="font-bold">You currently do not have any Completed loan</Typography>:
               Completed.map((data, index) => (
                 <LoanCards key={index} data={data} status={false} view={()=>this.handleCreateManageLoan(data.id)}/>
-              ))
-              // isFetching? <Typography variant="h6">Loading...</Typography>:
+              )) */}
+              {/* // isFetching? <Typography variant="h6">Loading...</Typography>:
               // loan_activities.length == 0?
               //   <Typography variant="p" className="font-bold">You currently do not have any loan that require your approval</Typography>:
               // loan_activities.map((data, index) =>(
@@ -986,12 +1004,13 @@ render(){
               //   accept={()=>this.confirmAlert("accept", 0, data.loan_group, data.loan_id)} 
               //   decline={()=>this.confirmAlert("decline", 0, data.loan_group, data.loan_id)}/>
               // ))
-              }
-            </div>
+              } */}
+            {/* </div>
           </Grid>
         </Grid>
+        */}
         </>}
-
+        <CustomTab />
     <AddCardDialog callback={this.callback} showSave={showSave} handleClose={this.handleClose} add_card={add_card} />
 
     {/* Quick Loan Dialog Start */}

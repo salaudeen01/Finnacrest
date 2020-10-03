@@ -6,14 +6,14 @@ const StatCards2 = (props) => {
   return (
     <Grid container spacing={3} className="mb-6">
       <Grid item xs={12} md={6}>
-        <Card elevation={3} className="p-4">
+        <Card elevation={3} className="p-4" style={{background:"transparent", opacity: 20}}>
           <div className="flex items-center">
             <Fab
               size="medium"
               className="circle-44 box-shadow-none"
               style={{backgroundColor: props.color}}
             >
-              <Icon >{props.icon}</Icon>
+              <Icon style={{color:'white'}} >{props.icon}</Icon>
             </Fab>
             <h5 className="font-medium m-0 ml-3">{props.title}</h5>
           </div>
