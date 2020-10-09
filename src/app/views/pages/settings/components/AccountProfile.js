@@ -124,7 +124,8 @@ render(){
               multiple="false" 
               onChange={this.handleProfileImage} 
               ref={this.imageUploader}
-              style={{display:"none"}}/>
+              style={{display:"none"}}
+              />
         </div>
           <Typography variaant="subtitle">click image to upload</Typography>
       </CardContent>
@@ -147,6 +148,7 @@ render(){
         <LinearProgress
           value={this.props.completeness}
           variant="determinate"
+          color='secondary'
         />
       </div>
       <Divider />

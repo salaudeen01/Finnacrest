@@ -5,7 +5,7 @@ import {getConfig, numberFormat, payID, setLastUrl} from '../../../config/config
 import {authHeader} from '../../../redux/logic'
 import history from '../../../../history'
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { Grid, Card, Button, Switch, IconButton, TextField, MenuItem,
+import { Grid, Card, Button, Switch, IconButton, TextField, MenuItem, ButtonGroup,
   Typography,
   Toolbar,
   AppBar,
@@ -475,56 +475,46 @@ completeTab(){
           <Loading />
         </div>:
         <>
-        <Grid container spacing={2}>
-          <Grid item lg={12} md={12} sm={12} xs={12}>
-            <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#e74398", borderBottomRightRadius:20,
-             borderTopLeftRadius:20}}>
-              <Grid container spacing={4}>
-                  <Grid item lg={9} md={9} sm={12} xs={12}>
-                    <StatCards2 title={"Target Balance"} color={"#e74398"} icon={"account_balance_wallet"} amount={numberFormat(balance)}/>
-                  </Grid>
-                  <Grid item lg={3} md={3} sm={6} xs={6}>
+        <Grid container spacing={2} className="pb-5 pt-7 px-2 bg-default">
+               <Grid item lg={6} md={6} sm={12} xs={12} >
+                  <ButtonGroup color="primary" aria-label="outlined primary button group">
                     {tdetails.length != 0 && <Button className="uppercase"
                       size="small"
                       variant="contained"
-                      style={{backgroundColor:"#e74398", color:"#fff", borderBottomRightRadius:10, borderTopLeftRadius:10,}}
+                      style={{backgroundColor:"#222943", color:"#fff"}}
                       onClick={this.handleQuickSave}>
                       Quick Save
                     </Button>}
-                  </Grid>
-              </Grid>
-              <Grid container spacing={4}>
-                  <Grid item lg={4} md={4} sm={12} xs={12}>
                     <Button className="uppercase"
                       size="small"
                       variant="contained"
-                      style={{ backgroundColor:"#e74398", color:"#fff", borderBottomRightRadius:10, borderTopLeftRadius:10}}
+                      style={{ backgroundColor:"#19a6ff", color:"#fff"}}
                       onClick={this.handleAutoSave}>
                         Create Target
                     </Button>
-                  </Grid>
+                 </ ButtonGroup>  
               </Grid>
-            </div>
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
+            </Grid>
+    <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#222943",borderRadius:8}}>  
+    <Grid container spacing={3}>
           <Grid item lg={8} md={8} sm={12} xs={12}>
+          <ButtonGroup color="primary" aria-label="outlined primary button group">
             <Button size="small"
                 variant={tab? "contained" : "outlined"}
-                style={{backgroundColor: tab ? "#e74398":""}}
+                style={{backgroundColor: tab ? "#222943":"", color: tab ? 'white':""}}
                 onClick={this.ongoingTab}
                 >Ongoing</Button>
             <Button 
                 size="small"
                 variant={tab? "outlined" : "contained"}
-                style={{backgroundColor: tab ? "":"#e74398"}}
+                style={{backgroundColor: tab ? "":"#222943", color: tab ? "":"white"}}
                 onClick={this.completeTab}
                 >Completed</Button>
+          </ButtonGroup>
           </Grid>
           <Grid item lg={8} md={8} sm={12} xs={12}>
             {tab &&
-              <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#e74398", borderBottomRightRadius:20,
-              borderTopLeftRadius:20}}>
+              <div className="px-2 bg-default" >
                 {tdetails.length != 0?
                 tdetails.map((data, index)=>(
                   <TargetTransactionCard key={index} status={false} 
@@ -542,8 +532,7 @@ completeTab(){
               }
               </div>}
               {!tab &&
-              <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#e74398", borderBottomRightRadius:20,
-              borderTopLeftRadius:20}}>
+              <div className="px-2 bg-default">
                 {completed.length != 0?
                 completed.map((data, index)=>(
                   <TargetTransactionCard 
@@ -558,18 +547,17 @@ completeTab(){
                 )):
                 <Typography variant="body1">No Completed Target Savings</Typography>}
               </div>
-            }
-            
-          </Grid>
-              
+            }            
+          </Grid>              
         </Grid>
+      </div>
         </>}
         {/* Quick Save Dialog Start */}
         <Dialog
           open={showSave}
           onClose={this.handleCloseQuickSave}
           scroll="body">
-          <AppBar style={{position: "relative", backgroundColor:"#e74398"}}>
+          <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -638,7 +626,7 @@ completeTab(){
                   type="submit"
                   size="large"
                   variant="contained"
-                  style={{backgroundColor:"#e74398", color:"#fff"}}>
+                  style={{backgroundColor:"#0d60d8", color:"#fff"}}>
                   Add Fund
                 </Button>}
                 </Grid>
@@ -683,7 +671,7 @@ completeTab(){
         scroll="body"
         open={show}
         onClose={this.handleClose}>
-        <AppBar style={{position: "relative", backgroundColor:"#e74398"}}>
+        <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -830,7 +818,7 @@ completeTab(){
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#e74398", color:"white"}}>Create Target Plan</Button>
+                 style={{backgroundColor:"#0d60d8", color:"white"}}>Create Target Plan</Button>
               </ValidatorForm>
             </Grid>
           </Grid>
@@ -843,7 +831,7 @@ completeTab(){
           scroll="body"
           open={showEdit}
           onClose={this.handleCloseEdit}>
-          <AppBar style={{position: "relative", backgroundColor:"#e74398"}}>
+          <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -1002,7 +990,7 @@ completeTab(){
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#e74398", color:"white"}}>Edit Target Plan</Button>
+                 style={{backgroundColor:"#0d60d8", color:"white"}}>Edit Target Plan</Button>
             </ValidatorForm>
           }
         </Card>
@@ -1014,7 +1002,7 @@ completeTab(){
           open={showView}
           onClose={this.handleCloseView}
         >
-            <AppBar color="primary" style={{position: "relative", backgroundColor:"#e74398"}}>
+            <AppBar color="primary" style={{position: "relative", backgroundColor:"#0d60d8"}}>
               <Toolbar>
                 <IconButton
                   edge="start"

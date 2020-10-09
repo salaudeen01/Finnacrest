@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Breadcrumb, SimpleCard } from "matx";
 import {Grid, Card, Icon, Typography } from "@material-ui/core"
 import CustomTargetTab from "./components/CustomTargetTab";
+import SesisSavingTop from "./components/SesisSavingTop";
 import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
@@ -20,6 +21,7 @@ export default function SavingsTab(props) {
 
   return (
     <div className="m-sm-10">
+        <SesisSavingTop/>
         <CustomTargetTab />
     </div>
   );

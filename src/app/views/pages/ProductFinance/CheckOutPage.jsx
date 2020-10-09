@@ -32,19 +32,15 @@ class CheckOutPage extends Component {
     this.state = {
       loading:true,
       products:[],
-      count:[]
+      count:[],
+      totalbalance:0,
+      cart_quantity:[]
     }
-    // this.handleDelete = this.handleDelete.bind(this);
-    // this.deleteCart = this.deleteCart.bind(this);
-    // this.handleDelete();
+    this.incrementItem =this.incrementItem.bind(this);
+    this.DecrementItem = this.DecrementItem.bind(this)
   }
-
-// fetchUsers = () =>{
-//   const requestOptions = {
-//       method: 'GET',
-//       headers: { ...authHeader(), 'Content-Type': 'application/json' },
-//   };
-  componentDidMount(){
+  
+componentDidMount(){
     const {id} = this.state
     let user = JSON.parse(localStorage.getItem('user'));
     const requestOptions = {
@@ -61,7 +57,18 @@ class CheckOutPage extends Component {
       return Promise.reject(error);
   }
   console.log(data)
-  this.setState({products: data.my_carts, loading:false });
+  if(data.success == false){
+    this.setState({ products: []});
+  }else{
+    this.setState({products: data.my_carts, loading:false });
+  } 
+  // this.setState({products: data.my_carts, loading:false });
+  let quantity= []
+  data.my_carts.forEach(dat => {
+      quantity.push(dat.cart_quantity)
+  })
+  this.setState({cart_quantity: quantity})
+  console.log(quantity)  
 })
 .catch(error => {
   if (error === "Unauthorized") {
@@ -89,11 +96,71 @@ fetch(getConfig("userCartCount"), requestOptions)
         this.props.timeOut()
       }
     });
+    fetch(getConfig('totalCartPerUser'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+    console.log(response)
+    const error = (data && data.message) || response.statusText;
+    return Promise.reject(error);
+    }
+    
+    console.log(data)
+    this.setState({totalbalance: data[0].total_cart, loading:false });
+    })  
+
+    .catch(error => {
+    if (error === "Unauthorized") {
+      this.props.logout()
+    }
+    this.setState({loading:false, err : "internet error" });
+    console.error('There was an error!', error);
+    });
+    fetch(getConfig('getAllDebitCards'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }
+    if(data.success == false || data.length == 0 ){
+      this.setState({cards: []});
+    }else{
+      this.setState({cards: data});  
+    }
+  })
+  .catch(error => {
+    if (error === "Unauthorized") {
+      this.props.timeOut()
+      }
+  });
 }
 
-  
+incrementItem = (id) => {
+  const { products, totalbalance} = this.state;
+  const elementIndex = products.findIndex(prod=> prod.cart_id == id);
+  let newArray = [...products];
+  let price = Number(newArray[elementIndex].cart_price);
+  console.log('price', totalbalance);
+  newArray[elementIndex] = {...newArray[elementIndex], cart_quantity: Number(newArray[elementIndex].cart_quantity)+1}
+  this.setState({products:newArray, totalbalance: Number(totalbalance) + price})
+      this.props.updateUserCart(newArray[elementIndex].cart_id, newArray[elementIndex].cart_quantity);
+}  
+DecrementItem = (id) => {
+  const { products, totalbalance} = this.state;
+  const elementIndex = products.findIndex(prod=> prod.cart_id == id);  
+  let newArray = [...products];
+  let price = Number(newArray[elementIndex].cart_price);
+  if (newArray[elementIndex].cart_quantity > 1) {
+    console.log('price', totalbalance);
+    newArray[elementIndex] = {...newArray[elementIndex], cart_quantity: Number(newArray[elementIndex].cart_quantity)-1}
+    this.setState({products:newArray, totalbalance: Number(totalbalance) - price})
+    this.props.updateUserCart(newArray[elementIndex].cart_id, newArray[elementIndex].cart_quantity);
+  }  
+}
+
 render(){
- const {loading, products, count, handleDelete} = this.state
+ const {loading, products, count, totalbalance, handleDelete, cart_quantity} = this.state
   return (
     <div className="m-sm-30">
         <AppBar color="default" style={{position: "relative"}} className="mb-sm-30">
@@ -113,17 +180,17 @@ render(){
         </AppBar>
             <Grid container spacing={2}>
                 <Grid item lg={12} md={12} sm={12} xs={12}>
-                <Link to="/halal">
+                <Link to="/product_financing">
                 <Button variant="outlined" color='secondary' startIcon={<ArrowBack/>}>
                 Back Shopping
                 </Button> 
                 </Link>
+                </Grid>                
+                <Grid item lg={8} md={8} sm={12} xs={12}>
+                    <CartTable products={products} loading={loading} cart_quantity={cart_quantity} incrementItem={this.incrementItem} DecrementItem={this.DecrementItem}/>
                 </Grid>
-                <Grid item lg={9} md={9} sm={12} xs={12}>
-                    <CartTable products={products} loading={loading} />
-                </Grid>
-                <Grid item lg={3} md={3} sm={12} xs={12}>
-                    <CartSummary/>
+                <Grid item lg={4} md={4} sm={12} xs={12}>
+                    <CartSummary count={count} total={totalbalance}/>
                 </Grid>
             </Grid>
       </div>
@@ -135,6 +202,7 @@ const actionCreators = {
   timeOut: userActions.timeOut,
   logout: userActions.logout,
   deleteFromCart: userActions.deleteFromCart,
+  updateUserCart: userActions.updateUserCart,
 };
 
 function mapState(state) {

@@ -102,7 +102,9 @@ render(){
             </Grid>
             <Grid item lg={4} md={4} xs={12} sm={12}>
               {/* <Card> */}
-                <Link to="/savings-tab/regular"><CustomCarousel /></Link>
+                <Link><CustomCarousel 
+                  title={'aadrsdjhkj'}
+                /></Link>
                 {/* <Link to="/savings-tab/regular"><img src="/assets/images/savings-banner.jpeg" alt="upgrade" /></Link> */}
               {/* </Card> */}
             </Grid>

@@ -38,16 +38,16 @@ const pageRoutes = [
   //   path: "/investment/market",
   //   component: React.lazy(() => import("./investments/MarketTab"))
   // },
-  // {
-  //   path: "/investment/halal",
-  //   component: React.lazy(() => import("./investments/HalalTab"))
-  // },
-  // {
-  //   path: "/investment/finance",
-  //   component: React.lazy(() => import("./investments/FinanceTab"))
-  // },
   {
-    path: "/halal",
+    path: "/my_products",
+    component: React.lazy(() => import("./ProductFinance/HalalTab"))
+  },
+  {
+    path: "/requested_product",
+    component: React.lazy(() => import("./ProductFinance/RequestProduct"))
+  },
+  {
+    path: "/product_financing",
     component: React.lazy(() => import("./ProductFinance/Halal")),
   },
   {

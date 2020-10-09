@@ -74,9 +74,13 @@ export const userActions = {
 
   // Shareholdings
   addFundShareholdings,
-
+  updateUserCart,
   deleteFromCart,
-  addToCart
+  addToCart,
+  orderRepayments,
+  checkOut,
+  userUploadRequested,
+  updateRequest,
 };
 
 function login(username, password) {
@@ -170,7 +174,7 @@ function createRegularSavings(user) {
     userService.createRegularSavings(user).then(
       (user) => {
           dispatch(success());
-          history.push("/regular");
+          history.push("/savings-tab/regular");
         if(user.success){
           dispatch(alertActions.success(user.message));
         }else{
@@ -260,7 +264,7 @@ function withdrawRegularSavings(user) {
       (user) => {
           dispatch(success());
         if(user.success){
-          history.push("/regular");
+          history.push("/savings-tab/regular");
           dispatch(alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -284,7 +288,7 @@ function addFundRegularSavings(user) {
       (user) => {
         dispatch(success());
         if(user.success){
-          history.push("/regular");
+          history.push("/savings-tab/regular");
           dispatch( alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -307,7 +311,7 @@ function editRegularSavings(user) {
       (user) => {
           dispatch(success());
         if(user.success){
-          history.push("/regular");
+          history.push("/savings-tab/regular");
           dispatch(alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -330,7 +334,7 @@ function deactivateAutoSaveLoan(user) {
       (user) => {
           dispatch(success());
         if(user.success){
-          history.push("/savetoloan");
+          history.push("/savings-tab/savetoloan");
           dispatch( alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -352,7 +356,7 @@ function deactivateAutoSave(user) {
       (user) => {
           dispatch(success());
         if(user.message){
-          history.push("/regular");
+          history.push("/savings-tab/regular");
           dispatch( alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -376,7 +380,7 @@ function createSaveToLoanSavings(user) {
       (user) => {
           dispatch(success());
         if(user.success){
-          history.push("/savetoloan");
+          history.push("/savings-tab/savetoloan");
           dispatch( alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -399,7 +403,7 @@ function withdrawSaveToLoanSavings(user) {
       (user) => {
         dispatch(success());
         if(user.success){
-          history.push("/savetoloan");
+          history.push("/savings-tab/savetoloan");
           dispatch(alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -422,7 +426,7 @@ function addFundSaveToLoanSavings(user) {
       (user) => {
         dispatch(success());
         if(user.success){
-          history.push("/savetoloan");
+          history.push("/savings-tab/savetoloan");
           dispatch( alertActions.success( user.message));
         }else{
           dispatch( alertActions.error( user.message));
@@ -445,7 +449,7 @@ function editSaveToLoanSavings(user) {
       (user) => {
         dispatch(success());
         if(user.success){
-          history.push("/savetoloan");
+          history.push("/savings-tab/savetoloan");
           dispatch( alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -468,7 +472,7 @@ function exitLoanSavings(loan_id) {
       (user) => {
         dispatch(success());
         if(user.success){
-          history.push("/savetoloan");
+          history.push("/savings-tab/savetoloan");
           dispatch( alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -778,7 +782,7 @@ function createTargetSavings(user) {
         dispatch(success());
         if(user.success){
           dispatch( alertActions.success(user.message));
-          history.push("/target");
+          history.push("/savings-tab/target");
         }else{
           dispatch(alertActions.error(user.message));
         }
@@ -801,7 +805,7 @@ function withdrawTargetSavings(user) {
         dispatch(success());
         if(user.success){
           dispatch( alertActions.success(user.message));
-          history.push("/target");
+          history.push("/savings-tab/target");
         }else{
           dispatch(alertActions.error(user.message));
         }
@@ -823,7 +827,7 @@ function addFundTargetSavings(user) {
       (user) => {
         dispatch(success());
         if(user.success){
-          history.push("/target");
+          history.push("/savings-tab/target");
           dispatch(alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
@@ -847,7 +851,7 @@ function editTargetSavings(user) {
         dispatch(success());
         if(user.success){
           dispatch( alertActions.success(user.message));
-          history.push("/target");
+          history.push("/savings-tab/target");
         }else{
           dispatch(alertActions.error(user.message));
         }
@@ -870,7 +874,7 @@ function exitTargetSavings(user) {
         dispatch(success());
         if(user.success){
           dispatch( alertActions.success(user.message));
-          history.push("/target");
+          history.push("/savings-tab/target");
         }else{
           dispatch(alertActions.error(user.message));
         }
@@ -893,7 +897,7 @@ function activateTargetAutosave(user) {
         dispatch(success());
         if(user.success){
           dispatch( alertActions.success(user.message));
-          history.push("/target");
+          history.push("/savings-tab/target");
         }else{
           dispatch(alertActions.error(user.message));
         }
@@ -916,7 +920,7 @@ function deactivateTargetAutosave(user) {
         dispatch(success());
         if(user.success){
           dispatch( alertActions.success(user.message));
-          history.push("/target");
+          history.push("/savings-tab/target");
         }else{
           dispatch(alertActions.error(user.message));
         }
@@ -1281,10 +1285,83 @@ function updatePicture(user) {
   };
 
 }
+function checkOut(order_id) {
+  return (dispatch) => {
+    dispatch(request(order_id));
 
+    userService.checkOut(order_id).then(
+      (user) => {
+        dispatch(success());
+        if(user.success){
+          history.push("/detail/cart");
+          dispatch( alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+}
+// function userUploadRequested(user) {
+//   return (dispatch) => {
+//     dispatch(request(user));
+
+//     userService.userUploadRequested(user).then(
+//       (user) => {
+//         dispatch(success());
+//         if(user.success){
+//           history.push("/product_financing");
+//           dispatch( alertActions.success(user.message));
+//         }else{
+//           dispatch(alertActions.error(user.message));
+//         }
+//       },
+//       (error) => {
+//         dispatch(failure(error.toString()));
+//         dispatch(alertActions.error(error.toString()));
+//       }
+//     );
+//   };
+
+// }
+function userUploadRequested(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+    userService.userUploadRequested(user).then(
+      (user) => {
+        dispatch(success());
+        if(user.success){
+          history.push("/product_financing");
+          dispatch( alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
 //add to Cart
 
-function addToCart(user) {
+function addToCart(user, where) {
   return (dispatch) => {
     dispatch(request(user));
     userService.addToCart(user).then(
@@ -1292,6 +1369,15 @@ function addToCart(user) {
         dispatch(success());
         // history.push("/details");
         dispatch(alertActions.success(user.message));
+        if(where){
+          history.push("/detail/cart");
+          // window.location.reload();
+          console.log(where)
+        }else{
+          history.push("/product_financing");
+          // window.location.reload();
+          console.log(user)
+        }
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1317,11 +1403,11 @@ function deleteFromCart(cart_id) {
     userService.deleteFromCart(cart_id).then(
       (user) => {
         dispatch(success());
-        // history.push("/detail/cart");
+        history.push("/detail/cart");
         dispatch(
           alertActions.success(user.message)
         );
-        // window.location.reload();
+        window.location.reload();
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1341,6 +1427,142 @@ function deleteFromCart(cart_id) {
   }
 }
 
+function updateUserCart(cart_id, quantity) {  
+  return (dispatch) => {
+    dispatch(request(cart_id));
+    userService.updateUserCart(cart_id, quantity).then(
+      (user) => {
+        dispatch(success());
+        // history.push("/detail/cart");
+        dispatch(
+          alertActions.error(user.message)
+        );
+        // window.location.reload();
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+};
+
+function updateRequest(cart_id, quantity) {  
+  return (dispatch) => {
+    dispatch(request(cart_id));
+    userService.updateRequest(cart_id, quantity).then(
+      (user) => {
+        dispatch(success());
+        // history.push("/detail/cart");
+        dispatch(
+          alertActions.error(user.message)
+        );
+        // window.location.reload();
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+};
+
+function orderRepayments(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+
+    userService.orderRepayments(user).then(
+      (user) => {
+        dispatch(success());
+        if(user.success){
+          history.push("/products");
+          dispatch(alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+}
+
+// function orderRepayments(order_id) {  
+//   return (dispatch) => {
+//     dispatch(request(order_id));
+//     userService.orderRepayments(order_id).then(
+//       (user) => {
+//         dispatch(success());
+//         history.push("/products");
+//         dispatch(
+//           alertActions.error(user.message)
+//         );
+//         // window.location.reload();
+//       },
+//       (error) => {
+//         dispatch(failure(error.toString()));
+//         dispatch(alertActions.error(error));
+//       }
+//     );
+//   };
+
+//   function request(user) {
+//     return { type: userConstants.SAVINGS_REQUEST, user };
+//   }
+//   function success(user) {
+//     return { type: userConstants.SAVINGS_SUCCESS, user };
+//   }
+//   function failure(error) {
+//     return { type: userConstants.SAVINGS_FAILURE, error };
+//   }
+// }
+
+
+// function orderRepayments(order_id) {
+//   return (dispatch) => {
+//     dispatch(request(order_id));
+
+//     userService.orderRepayments(order_id).then(
+//       (user) => {
+//         dispatch(success());
+//         if(user.success){
+//           history.push("/products");
+//           dispatch(alertActions.success(user.message));
+//         }else{
+//           dispatch(alertActions.error(user.message));
+//         }
+//       },
+//       (error) => {
+//         dispatch(failure(error.toString()));
+//         dispatch(alertActions.error(error.toString()));
+//       }
+//     );
+//   };
+
+// }
 
 function addFundShareholdings(user) {
   return (dispatch) => {

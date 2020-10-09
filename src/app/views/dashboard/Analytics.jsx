@@ -70,6 +70,7 @@ class Dashboard1 extends Component {
                 market_balance: 0,
                 halal_balance: 0,
                 loan_balance:0,
+                share_balance:0,
                 loan_investment:0,
                 target_balance:0,
                 transactions:[],
@@ -267,18 +268,37 @@ fetch(getConfig('fetchAllTarget'), requestOptions)
           this.props.timeOut()
           }
     });
-fetch(getConfig("totalFundSaveToLoanSavings"), requestOptions)
+// fetch(getConfig("totalFundSaveToLoanSavings"), requestOptions)
+// .then(async response => {
+//     const loan_data = await response.json();
+//     if (!response.ok) {
+//         const error = (loan_data && loan_data.message) || response.statusText;
+//         this.setState({loading:false})
+//         return Promise.reject(error);
+//     }
+//     if(loan_data.success == false){
+//       this.setState({loan_balance: 0, loan_investment: 0})  
+//     }else{
+//       this.setState({loan_balance: loan_data[1], loan_investment: loan_data[0]})  
+//     }
+// })
+// .catch((error) => {
+//     if (error === "Unauthorized") {
+//       this.props.timeOut()
+//     }
+// });
+fetch(getConfig("getTotalBalanceShareholdings"), requestOptions)
 .then(async response => {
-    const loan_data = await response.json();
+    const shareholding = await response.json();
     if (!response.ok) {
-        const error = (loan_data && loan_data.message) || response.statusText;
+        const error = (shareholding && shareholding.message) || response.statusText;
         this.setState({loading:false})
         return Promise.reject(error);
     }
-    if(loan_data.success == false){
-      this.setState({loan_balance: 0, loan_investment: 0})  
+    if(shareholding.success == false){
+      this.setState({share_balance: 0, loan_investment: 0})  
     }else{
-      this.setState({loan_balance: loan_data[1], loan_investment: loan_data[0]})  
+      this.setState({share_balance: shareholding, loan_investment: shareholding[0]})  
     }
 })
 .catch((error) => {
@@ -388,7 +408,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
 
   render() {
     let { theme } = this.props;
-    const {error, accounts, show, wallet_balance, add_card, showSaveCard, cards, bank, profile, data, email, loading, transactions, target_balance, continued, regular_balance, market_balance, loan_balance, loan_investment, halal_balance} = this.state
+    const {error, accounts, show, wallet_balance, add_card, showSaveCard, cards, bank, profile, data, email, loading, transactions, target_balance, continued, regular_balance, market_balance, share_balance, loan_investment, halal_balance} = this.state
     return (
       <div >
         {loading ?
@@ -396,9 +416,9 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
           <Loading />
         </div>:
         <Fragment>
-        <div className="pb-24 pt-7 px-8 bg-default">
+        <div className="pb-24 pt-2 px-8 bg-default">
         </div>
-        <div className="analytics pt-7 m-sm-30 mt--18">
+        <div className="analytics pt-3 m-sm-30 mt--14">
           <Grid container spacing={3}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
               <StatCards
@@ -407,7 +427,8 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                   market_balance={numberFormat(market_balance)}
                   regular_balance={numberFormat(regular_balance)}
                   target_balance={numberFormat(target_balance)}
-                  loan_balance={numberFormat(loan_balance)}
+                  // loan_balance={numberFormat(loan_balance)}
+                  share_balance={numberFormat(share_balance)}
                   loan_investment={numberFormat(loan_investment)}
                   openModal={this.handleClickOpen}/>
                   {/* <ScrollCards /> */}
@@ -417,7 +438,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
               <RowCards wallet={wallet_balance} bank={bank} profile={profile}/>
               <Card className="px-6 py-4 pt-4 mb-6">
                 <div className="card-title">My Savings Account </div>
-                {(regular_balance+target_balance+loan_balance != 0)?
+                {(regular_balance+target_balance+share_balance != 0)?
                 <DoughnutChart
                   height="300px"
                   color={[
@@ -427,14 +448,14 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                   ]}
                   name1={"Regular Savings"}
                   name2={"Target Savings"}
-                  name3={"Save To Loan"}
+                  name3={"Shareholding"}
                   regular_value={regular_balance} 
                   target_value={target_balance} 
-                  loan_value={loan_balance}
+                  loan_value={share_balance}
                 />:
                 <img src="/assets/images/illustrations/empty_pie.png" />}
               </Card>
-              <Card className="px-6 py-4 pt-4 mb-6">
+              {/* <Card className="px-6 py-4 pt-4 mb-6">
                 <div className="card-title">My Investments Account </div>
                 {halal_balance + market_balance != 0?
                 <DoughnutChart
@@ -452,10 +473,11 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                 />:
                 <img src="/assets/images/illustrations/empty_pie.png" />
               }
-              </Card>
+              </Card> */}
             </Grid>
+           
             <Grid item lg={6} md={6} sm={12} xs={12}>
-              <UpgradeCard />
+              {/* <UpgradeCard /> */}
               <h4 className="card-title text-muted mb-4">Latest Transactions</h4>
               <TableCard transactions={transactions}/>
               {/* <Campaigns /> */}
@@ -511,7 +533,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                 helperText="Please select a Package"
               >
                 <MenuItem value={"Regular Savings"}> Regular Savings</MenuItem>
-                <MenuItem value={"Save To Loan"}> Save To Loan</MenuItem>
+                {/* <MenuItem value={"Save To Loan"}> Shareholding</MenuItem> */}
                 <MenuItem value={"Target Savings"}> Target Savings</MenuItem>
                 <MenuItem value={"Wallet"}> Wallet </MenuItem>
               </TextField>

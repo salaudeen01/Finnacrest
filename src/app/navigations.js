@@ -9,58 +9,65 @@ export const navigations = [
     icon: "account_balance_wallet",
     path: "/wallet",
   },
-  {
-    name: "Application",
-    icon: "list_alt",
-    children: [
-      {
-        name: "Target Contributions",
-        path: "/applications/target-contribution",
-        iconText: "B",
-      },
-      {
-        name: "Monthly Contribution",
-        path: "/applications/monthly-contribution",
-        iconText: "B",
-      },
-      {
-        name: "Procurement Repayment",
-        path: "/applications/procurement",
-        iconText: "E",
-      },
-      {
-        name: "Loan Repayment",
-        path: "/applications/loan-repayment",
-        iconText: "E",
-      },
-      {
-        name: "Shares Contribution",
-        path: "/applications/shares-capital",
-        iconText: "E",
-      },
-      {
-        name: "Wallet Contribution",
-        path: "/applications/wallet-contribution",
-        iconText: "E",
-      },
-    ],
-  },
+  // {
+  //   name: "Application",
+  //   icon: "list_alt",
+  //   children: [
+  //     {
+  //       name: "Target Contributions",
+  //       path: "/applications/target-contribution",
+  //       iconText: "B",
+  //     },
+  //     {
+  //       name: "Monthly Contribution",
+  //       path: "/applications/monthly-contribution",
+  //       iconText: "B",
+  //     },
+  //     {
+  //       name: "Procurement Repayment",
+  //       path: "/applications/procurement",
+  //       iconText: "E",
+  //     },
+  //     {
+  //       name: "Loan Repayment",
+  //       path: "/applications/loan-repayment",
+  //       iconText: "E",
+  //     },
+  //     {
+  //       name: "Shares Contribution",
+  //       path: "/applications/shares-capital",
+  //       iconText: "E",
+  //     },
+  //     {
+  //       name: "Wallet Contribution",
+  //       path: "/applications/wallet-contribution",
+  //       iconText: "E",
+  //     },
+  //   ],
+ 
+ 
+  // },
+  // {
+  //   name: "Save",
+  //   icon: "payments",
+  //   // path: "/savings",
+  //   children: [
+  //     {
+  //       name: "Regular Savings",
+  //       path: "/regular",
+  //       iconText: "B",
+  //     },
+  //     {
+  //       name: "Target Savings",
+  //       path: "/target",
+  //       iconText: "B",
+  //     },
+  //   ],
+  // },
   {
     name: "Save",
     icon: "payments",
-    // path: "/savings",
-    children: [
-      {
-        name: "Regular Savings",
-        path: "/regular",
-        iconText: "B",
-      },
-      {
-        name: "Target Savings",
-        path: "/target",
-        iconText: "B",
-      },
-    ],
+    path: "/savings-tab/regular"
   },
   {
     name: "Shareholdings",
@@ -70,7 +77,7 @@ export const navigations = [
   {
     name: "Loan",
     icon: "money",
-    path: "/loan",
+    path: "/#",
   },
   {
     name: "Product Financing",
@@ -78,14 +85,19 @@ export const navigations = [
     children: [
       {
         name: "Products",
-        path: "/halal",
+        path: "/product_financing",
         iconText: "A",
       },
       {
         name: "My Products",
-        path: "/products",
+        path: "/my_products",
         iconText: "C",
       },
+      //  {
+      //   name: "Requsted Products",
+      //   path: "/requested_product",
+      //   iconText: "D",
+      // }
     ],
   },
   // {

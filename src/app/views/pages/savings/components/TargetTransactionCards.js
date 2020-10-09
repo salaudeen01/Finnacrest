@@ -14,14 +14,14 @@ const BorderLinearProgress = withStyles((theme) => ({
   },
   bar: {
     borderRadius: 5,
-    backgroundColor: '#e74398',
+    backgroundColor: '#0d60d8',
   },
 }))(LinearProgress);
 
 export default function TargetTransactionCard(props) {
 
   return (
-    <div className="pt-7 mb-4 px-2 bg-default" style={{flexGrow: 1, border:1, borderStyle:"solid", borderColor:"#e74398", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+    <div className="pt-7 mb-4 px-2 bg-default" style={{flexGrow: 1, border:1, borderStyle:"solid", borderColor:"#222943", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
       <Grid container spacing={2}>
         <Grid item lg={6} md={6} sm={12} xs={12}>
           <Typography variant="h6"> {props.title} </Typography>

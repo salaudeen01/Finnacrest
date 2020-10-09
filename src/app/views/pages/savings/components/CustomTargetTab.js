@@ -67,7 +67,7 @@ render(){
           onChange={this.handleChange} aria-label="simple tabs example">
           <Tab label="Regular Savings" {...a11yProps(0)} />
           <Tab label="Target Savings" {...a11yProps(1)} />
-          <Tab label="Save To Loan" {...a11yProps(2)} />
+          {/* <Tab label="Save To Loan" {...a11yProps(2)} /> */}
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -76,9 +76,9 @@ render(){
       <TabPanel value={value} index={1}>
         <Target />
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      {/* <TabPanel value={value} index={2}>
         <SaveToLoan />
-      </TabPanel>
+      </TabPanel> */}
     </div>
   );
 }

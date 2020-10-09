@@ -109,20 +109,31 @@ const serverVars = {
   removeCard:"deleteCards/",
   verifyWithdrawalPassword:"verifyPasswordBeforeWithdrawal",
   confirmWithdraw:"paystackWithdrawalToBank",
-  //Cart issues
-  addToCart: "addToCart/",
-  getAllProductInCart:"allProductsInUserCart?token=",
+  
+  addToCart: "addToCart/", 
+  userUploadRequested: "userUploadRequestedProducts",
+  getAllProductInCart:"allProductsInUserCart?token=",  
+  totalCartPerUser:"totalCartPerUser?token=", 
   deleteFromCart: "deleteFromCart/",
   userCartCount:"userCartCount?token=",
   getHalaiCat: "allFinanceCategories?token=", 
   getInvestmentCat: "show_category?token=",
   getHalaiNews: "allFinanceProducts?token=", 
   getSingleHalai: "singleProduct/",
+  updateUserCart: "updateUserCart/",
+  checkOut: "checkOut",
+  fetchUserProducts:"fetchUserProducts?token=",
+  getOrderDetails:"fetchOrderDetails/",
+  orderRepayments:"orderRepayments/",
+  userRequest:"userRequest?token=", 
+  updateRequest: "updateRequestQuantity/", 
+  totalRequestPrice:"totalRequestPrice?token=",
+
   // Shareholdings
   addFundShareholdings: "addShareHoldingsFunds?token=",
-  getTransactionsShareholdings: "shareHoldingsTransactions/",
+  getTransactionsShareholdings: "shareHoldingsTransactions",
   getTotalBalanceShareholdings: "shareHoldingsTotalBalance?token=",
-  getAccountShareholdings: "share_holding?token=",  
+  getAccountShareholdings: "share_holding", 
 };
 
 export const numberFormat = (value) =>
@@ -399,6 +410,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.addToCart ;      
     case "getAllProductInCart":
       return serverVars.baseUrl + serverVars.getAllProductInCart;
+    case "totalCartPerUser":
+      return serverVars.baseUrl + serverVars.totalCartPerUser;      
     case "userCartCount":
       return serverVars.baseUrl + serverVars.userCartCount;      
     case "getInvestmentCat":
@@ -411,21 +424,38 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.getSingleHalai;           
     case "deleteFromCart":
       return serverVars.baseUrl + serverVars.deleteFromCart; 
-          // Shareholdings api
+    case "updateUserCart":
+      return serverVars.baseUrl + serverVars.updateUserCart;
+    case "checkOut":
+      return serverVars.baseUrl + serverVars.checkOut;
+    case "fetchUserProducts":
+      return serverVars.baseUrl + serverVars.fetchUserProducts; 
+    case "getOrderDetails":
+      return serverVars.baseUrl + serverVars.getOrderDetails;       
+    case "orderRepayments":
+      return serverVars.baseUrl + serverVars.orderRepayments;        
+    case "userUploadRequested":
+      return serverVars.baseUrl + serverVars.userUploadRequested;
+    case "userRequest":
+      return serverVars.baseUrl + serverVars.userRequest;    
+    case "updateRequest":
+      return serverVars.baseUrl + serverVars.updateRequest; 
+    case "totalRequestPrice":   
+      return serverVars.baseUrl + serverVars.totalRequestPrice;   
+        // Shareholdings api
     case "addFundShareholdings":
       return serverVars.baseUrl + serverVars.addFundShareholdings + user.token;
     case "getTransactionsShareholdings":
-      return serverVars.baseUrl + serverVars.getTransactionsShareholdings;
-    case "getTotalBalanceShareholdings":
-      return (
-        serverVars.baseUrl +
-        serverVars.getTotalBalanceShareholdings +
-        user.token
-      );
+      return serverVars.baseUrl + serverVars.getTransactionsShareholdings;   
+      case "getTotalBalanceShareholdings":
+        return (
+          serverVars.baseUrl +
+          serverVars.getTotalBalanceShareholdings +
+          user.token
+        );
     case "getAccountShareholdings":
-      return (
-        serverVars.baseUrl + serverVars.getAccountShareholdings + user.token
-      );
+      return serverVars.baseUrl + serverVars.getAccountShareholdings;
+    
     default:
       return null;
   }

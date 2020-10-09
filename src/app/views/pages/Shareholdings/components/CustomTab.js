@@ -6,9 +6,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import Target from "../Target";
-import Regular from "../Regular";
-import Shareholdings from "../Shareholdings";
+// import Target from "../Target";
+// import Regular from "../Regular";
+// import Shareholdings from "../Shareholdings";
 import { useParams } from "react-router-dom";
 
 function TabPanel(props) {
@@ -74,10 +74,10 @@ class CustomTab extends Component {
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-          <Regular />
+          {/* <Regular /> */}
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Target />
+          {/* <Target /> */}
         </TabPanel>
       </div>
     );

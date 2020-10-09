@@ -1,10 +1,11 @@
-import React from "react";
+import React, { Component, useEffect, useState } from "react";
 import { numberFormat } from '../../../../config/config';
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
 import swal from 'sweetalert';
+import TableContainer from '@material-ui/core/TableContainer';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {
   FormControl,
@@ -20,20 +21,31 @@ import {
   Paper
 } from "@material-ui/core";
 
-const CartTable = (props) => {
-  const { products, deleteCart, loading, ...rest} = props;
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [page, setPage] = React.useState(0);
+class CartTable extends Component{
+  constructor(props){
+    super(props)
+  const { products} = this.props;
+    this.state = {
+      products:products,
+      page:0,
+      rowsPerPage:5
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    }
+    this.handleDelete =this.handleDelete.bind(this)
+  // const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  // const [page, setPage] = React.useState(0);
+  
+  }
+
+handleChangePage = (event, newPage) => {
+    this.setState({page:newPage});
+  };
+  
+ handleChangeRowsPerPage = event => {
+    this.setState({rowsPerPage:event.target.value});
   };
 
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(+event.target.value);
-  };
-
-  const handleDelete = (id) => {
+ handleDelete = (id) => {
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this file!",
@@ -43,7 +55,7 @@ const CartTable = (props) => {
     })
     .then((willDelete) => {
       if (willDelete) {
-        props.deleteFromCart(id);
+        this.props.deleteFromCart(id);
         console.log(id)
         swal("Loading...",{   
           buttons:false
@@ -51,18 +63,23 @@ const CartTable = (props) => {
       }
     });
     }
-
+     
+render(){
+  const { products, deleteCart, loading} = this.props;
+  const { product } =this.state
   return (
     <Card elevation={3} className="pt-5 mb-6">
     <div className="overflow-auto">
-      <Table className=" product-table">
+    <TableContainer component={Paper}>
+      {/* <Table className=" product-table"> */}
+      <Table style={{minWidth:680}} aria-label="simple table">
         <TableHead>
           <TableRow>
-          <TableCell className="px-6" colSpan={3}>Items</TableCell>
-          <TableCell className="px-6" colSpan={4}>Items Name</TableCell>
-            <TableCell className="px-0" colSpan={3}>Quantity</TableCell>
-            <TableCell className="px-0" colSpan={3}>Item Price</TableCell>
-            <TableCell className="px-0" colSpan={3}>Action</TableCell>
+          <TableCell className="px-4" colSpan={4}>Items</TableCell>
+          <TableCell className="px-4" colSpan={6}>Items Name</TableCell>
+            <TableCell className="px-4" colSpan={5}>Quantity</TableCell>
+            <TableCell className="px-4" colSpan={4}>Item Price</TableCell>
+            <TableCell className="px-4" colSpan={4}>Action</TableCell>
           </TableRow>
         </TableHead>
           {loading?
@@ -75,40 +92,50 @@ const CartTable = (props) => {
                   />
             </div>: 
         <TableBody>
-          {products.map(dat => ( 
+          {this.props.products.length != [] ?
+                this.props.products.map(dat => (
+          // {this.props.products.map(dat => ( 
               <TableRow key={dat.id}>
-                <TableCell className="px-0 capitalize" align="left" colSpan={3}>
+                <TableCell className="px-1 capitalize" align="left" colSpan={4}>
                 <img style={{width:100,height:50}} src={dat.image}/>
                 </TableCell>
-                <TableCell className="px-0 capitalize" align="left" colSpan={4}>
+                <TableCell className="px-4 capitalize" align="left" component="th" scope="row" colSpan={6}>
                  {dat.product_name}
                 </TableCell>
-                <TableCell className="px-0 capitalize" align="left" colSpan={3}>
+                <TableCell className="px-4 capitalize" align="left" colSpan={5}>
                 <ButtonGroup size="small" aria-label="small outlined button group">
-                  <Button>-</Button>
+                  <Button onClick={()=>this.props.DecrementItem(dat.cart_id)}>-</Button>
                   <Button>
                     {dat.cart_quantity}
                   </Button>
-                  <Button>+</Button>
+                  <Button onClick={()=>this.props.incrementItem(dat.cart_id)}>+</Button>
                 </ButtonGroup>
                 </TableCell>
-                <TableCell className="px-0 capitalize" align="left" colSpan={3}>
+                <TableCell className="px-4 capitalize" align="left" colSpan={4}>
                   {numberFormat(dat.cart_price)}
                 </TableCell>
-                <TableCell className="px-0 capitalize" colSpan={3}>
+                <TableCell className="px-4 capitalize" align="left" colSpan={4}>
                 <Button style={{backgroundColor:'#ef1616', color:'#ffffff'}}
                  startIcon={<DeleteIcon/>}
-                 onClick={()=> handleDelete(dat.cart_id)}
+                 onClick={()=> this.handleDelete(dat.cart_id)}
                  >
                   Remove
                 </Button>
                 </TableCell>
               </TableRow>
-            ))}
+            )):
+            <TableRow>
+                <TableCell colSpan={4}></TableCell>
+                <TableCell colSpan={4}></TableCell>
+                <TableCell className="px-4 capitalize" align="left" colSpan={8}>
+                  <b>Your cart is empty.</b>  
+                </TableCell>                
+                </TableRow>
+          }
         </TableBody>
          }
       </Table>
-
+    </TableContainer>
       {/* <TablePagination
         className="px-4"
         rowsPerPageOptions={[5, 10, 25]}
@@ -127,13 +154,14 @@ const CartTable = (props) => {
       /> */}
     </div>
     </Card>
-  );
+  )
 };
-
+};
 const actionCreators = {
   timeOut: userActions.timeOut,
   logout: userActions.logout,
   deleteFromCart: userActions.deleteFromCart,
+  updateUserCart: userActions.updateUserCart,
 };
 
 function mapState(state) {

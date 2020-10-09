@@ -16,6 +16,7 @@ import { MatxSuspense } from "matx";
 const styles = theme => {
   return {
     layout: {
+      // backgroundColor: theme.palette.background.default
       backgroundColor: theme.palette.background.default
     }
   };

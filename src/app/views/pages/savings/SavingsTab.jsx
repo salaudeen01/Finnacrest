@@ -4,6 +4,7 @@ import { Breadcrumb, SimpleCard } from "matx";
 import {Grid, Card, Icon, Typography } from "@material-ui/core"
 import CustomTab from "./components/CustomTab";
 import {Link} from 'react-router-dom';
+import SesisSavingTop from "./components/SesisSavingTop";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,6 +21,7 @@ export default function SavingsTab(props) {
 
   return (
     <div className="m-sm-10">
+      <SesisSavingTop/>
         <CustomTab />
     </div>
   );

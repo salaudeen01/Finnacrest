@@ -21,7 +21,7 @@ import {
   Typography,
   Toolbar,
   AppBar,
-  Dialog,
+  Dialog, Checkbox
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -32,10 +32,13 @@ import CloseIcon from "@material-ui/icons/Close";
 import Lottie from "react-lottie";
 import cube from "../../../../lottiefiles/26519-cube-spinning";
 import swal from "sweetalert";
-import TargetTransactionCard from "../savings/components/TargetTransactionCards";
 import TableCard from "../savings/components/TableCard";
 import PayOption from "app/views/dashboard/shared/PayOption";
 import Loading from "matx/components/MatxLoading/MatxLoading";
+import MyProduct from "./components/MyProduct";
+import OrderDetails from "./components/OrderDetails";
+import PayCard from "app/views/dashboard/shared/PayCard";
+import CompleteProduct from "./components/CompleteProduct";
 
 class Target extends Component {
   constructor(props) {
@@ -47,115 +50,82 @@ class Target extends Component {
     let date =
       currentDate.getFullYear() + "-" + month + "-" + currentDate.getDate();
     this.state = {
-      data: {
-        target_name: "",
-        amount: 0,
-        targeted_amount: "",
-        frequency: "",
-        transaction_day: "0",
-        transaction_time: "",
-        transaction_month: "0",
-        end_date: "",
-        start_date: "",
-        payment_method: "wallet",
-      },
-      edit_data: {
-        id: "",
-        target_name: "",
-        amount: "",
-        targeted_amount: "",
-        frequency: "",
-        transaction_time: "",
-        transaction_day: "",
-        transaction_month: "",
-        end_date: "",
-        start_date: "",
-        payment_method: "",
-      },
-      fund_data: {
-        id: "",
-        amount: 0,
-        target_name: "",
+      fund_data:{
+        id:"",
+        repayment_amount: "",
         date_time: date,
-        payment_method: "Wallet",
+        payment_method: "",
+        save_card:true,
         paystack_id: "",
-      },
-      key: payID(),
-      email: email,
-      savings: [],
-      details: [],
-      accounts: [],
-      singleTargetTransaction: [],
-      balance: 0.0,
-      tdetails: [],
-      completed: [],
-      loading: true,
-      autoSave: false,
-      pagination: [],
-      err: "",
-      auto_save: "",
-      show: false,
-      showSave: false,
-      showWithdraw: false,
-      showEdit: false,
-      showView: false,
-      tab: true,
-      isLoading: true,
-    };
-    this.fetchSingleTargetTransaction = this.fetchSingleTargetTransaction.bind(
-      this
-    );
-    this.fetchSingleTarget = this.fetchSingleTarget.bind(this);
+        card_id:"0"
+    },
+    add_card:{
+      repayment_amount: 100,
+      date_time: date,
+      payment_method: "Debit Card",
+      save_card:true,
+      paystack_id: "",
+      card_id:""
+  },
+        my_products:[],
+        tab: true,
+        loading:true,
+        showView:false,
+        isLoading:true,
+        showSave:false,
+        showSaveCard:false,
+        cards:[],
+        id:true
+    };    
     this.ongoingTab = this.ongoingTab.bind(this);
     this.completeTab = this.completeTab.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleChangeEdit = this.handleChangeEdit.bind(this);
-    this.handleChangeFund = this.handleChangeFund.bind(this);
-    this.handleAutoSave = this.handleAutoSave.bind(this);
-    this.handleTargetAutoSave = this.handleTargetAutoSave.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
-    this.handleStopPlan = this.handleStopPlan.bind(this);
     this.handleView = this.handleView.bind(this);
+    this.fetchSingleTargetTransaction = this.fetchSingleTargetTransaction.bind(this);
+    this.handleChangeAddCard = this.handleChangeAddCard.bind(this);
     this.handleQuickSave = this.handleQuickSave.bind(this);
-    this.handleCloseWithdraw = this.handleCloseWithdraw.bind(this);
-    this.handleCloseView = this.handleCloseView.bind(this);
     this.handleCloseQuickSave = this.handleCloseQuickSave.bind(this);
-    this.handleCloseEdit = this.handleCloseEdit.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCloseView = this.handleCloseView.bind(this);
+    this.handleChangeFund = this.handleChangeFund.bind(this);
     this.handleSubmitFund = this.handleSubmitFund.bind(this);
-    this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
+
   }
 
-  componentDidMount() {
+componentDidMount() {
     const requestOptions = {
       method: "GET",
       headers: { ...authHeader(), "Content-Type": "application/json" },
     };
-    fetch(getConfig("fetchAllTarget"), requestOptions)
+    fetch(getConfig('getAllDebitCards'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }
+    if(data.success == false || data.length == 0 ){
+      this.setState({cards: []});
+    }else{
+      this.setState({cards: data});  
+    }
+  })
+  .catch(error => {
+    if (error === "Unauthorized") {
+      this.props.timeOut()
+      }
+  });
+    fetch(getConfig("fetchUserProducts"), requestOptions)
       .then(async (response) => {
         const data = await response.json();
         if (!response.ok) {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
         }
-        if (data.success == false) {
-          this.setState({
-            tdetails: [],
-            balance: 0,
-            completed: [],
-            accounts: [],
-            loading: false,
-          });
+         if (data.success == false) {
+          this.setState({ my_products: [] });
         } else {
-          this.setState({
-            tdetails: data[1],
-            balance: data[0],
-            completed: data[2],
-            accounts: data[3],
-            loading: false,
-          });
+          this.setState({ my_products: data, loading: false });
         }
+        console.log(data)
       })
       .catch((error) => {
         if (error === "Unauthorized") {
@@ -164,285 +134,118 @@ class Target extends Component {
         this.setState({ loading: false });
       });
   }
-
-  callback = (response) => {
-    const { fund_data } = this.state;
-    if (fund_data.amount) {
-      this.setState({
-        fund_data: { ...fund_data, paystack_id: response.reference },
-      });
-    }
+  
+fetchSingleTargetTransaction=(order_id)=>{
+  const requestOptions = {
+      method: 'GET',
+      headers: { ...authHeader(), 'Content-Type': 'application/json' },
   };
-  componentDidUpdate() {
-    const { fund_data } = this.state;
-    if (fund_data.paystack_id !== "") {
-      this.props.addFundTargetSavings(fund_data);
-      this.setState({ fund_data: { ...fund_data, paystack_id: "" } });
-    }
-  }
-  fetchSingleTargetTransaction = (id) => {
-    let user = JSON.parse(localStorage.getItem("user"));
-    const requestOptions = {
-      method: "GET",
-      headers: { ...authHeader(), "Content-Type": "application/json" },
-    };
-    fetch(
-      getConfig("getTargetTransaction") + id + `?token=` + user.token,
-      requestOptions
-    )
-      .then(async (response) => {
-        const data = await response.json();
-        if (!response.ok) {
-          const error = (data && data.message) || response.statusText;
-          return Promise.reject(error);
-        }
-        if (data.success == false || data.total == 0) {
-          this.setState({
-            singleTargetTransaction: [],
-            pagination: [],
-            isLoading: false,
-          });
-        } else {
-          this.setState({
-            singleTargetTransaction: data.data,
-            pagination: data,
-            isLoading: false,
-          });
-        }
-      })
-      .catch((error) => {
-        if (error === "Unauthorized") {
-          this.props.timeOut();
-        }
-        this.setState({ isLoading: false });
-      });
-  };
-
-  fetchSingleTarget = (id) => {
-    let user = JSON.parse(localStorage.getItem("user"));
-    const requestOptions = {
-      method: "GET",
-      headers: { ...authHeader(), "Content-Type": "application/json" },
-    };
-    fetch(
-      getConfig("targetDetails") + id + `?token=` + user.token,
-      requestOptions
-    )
-      .then(async (response) => {
-        const data = await response.json();
-        if (!response.ok) {
-          const error = (data && data.message) || response.statusText;
-          return Promise.reject(error);
-        }
-        if (data.success == false || data.total == 0) {
-          this.setState({ edit_data: [], isLoading: false });
-        } else {
-          this.setState({ edit_data: data[0], isLoading: false });
-        }
-      })
-      .catch((error) => {
-        if (error === "Unauthorized") {
-          this.props.timeOut();
-        }
-        this.setState({ isLoading: false });
-      });
-  };
-  getReference = () => {
-    let text = "";
-    let possible =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.=";
-    for (let i = 0; i < 15; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    return text;
-  };
-  close = () => {
-    console.log("Payment closed");
-  };
-  handleAutoSave = (event) => {
-    this.setState({ show: true });
-  };
-  handleQuickSave = (event) => {
-    this.setState({ showSave: true });
-  };
-
-  handleTargetAutoSave = (id, e) => {
-    if (e.target.checked == false) {
-      swal("Are you sure you want to Deactivate auto save?", {
-        buttons: {
-          cancel: "Cancel",
-
-          confirm: {
-            text: "Confirm",
-            value: "catch",
-          },
-        },
-      }).then((value) => {
-        switch (value) {
-          case "catch":
-            this.props.deactivateTargetAutosave(id);
-            swal("Loading...", {
-              buttons: false,
-            });
-            break;
-
-          default:
-            swal("cancelled!");
-        }
-      });
-    } else {
-      swal("Are you sure you want to Activate auto save?", {
-        buttons: {
-          cancel: "Cancel",
-
-          confirm: {
-            text: "Confirm",
-            value: "catch",
-          },
-        },
-      }).then((value) => {
-        switch (value) {
-          case "catch":
-            this.props.activateTargetAutosave(id);
-            swal("Loading...", {
-              buttons: false,
-            });
-            break;
-
-          default:
-            swal("cancelled!");
-        }
-      });
-    }
-  };
-
-  handleStopPlan = (id) => {
-    swal("Are you sure you want to stop this plan?", {
-      buttons: {
-        cancel: "Cancel",
-
-        confirm: {
-          text: "Confirm",
-          value: "catch",
-        },
-      },
-    }).then((value) => {
-      switch (value) {
-        case "catch":
-          this.props.exitTargetSavings(id);
-          swal("Loading...", {
-            buttons: false,
-          });
-          break;
-
-        default:
-          swal("cancelled!");
+  fetch(getConfig("getOrderDetails") + order_id, requestOptions)
+  .then(async response => {
+  const data = await response.json();
+  if (!response.ok) {
+      const error = (data && data.message) || response.statusText;
+      return Promise.reject(error);
+  }console.log(data)
+  if(data.success == false || data.total == 0){
+    this.setState({singleTargetTransaction: [], pagination:[], isLoading:false});
+  }else{
+    this.setState({singleTargetTransaction: data, pagination:data, isLoading:false});
+  } 
+})
+  .catch(error => {
+      if (error === "Unauthorized") {
+          this.props.timeOut()
       }
-    });
-  };
+      this.setState({isLoading:false})
+  });
+}
+
+callback = (response) => {
+  const {fund_data, add_card} = this.state
+  if (fund_data.repayment_amount ) {
+      this.setState({fund_data:{...fund_data, paystack_id: response.reference }})
+      swal("Loading...", {
+        buttons: false
+      })
+  }else{
+    this.setState({add_card:{...add_card, paystack_id: response.reference }, showSaveCard:false})
+    swal("Saving Card...", {
+      buttons: false
+    })
+  }
+}
+componentDidUpdate(){
+  const { fund_data, add_card, data } = this.state;
+  if (fund_data.paystack_id !== "") {
+    this.props.orderRepayments(fund_data);
+    this.setState({fund_data:{...fund_data, paystack_id:""}})
+  }
+  if (add_card.paystack_id !== "" ) {
+    this.props.saveWallet(add_card)
+    this.setState({add_card:{...add_card, paystack_id:"" }, id:false})
+  }
+  if(localStorage.getItem("card_id")){
+    this.setState({data:{...data, card_id: localStorage.getItem("card_id") }})
+    console.log(localStorage.getItem("card_id"))
+    localStorage.removeItem("card_id")
+  }
+}
+
+handleChangeFund = event => {
+  const {fund_data} = this.state
+  const {name, value, checked} = event.target
+  if(name == "save_card"){
+    this.setState({fund_data:{...fund_data, [name]:checked}})
+  }else{
+    this.setState({fund_data:{...fund_data, [name]:value}})
+  }
+};
+
+handleChangeAddCard = event => {
+  const {fund_data} = this.state
+  const {name, value, checked} = event.target
+  if(name == "save_card"){
+    this.setState({fund_data:{...fund_data, [name]:checked}})
+  }else{
+    this.setState({fund_data:{...fund_data, [name]:value}})
+  }
+};
+
+handleSubmitFund(event) {
+  event.preventDefault();
+  const { fund_data } = this.state;
+  if (fund_data.repayment_amount && fund_data.card_id != "") {
+      this.props.orderRepayments(fund_data);
+  }else{
+      swal(
+          `${"All fields are required"}`
+      );
+  }
+}
+
   handleView = (id) => {
     this.setState({ isLoading: true });
     this.fetchSingleTargetTransaction(id);
     this.setState({ showView: true });
-  };
-  handleEdit = (id) => {
-    this.setState({ isLoading: true });
-    this.fetchSingleTarget(id);
-    const { edit_data } = this.state;
-    this.setState({ showEdit: true, edit_data: { ...edit_data, id: id } });
-  };
+  };  
 
-  // submit form handler
-  handleSubmitEdit(event) {
-    event.preventDefault();
-    const { edit_data } = this.state;
-    if (
-      edit_data.amount &&
-      edit_data.frequency &&
-      edit_data.start_date &&
-      edit_data.end_date &&
-      edit_data.payment_method
-    ) {
-      this.props.editTargetSavings(edit_data);
-    } else {
-      swal(`${"All fields are required"}`);
-    }
-  }
-  handleSubmit(event) {
-    event.preventDefault();
-    const { data } = this.state;
-    if (
-      data.amount &&
-      data.frequency &&
-      data.start_date &&
-      data.payment_method
-    ) {
-      this.props.createTargetSavings(data);
-    } else {
-      swal(`${"All field are required "}`);
-    }
-  }
-  handleSubmitFund(event) {
-    event.preventDefault();
-    const { fund_data } = this.state;
-    if (fund_data.amount) {
-      this.props.addFundTargetSavings(fund_data);
-    } else {
-      swal(`${"All fields are required"}`);
-    }
-  }
-
-  // data change handler
-  handleChange = (event) => {
-    const { data } = this.state;
-    const { name, value } = event.target;
-    this.setState({ data: { ...data, [name]: value } });
-  };
-  handleChangeEdit = (event) => {
-    const { edit_data } = this.state;
-    const { name, value } = event.target;
-    this.setState({ edit_data: { ...edit_data, [name]: value } });
-  };
-  handleChangeFund = (event) => {
-    const { fund_data, tdetails } = this.state;
-    const { name, value } = event.target;
-    if (name == "target_name") {
-      tdetails.forEach((data) => {
-        if (data.target_name == value) {
-          this.setState({
-            fund_data: {
-              ...fund_data,
-              id: data.id,
-              target_name: data.target_name,
-            },
-          });
-        }
-      });
-    } else {
-      this.setState({ fund_data: { ...fund_data, [name]: value } });
-    }
-  };
-
-  // modal close handler
-  handleClose() {
-    this.setState({ show: false });
-  }
-  handleCloseEdit() {
-    this.setState({ showEdit: false });
-  }
-  handleCloseView() {
-    this.setState({ showView: false });
-  }
-  handleCloseQuickSave() {
-    this.setState({ showSave: false });
-  }
-  handleCloseWithdraw() {
-    this.setState({ showWithdraw: false });
+  handleQuickSave = (id) => {
+    this.setState({isLoading:true})
+    const {fund_data} = this.state
+    this.setState({showSave: true, fund_data:{...fund_data, id: id}});
   }
   ongoingTab() {
     this.setState({ tab: true });
   }
   completeTab() {
     this.setState({ tab: false });
+  }
+  handleCloseView() {
+    this.setState({showView:false});
+  }
+  handleCloseQuickSave() {
+    this.setState({showSave:false});
   }
   render() {
     let obj = {
@@ -452,29 +255,8 @@ class Target extends Component {
       obj.array[l] = l + 1;
     }
     let { theme } = this.props;
-    const {
-      balance,
-      tdetails,
-      loading,
-      isLoading,
-      tab,
-      auto_save,
-      edit_data,
-      singleTargetTransaction,
-      showEdit,
-      showView,
-      completed,
-      email,
-      bank_details,
-      fund_data,
-      autoSave,
-      accounts,
-      showSave,
-      showWithdraw,
-      data,
-      show,
-      savings,
-    } = this.state;
+    const {my_products, tab, loading, showView, isLoading, 
+      singleTargetTransaction, fund_data, showSave ,cards,} = this.state;
     return (
       <div className='m-sm-30'>
         <div className='mb-sm-30'>
@@ -500,16 +282,18 @@ class Target extends Component {
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Button
                   size='small'
+                  color='secondary'
                   variant={tab ? "contained" : "outlined"}
-                  style={{ backgroundColor: tab ? "#e74398" : "" }}
+                  style={{ color: tab ? "#fff" : "#000" }}
                   onClick={this.ongoingTab}
                 >
                   Ongoing
                 </Button>
                 <Button
                   size='small'
+                  color='secondary'
                   variant={tab ? "outlined" : "contained"}
-                  style={{ backgroundColor: tab ? "" : "#e74398" }}
+                  style={{ color: tab ? "#000" : "#fff" }}
                   onClick={this.completeTab}
                 >
                   Completed
@@ -523,35 +307,42 @@ class Target extends Component {
                       border: 1,
                       borderStyle: "solid",
                       borderColor: "#e74398",
-                      borderBottomRightRadius: 20,
-                      borderTopLeftRadius: 20,
+                      borderRadius:8,
                     }}
                   >
-                    {tdetails.length != 0 ? (
-                      tdetails.map((data, index) => (
-                        <TargetTransactionCard
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    {my_products.length != 0 ? (
+                      my_products.map((data, index) => (
+                        data.order_status == 1 || data.order_status == 3 || data.order_status == 5 ? 
+                        <MyProduct
                           key={index}
                           status={false}
                           withdrawStatus={data.withdraw_status}
-                          amount={numberFormat(data.targeted_amount)}
+                          amount={numberFormat(data.total)}
+                          balance={numberFormat(data.remaining_balance)}
+                          amount_paid={numberFormat(data.amount_paid)}
                           value={
                             (100 * data.target_balance) / data.targeted_amount
                           }
                           autoSave={(e) =>
                             this.handleTargetAutoSave(data.id, e)
                           }
-                          auto_status={data.auto_status}
-                          title={data.target_name}
+                          status={data.order_status}
+                          title={data.order_no}
                           stop={() => this.handleStopPlan(data.id)}
                           view={() => this.handleView(data.id)}
-                          edit={() => this.handleEdit(data.id)}
-                        />
+                          repay={() => this.handleQuickSave(data.id)}
+                        />:
+                        <Typography variant='body1'>
+                        
+                      </Typography>
                       ))
                     ) : (
                       <Typography variant='body1'>
                         No Ongoing Products
                       </Typography>
                     )}
+                    </Grid>
                   </div>
                 )}
                 {!tab && (
@@ -565,33 +356,177 @@ class Target extends Component {
                       borderTopLeftRadius: 20,
                     }}
                   >
-                    {completed.length != 0 ? (
-                      completed.map((data, index) => (
-                        <TargetTransactionCard
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    {my_products.length != 0 ? (
+                      my_products.map((data, index) => (
+                        data.order_status == 2 || data.order_status == 4 || data.order_status == 6 ? 
+                        <CompleteProduct
                           key={index}
-                          status={true}
-                          withdrawStatus={data.withdrawal_status}
-                          amount={numberFormat(data.targeted_amount)}
+                          status={false}
+                          withdrawStatus={data.withdraw_status}
+                          amount={numberFormat(data.total)}
                           value={
                             (100 * data.target_balance) / data.targeted_amount
                           }
-                          title={data.target_name}
+                          autoSave={(e) =>
+                            this.handleTargetAutoSave(data.id, e)
+                          }
+                          status={data.order_status}
+                          title={data.order_no}
                           stop={() => this.handleStopPlan(data.id)}
                           view={() => this.handleView(data.id)}
-                          edit={() => this.handleEdit(data.id)}
-                        />
+                          repay={() => this.handleQuickSave(data.id)}
+                        />:
+                        <Typography variant='body1'>
+                        
+                      </Typography>
                       ))
-                    ) : (
+                    ) 
+                    : (
                       <Typography variant='body1'>
                         No Completed Products
                       </Typography>
                     )}
+                    </Grid>
                   </div>
                 )}
               </Grid>
             </Grid>
           </>
-        )}      
+        )}  
+         {/* View Dialog start */}
+         <Dialog
+          open={showView}
+          onClose={this.handleCloseView}
+        >
+            <AppBar color="primary" className="text-white" style={{position: "relative"}}>
+              <Toolbar>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  onClick={this.handleCloseView}
+                  aria-label="Close"
+                >
+                  <CloseIcon />
+                </IconButton>
+                <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
+                  Order Details
+                </Typography>
+              </Toolbar>
+            </AppBar>
+            <Card className="px-6 pt-2 pb-4">
+            <Grid container spacing={2}>
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                {isLoading ?
+                <Typography>Loading...</Typography>:
+                <OrderDetails transactions={singleTargetTransaction} />
+                }
+              </Grid>
+            </Grid>
+          </Card>
+        </Dialog>
+        {/* View dialog end */} 
+        
+        {/* Quick Save Dialog Start */}
+        <Dialog
+          open={showSave}
+          onClose={this.handleCloseQuickSave}
+          scroll="body">
+        <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.handleCloseQuickSave}
+              aria-label="Close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
+              Fund Your Account
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Card className="px-6 pt-2 pb-4">
+          <ValidatorForm
+            ref="form"
+            onSubmit={this.handleSubmitFund}
+            onError={errors => null}>
+            <Grid container spacing={6}>
+              <Grid item lg={6} md={6} sm={12} xs={12}>
+                <TextValidator
+                  className="mb-4 w-full"
+                  label="Enter Amount"
+                  onChange={this.handleChangeFund}
+                  type="number"
+                  name="repayment_amount"
+                  value={fund_data.repayment_amount}
+                  validators={[
+                    "required"
+                  ]}
+                  errorMessages={["this field is required"]}
+                />
+                <TextField
+                  className="mb-4 w-full"
+                  select
+                  label="Select Payment Method"
+                  value={fund_data.payment_method}
+                  name="payment_method"
+                  onChange={this.handleChangeFund}
+                  helperText="Please select Payment Method"
+                >
+                  <MenuItem value={""}></MenuItem>
+                  <MenuItem value={"Wallet"}> Wallet</MenuItem>
+                  <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+              </TextField>
+              {this.props.savings &&
+               <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+              }
+              {(fund_data.payment_method == "Wallet" || (fund_data.card_id !="0" && fund_data.card_id !="")) && 
+              <Button className="uppercase"
+                type="submit"
+                size="large"
+                variant="contained"
+                style={{backgroundColor:"#0d60d8", color:"#fff"}}>
+                Add Fund
+              </Button>}
+              </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                <Card className="px-6 pt-2 pb-4">
+                  <Typography variant="h6" gutterBottom>
+                    {numberFormat(fund_data.repayment_amount)}
+                  </Typography>
+                </Card>
+                <Card className="px-6 pt-2 pb-4">
+                  <Typography variant="h6" gutterBottom>
+                    {fund_data.payment_method}
+                  </Typography>
+                </Card>
+              </Grid>
+              {fund_data.payment_method == "Debit Card" &&
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Typography>Choose Card</Typography>
+                <PayCard cards={cards} value={fund_data.card_id} open={(e)=>this.setState({ fund_data:{...fund_data, card_id:""}})} handleChange={this.handleChangeFund}/>
+              </Grid>}
+              {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Checkbox
+                      name="save_card"
+                      checked={fund_data.save_card}
+                      onChange={this.handleChangeFund}
+                      inputProps={{ 'aria-label': 'primary checkbox' }}
+                  /><Typography variant="caption">Would you like to save your card</Typography>
+              </Grid>}
+              {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                <PayOption callback={this.callback} amount={fund_data.repayment_amount}/>
+              </Grid>}
+            </Grid>
+          </ValidatorForm>
+        </Card>
+      </Dialog>
+        {/* Quick Save Dialog End */}
+        
       </div>
     );
   }
@@ -601,7 +536,7 @@ class Target extends Component {
 const actionCreators = {
   timeOut: userActions.timeOut,
   createTargetSavings: userActions.createTargetSavings,
-  addFundTargetSavings: userActions.addFundTargetSavings,
+  orderRepayments: userActions.orderRepayments,
   withdrawTargetSavings: userActions.withdrawTargetSavings,
   editTargetSavings: userActions.editTargetSavings,
   exitTargetSavings: userActions.exitTargetSavings,
