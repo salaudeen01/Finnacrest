@@ -33,6 +33,8 @@ import {
     let month = currentDate.getMonth() + 1;
     let day = currentDate.getDate();
     let date_time = currentDate.getFullYear() + "-" + month + "-" + day;
+    this.uploadedImage = React.createRef();
+    this.imageUploader = React.createRef();
     this.state={
       invest_data: {
         halai_investments_id: "",
@@ -41,6 +43,12 @@ import {
         date_time: date_time,
         payment_method: "Wallet",
         paystack_id:"",
+      },
+      request_data:{
+        product_name:"",
+        short_description:"",
+        quantity:"",
+        image: null
       },
       current_value:"",
       categories:[],
@@ -57,7 +65,8 @@ import {
       category:[],
       pagination:[],
       investment:[],
-      current_index:0
+      current_index:0,
+      avatar: '/assets/images/dummy.jpg',
     }
     this.ongoingTab = this.ongoingTab.bind(this);
     this.completeTab = this.completeTab.bind(this);
@@ -69,10 +78,15 @@ import {
     this.handleCloseInvest = this.handleCloseInvest.bind(this);
     this.fetchSingleMarket = this.fetchSingleMarket.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeRequest = this.handleChangeRequest.bind(this);
     this.callback = this.callback.bind(this);
     this.handleRequest = this.handleRequest.bind(this);
     this.handleCloseRequest = this.handleCloseRequest.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleProfileImage = this.handleProfileImage.bind(this);
+    this.handleChangeRequest = this.handleChangeRequest.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleSubmitRequest = this.handleSubmitRequest.bind(this);
   }
 
 callback = (response) => {
@@ -96,6 +110,23 @@ handleSubmit(event) {
     this.props.addHalaiInvestors(invest_data);
   }
 }
+handleSubmitRequest(event) {
+  event.preventDefault();
+
+  const { request_data } = this.state;
+    console.log(request_data);
+    if (request_data.product_name && request_data.short_description && request_data.quantity && request_data.image) {
+      // console.log(data);
+      
+      const fd = new FormData();
+        fd.append("product_name", request_data.product_name); 
+        fd.append("short_description", request_data.short_description);
+        fd.append("quantity", request_data.quantity);
+        fd.append("image", request_data.image);
+        console.log(request_data.image);
+      this.props.userUploadRequested(fd);
+    }
+} 
 handleChange(event) {
   const { name, value } = event.target;
   const { invest_data, current_value } = this.state;
@@ -108,6 +139,27 @@ handleChange(event) {
         invest_data: { ...invest_data, [name]: value},
       })
     }
+}
+handleChangeRequest = event => {
+  const {request_data} = this.state
+  this.setState({ request_data:{...request_data, [event.target.name]: event.target.value} });
+}
+handleProfileImage(e){
+  const [file, name] = e.target.files;
+  const {request_data} = this.state
+  if(file){
+      const reader = new FileReader();
+      const { current } = this.uploadedImage;
+      current.file = file;
+      reader.onload = e => {
+        current.src = e.target.result;
+      };
+      reader.readAsDataURL(file); 
+      this.setState({request_data:{...request_data, image: e.target.files[0]}})
+  }  
+}
+handleClick(e) {
+  this.imageUploader.current.click();
 }
 fetchSingleMarket(id){
   const requestOptions = {
@@ -280,7 +332,7 @@ tabbed = (id) => {
 };
   render(){
     const {theme} =this.props
-    const {tab,mTab, invest_data, categories, count, category, loading, singleInvestment, singleNews, isLoading, current_index, investment, showView, showSave, showInvest} = this.state
+    const {tab,mTab, invest_data, avatar, request_data, categories, count, category, loading, singleInvestment, singleNews, isLoading, current_index, investment, showView, showSave, showInvest} = this.state
     return (
       <div className="m-sm-30">
         <AppBar color="default" position="static">
@@ -352,7 +404,7 @@ tabbed = (id) => {
           </Grid>
           
           {category.map((ne) => (
-            <Grid item lg={3} md={3} sm={12} xs={12}>
+            <Grid item lg={3} md={3} sm={6} xs={12}>
             <Link to={`/details/${ne.id}`}>            
             <MarketCard 
                 data={ne}
@@ -537,7 +589,7 @@ tabbed = (id) => {
         
         {/* Invest dialog end */}
 
-        {/* Quick Save Dialog Start */}
+        {/* Quick Upload product */}
         <Dialog
           open={showSave}
           onClose={this.handleCloseRequest}
@@ -566,32 +618,76 @@ tabbed = (id) => {
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                   <TextValidator
                     className="mb-4 w-full"
-                    label="Description"
-                    onChange={this.handleChange}
+                    label="Product Name"
+                    onChange={this.handleChangeRequest}
                     type="text"
-                    name="description"
-                    value=""
+                    name="product_name"
+                    value={request_data.product_name}
                     validators={[
                       "required"
                     ]}
                     errorMessages={["this field is required"]}
                   />
-                  <TextValidator 
-                      className="mb-4 w-full" 
-                      name="profile_pic" 
-                      type="file" 
-                      accept="image/*" 
-                      multiple="false" 
-                      // onChange={this.handleProfileImage} 
-                      ref={this.imageUploader}
-                      // style={{display:"none"}}
-                    />
+                  <TextValidator
+                    className="mb-4 w-full"
+                    label="Description"
+                    onChange={this.handleChangeRequest}
+                    type="text"
+                    name="short_description"
+                    value={request_data.short_description}
+                    validators={[
+                      "required"
+                    ]}
+                    errorMessages={["this field is required"]}
+                  />
+                  <TextValidator
+                    className="mb-4 w-full"
+                    label="Quantity"
+                    onChange={this.handleChangeRequest}
+                    type="number"
+                    name="quantity"
+                    value={request_data.quantity}
+                    validators={[
+                      "required"
+                    ]}
+                    errorMessages={["this field is required"]}
+                  />
+
+                  {/*<input className="sea" 
+                    name="image" 
+                    type="file" 
+                    accept="image/*" 
+                    multiple="false" 
+                    onChange={this.handleProfileImage} 
+                    ref={this.imageUploader}
+                    // style={{display:"none"}}
+                  />*/}
+
+                {/* <Grid item md={10} xs={10}> */}
+                <img src={request_data.image} 
+                 style={{marginBottom: '4'}} ref={this.uploadedImage} alt="" onClick={this.handleClick}
+                />                
+                  <TextValidator
+                    className="mb-4 w-full"
+                    name="image" 
+                    type="file" 
+                    accept="image/*" 
+                    multiple="false" 
+                    onChange={this.handleProfileImage} 
+                    ref={this.imageUploader}
+                    validators={[
+                      "required"
+                    ]}
+                    errorMessages={["this field is required"]}
+                  />
+                {/* </Grid> */}
                 {this.props.savings &&
                 <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                 }
                 <Button className="uppercase"
                   type="submit"
                   size="large"
+                  onClick={this.handleSubmitRequest}
                   variant="contained"
                   style={{backgroundColor:'#224459', color:"#fff"}}>
                   Submit
@@ -611,6 +707,7 @@ tabbed = (id) => {
 const actionCreators = {
   timeOut: userActions.timeOut,
   addHalaiInvestors: userActions.addHalaiInvestors,
+  userUploadRequested: userActions.userUploadRequested,
 };
 
 function mapState(state) {

@@ -23,7 +23,7 @@ const defaultProps = {
   textColor:'#fff'
 };
 
-export default function MyProduct(props) {
+export default function CompleteProduct(props) {
 
   return (
     <div className="pt-7 mb-4 px-2 bg-default text-white" style={{flexGrow: 1, border:1, borderStyle:"solid", 
@@ -35,48 +35,28 @@ export default function MyProduct(props) {
         <Divider variant="middle"/>
         <div className="py-2" />
         <Grid item lg={6} md={6} sm={12} xs={12}>
-          <Typography variant="h6">Total: {props.amount} </Typography>
+          <Typography variant="h6"> {props.amount} </Typography>
         </Grid>
         <div className="py-2" />
         <Grid item lg={6} md={6} sm={12} xs={12}>
            {/* <ButtonGroup variant="outlined" color="primary" aria-label="text primary button group"> */}
-          <Button className="mb-2" onClick={props.view} size='small' variant="outlined">View Detail</Button>
+          <Button className="mb-4" onClick={props.view} size='small' variant="outlined">View Detail</Button>
         {/* </ButtonGroup> */}
-        </Grid> 
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Typography variant="h6">Amount Repaid: {props.amount_paid} </Typography>
-        </Grid> 
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Typography variant="h6">Balance: {props.balance} </Typography>
         </Grid>
-        <div className="py-2 " />
+        <div className="py-2" />
         <Grid item lg={6} md={6} sm={12} xs={12}>
-        {props.status == 1 ?
+        {props.status == 2 ?
            <Typography className="mb-2">
-           <span className="mb-4 py-1 px-1" style={{background:'orange', fontSize:12, color:'white', borderRadius:14}}>PENDING</span>
+           <span className="mb-4 py-1 px-1" style={{background:'green', fontSize:12, color:'white', borderRadius:14}}>PAID</span>
          </Typography>
-        : props.status == 3 ?
+        : props.status == 6 ?
         <div>
           <Grid item lg={6} md={6} sm={12} xs={12}>
           <Typography className="mb-2">
-            <span className="mb-4 py-1 px-1" style={{background:'green',fontSize:12, color:'white', borderRadius:14}}>APPROVED</span>
+            <span className="mb-4 py-1 px-1" style={{background:'red',fontSize:12, color:'white', borderRadius:14}}>CLOSED</span>
           </Typography>
-         {/* <Badge className="mb-4 px-4"  badgeContent={'Approved'} {...defaultProps}/> */}
-        </Grid>
-        <Grid item lg={6} md={6} sm={12} xs={12}>
-             <Button className="mb-4"  size='small' variant="outlined" 
-             onClick={props.repay}
-             >Repayment</Button>
         </Grid>
         </div>
-       :props.status == 4 ?
-       <div>
-         <Grid item lg={6} md={6} sm={12} xs={12}>
-         <Typography className="mb-2">
-            <span className="mb-4 py-1 px-1" style={{background:'red',fontSize:12, color:'white', borderRadius:14}}>DECLAINED</span>
-          </Typography>
-       </Grid>
-       </div>
        : "stop"
         }
         

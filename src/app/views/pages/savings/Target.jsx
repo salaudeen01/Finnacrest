@@ -557,7 +557,7 @@ completeTab(){
           open={showSave}
           onClose={this.handleCloseQuickSave}
           scroll="body">
-          <AppBar style={{position: "relative", backgroundColor:"#e74398"}}>
+          <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -626,7 +626,7 @@ completeTab(){
                   type="submit"
                   size="large"
                   variant="contained"
-                  style={{backgroundColor:"#e74398", color:"#fff"}}>
+                  style={{backgroundColor:"#0d60d8", color:"#fff"}}>
                   Add Fund
                 </Button>}
                 </Grid>
@@ -671,7 +671,7 @@ completeTab(){
         scroll="body"
         open={show}
         onClose={this.handleClose}>
-        <AppBar style={{position: "relative", backgroundColor:"#e74398"}}>
+        <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -818,7 +818,7 @@ completeTab(){
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#e74398", color:"white"}}>Create Target Plan</Button>
+                 style={{backgroundColor:"#0d60d8", color:"white"}}>Create Target Plan</Button>
               </ValidatorForm>
             </Grid>
           </Grid>
@@ -831,7 +831,7 @@ completeTab(){
           scroll="body"
           open={showEdit}
           onClose={this.handleCloseEdit}>
-          <AppBar style={{position: "relative", backgroundColor:"#e74398"}}>
+          <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -990,7 +990,7 @@ completeTab(){
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#e74398", color:"white"}}>Edit Target Plan</Button>
+                 style={{backgroundColor:"#0d60d8", color:"white"}}>Edit Target Plan</Button>
             </ValidatorForm>
           }
         </Card>
@@ -1002,7 +1002,7 @@ completeTab(){
           open={showView}
           onClose={this.handleCloseView}
         >
-            <AppBar color="primary" style={{position: "relative", backgroundColor:"#e74398"}}>
+            <AppBar color="primary" style={{position: "relative", backgroundColor:"#0d60d8"}}>
               <Toolbar>
                 <IconButton
                   edge="start"

@@ -10,6 +10,8 @@ import Market from '../Market';
 import Halal from '../Halal';
 import Finance from '../Finance';
 import {useParams} from "react-router-dom"
+import Products from '../Products';
+import RequestProduct from '../RequestProduct';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -48,7 +50,7 @@ class CustomHalalTab extends Component{
   constructor(props){
     super(props)
     this.state ={
-      value:1
+      value:0
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -65,20 +67,20 @@ render(){
         <Tabs value={value} indicatorColor="secondary"
             textColor="secondary" 
             onChange={this.handleChange} aria-label="simple tabs example">
-            <Tab label="Market Investment" {...a11yProps(0)} />
-            <Tab label="Halal Investment" {...a11yProps(1)} />
-            <Tab label="Finance Investment" {...a11yProps(2)} />
+            <Tab label="My Products" {...a11yProps(0)} />
+            <Tab label="Requested Products" {...a11yProps(1)} />
+            {/* <Tab label="Finance Investment" {...a11yProps(2)} /> */}
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <Market />
+        <Products />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Halal />
+        <RequestProduct/>
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      {/* <TabPanel value={value} index={2}>
         <Finance />
-      </TabPanel>
+      </TabPanel> */}
     </div>
   );
 }

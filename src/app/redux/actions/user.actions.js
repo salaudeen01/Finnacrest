@@ -79,6 +79,8 @@ export const userActions = {
   addToCart,
   orderRepayments,
   checkOut,
+  userUploadRequested,
+  updateRequest,
 };
 
 function login(username, password) {
@@ -1283,11 +1285,11 @@ function updatePicture(user) {
   };
 
 }
-function checkOut(user) {
+function checkOut(order_id) {
   return (dispatch) => {
-    dispatch(request(user));
+    dispatch(request(order_id));
 
-    userService.checkOut(user).then(
+    userService.checkOut(order_id).then(
       (user) => {
         dispatch(success());
         if(user.success){
@@ -1305,6 +1307,58 @@ function checkOut(user) {
   };
 
 }
+// function userUploadRequested(user) {
+//   return (dispatch) => {
+//     dispatch(request(user));
+
+//     userService.userUploadRequested(user).then(
+//       (user) => {
+//         dispatch(success());
+//         if(user.success){
+//           history.push("/product_financing");
+//           dispatch( alertActions.success(user.message));
+//         }else{
+//           dispatch(alertActions.error(user.message));
+//         }
+//       },
+//       (error) => {
+//         dispatch(failure(error.toString()));
+//         dispatch(alertActions.error(error.toString()));
+//       }
+//     );
+//   };
+
+// }
+function userUploadRequested(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+    userService.userUploadRequested(user).then(
+      (user) => {
+        dispatch(success());
+        if(user.success){
+          history.push("/product_financing");
+          dispatch( alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
 //add to Cart
 
 function addToCart(user, where) {
@@ -1317,10 +1371,12 @@ function addToCart(user, where) {
         dispatch(alertActions.success(user.message));
         if(where){
           history.push("/detail/cart");
-          window.location.reload();
+          // window.location.reload();
+          console.log(where)
         }else{
           history.push("/product_financing");
-          window.location.reload();
+          // window.location.reload();
+          console.log(user)
         }
       },
       (error) => {
@@ -1400,17 +1456,18 @@ function updateUserCart(cart_id, quantity) {
     return { type: userConstants.SAVINGS_FAILURE, error };
   }
 };
-function orderRepayments(order_id) {  
+
+function updateRequest(cart_id, quantity) {  
   return (dispatch) => {
-    dispatch(request(order_id));
-    userService.orderRepayments(order_id).then(
+    dispatch(request(cart_id));
+    userService.updateRequest(cart_id, quantity).then(
       (user) => {
         dispatch(success());
-        history.push("/products");
+        // history.push("/detail/cart");
         dispatch(
           alertActions.error(user.message)
         );
-        window.location.reload();
+        // window.location.reload();
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1428,7 +1485,84 @@ function orderRepayments(order_id) {
   function failure(error) {
     return { type: userConstants.SAVINGS_FAILURE, error };
   }
+};
+
+function orderRepayments(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+
+    userService.orderRepayments(user).then(
+      (user) => {
+        dispatch(success());
+        if(user.success){
+          history.push("/products");
+          dispatch(alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
 }
+
+// function orderRepayments(order_id) {  
+//   return (dispatch) => {
+//     dispatch(request(order_id));
+//     userService.orderRepayments(order_id).then(
+//       (user) => {
+//         dispatch(success());
+//         history.push("/products");
+//         dispatch(
+//           alertActions.error(user.message)
+//         );
+//         // window.location.reload();
+//       },
+//       (error) => {
+//         dispatch(failure(error.toString()));
+//         dispatch(alertActions.error(error));
+//       }
+//     );
+//   };
+
+//   function request(user) {
+//     return { type: userConstants.SAVINGS_REQUEST, user };
+//   }
+//   function success(user) {
+//     return { type: userConstants.SAVINGS_SUCCESS, user };
+//   }
+//   function failure(error) {
+//     return { type: userConstants.SAVINGS_FAILURE, error };
+//   }
+// }
+
+
+// function orderRepayments(order_id) {
+//   return (dispatch) => {
+//     dispatch(request(order_id));
+
+//     userService.orderRepayments(order_id).then(
+//       (user) => {
+//         dispatch(success());
+//         if(user.success){
+//           history.push("/products");
+//           dispatch(alertActions.success(user.message));
+//         }else{
+//           dispatch(alertActions.error(user.message));
+//         }
+//       },
+//       (error) => {
+//         dispatch(failure(error.toString()));
+//         dispatch(alertActions.error(error.toString()));
+//       }
+//     );
+//   };
+
+// }
 
 function addFundShareholdings(user) {
   return (dispatch) => {

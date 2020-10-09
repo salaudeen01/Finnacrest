@@ -109,8 +109,9 @@ const serverVars = {
   removeCard:"deleteCards/",
   verifyWithdrawalPassword:"verifyPasswordBeforeWithdrawal",
   confirmWithdraw:"paystackWithdrawalToBank",
-
-  addToCart: "addToCart/",
+  
+  addToCart: "addToCart/", 
+  userUploadRequested: "userUploadRequestedProducts",
   getAllProductInCart:"allProductsInUserCart?token=",  
   totalCartPerUser:"totalCartPerUser?token=", 
   deleteFromCart: "deleteFromCart/",
@@ -124,6 +125,10 @@ const serverVars = {
   fetchUserProducts:"fetchUserProducts?token=",
   getOrderDetails:"fetchOrderDetails/",
   orderRepayments:"orderRepayments/",
+  userRequest:"userRequest?token=", 
+  updateRequest: "updateRequestQuantity/", 
+  totalRequestPrice:"totalRequestPrice?token=",
+
   // Shareholdings
   addFundShareholdings: "addShareHoldingsFunds?token=",
   getTransactionsShareholdings: "shareHoldingsTransactions",
@@ -420,7 +425,7 @@ export function getConfig(apiName) {
     case "deleteFromCart":
       return serverVars.baseUrl + serverVars.deleteFromCart; 
     case "updateUserCart":
-      return serverVars.baseUrl + serverVars.updateUserCart; 
+      return serverVars.baseUrl + serverVars.updateUserCart;
     case "checkOut":
       return serverVars.baseUrl + serverVars.checkOut;
     case "fetchUserProducts":
@@ -428,7 +433,15 @@ export function getConfig(apiName) {
     case "getOrderDetails":
       return serverVars.baseUrl + serverVars.getOrderDetails;       
     case "orderRepayments":
-      return serverVars.baseUrl + serverVars.orderRepayments;  
+      return serverVars.baseUrl + serverVars.orderRepayments;        
+    case "userUploadRequested":
+      return serverVars.baseUrl + serverVars.userUploadRequested;
+    case "userRequest":
+      return serverVars.baseUrl + serverVars.userRequest;    
+    case "updateRequest":
+      return serverVars.baseUrl + serverVars.updateRequest; 
+    case "totalRequestPrice":   
+      return serverVars.baseUrl + serverVars.totalRequestPrice;   
         // Shareholdings api
     case "addFundShareholdings":
       return serverVars.baseUrl + serverVars.addFundShareholdings + user.token;

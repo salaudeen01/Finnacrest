@@ -35,21 +35,15 @@ export default function MyProduct(props) {
         <Divider variant="middle"/>
         <div className="py-2" />
         <Grid item lg={6} md={6} sm={12} xs={12}>
-          <Typography variant="h6">Total: {props.amount} </Typography>
+          <Typography variant="h6"> {props.amount} </Typography>
         </Grid>
         <div className="py-2" />
         <Grid item lg={6} md={6} sm={12} xs={12}>
            {/* <ButtonGroup variant="outlined" color="primary" aria-label="text primary button group"> */}
-          <Button className="mb-2" onClick={props.view} size='small' variant="outlined">View Detail</Button>
+          <Button className="mb-4" onClick={props.view} size='small' variant="outlined">View Detail</Button>
         {/* </ButtonGroup> */}
-        </Grid> 
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Typography variant="h6">Amount Repaid: {props.amount_paid} </Typography>
-        </Grid> 
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Typography variant="h6">Balance: {props.balance} </Typography>
         </Grid>
-        <div className="py-2 " />
+        <div className="py-2" />
         <Grid item lg={6} md={6} sm={12} xs={12}>
         {props.status == 1 ?
            <Typography className="mb-2">
@@ -69,7 +63,7 @@ export default function MyProduct(props) {
              >Repayment</Button>
         </Grid>
         </div>
-       :props.status == 4 ?
+       :props.status == 2 ?
        <div>
          <Grid item lg={6} md={6} sm={12} xs={12}>
          <Typography className="mb-2">

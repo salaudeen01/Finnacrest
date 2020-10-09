@@ -2,7 +2,7 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import Radio from '@material-ui/core/Radio';
-import { Grid, Card, Checkbox, FormControlLabel } from '@material-ui/core';
+import { Grid, Card, Checkbox, FormControlLabel, Fab, Icon } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -57,62 +57,71 @@ const classes = useStyles();
   const theme = useTheme();
         return (
             <Grid container spacing={3}>
-                <Grid item lg={6} md={6} xs={12} sm={12}>
-                   {!id && check &&
-                 <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={id}
-                        onChange={handleChange}
-                        name="id"
-                      />
-                    }
-                    label="Check box to add new card"
-                  />}
-                    <Card onClick={open} className={classes.root} elevation={5}>
-                        <div className={classes.details}>
-                            <CardContent className={classes.content}>
-                            <Typography component="h6" variant="h6">
-                                Add New Card
-                            </Typography>
-                            </CardContent>
-                        </div>
-                        <CardMedia
-                            className={classes.cover}
-                            image="/assets/images/visa.png"
-                            title="Create New Card"
-                        />
-                    </Card>
+                {!id && check &&
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={id}
+                      onChange={handleChange}
+                      name="id"
+                    />}
+                  label="Check box to add new card"
+                />}
+                <Grid item md={12}>
+                <Card onClick={open} className="py-4 px-4 project-card">
+                  <Grid container alignItems="center">
+                    <Grid item md={6} xs={7}>
+                      <div className="flex items-center">
+                        <Fab
+                          className="ml-4 mr-4 bg-green box-shadow-none text-white"
+                          size="small">
+                          <Icon>fiber_new</Icon>
+                        </Fab>
+                        <span className="card__roject-name font-medium">
+                          Use new card
+                        </span>
+                      </div>
+                    </Grid>
+                    <Grid item md={6} xs={4}>
+                      <div className="text-muted">
+                        Click to use new card
+                      </div>
+                    </Grid>
+                  </Grid>
+                </Card>
                 </Grid>
                 {cards.map(card =>(
-                    <Grid item lg={6} md={6} xs={12} sm={12}>
+                <Grid item md={12}>
+                  <Card className="py-2 px-4 project-card">
+                    <Grid container alignItems="center">
+                      <Grid item md={5} xs={5}>
+                        <div className="flex items-center">
+                          <Fab
+                            className="ml-4 mr-4 bg-green box-shadow-none text-white"
+                            size="small">
+                                <Icon>credit_card</Icon>
+                          </Fab>
+                          <span className="card__roject-name font-medium">
+                            Use {card.bank}
+                          </span>
+                        </div>
+                      </Grid>
+                      <Grid item md={6} xs={6}>
+                        <div className="text-muted">
+                          {card.bin + "***" + card.last4}
+                        </div>
+                      </Grid>
+                      <Grid item md={1} xs={1}>
                         <GreenRadio
                         checked={value == card.id}
                         onChange={handleChange}
                         value={card.id}
                         name="card_id"
                         inputProps={{ 'aria-label': card.id }}/>
-                        <Card className={classes.root} elevation={6}>
-                            <div className={classes.details}>
-                                <CardContent className={classes.content}>
-                                <Typography component="h6" variant="h6">
-                                    {card.bank}
-                                </Typography>
-                                <Typography variant="subtitle1" color="textSecondary">
-                                    {card.bin + "*******" + card.last4}
-                                </Typography>
-                                </CardContent>
-                            </div>
-                            <CardMedia
-                                className={classes.cover}
-                                image="/assets/images/visa.png"
-                                title={card.brand}
-                            />
-                        </Card>
-                    </Grid>  
-                )) 
-                }
-                
+                      </Grid>
+                    </Grid>
+                  </Card>
+                </Grid>))}
             </Grid>
         )
 }

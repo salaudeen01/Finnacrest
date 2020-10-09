@@ -49,7 +49,7 @@ class SingleInvestmentCardDetails extends Component {
         }
 
     render() {
-        const {investment, increment, Decrease, savings, cart, handleChange, addToCart,theme} = this.props
+        const {investment, increment, Decrease, savings, cart, handleChange, addToCart, continueShopping, theme} = this.props
         const {showCart, applicationMonth,} = this.state
         return (
             <div className="pt-4 mb-4 px-2 bg-default"

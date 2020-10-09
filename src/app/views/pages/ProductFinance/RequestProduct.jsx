@@ -23,8 +23,10 @@ import MarketCard2 from "./components/MarketCard2";
 import swal from 'sweetalert'
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import CartSummary from "./components/CartSummary";
+import RequestTable from "./components/RequestTable";
+import RequestSummary from "./components/RequestSummary";
 
-class CheckOutPage extends Component {
+class RequestProduct extends Component {
   constructor(props){
     super(props)
     const id = this.props.match.params.id;
@@ -34,10 +36,8 @@ class CheckOutPage extends Component {
       products:[],
       count:[],
       totalbalance:0,
-      cart_quantity:[]
+      quantity:[]
     }
-    this.incrementItem =this.incrementItem.bind(this);
-    this.DecrementItem = this.DecrementItem.bind(this)
   }
   
 componentDidMount(){
@@ -48,7 +48,7 @@ componentDidMount(){
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
     };
   // console.log('data')
-  fetch(getConfig('getAllProductInCart'), requestOptions)
+  fetch(getConfig('userRequest'), requestOptions)
   .then(async response => {
   const data = await response.json();
   if (!response.ok) {
@@ -60,15 +60,8 @@ componentDidMount(){
   if(data.success == false){
     this.setState({ products: []});
   }else{
-    this.setState({products: data.my_carts, loading:false });
-  } 
-  // this.setState({products: data.my_carts, loading:false });
-  let quantity= []
-  data.my_carts.forEach(dat => {
-      quantity.push(dat.cart_quantity)
-  })
-  this.setState({cart_quantity: quantity})
-  console.log(quantity)  
+    this.setState({products: data, loading:false });
+  }  
 })
 .catch(error => {
   if (error === "Unauthorized") {
@@ -77,45 +70,7 @@ componentDidMount(){
   this.setState({loading:false, err : "internet error" });
   console.error('There was an error!', error);
 });
-fetch(getConfig("userCartCount"), requestOptions)
-    .then(async (response) => {
-      const data = await response.json();
-      if (!response.ok) {
-        const error = (data && data.message) || response.statusText;
-        return Promise.reject(error);
-      }
-      if(data.success == false){
-        this.setState({ count: []});
-      }else{
-        this.setState({ count: data});
-      }    
-      console.log(data)
-    })
-    .catch((error) => {
-      if (error === "Unauthorized") {
-        this.props.timeOut()
-      }
-    });
-    fetch(getConfig('totalCartPerUser'), requestOptions)
-    .then(async response => {
-    const data = await response.json();
-    if (!response.ok) {
-    console.log(response)
-    const error = (data && data.message) || response.statusText;
-    return Promise.reject(error);
-    }
     
-    console.log(data)
-    this.setState({totalbalance: data[0].total_cart, loading:false });
-    })  
-
-    .catch(error => {
-    if (error === "Unauthorized") {
-      this.props.logout()
-    }
-    this.setState({loading:false, err : "internet error" });
-    console.error('There was an error!', error);
-    });
     fetch(getConfig('getAllDebitCards'), requestOptions)
     .then(async response => {
     const data = await response.json();
@@ -136,28 +91,7 @@ fetch(getConfig("userCartCount"), requestOptions)
   });
 }
 
-incrementItem = (id) => {
-  const { products, totalbalance} = this.state;
-  const elementIndex = products.findIndex(prod=> prod.cart_id == id);
-  let newArray = [...products];
-  let price = Number(newArray[elementIndex].cart_price);
-  console.log('price', totalbalance);
-  newArray[elementIndex] = {...newArray[elementIndex], cart_quantity: Number(newArray[elementIndex].cart_quantity)+1}
-  this.setState({products:newArray, totalbalance: Number(totalbalance) + price})
-      this.props.updateUserCart(newArray[elementIndex].cart_id, newArray[elementIndex].cart_quantity);
-}  
-DecrementItem = (id) => {
-  const { products, totalbalance} = this.state;
-  const elementIndex = products.findIndex(prod=> prod.cart_id == id);  
-  let newArray = [...products];
-  let price = Number(newArray[elementIndex].cart_price);
-  if (newArray[elementIndex].cart_quantity > 1) {
-    console.log('price', totalbalance);
-    newArray[elementIndex] = {...newArray[elementIndex], cart_quantity: Number(newArray[elementIndex].cart_quantity)-1}
-    this.setState({products:newArray, totalbalance: Number(totalbalance) - price})
-    this.props.updateUserCart(newArray[elementIndex].cart_id, newArray[elementIndex].cart_quantity);
-  }  
-}
+
 
 render(){
  const {loading, products, count, totalbalance, handleDelete, cart_quantity} = this.state
@@ -168,30 +102,30 @@ render(){
         <div style={{marginLeft: "theme.spacing(2)", flex: 1, color:"white"}}>
           <Breadcrumb
             routeSegments={[
-              { name: "Shopping Cart" }
+              { name: "Requested Product" }
             ]}
           /> 
-          <Typography className="mb-sm-20 pb-3" variant='h4'>Shopping Cart</Typography>               
+          {/* <Typography className="mb-sm-20 pb-3" variant='h4'>Requested Product</Typography>                */}
         </div>
         <Button style={{float:'right',color:'black'}}>
-                   <ShoppingCartIcon/> ({count})
+                   {/* <ShoppingCartIcon/> ({count}) */}
         </Button>
         </Toolbar>
         </AppBar>
             <Grid container spacing={2}>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                <Link to="/product_financing">
+                {/* <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Link to="/halal">
                 <Button variant="outlined" color='secondary' startIcon={<ArrowBack/>}>
                 Back Shopping
                 </Button> 
                 </Link>
-                </Grid>                
-                <Grid item lg={8} md={8} sm={12} xs={12}>
-                    <CartTable products={products} loading={loading} cart_quantity={cart_quantity} incrementItem={this.incrementItem} DecrementItem={this.DecrementItem}/>
+                </Grid>                 */}
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <RequestTable products={products} loading={loading} cart_quantity={cart_quantity} incrementItem={this.incrementItem} DecrementItem={this.DecrementItem}/>
                 </Grid>
-                <Grid item lg={4} md={4} sm={12} xs={12}>
-                    <CartSummary count={count} total={totalbalance}/>
-                </Grid>
+                {/* <Grid item lg={4} md={4} sm={12} xs={12}>
+                    <RequestSummary count={count} total={totalbalance}/>
+                </Grid> */}
             </Grid>
       </div>
   );
@@ -202,7 +136,7 @@ const actionCreators = {
   timeOut: userActions.timeOut,
   logout: userActions.logout,
   deleteFromCart: userActions.deleteFromCart,
-  updateUserCart: userActions.updateUserCart,
+  updateRequest: userActions.updateRequest,
 };
 
 function mapState(state) {
@@ -210,5 +144,5 @@ function mapState(state) {
   return { savings };
 }
 export default withStyles({}, { withTheme: true })(
-  withRouter(connect(mapState,  actionCreators)(CheckOutPage))
+  withRouter(connect(mapState,  actionCreators)(RequestProduct))
 );

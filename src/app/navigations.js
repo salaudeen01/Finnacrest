@@ -90,9 +90,14 @@ export const navigations = [
       },
       {
         name: "My Products",
-        path: "/products",
+        path: "/my_products",
         iconText: "C",
       },
+      //  {
+      //   name: "Requsted Products",
+      //   path: "/requested_product",
+      //   iconText: "D",
+      // }
     ],
   },
   // {

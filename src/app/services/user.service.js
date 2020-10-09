@@ -1,5 +1,6 @@
 import { getConfig } from "../config/config";
 import { authHeader } from "../redux/logic";
+import axios from "axios"
 import history from "../../history";
 export const userService = {
   login,
@@ -78,6 +79,8 @@ export const userService = {
   deleteFromCart,
   orderRepayments,
   addToCart,
+  userUploadRequested,
+  updateRequest,
   checkOut
 };
 
@@ -663,17 +666,43 @@ function updateUserCart(cart_id, quantity) {
     handleResponse
   );
 }
-function orderRepayments(order_id) {
+
+function orderRepayments(data) {
+  let user = JSON.parse(localStorage.getItem('user'));
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+    console.log(data.id)
+    return fetch(
+      getConfig("orderRepayments") + data.id+"?token="+user.token,
+      requestOptions
+    ).then(handleResponse);
+}
+
+function userUploadRequested(fd) {
+  const headers =  { ...authHeader(), "Content-Type": "application/json" }
+  return axios.post(getConfig("userUploadRequested"), fd, {headers}).then((res) => {
+    if(res.data == "Unauthorized"){
+        history.push("/sign-in");
+    }
+    return res.data
+  })
+}
+
+function updateRequest(cart_id, quantity) {
   let user = JSON.parse(localStorage.getItem("user"));
   const requestOptions = {
     method: "POST",
     headers: { ...authHeader(), "Content-Type": "application/json" },
-    // body: JSON.stringify({quantity}),
+    body: JSON.stringify({quantity}),
   };
-  return fetch(getConfig("orderRepayments")+order_id+"?token="+user.token, requestOptions).then(
+  return fetch(getConfig("updateRequest")+cart_id+"?token="+user.token, requestOptions).then(
     handleResponse
   );
 }
+
 function checkOut(data) {
   const requestOptions = {
     method: "POST",

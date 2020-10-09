@@ -47,7 +47,7 @@ close = () => {
 }
     render() {
         const {email, key} = this.state
-        const {total, callback} = this.props
+        const {amount, callback} = this.props
         return (
             <div>
                 {key ?
@@ -60,7 +60,7 @@ close = () => {
                     embed={true}  
                     reference={getReference()}
                     email={email}
-                    amount={total * 100}
+                    amount={amount * 100}
                     paystackkey={key}
                     tag="button" 
                 />:
