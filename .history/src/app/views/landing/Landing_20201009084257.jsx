@@ -23,7 +23,7 @@ class Landing extends Component {
     return (
       <div
         style={{
-          // backgroundImage: `url(${"/assets/images/new-bg.jpeg"})`,
+          backgroundImage: `url(${"/assets/images/new-bg.jpeg"})`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
           backgroundSize: "cover",
@@ -60,7 +60,7 @@ class Landing extends Component {
           <Section4 />
         </Grid>
         <div className='py-4' />
-        <Grid container spacing={2} style={{ backgroundColor: "#ffdf4d" }}>
+        <Grid container spacing={2}>
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <Section5 />
           </Grid>
