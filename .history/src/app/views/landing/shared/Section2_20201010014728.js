@@ -3,7 +3,8 @@ import { Typography, Grid, Card } from '@material-ui/core'
 import SimpleForm from 'app/views/material-kit/forms/SimpleForm'
 import CustomForm from './CustomForm'
 
-class Section5 extends Component {
+class Section2 extends Component {
+    
     render() {
         const style = {
             typo:{
@@ -12,24 +13,23 @@ class Section5 extends Component {
             }
         }
         return (
-            <Grid container direction="row" justify="center" alignItems="center" style={{paddingLeft:60, paddingRight:60}}>
-                <Grid item lg={6} md={6} sm={12} xs={12} >
-                    <img src="/assets/images/01.png" style={{height:300}}/>
-                </Grid>
+            <Grid container direction="row" justify="space-between" alignItems="center" style={{paddingLeft:60, paddingRight:60}}>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                     <Card style={{backgroundColor:"inherit"}} elevation={0}>
                         <Typography variant="h4" className="text-white">
-                            Save and Invest At Your Convenience
+                        Get 0% non interest based loans
                         </Typography>
                         <Typography style={style.typo} variant="p" className="text-gray font-bold pt-3">
-                        No Haram charges, no unlawful investments, no interest loan. Download SESIS now and take control of your money and wealth.
+                        Say bye-bye to high interest rates. Get access to zero interest Personal or Business loans to take care of your most pressing needs, loans with workable payback periods. Build your credit ratings to unlock larger loan amounts.
                         </Typography>
                     </Card>
-                    <img src="/assets/images/download.png" alt="" />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12} className="px-20 pt-10">
+                    <img src="/assets/sesis.jpeg" width="358px"/>
                 </Grid>
             </Grid>
         )
     }
 }
 
-export default Section5
+export default Section2

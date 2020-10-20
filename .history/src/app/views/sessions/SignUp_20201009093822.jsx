@@ -6,8 +6,7 @@ import {
   Grid,
   Button,
   CircularProgress,
-  Typography,
-  Hidden,
+  Typography,Hidden
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -89,9 +88,12 @@ class SignUp extends Component {
       <div
         className='signup flex justify-center w-full h-full-screen'
         style={{
+<<<<<<< HEAD
           backgroundColor: "#0a131b",
+=======
           // backgroundColor: "#0a131b",
           backgroundImage: `url(${"/assets/images/homebg.png"})`,
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
           backgroundSize: "cover",
@@ -109,7 +111,11 @@ class SignUp extends Component {
             <Grid lg={11} md={11} sm={11} xs={11}>
               <Card className='' style={{ background: "#224459" }}>
                 <Grid container className='p-2' spacing={3}>
+<<<<<<< HEAD
+                  <Grid lg={4} md={4} sm={6} xs={6}>
+=======
                   <Grid lg={4} md={4} sm={12} xs={12}>
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
                     <Card className='signup-card '>
                       <Grid
                         container
@@ -117,7 +123,11 @@ class SignUp extends Component {
                         justify='center'
                         alignItems='center'
                       >
+<<<<<<< HEAD
+                        <div className='p-4 mt-6'>
+=======
                         <div className='p-4 mt-4'>
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
                           <Grid
                             container
                             className='p-2 '
@@ -146,7 +156,11 @@ class SignUp extends Component {
                           <Grid item lg={12} md={12} sm={12} xs={12}>
                             <div className='p-9 h-full position-relative'>
                               <TextValidator
+<<<<<<< HEAD
+                                className='mb-6 w-full'
+=======
                                 className='mb-3 w-full'
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
                                 variant='outlined'
                                 label='First Name'
                                 onChange={this.handleChange}
@@ -157,7 +171,11 @@ class SignUp extends Component {
                                 errorMessages={["this field is required"]}
                               />
                               <TextValidator
+<<<<<<< HEAD
+                                className='mb-6 w-full'
+=======
                                 className='mb-3 w-full'
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
                                 variant='outlined'
                                 label='Last Name'
                                 onChange={this.handleChange}
@@ -168,18 +186,30 @@ class SignUp extends Component {
                                 errorMessages={["this field is required"]}
                               />
                               <TextValidator
+<<<<<<< HEAD
+                                className='mb-4 w-full'
+=======
                                 className='mb-3 w-full'
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
                                 variant='outlined'
                                 label='Phone Number'
                                 onChange={this.handleChange}
                                 type='type'
+<<<<<<< HEAD
+                                name='phone_number'
+=======
                                 name='phone_no'
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
                                 value={data.phone_no}
                                 validators={["required"]}
                                 errorMessages={["this field is required"]}
                               />
                               <TextValidator
+<<<<<<< HEAD
+                                className='mb-6 w-full'
+=======
                                 className='mb-3 w-full'
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
                                 variant='outlined'
                                 label='Email'
                                 onChange={this.handleChange}
@@ -193,7 +223,11 @@ class SignUp extends Component {
                                 ]}
                               />
                               <TextValidator
+<<<<<<< HEAD
+                                className='mb-4 w-full'
+=======
                                 className='mb-3 w-full'
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
                                 variant='outlined'
                                 label='Password'
                                 onChange={this.handleChange}
@@ -204,49 +238,80 @@ class SignUp extends Component {
                                 errorMessages={["this field is required"]}
                               />
                               <TextValidator
+<<<<<<< HEAD
+                                className='mb-4 w-full'
+=======
                                 className='mb-3 w-full'
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
                                 variant='outlined'
                                 label='Confirm Password'
                                 onChange={this.handleChange}
                                 type='password'
                                 name='confirm_password'
-                                value={confirm_password}
+<<<<<<< HEAD
+                                value={data.password}
                                 validators={["required"]}
                                 errorMessages={["this field is required"]}
                               />
-                              <Grid
-                                item
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                xs={12}
-                                className='mb-3'
-                              >
-                                <Button
-                                  variant='contained'
-                                  color='warning'
-                                  disabled={this.props.loggingIn}
-                                  type='submit'
-                                  className='capitalize font-medium w-full'
-                                  style={{
-                                    background: "#04956b",
-                                    color: "#fff",
-                                    // width: "84%",
-                                    padding: 10,
-                                    // marginLeft: 36,
-                                    // marginRight: 36,
-                                  }}
-                                >
-                                  Sign Up
-                                </Button>
-                                {this.props.registering && (
-                                  <CircularProgress
-                                    size={24}
-                                    className={classes.buttonProgress}
-                                  />
-                                )}
-                              </Grid>
                             </div>
+=======
+                                value={confirm_password}
+                                validators={["required"]}
+                                errorMessages={["this field is required"]}
+                              />                            
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
+                            <Grid
+                              item
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              xs={12}
+<<<<<<< HEAD
+                              className='mb-4'
+=======
+                              className='mb-3'
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
+                            >
+                              <Button
+                                variant='contained'
+                                color='warning'
+                                disabled={this.props.loggingIn}
+                                type='submit'
+<<<<<<< HEAD
+                                className='capitalize font-medium'
+                                style={{
+                                  background: "#04956b",
+                                  color: "#fff",
+                                  width: "84%",
+                                  padding: 10,
+                                  marginLeft: 36,
+                                  marginRight: 36,
+=======
+                                className='capitalize font-medium w-full'
+                                style={{
+                                  background: "#04956b",
+                                  color: "#fff",
+                                  // width: "84%",
+                                  padding: 10,
+                                  // marginLeft: 36,
+                                  // marginRight: 36,
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
+                                }}
+                              >
+                                Sign Up
+                              </Button>
+                              {this.props.registering && (
+                                <CircularProgress
+                                  size={24}
+                                  className={classes.buttonProgress}
+                                />
+                              )}
+                            </Grid>
+<<<<<<< HEAD
+
+=======
+                            </div>
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
                             <Grid
                               item
                               lg={12}
@@ -273,24 +338,34 @@ class SignUp extends Component {
                       </Grid>
                     </Card>
                   </Grid>
+<<<<<<< HEAD
+                  <Grid lg={8} md={8} sm={6} xs={6}>
+=======
                   <Grid lg={7} md={7} sm={6} xs={6}>
-                    <Hidden xsDown smDown>
-                      <Grid
-                        container
-                        className='p-2 mt-8'
-                        justify='center'
-                        alignItems='center'
+                  <Hidden xsDown smDown>
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
+                    <Grid
+                      container
+                      className='p-2 mt-8'
+                      justify='center'
+                      alignItems='center'
+                    >
+                      <Typography
+                        variant='h4'
+                        className='text-center text-white mt-25'
+                        style={{ fontWeight: "bold", width: "10" }}
                       >
-                        <Typography
-                          variant='h4'
-                          className='text-center text-white mt-25'
-                          style={{ fontWeight: "bold", width: "10" }}
-                        >
-                          Welcome To <br />
-                          SESIS <br /> CO-OPERATIVE SOCIETY
-                        </Typography>
-                      </Grid>
-                    </Hidden>
+<<<<<<< HEAD
+                        Welcome to <br />
+                        SESIS <br /> Co-OPERATIVE SOCIETY
+                      </Typography>
+                    </Grid>
+=======
+                        Welcome To <br />
+							          SESIS <br /> CO-OPERATIVE SOCIETY
+                      </Typography>
+                    </Grid></Hidden>
+>>>>>>> 8f4be41b8cb3eb7c1874baa4cdfc24fae10c0692
                   </Grid>
                 </Grid>
               </Card>

@@ -25,7 +25,7 @@ class Section5 extends Component {
                         No Haram charges, no unlawful investments, no interest loan. Download SESIS now and take control of your money and wealth.
                         </Typography>
                     </Card>
-                    <img src="/assets/images/download.png" alt="" />
+                    <img src="/assets/images/download.png" />
                 </Grid>
             </Grid>
         )

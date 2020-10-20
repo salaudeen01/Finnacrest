@@ -8,6 +8,7 @@ import Section3 from "./shared/Section3";
 import Section4 from "./shared/Section4";
 import Footer from "./shared/Footer";
 import Section5 from "./shared/Section5";
+import CustomSlider from "./shared/CustomSlider";
 
 class Landing extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class Landing extends Component {
         }}
       >
         <AppAppBar user={this.state.user} />
+        <CustomSlider/>
         <div className='py-4' />
         <Grid container>
           <Grid item lg={12} md={12} sm={12} xs={12}>

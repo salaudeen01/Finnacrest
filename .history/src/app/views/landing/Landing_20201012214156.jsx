@@ -23,7 +23,7 @@ class Landing extends Component {
     return (
       <div
         style={{
-          backgroundImage: `url(${"/assets/images/home-bg-indigo.jpg"})`,
+          backgroundImage: `url(${"/assest/images/home-bg-black.png"})`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
           backgroundSize: "cover",

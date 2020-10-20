@@ -8,6 +8,7 @@ import Section3 from "./shared/Section3";
 import Section4 from "./shared/Section4";
 import Footer from "./shared/Footer";
 import Section5 from "./shared/Section5";
+import CustomSlider from "./shared/CustomSlider";
 
 class Landing extends Component {
   constructor(props) {
@@ -20,6 +21,28 @@ class Landing extends Component {
   }
 
   render() {
+    var items = [
+      {
+        name: "Random Name #1",
+        img: "/assets/images/home-bg-indigo.jpg",
+      },
+      {
+        name: "Random Name #2",
+        img: "/assets/images/home-bg-indigo.jpg",
+      },
+      {
+        name: "Random Name #3",
+        img: "/assets/images/home-bg-indigo.jpg",
+      },
+      {
+        name: "Random Name #4",
+        img: "/assets/images/home-bg-indigo.jpg",
+      },
+      {
+        name: "Random Name #5",
+        img: "/assets/images/home-bg-indigo.jpg",
+      },
+    ];
     return (
       <div
         style={{
@@ -35,7 +58,7 @@ class Landing extends Component {
         <div className='py-4' />
         <Grid container>
           <Grid item lg={12} md={12} sm={12} xs={12}>
-            <Section1 />
+            <CustomSlider items={items}/>
           </Grid>
         </Grid>
         <div className='py-6' />

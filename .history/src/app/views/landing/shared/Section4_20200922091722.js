@@ -34,7 +34,7 @@ class Section4 extends Component {
                     <img src="/assets/images/investment05.jpg" style={{width:"100%", height:200}}/>
                 </Grid>
                 <Grid item lg={4} md={4} sm={12} xs={12} className="px-20 pt-10">
-                    <img src="/assets/sesis2.jpeg" style={{width:"100%", height:200}}/>
+                    <img src="/assets/images/investment06.jpg" style={{width:"100%", height:200}}/>
                 </Grid>
             </Grid>
         )

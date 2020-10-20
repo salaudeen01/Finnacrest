@@ -19,13 +19,13 @@ class Section5 extends Component {
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                     <Card style={{backgroundColor:"inherit"}} elevation={0}>
                         <Typography variant="h4" className="text-white">
-                            Save and Invest At Your Convenience
+                            Save and Invest At Your Convenient
                         </Typography>
                         <Typography style={style.typo} variant="p" className="text-gray font-bold pt-3">
-                        No Haram charges, no unlawful investments, no interest loan. Download SESIS now and take control of your money and wealth.
+                        No Haram charges, no unlawful investment, no interest loan. Download Cubevest now and take control of your money.
                         </Typography>
                     </Card>
-                    <img src="/assets/images/download.png" alt="" />
+                    <img src="/assets/images/download.png" />
                 </Grid>
             </Grid>
         )
