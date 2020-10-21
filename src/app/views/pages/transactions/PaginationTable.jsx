@@ -11,6 +11,7 @@ import {
   TablePagination,
   Card
 } from "@material-ui/core";
+import Paginate from "./paginate";
 
 const PaginationTable = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -71,22 +72,10 @@ const PaginationTable = (props) => {
             ))}
         </TableBody>
       </Table>
-
-      <TablePagination
-        className="px-4"
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={props.transactions.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        backIconButtonProps={{
-          "aria-label": "Previous Page"
-        }}
-        nextIconButtonProps={{
-          "aria-label": "Next Page"
-        }}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+      <Paginate pagination={props.pagination}
+          fetch_prev_page={props.fetch_prev_page} 
+          fetch_next_page={props.fetch_next_page} 
+          fetch_page={props.fetch_page}
       />
     </div>
     </Card>

@@ -39,6 +39,7 @@ import MyProduct from "./components/MyProduct";
 import OrderDetails from "./components/OrderDetails";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import CompleteProduct from "./components/CompleteProduct";
+import OrderTrans from "./components/OrderTrans";
 
 class Target extends Component {
   constructor(props) {
@@ -71,6 +72,7 @@ class Target extends Component {
         tab: true,
         loading:true,
         showView:false,
+        showViewTrans:false,
         isLoading:true,
         showSave:false,
         showSaveCard:false,
@@ -80,13 +82,16 @@ class Target extends Component {
     this.ongoingTab = this.ongoingTab.bind(this);
     this.completeTab = this.completeTab.bind(this);
     this.handleView = this.handleView.bind(this);
+    this.handleViewTrans = this.handleViewTrans.bind(this);
     this.fetchSingleTargetTransaction = this.fetchSingleTargetTransaction.bind(this);
     this.handleChangeAddCard = this.handleChangeAddCard.bind(this);
     this.handleQuickSave = this.handleQuickSave.bind(this);
     this.handleCloseQuickSave = this.handleCloseQuickSave.bind(this);
     this.handleCloseView = this.handleCloseView.bind(this);
+    this.handleCloseViewTrans = this.handleCloseViewTrans.bind(this);
     this.handleChangeFund = this.handleChangeFund.bind(this);
     this.handleSubmitFund = this.handleSubmitFund.bind(this);
+    this.repaymentsDetails = this.repaymentsDetails.bind(this);
 
   }
 
@@ -133,6 +138,32 @@ componentDidMount() {
         }
         this.setState({ loading: false });
       });
+  }
+  repaymentsDetails=(order_id)=>{
+    const requestOptions = {
+        method: 'GET',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+    };
+
+    fetch(getConfig("orderRepaymentsDetails") + order_id, requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }console.log(data)
+    if(data.success == false || data.total == 0){
+      this.setState({data: [], pagination:[], isLoading:false});
+    }else{
+      this.setState({data: data, pagination:data, isLoading:false});
+    } 
+  })
+    .catch(error => {
+        if (error === "Unauthorized") {
+            this.props.timeOut()
+        }
+        this.setState({isLoading:false})
+    });
   }
   
 fetchSingleTargetTransaction=(order_id)=>{
@@ -228,7 +259,13 @@ handleSubmitFund(event) {
     this.setState({ isLoading: true });
     this.fetchSingleTargetTransaction(id);
     this.setState({ showView: true });
-  };  
+  };
+  
+  handleViewTrans = (id) => {
+    this.setState({ isLoading: true });
+    this.repaymentsDetails(id);
+    this.setState({ showViewTrans: true });
+  };
 
   handleQuickSave = (id) => {
     this.setState({isLoading:true})
@@ -244,6 +281,9 @@ handleSubmitFund(event) {
   handleCloseView() {
     this.setState({showView:false});
   }
+  handleCloseViewTrans() {
+    this.setState({showViewTrans:false});
+  }
   handleCloseQuickSave() {
     this.setState({showSave:false});
   }
@@ -255,8 +295,8 @@ handleSubmitFund(event) {
       obj.array[l] = l + 1;
     }
     let { theme } = this.props;
-    const {my_products, tab, loading, showView, isLoading, 
-      singleTargetTransaction, fund_data, showSave ,cards,} = this.state;
+    const {my_products, tab, loading, showView, isLoading, data, 
+      singleTargetTransaction, fund_data, showSave ,cards,showViewTrans,} = this.state;
     return (
       <div className='m-sm-30'>
         <div className='mb-sm-30'>
@@ -315,6 +355,7 @@ handleSubmitFund(event) {
                       my_products.map((data, index) => (
                         data.order_status == 1 || data.order_status == 3 || data.order_status == 5 ? 
                         <MyProduct
+
                           key={index}
                           status={false}
                           withdrawStatus={data.withdraw_status}
@@ -331,6 +372,7 @@ handleSubmitFund(event) {
                           title={data.order_no}
                           stop={() => this.handleStopPlan(data.id)}
                           view={() => this.handleView(data.id)}
+                          viewTrans={() => this.handleViewTrans(data.id)}
                           repay={() => this.handleQuickSave(data.id)}
                         />:
                         <Typography variant='body1'>
@@ -420,6 +462,39 @@ handleSubmitFund(event) {
                 {isLoading ?
                 <Typography>Loading...</Typography>:
                 <OrderDetails transactions={singleTargetTransaction} />
+                }
+              </Grid>
+            </Grid>
+          </Card>
+        </Dialog>
+        {/* View dialog end */} 
+
+         {/* View Dialog start */}
+         <Dialog
+          open={showViewTrans}
+          onClose={this.handleCloseViewTrans}
+        >
+            <AppBar color="primary" className="text-white" style={{position: "relative"}}>
+              <Toolbar>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  onClick={this.handleCloseViewTrans}
+                  aria-label="Close"
+                >
+                  <CloseIcon />
+                </IconButton>
+                <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
+                  Transaction Details
+                </Typography>
+              </Toolbar>
+            </AppBar>
+            <Card className="px-6 pt-2 pb-4">
+            <Grid container spacing={2}>
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                {isLoading ?
+                <Typography>Loading...</Typography>:
+                <OrderTrans transactions={data} />
                 }
               </Grid>
             </Grid>

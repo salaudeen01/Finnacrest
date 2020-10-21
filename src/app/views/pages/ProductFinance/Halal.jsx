@@ -1,7 +1,8 @@
 import React from 'react';
 import { Breadcrumb, SimpleCard } from "matx";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { Grid, Card, Button, Typography, IconButton, Toolbar, AppBar, Dialog,CardMedia,CardActionArea, MenuItem, TextField, } from '@material-ui/core';
+import { Grid, Card, Button, Typography, IconButton, Toolbar, AppBar, Dialog,CardMedia,
+  CardActionArea, MenuItem, TextField, CardActions } from '@material-ui/core';
 import CloseIcon from "@material-ui/icons/Close";
 import MarketCard from './components/MarketCard';
 import MarketCard2 from './components/MarketCard2';
@@ -23,6 +24,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+import Paginate from '../transactions/paginate';
 
 
  class Halal extends Component {
@@ -87,6 +89,9 @@ import {
     this.handleChangeRequest = this.handleChangeRequest.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleSubmitRequest = this.handleSubmitRequest.bind(this);
+    this.fetch_next_page = this.fetch_next_page.bind(this);
+    this.fetch_page = this.fetch_page.bind(this);
+    this.fetch_prev_page = this.fetch_prev_page.bind(this);
   }
 
 callback = (response) => {
@@ -221,7 +226,7 @@ componentDidMount() {
     if(data.success == false){
       this.setState({news: [], category: []})
     }else{
-      this.setState({news: data.products.data, category: data.products.data})
+      this.setState({news: data.products, category: data.products.data})
     }
     // console.log(data)
 })
@@ -288,6 +293,70 @@ fetch(getConfig("getHalaiCat"), requestOptions)
       }
     });
 }
+
+fetch_next_page = ()=>{
+  const {news} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(news.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    if(data.success == false){
+      this.setState({category: [], loading:false });
+    }else{
+      this.setState({category: data.products.data, news:data.products, loading:false });
+    }
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}      
+
+fetch_prev_page = ()=>{
+  const {news} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(news.prev_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    if(data.success == false){
+      this.setState({category: [], loading:false });
+    }else{
+      this.setState({category: data.products.data, news:data.products, loading:false });
+    }
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_page = (index)=>{
+  const {news} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(news.path+"?page="+index, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    if(data.success == false){
+      this.setState({category: [], loading:false });
+    }else{
+      this.setState({category: data.products.data, news:data.products, loading:false });
+    }
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
 handleCloseView() {
   this.setState({showView:false});
 }
@@ -332,7 +401,7 @@ tabbed = (id) => {
 };
   render(){
     const {theme} =this.props
-    const {tab,mTab, invest_data, avatar, request_data, categories, count, category, loading, singleInvestment, singleNews, isLoading, current_index, investment, showView, showSave, showInvest} = this.state
+    const {tab,mTab, invest_data, avatar, request_data, news, categories, count, category, loading, singleInvestment, singleNews, isLoading, current_index, investment, showView, showSave, showInvest} = this.state
     return (
       <div className="m-sm-30">
         <AppBar color="default" position="static">
@@ -404,13 +473,13 @@ tabbed = (id) => {
           </Grid>
           
           {category.map((ne) => (
-            <Grid item lg={3} md={3} sm={6} xs={12}>
+            <Grid item lg={3} md={3} sm={4} xs={12}>
             <Link to={`/details/${ne.id}`}>            
             <MarketCard 
                 data={ne}
                 status={true}
                 invest={()=>this.handleShowInvest(ne.id)} 
-                view={()=>this.handleShowView(ne.id, ne.current_values)}
+                view={()=>this.handleShowView(ne.id, ne.current_values)}                
                 />
               </Link>              
             </Grid>
@@ -425,7 +494,17 @@ tabbed = (id) => {
             </Grid>
           ))} 
         </Grid>
-        }    
+        
+       }           
+        <div className="classes.pagination">
+        {/* <Typography variant="caption">1-6 of 20</Typography> */}
+        <Paginate 
+              fetch_prev_page={this.fetch_prev_page} 
+              fetch_next_page={this.fetch_next_page} 
+              fetch_page={this.fetch_page}
+              pagination={news}
+           />
+      </div>
         {/* View Dialog start */}
 
         <Dialog
@@ -698,6 +777,16 @@ tabbed = (id) => {
           </Card>
         </Dialog>
         {/* Quick Save Dialog End */}
+
+        {/* <CardActions>
+            <Paginate 
+              fetch_prev_page={this.fetch_prev_page} 
+              fetch_next_page={this.fetch_next_page} 
+              fetch_page={this.fetch_page}
+              pagination={news}
+           />
+           
+      </CardActions> */}
 
       </div>
     );

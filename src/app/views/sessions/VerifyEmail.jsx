@@ -62,7 +62,7 @@ class VerifyEmail extends Component {
       spacing={3}
       justify='center'
       alignItems='center'>
-      <Grid lg={11} md={11} sm={11} xs={11}>
+      <Grid lg={8} md={8} sm={10} xs={10}>
         <Card className='' style={{ background: '#224459' }}>
           <Grid container className='p-2' spacing={3}>
             <Grid lg={4} md={4} sm={12} xs={12}>
@@ -90,12 +90,22 @@ class VerifyEmail extends Component {
                   </Grid>
                 </Grid>
                 <Grid container className='bg-light-gray justify-center w-full'>
-                <Grid lg={12} md={12} sm={12} xs={12} >
-                  <Button onClick={this.handleFormSubmit} variant="contained" style={{background:'#04956b'}} 
-                  className="mt-5 text-white" size="large">Complete Registration</Button>
+                <Grid
+                  item
+                  lg={10}
+                  md={10}
+                  sm={10}
+                  xs={10}
+                  className='mb-1'
+                  style={{ textAlign: 'center' }}>
+                  <Button onClick={this.handleFormSubmit} variant="contained" color='warning' type='submit'
+                 className='capitalize font-medium w-full mb-4' size="large" 
+                 style={{ background: '#224459', color: '#fff', padding: 10}}>
+                   Complete Registration</Button>
                   {this.props.loggingIn && (
                     <CircularProgress
                       size={24}
+                      color='secondary'
                       className={classes.buttonProgress}
                     />)}
                 </Grid>
@@ -112,7 +122,7 @@ class VerifyEmail extends Component {
               
                 <Typography
                   variant='h4'
-                  className='text-center text-white mt-25'
+                  className='text-center text-white mt-10'
                   style={{ fontWeight: 'bold', width: '10' }}>
                   Welcome To <br />
                   SESIS <br /> CO-OPERATIVE SOCIETY

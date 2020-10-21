@@ -18,8 +18,6 @@ class OrderDetails extends Component{
   constructor(props){
     super(props)
   }
-
-
   render(){
     return (
         <Card elevation={4} className="pt-5 mb-6">
@@ -44,10 +42,10 @@ class OrderDetails extends Component{
                 <TableCell className="px-1 capitalize" align="left" colSpan={4}>
                 <img style={{width:200,height:100}} src={product.image}/>
                 </TableCell>
-                <TableCell className="px-4 capitalize" align="left" component="th" scope="row" colSpan={4}>
+                <TableCell className="px-4 capitalize" align="left" component="th" scope="row" colSpan={6}>
                  {product.product_name}
                 </TableCell>
-                <TableCell className="px-4 capitalize" align="left" colSpan={4}>
+                <TableCell className="px-4 capitalize" align="left" colSpan={7}>
                   <b>{numberFormat(product.price)}</b>
                 </TableCell>
                 <TableCell className="px-4 capitalize" align="left" component="th" scope="row" colSpan={8}>

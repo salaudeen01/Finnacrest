@@ -73,6 +73,9 @@ class WalletTab extends Component{
     this.handleSubmitWithdraw = this.handleSubmitWithdraw.bind(this);
     this.handleConfirmWithdraw = this.handleConfirmWithdraw.bind(this);
     this.handleChangeWithdraw = this.handleChangeWithdraw.bind(this);
+    this.fetch_next_page = this.fetch_next_page.bind(this);
+    this.fetch_page = this.fetch_page.bind(this);
+    this.fetch_prev_page = this.fetch_prev_page.bind(this);
     const requestOptions = {
       method: "GET",
       headers: { ...authHeader(), "Content-Type": "application/json" },
@@ -140,6 +143,69 @@ class WalletTab extends Component{
           this.props.timeOut()
         }
     });
+}
+
+fetch_next_page = ()=>{
+  const {pagination} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    if(data.success == false){
+      this.setState({wallet: [], loading:false });
+    }else{
+      this.setState({wallet: data.data, pagination:data, loading:false });
+    }
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}      
+
+fetch_prev_page = ()=>{
+  const {pagination} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(pagination.prev_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    if(data.success == false){
+      this.setState({wallet: [], loading:false });
+    }else{
+      this.setState({wallet: data.data, pagination:data, loading:false });
+    }
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_page = (index)=>{
+  const {pagination} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(pagination.path+"?page="+index, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    if(data.success == false){
+      this.setState({wallet: [], loading:false });
+    }else{
+      this.setState({wallet: data.data, pagination:data, loading:false });
+    }
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
 }
 
   callback = (response) => {
@@ -271,7 +337,9 @@ handleCloseConfirmWithdraw() {
         <Grid container spacing={3}>
           <Grid item lg={12} md={12} sm={12} xs={12}>
               <SimpleCard title="Wallet Table">
-                <PaginationTable transactions={wallet} pagination={pagination}/>
+                <PaginationTable transactions={wallet} pagination={pagination}
+                 fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page}
+                 fetch_prev_page={this.fetch_prev_page}/>
               </SimpleCard>
           </Grid>
         </Grid>

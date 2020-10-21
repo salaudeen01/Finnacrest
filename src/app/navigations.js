@@ -77,7 +77,7 @@ export const navigations = [
   {
     name: "Loan",
     icon: "money",
-    path: "/#",
+    path: "/loan",
   },
   {
     name: "Product Financing",

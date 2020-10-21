@@ -28,7 +28,6 @@ import LoanApprovalCard from "./components/LoanApprovalCard";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import AddCardDialog from "app/views/dashboard/shared/AddCardDialog";
 import CustomTab from "./components/CustomTab";
-import { Autocomplete } from "@material-ui/lab";
 
 class Loan extends Component {
   constructor(props){
@@ -48,11 +47,10 @@ class Loan extends Component {
         loan_group:"",
         start_date:"",
         end_date:"",
-        payment_method:"",
+        payment_method:"Debit Card",
         repayment_amount:"",
-        user_id:"",
-        group_id:0,
-    },    
+        card_id:""
+    },
     add_card: {
       amount: "100",
       date_time: entry_date,
@@ -88,13 +86,7 @@ class Loan extends Component {
         save_card:false,
         card_id:"0"
     },
-    formList:[
-        {
-          user_id:"",
-          guaranteed_amount:""
-      },],
-
-      users:[],
+      formList:["name2"],
       index:3,
       user:user,
       token:token,
@@ -146,7 +138,6 @@ class Loan extends Component {
     this.handleSubmitLoan = this.handleSubmitLoan.bind(this);
     this.handleChangeLoan = this.handleChangeLoan.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleDaChange = this.handleDaChange.bind(this);
     this.handleSubmitGroup = this.handleSubmitGroup.bind(this);
     this.handleChangeGroup = this.handleChangeGroup.bind(this);
     this.handleSubmitRepay = this.handleSubmitRepay.bind(this);
@@ -173,9 +164,7 @@ class Loan extends Component {
     this.handleCloseManageLoan = this.handleCloseManageLoan.bind(this);
     this.getRand = this.getRand.bind(this);
     this.getRequestOpt = this.getRequestOpt.bind(this);
-    this.callback = this.callback.bind(this);    
-    this.handleIncrement = this.handleIncrement.bind(this);
-    this.handleRemove = this.handleRemove.bind(this);
+    this.callback = this.callback.bind(this);
   }
 
 callback = (response) => {
@@ -468,6 +457,28 @@ fetch(getConfig("getLoan"), requestOptions)
       this.props.timeOut()
     }
 });
+// fetch(getConfig("getLoanGroupActivities"), requestOptions)
+//   .then(async response => {
+//   const data = await response.json();
+//   if (!response.ok) {
+//       const error = (data && data.message) || response.statusText;
+//       this.setState({loading:false})
+//       return Promise.reject(error);
+//   }
+//   if(data.success == false){
+//       this.setState({loan_activities: []})
+//   }else{
+//       this.setState({loan_activities: data})
+//   }
+//
+// })
+// .catch(error => {
+//   if (error === "Unauthorized") {
+//       this.props.timeOut()
+//     }else{
+//       this.setState({loading:false});
+//   }
+// });
 fetch(getConfig("completedLoan"), requestOptions)
   .then(async response => {
   const data = await response.json();
@@ -503,48 +514,14 @@ handleChange(event) {
   }
   
 }
-
-fetchUsers = (search) =>{
-  const {token} = this.state
-  const requestOptions = {
-      method: 'GET',
-      headers: { ...authHeader(), 'Content-Type': 'application/json' },
-      // body: JSON.stringify(search),
-  };
-  fetch(getConfig('getAllUsersAutoComplete') + search +"?token=" + token, requestOptions)
-  .then(async response => {
-  const data = await response.json();
-  if (!response.ok) {
-      const error = (data && data.message) || response.statusText;
-      return Promise.reject(error);
-  }
-  console.log(data)
-  this.setState({users: data});
-})
-.catch(error => {
-  if (error === "Unauthorized") {
-    this.props.timeOut()
-     }
-  this.setState({loading:false, err : "internet error" });
-  console.error('There was an error!', error);
-});
+//incrementation of form
+IncrementItem = (index) => {
+  let { formList} = this.state
+  this.setState({formList:[...formList, "name"+index], index:index+1})
 }
-handleIncrement = () =>{
-  const {formList} = this.state
-  this.setState({
-    formList:[...formList, {
-        user_id:"",
-        guaranteed_amount:""
-    },]
-  })
-}
-
-handleRemove = (id) =>{
-  const {formList} = this.state
-  formList.splice(id, 1)
-  this.setState({
-    formList:formList
-  })
+DecreaseItem = (index) => {
+  this.state.formList.splice("name"+index,1)
+  this.setState({formList:this.state.formList})
 }
 //incrementation of form end
 handleChangeG(event) {
@@ -712,11 +689,16 @@ handleSubmitGroup(event) {
 
 handleSubmitLoan(event) {
   event.preventDefault();
-  const {data, formList} = this.state
-    let dat = {first:[data], data: formList};
-    console.log(dat)
-    this.props.createLoan(dat)
+  const { data } = this.state;
+  if (data.loan_amount && data.frequency && data.loan_group && data.start_date && data.end_date && data.payment_method && data.card_id) {
+      this.props.createLoan(data);
+  }else{
+      swal(
+        `${"check box to add new card "}`
+      );
+  }
 }
+
 handleSubmitRepay(event) {
   event.preventDefault();
   const { repay_data } = this.state;
@@ -880,32 +862,9 @@ completeTab(){
 approvalTab(){
   this.setState({tab:2});
 }
-handleChangeUsers = (event, values, id) =>{
-  const {name, value } = event.target;
-    const { formList, users } = this.state;
-    let newArray = [...formList];
-    console.log(id)
-  this.fetchUsers(value);
-  users.forEach(user => {
-    if(values == user.id + user.first_name + " " + user.last_name){
-      const elementsIndex = formList.findIndex((element,index) => index == id )
-      newArray[elementsIndex] = {...newArray[elementsIndex], user_id: user.id}
-      console.log(newArray)
-    }
-  });
-  this.setState({formList: newArray});
-}
-handleDaChange(event, id) {
-  const { name, value } = event.target;
-  const { formList} = this.state;
-  const elementsIndex = formList.findIndex((element,index) => index == id )
-  let newArray = [...formList]
-  newArray[elementsIndex] = {...newArray[elementsIndex], [name]: value }
-  console.log(newArray)
-  this.setState({formList: newArray});
-}
+
 render(){
-  const {users, repayment_details, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
+  const {repayment_details, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
   return (
     <div className="m-sm-30">
        <div className="mb-sm-30">
@@ -928,7 +887,28 @@ render(){
                 <TodoList />}
               </Grid>
           </Grid>
-          
+          {/* <Grid container spacing={1}>
+              <Grid item lg={8} md={8} sm={6} xs={6}>
+                <Button className="uppercase"
+                  size="small"
+                  variant="contained"
+                  style={{borderRadius:10, backgroundColor:"#04956a",color:"white"}}
+                  onClick={this.handleCreateGroup}>
+                    Create Group
+                </Button>
+              </Grid>
+              <Grid item lg={3} md={3} sm={6} xs={6} >
+                {group_table && 
+                <Button className="uppercase"
+                  size="small"
+                  variant="contained"
+                  style={{backgroundColor:"#04956a", color:"white", borderRadius:10}}
+                  onClick={this.handleCreateLoan}>
+                   Request Loan
+                </Button>
+                 } 
+               </Grid> 
+          </Grid> */}
           <Grid container spacing={1}>              
               <Grid item lg={3} md={3} sm={12} xs={12}>
               {/* <ButtonGroup color="primary" aria-label="outlined primary button group"> */}
@@ -950,6 +930,85 @@ render(){
               </Grid>
           </Grid>
       </div>
+        {/* <div className="py-3" />
+        <Grid container >
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+              <Typography variant="h6">My Groups</Typography>
+            </Grid>
+            <Grid item lg={8} md={8} sm={12} xs={12}>
+            <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20,
+                borderTopLeftRadius:20}}>
+            {isFetching? <Typography variant="h6">Loading...</Typography>:
+            loan_group.length == 0?
+            <Typography variant="p" className="font-bold">You currently do not belong to any group</Typography>:
+            loan_group.map((data, index) => (
+              <LoanGroupCard key={index} data={data} details={()=>this.handleCreateDetails(data.group_id)} 
+              manage={()=>this.handleCreateManage(data.group_id)}
+              reject={()=>this.confirmAlert("reject", data.request_id, 0, 0)}
+              exit={()=>this.confirmAlert("exit", data.group_id, 0, 0)}
+              join={()=>this.confirmAlert("join", data.code, 0, 0)}
+              approval={()=>this.handleShowApproval(data.group_id)}
+              />
+            ))}
+            </div>
+            </Grid>
+        </Grid>
+        */}
+        {/* <div className="py-3" />
+        <Grid container >
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+            <Typography variant="h6">My Loans</Typography>
+          </Grid>
+          <Grid item lg={8} md={8} sm={12} xs={12}>
+            <div className="pb-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20,
+                  borderTopLeftRadius:20}}>
+              <Grid item lg={8} md={8} sm={12} xs={12}>
+                <Button size="small"
+                    variant={tab == 0 ? "contained" : tab == 1 ?"outlined": "outlined"}
+                    style={{backgroundColor: tab == 0 ? "#04956a":tab == 1 ?"":"", color:tab == 0 ? "#fff":tab == 1 ?"":"#000"}}
+                    onClick={this.ongoingTab}
+                    >Ongoing</Button> */}
+                {/* <Button 
+                    size="small"
+                    variant={tab == 0 ? "outlined" : tab == 1 ?"outlined": "contained"}
+                    style={{backgroundColor: tab == 0 ? "":tab == 1 ?"":"#04956a", color:tab == 0 ? "#000":tab == 1 ?"#000":"#fff"}}
+                    onClick={this.approvalTab}
+                    >Approvals</Button> */}
+                {/* <Button 
+                    size="small"
+                    variant={tab == 0 ? "outlined" : tab == 1 ?"contained": "outlined"}
+                    style={{backgroundColor: tab == 0 ? "":tab == 1 ?"#04956a":"", color:tab == 0 ? "#000":tab == 1 ?"#fff":"#000"}}
+                    onClick={this.completeTab}
+                    >Completed</Button>
+                
+              </Grid>
+              <div className="py-3" />
+              {tab == 0?
+              isFetching? <Typography variant="h6">Loading...</Typography>:
+              loan_details.length == 0?
+                <Typography variant="p" className="font-bold">You currently do not have any ongoing loan</Typography>:
+              loan_details.map((data, index) => (
+                <LoanCards key={index} data={data} status={true} repayment={()=>this.handleCreateRepayment(data.loan_id)} view={()=>this.handleCreateManageLoan(data.loan_id)}/>
+              )):
+              isFetching? <Typography variant="h6">Loading...</Typography>:
+              Completed.length == 0?
+                <Typography variant="p" className="font-bold">You currently do not have any Completed loan</Typography>:
+              Completed.map((data, index) => (
+                <LoanCards key={index} data={data} status={false} view={()=>this.handleCreateManageLoan(data.id)}/>
+              )) */}
+              {/* // isFetching? <Typography variant="h6">Loading...</Typography>:
+              // loan_activities.length == 0?
+              //   <Typography variant="p" className="font-bold">You currently do not have any loan that require your approval</Typography>:
+              // loan_activities.map((data, index) =>(
+              //   <LoanApprovalCard key={index} data={data}
+              //   accept={()=>this.confirmAlert("accept", 0, data.loan_group, data.loan_id)} 
+              //   decline={()=>this.confirmAlert("decline", 0, data.loan_group, data.loan_id)}/>
+              // ))
+              } */}
+            {/* </div>
+          </Grid>
+        </Grid>
+        */}
         </>}
         <CustomTab />
     <AddCardDialog callback={this.callback} showSave={showSave} handleClose={this.handleClose} add_card={add_card} />
@@ -1072,58 +1131,47 @@ render(){
              {data.loan_group == "Member" &&
             
                <Grid container spacing={2}>
-               {formList.map((dat, index)=>(
-               <> 
-               <Grid item lg={5} md={5} sm={5} xs={5}>
-              <Autocomplete
-                freeSolo
-                id="free-solo-2-demo"
-                disableClearable
-                onChange={(event, value) => this.handleChangeUsers(event, value, index)}
-                options={users.map((option) =>option.id + option.first_name + " " + option.last_name )}
-                renderInput={(params) => (
-                  <TextValidator
-                    {...params}
-                    onChange={(event, value) => this.handleChangeUsers(event, value, index)}
-                    label="Search users"
-                    className="mb-1 w-full"
-                    // variant="outlined"
-                    InputProps={{ ...params.InputProps, type: 'search' }}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item lg={5} md={5} sm={5} xs={5}>
-                <TextValidator
-                  // fullWidth
-                  // margin="normal"
-                  helperText="Enter amount value"
-                  label="Guarantee Amount"
-                  name="guaranteed_amount"
-                  onChange={(e)=>this.handleDaChange(e, index)}
-                  value={dat.guaranteed_amount}
-                  type="number"
-                  className="mb-1 w-full"
-                  validators={[
-                      "required"
-                    ]}
-                />
-            </Grid>
-            <Grid item lg={2} md={2} sm={2} xs={2}>
-              {index != 0 &&<Button margin="normal" type="button" variant="contained" 
-              style={{background:"red",color:"white"}} onClick={()=>this.handleRemove(index)} >Remove</Button>}
-            </Grid>
+                 <Grid item lg={12} md={12} sm={12} xs={12}>
+                 <Button style={{background:"blue",color:"white",fontWeight:"bold",}} 
+                   onClick={()=>this.IncrementItem(index)}>+</Button>
+                 <Button style={{background:"red",color:"white",fontWeight:"bold"}}  
+                   onClick={()=>this.DecreaseItem(index)}>-</Button>
+                 </Grid>
+               {formList.map((list, i)=>(
+               <>              
+               <Grid item lg={6} md={6} sm={6} xs={6}>
+                 <TextValidator
+                   className="mb-4 w-full"
+                   label="Member Name"
+                   onChange={this.handleChangeLoan}
+                   type="text"
+                   name={list}
+                   value={data[list]}
+                   validators={[
+                     "required"
+                   ]}
+                   errorMessages={["this field is required"]}
+                 />
+               </Grid>
+               <Grid item lg={6} md={6} sm={6} xs={6}>
+                 <TextValidator
+                   className="mb-4 w-full"
+                   label="Amount"
+                   onChange={this.handleChangeLoan}
+                   type="number"
+                   value={data["amount"+i+2]}
+                   name={"amount"+ i+2}
+                   validators={[
+                     "required"
+                   ]}
+                   errorMessages={["this field is required"]}
+                 />
+               </Grid>
                </>))}            
-               <Button variant="contained" className="mb-4" type="button" style={{background:"blue",color:"white"}} 
-               onClick={this.handleIncrement} >Add New</Button>
-              </Grid>
+             </Grid>
              }
-            
-                <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Typography>Choose Card</Typography>
                 <PayCard cards={cards} id={id} value={data.card_id} open={this.handleQuickSave} handleChange={this.handleChangeLoan}/>
-                </Grid>
-
                 {this.props.savings && data.card_id &&
                 <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                 }

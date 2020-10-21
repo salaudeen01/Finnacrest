@@ -48,11 +48,15 @@ class Loan extends Component {
         loan_group:"",
         start_date:"",
         end_date:"",
-        payment_method:"",
+        payment_method:"Debit Card",
         repayment_amount:"",
+        card_id:""
+    },
+    datac:[
+      {
         user_id:"",
-        group_id:0,
-    },    
+        guaranteed_amount:""
+    },],
     add_card: {
       amount: "100",
       date_time: entry_date,
@@ -88,13 +92,7 @@ class Loan extends Component {
         save_card:false,
         card_id:"0"
     },
-    formList:[
-        {
-          user_id:"",
-          guaranteed_amount:""
-      },],
-
-      users:[],
+      formList:["name2"],
       index:3,
       user:user,
       token:token,
@@ -105,6 +103,7 @@ class Loan extends Component {
       group_request_status: 0,
       group_member_status: 0,
       cards:[],
+      users: [],
       loan_group: [],
       loan_details: [],
       loan_activities:[],
@@ -146,7 +145,7 @@ class Loan extends Component {
     this.handleSubmitLoan = this.handleSubmitLoan.bind(this);
     this.handleChangeLoan = this.handleChangeLoan.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleDaChange = this.handleDaChange.bind(this);
+    this.handleChangelo = this.handleChangelo.bind(this);
     this.handleSubmitGroup = this.handleSubmitGroup.bind(this);
     this.handleChangeGroup = this.handleChangeGroup.bind(this);
     this.handleSubmitRepay = this.handleSubmitRepay.bind(this);
@@ -173,7 +172,7 @@ class Loan extends Component {
     this.handleCloseManageLoan = this.handleCloseManageLoan.bind(this);
     this.getRand = this.getRand.bind(this);
     this.getRequestOpt = this.getRequestOpt.bind(this);
-    this.callback = this.callback.bind(this);    
+    this.callback = this.callback.bind(this);
     this.handleIncrement = this.handleIncrement.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
   }
@@ -468,6 +467,28 @@ fetch(getConfig("getLoan"), requestOptions)
       this.props.timeOut()
     }
 });
+// fetch(getConfig("getLoanGroupActivities"), requestOptions)
+//   .then(async response => {
+//   const data = await response.json();
+//   if (!response.ok) {
+//       const error = (data && data.message) || response.statusText;
+//       this.setState({loading:false})
+//       return Promise.reject(error);
+//   }
+//   if(data.success == false){
+//       this.setState({loan_activities: []})
+//   }else{
+//       this.setState({loan_activities: data})
+//   }
+//
+// })
+// .catch(error => {
+//   if (error === "Unauthorized") {
+//       this.props.timeOut()
+//     }else{
+//       this.setState({loading:false});
+//   }
+// });
 fetch(getConfig("completedLoan"), requestOptions)
   .then(async response => {
   const data = await response.json();
@@ -503,36 +524,19 @@ handleChange(event) {
   }
   
 }
-
-fetchUsers = (search) =>{
-  const {token} = this.state
-  const requestOptions = {
-      method: 'GET',
-      headers: { ...authHeader(), 'Content-Type': 'application/json' },
-      // body: JSON.stringify(search),
-  };
-  fetch(getConfig('getAllUsersAutoComplete') + search +"?token=" + token, requestOptions)
-  .then(async response => {
-  const data = await response.json();
-  if (!response.ok) {
-      const error = (data && data.message) || response.statusText;
-      return Promise.reject(error);
-  }
-  console.log(data)
-  this.setState({users: data});
-})
-.catch(error => {
-  if (error === "Unauthorized") {
-    this.props.timeOut()
-     }
-  this.setState({loading:false, err : "internet error" });
-  console.error('There was an error!', error);
-});
-}
+//incrementation of form
+// IncrementItem = (index) => {
+//   let { formList} = this.state
+//   this.setState({formList:[...formList, "name"+index], index:index+1})
+// }
+// DecreaseItem = (index) => {
+//   this.state.formList.splice("name"+index,1)
+//   this.setState({formList:this.state.formList})
+// }
 handleIncrement = () =>{
-  const {formList} = this.state
+  const {datac} = this.state
   this.setState({
-    formList:[...formList, {
+    datac:[...datac, {
         user_id:"",
         guaranteed_amount:""
     },]
@@ -540,11 +544,49 @@ handleIncrement = () =>{
 }
 
 handleRemove = (id) =>{
-  const {formList} = this.state
-  formList.splice(id, 1)
+  const {datac} = this.state
+  datac.splice(id, 1)
   this.setState({
-    formList:formList
+    datac:datac
   })
+}
+handleChangeUsers = (event, values, id) =>{
+  const {name, value } = event.target;
+    const { datac, users } = this.state;
+    let newArray = [...datac];
+  this.fetchUsers({term: value});
+  users.forEach(user => {
+    if(values == user.id + user.first_name + " " + user.last_name){
+      const elementsIndex = datac.findIndex(element => element.id == id )
+      newArray[elementsIndex] = {...newArray[elementsIndex], user_id: user.id}
+    }
+  });
+  this.setState({datac: newArray});
+}
+handleDataChange = (event) =>{
+  event.preventDefault();
+  const {loan, groups} = this.state
+  const {name, value} = event.target
+  if(name =="group"){
+    if(value == "Members")
+    this.setState({group:true, loan:{...loan, group_id:"", loan_group:""}})
+    else
+    this.setState({group:false})
+  }else if(name == "loan_group"){
+    let index = groups.find(element=> element.group_name == value)
+    this.setState({loan:{...loan, group_id:index.id, [name]:value}})
+  }else{
+    this.setState({loan:{...loan, [name]:value}})
+  }
+}
+handleChangelo(event, id) {
+  const { name, value } = event.target;
+  const { datac} = this.state;
+  const elementsIndex = datac.findIndex(element => element.id == id )
+  let newArray = [...datac]
+  newArray[elementsIndex] = {...newArray[elementsIndex], [name]: value }
+  console.log(newArray)
+  this.setState({datac: newArray});
 }
 //incrementation of form end
 handleChangeG(event) {
@@ -712,11 +754,16 @@ handleSubmitGroup(event) {
 
 handleSubmitLoan(event) {
   event.preventDefault();
-  const {data, formList} = this.state
-    let dat = {first:[data], data: formList};
-    console.log(dat)
-    this.props.createLoan(dat)
+  const { data } = this.state;
+  if (data.loan_amount && data.frequency && data.loan_group && data.start_date && data.end_date && data.payment_method && data.card_id) {
+      this.props.createLoan(data);
+  }else{
+      swal(
+        `${"check box to add new card "}`
+      );
+  }
 }
+
 handleSubmitRepay(event) {
   event.preventDefault();
   const { repay_data } = this.state;
@@ -880,32 +927,9 @@ completeTab(){
 approvalTab(){
   this.setState({tab:2});
 }
-handleChangeUsers = (event, values, id) =>{
-  const {name, value } = event.target;
-    const { formList, users } = this.state;
-    let newArray = [...formList];
-    console.log(id)
-  this.fetchUsers(value);
-  users.forEach(user => {
-    if(values == user.id + user.first_name + " " + user.last_name){
-      const elementsIndex = formList.findIndex((element,index) => index == id )
-      newArray[elementsIndex] = {...newArray[elementsIndex], user_id: user.id}
-      console.log(newArray)
-    }
-  });
-  this.setState({formList: newArray});
-}
-handleDaChange(event, id) {
-  const { name, value } = event.target;
-  const { formList} = this.state;
-  const elementsIndex = formList.findIndex((element,index) => index == id )
-  let newArray = [...formList]
-  newArray[elementsIndex] = {...newArray[elementsIndex], [name]: value }
-  console.log(newArray)
-  this.setState({formList: newArray});
-}
+
 render(){
-  const {users, repayment_details, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
+  const {repayment_details, users, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
   return (
     <div className="m-sm-30">
        <div className="mb-sm-30">
@@ -927,8 +951,7 @@ render(){
                 <Link to="/savings-tab/save-to-loan"><CustomCarousel /></Link>:
                 <TodoList />}
               </Grid>
-          </Grid>
-          
+          </Grid>          
           <Grid container spacing={1}>              
               <Grid item lg={3} md={3} sm={12} xs={12}>
               {/* <ButtonGroup color="primary" aria-label="outlined primary button group"> */}
@@ -949,7 +972,7 @@ render(){
         {/* </ButtonGroup> */}
               </Grid>
           </Grid>
-      </div>
+      </div>        
         </>}
         <CustomTab />
     <AddCardDialog callback={this.callback} showSave={showSave} handleClose={this.handleClose} add_card={add_card} />
@@ -1069,61 +1092,55 @@ render(){
                  ))}
                </TextField>
              }
-             {data.loan_group == "Member" &&
-            
-               <Grid container spacing={2}>
-               {formList.map((dat, index)=>(
-               <> 
-               <Grid item lg={5} md={5} sm={5} xs={5}>
-              <Autocomplete
-                freeSolo
-                id="free-solo-2-demo"
-                disableClearable
-                onChange={(event, value) => this.handleChangeUsers(event, value, index)}
-                options={users.map((option) =>option.id + option.first_name + " " + option.last_name )}
-                renderInput={(params) => (
-                  <TextValidator
-                    {...params}
-                    onChange={(event, value) => this.handleChangeUsers(event, value, index)}
-                    label="Search users"
-                    className="mb-1 w-full"
-                    // variant="outlined"
-                    InputProps={{ ...params.InputProps, type: 'search' }}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item lg={5} md={5} sm={5} xs={5}>
-                <TextValidator
-                  // fullWidth
-                  // margin="normal"
-                  helperText="Enter amount value"
-                  label="Guarantee Amount"
-                  name="guaranteed_amount"
-                  onChange={(e)=>this.handleDaChange(e, index)}
-                  value={dat.guaranteed_amount}
-                  type="number"
-                  className="mb-1 w-full"
-                  validators={[
-                      "required"
-                    ]}
-                />
-            </Grid>
-            <Grid item lg={2} md={2} sm={2} xs={2}>
-              {index != 0 &&<Button margin="normal" type="button" variant="contained" 
-              style={{background:"red",color:"white"}} onClick={()=>this.handleRemove(index)} >Remove</Button>}
-            </Grid>
-               </>))}            
-               <Button variant="contained" className="mb-4" type="button" style={{background:"blue",color:"white"}} 
-               onClick={this.handleIncrement} >Add New</Button>
-              </Grid>
-             }
-            
-                <Grid item lg={12} md={12} sm={12} xs={12}>
+             {data.loan_group == "Member" && <>  
+             {datac.map((dat, index) =>(
+               <Grid container spacing={2} >
+               <Grid item lg={3} md={3} sm={3} xs={3}>
+                 <Autocomplete
+                   freeSolo
+                   id="free-solo-2-demo"
+                   disableClearable
+                   onChange={(event, value) => this.handleChangeUsers(event, value, index)}
+                   options={users.map((option) =>option.id + option.first_name + " " + option.last_name )}
+                   renderInput={(params) => (
+                     <TextValidator
+                       {...params}
+                       onChange={(event, value) => this.handleChangeUsers(event, value, index)}
+                       label="Member Name"
+                       margin="normal"
+                       className="mb-4 w-full"
+                       variant="outlined"
+                       InputProps={{ ...params.InputProps, type: 'search' }}
+                     />
+                   )}
+                 />
+               </Grid>
+               <Grid item lg={2} md={2} sm={2} xs={2}>
+                   <TextValidator
+                     fullWidth
+                     margin="normal"
+                     helperText="Enter amount value"
+                     label="Guarantee Amount"
+                     name="guaranteed_amount"
+                     onChange={(e)=>this.handleChangelo(e, index)}
+                     value={dat.guaranteed_amount}
+                     type="number"
+                     variant="outlined"
+                     validators={[
+                         "required"
+                       ]}
+                   />
+               </Grid>
+               <Grid item lg={1} md={1} sm={1} xs={1}>
+                 {index != 0 &&<Button margin="normal" type="button" variant="contained" color="primary" onClick={()=>this.handleRemove(index)} >Remove</Button>}
+               </Grid>
+             </Grid>))}    
+              <Grid container direction="row" justify="space-between" alignItems="center">
+              <Button variant="contained" type="button" color="secondary" onClick={this.handleIncrement} >Add New</Button>
+              </Grid>            
+            </>}
                 <Typography>Choose Card</Typography>
                 <PayCard cards={cards} id={id} value={data.card_id} open={this.handleQuickSave} handleChange={this.handleChangeLoan}/>
-                </Grid>
-
                 {this.props.savings && data.card_id &&
                 <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                 }

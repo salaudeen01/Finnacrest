@@ -53,6 +53,7 @@ class TableCard extends Component{
       available: 5
     }
   ];
+
     return (
         <Card elevation={3} className="pt-5 mb-6">
           {/* <div className="card-title px-6 mb-3">Latest Transactions</div> */}

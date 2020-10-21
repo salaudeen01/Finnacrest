@@ -3,6 +3,7 @@ import { Grid, Card, Typography, Button, CardActionArea, CardActions, CardConten
 import { withStyles } from "@material-ui/styles";
 import { Component } from "react";
 import {numberFormat} from '../../../../config/config'
+import Paginate from "../../transactions/paginate";
 
 class MarketCard extends Component {
   constructor(props){
@@ -34,14 +35,13 @@ class MarketCard extends Component {
               </CardContent>
             </CardActionArea>
             {/* <CardActions>
-              {data.unit_remaining == 0?
-              <Button onClick={invest} size="small" variant="outlined" color="secondary">
-                See Details
-              </Button>:
-              <Button onClick={view} size="small" variant="contained" color="secondary" className="text-white font-bold">
-                See Details
-              </Button>}
+            <Paginate pagination={this.props.pagination}
+              fetch_prev_page={this.props.fetch_prev_page} 
+              fetch_next_page={this.props.fetch_next_page} 
+              fetch_page={this.props.fetch_page}
+           />
             </CardActions> */}
+
           </Card>
     );
   };

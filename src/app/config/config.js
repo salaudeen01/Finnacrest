@@ -124,10 +124,12 @@ const serverVars = {
   checkOut: "checkOut",
   fetchUserProducts:"fetchUserProducts?token=",
   getOrderDetails:"fetchOrderDetails/",
+  orderRepaymentsDetails:"orderRepaymentsDetails/",
   orderRepayments:"orderRepayments/",
   userRequest:"userRequest?token=", 
   updateRequest: "updateRequestQuantity/", 
   totalRequestPrice:"totalRequestPrice?token=",
+  getAllUsersAutoComplete:"searchGuarantors/",
 
   // Shareholdings
   addFundShareholdings: "addShareHoldingsFunds?token=",
@@ -431,7 +433,11 @@ export function getConfig(apiName) {
     case "fetchUserProducts":
       return serverVars.baseUrl + serverVars.fetchUserProducts; 
     case "getOrderDetails":
-      return serverVars.baseUrl + serverVars.getOrderDetails;       
+      return serverVars.baseUrl + serverVars.getOrderDetails; 
+      case "orderRepaymentsDetails":
+        return serverVars.baseUrl + serverVars.orderRepaymentsDetails;        
+    case "getAllUsersAutoComplete":
+      return serverVars.baseUrl + serverVars.getAllUsersAutoComplete;    
     case "orderRepayments":
       return serverVars.baseUrl + serverVars.orderRepayments;        
     case "userUploadRequested":
