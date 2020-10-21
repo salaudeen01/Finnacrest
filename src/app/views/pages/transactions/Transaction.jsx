@@ -38,7 +38,7 @@ class Transaction extends Component {
           this.setState({loading: false });
           return Promise.reject(error);
         }
-        this.setState({ loading: false, transactions:data.data, pagination: data});
+        this.setState({ loading: false, transactions:data, pagination: data});
       })
       .catch((error) => {
         if (error === "Unauthorized") {
