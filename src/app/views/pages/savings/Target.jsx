@@ -386,7 +386,8 @@ handleSubmitFund(event) {
   event.preventDefault();
   const { fund_data } = this.state;
   if (fund_data.amount && fund_data != "") {
-      this.props.addFundTargetSavings(fund_data);
+      // this.props.addFundTargetSavings(fund_data);
+      console.log(fund_data)
   }else{
       swal(
           `${"All fields are required"}`

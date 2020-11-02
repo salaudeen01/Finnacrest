@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PaginationTable from "./PaginationTable";
 import { Breadcrumb, SimpleCard } from "matx";
 import StatCards2 from "../../dashboard/shared/StatCards2";
-import {getConfig, payID, numberFormat, setLastUrl} from '../../../config/config'
+import {getConfig, payID, numberFormat, setLastUrl, checkUserStatus} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -23,7 +23,7 @@ import {
   Toolbar,
   AppBar,
   Dialog,
-  Grid, Card, Button, TextField, MenuItem, Checkbox
+  Grid, Card, Button, TextField, MenuItem, Checkbox, DialogActions
 } from "@material-ui/core";
 import "date-fns";
 import PayOption from "app/views/dashboard/shared/PayOption";
@@ -57,6 +57,7 @@ class WalletTab extends Component{
       loading: true,
       wallet_bal: 0,
       wallet: [],
+      modal:false,
       pagination:[],
       show: false,
       show_withdraw: false,
@@ -214,7 +215,13 @@ fetch_page = (index)=>{
         this.setState({data:{...data, paystack_id: response.reference }})
     }
   }
-  componentDidUpdate(){
+  componentDidMount(){
+    let check = checkUserStatus()
+    if(check == false){
+      this.setState({modal:false})
+    }
+  }
+  componentDidUpdate(){ 
     const { data } = this.state;
     if (data.paystack_id !== "") {
       this.props.saveWallet(data);
@@ -276,9 +283,11 @@ handleCloseConfirmWithdraw() {
 }
   render(){
     let {theme} = this.props
-    const {pagination,wallet_bal, wallet, bank_details, withdrawData, cards, loading, show, show_withdraw, data, email} = this.state
+    const {pagination,wallet_bal, modal, wallet, bank_details, withdrawData, cards, loading, show, show_withdraw, data, email} = this.state
     return (
       <div className="m-sm-30">
+      { modal == false ?
+        <div>
         <div className="mb-sm-30">
           <Breadcrumb
             routeSegments={[
@@ -343,7 +352,10 @@ handleCloseConfirmWithdraw() {
               </SimpleCard>
           </Grid>
         </Grid>
-        
+        </>
+      }
+      </div>:
+      <></>}
       <Dialog
         open={show}
         scroll="body"
@@ -537,6 +549,68 @@ handleCloseConfirmWithdraw() {
       </Dialog>
       {/* withdraw dialog end */}
 
+      {/* Loan repayment Dialog Start */}
+      <Dialog
+          open={modal}
+          fullWidth={true}
+          maxWidth={"sm"}
+          onClose={this.handleCloseRepayment} >
+          <AppBar style={{position: "relative"}} color="primary">
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={this.handleCloseRepayment}
+                aria-label="Close"
+              >
+                {/* <CloseIcon /> */}
+              </IconButton>
+              <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+                Welcome To SESSI
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Card className="px-6 pt-2 pb-4">
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Typography>
+                  We have INTEREST FREE LOAN which easily accesseable 
+                </Typography>
+                <Typography>
+                  To access our LOAN, Click on the <span style={{color:"green"}}>Member button</span> to continue
+                </Typography>
+              </Grid> <br/>
+                <DialogActions>
+                
+                <Grid container spacing={1}>
+                      <Grid item lg={4} md={4} sm={4} xs={12}>
+                        <Button className="uppercase"
+                            size="small"
+                            variant="contained">
+                            Become a Member
+                        </Button> 
+                      </Grid> 
+                      <Grid item lg={4} md={4} sm={4} xs={12}>                 
+                        <Button className="uppercase"
+                            size="small"
+                            variant="contained">
+                                Continue Business
+                        </Button> 
+                      </Grid>
+                      <Grid item lg={4} md={4} sm={4} xs={12}>                  
+                        <Button className="uppercase"
+                            size="small"
+                            variant="contained">
+                            Continue Shopping
+                        </Button>
+                      </Grid>
+                </Grid>
+                  </DialogActions>
+              </Card>
+        </Dialog>
+        {/* Loan repayment Dialog End */}
+
+
+
       {/* confirm withdraw Dialog start */}
       <Dialog
         open={this.props.savings.proceed}
@@ -593,8 +667,7 @@ handleCloseConfirmWithdraw() {
         </Card>
       </Dialog>
       {/* confirm withdraw dialog end */}
-    </>
-  }
+  
      </div>
     );
   };

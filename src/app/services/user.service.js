@@ -41,6 +41,7 @@ export const userService = {
   createLoan,
   acceptLoan,
   declineLoan,
+  cancelLoan,
   joinGroup,
   rejectGroup,
   exitGroup,
@@ -280,6 +281,16 @@ function declineLoan(group_id, loan_id) {
     // body: JSON.stringify(id),
   };
   return fetch(getConfig("declineLoan")+group_id+"/"+loan_id, requestOptions ).then(handleResponse);
+}
+
+function cancelLoan(loan_id) {
+  
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    // body: JSON.stringify(id),
+  };
+  return fetch(getConfig("cancelLoan")+loan_id, requestOptions ).then(handleResponse);
 }
 
 // Join group loan

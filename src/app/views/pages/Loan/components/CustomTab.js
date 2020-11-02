@@ -10,6 +10,8 @@ import Box from '@material-ui/core/Box';
 import {useParams} from "react-router-dom"
 import MyGroup from '../MyGroup';
 import MyLoan from '../MyLoan';
+import NewLoan from '../NonLoan';
+import NonLoan from '../NonLoan';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,9 +67,9 @@ render(){
         <Tabs value={value} indicatorColor="primary"
           textColor="primary" style={{marginLeft:28}}
           onChange={this.handleChange} aria-label="simple tabs example">
-          <Tab label="My Group" {...a11yProps(0)} />
-          <Tab label="My Loan" {...a11yProps(1)} />
-          {/* <Tab label="Save To Loan" {...a11yProps(2)} /> */}
+          <Tab label="MY GROUP" {...a11yProps(0)} />
+          <Tab label="MY LOAN" {...a11yProps(1)} />
+          <Tab label="NON GROUP APPROVAL" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -76,9 +78,9 @@ render(){
       <TabPanel value={value} index={1}>
         <MyLoan/>
       </TabPanel>
-      {/* <TabPanel value={value} index={2}>
-        <SaveToLoan />
-      </TabPanel> */}
+      <TabPanel value={value} index={2}>
+        <NonLoan />
+      </TabPanel>
     </div>
   );
 }

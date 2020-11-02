@@ -6,6 +6,7 @@ import {
   numberFormat,
   setLastUrl,
   payID,
+  checkUserStatus
 } from "../../../config/config";
 import { authHeader } from "../../../redux/logic";
 import history from "../../../../history";
@@ -88,6 +89,7 @@ class Shareholdings extends Component {
       cancreate: true,
       autoSave: false,
       pagination: [],
+      modal:false,
       err: "",
       auto_save: "",
       show: false,
@@ -350,7 +352,8 @@ class Shareholdings extends Component {
       savings,
     } = this.state;
     return (
-      <div className='m-sm-30'>
+    <div className='m-sm-30'>
+      <div>
         <div className='mb-sm-30'>
           <Breadcrumb routeSegments={[{ name: "Shareholdings" }]} />
         </div>
@@ -500,6 +503,7 @@ class Shareholdings extends Component {
             </Grid>
           </>
         )}
+      </div>
         {/* Quick Save Dialog Start */}
         <Dialog open={showSave} onClose={this.handleCloseQuickSave}>
           <AppBar style={{ position: "relative", backgroundColor: "#0d60d8" }}>

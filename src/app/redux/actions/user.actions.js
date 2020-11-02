@@ -37,6 +37,7 @@ export const userActions = {
   createLoan,
   acceptLoan,
   declineLoan,
+  cancelLoan,
   joinGroup,
   rejectGroup,
   exitGroup,
@@ -576,6 +577,29 @@ function declineLoan(group_id, loan_id) {
           dispatch(alertActions.error(user.message));
         }
       },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+}
+
+function cancelLoan(loan_id) {
+  return (dispatch) => {
+    dispatch(request(loan_id));
+
+    userService.cancelLoan(loan_id).then(
+      (user) => {
+        dispatch(success());
+        if(user.success){
+          history.push("/loan");
+          dispatch( alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
+        },
       (error) => {
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));
