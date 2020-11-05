@@ -4,7 +4,7 @@ import { Breadcrumb, SimpleCard } from "matx";
 import StatCards2 from "../../dashboard/shared/StatCards2";
 import {getConfig, payID, numberFormat, setLastUrl, checkUserStatus} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
@@ -29,6 +29,7 @@ import "date-fns";
 import PayOption from "app/views/dashboard/shared/PayOption";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import swal from "sweetalert";
+import ModalForm from "./ModalForm";
 class WalletTab extends Component{
   constructor(props){
     super(props)
@@ -58,6 +59,9 @@ class WalletTab extends Component{
       wallet_bal: 0,
       wallet: [],
       modal:false,
+      modalForm:false, 
+      modalFee:false,
+      registrationFee: 0,
       pagination:[],
       show: false,
       show_withdraw: false,
@@ -74,6 +78,10 @@ class WalletTab extends Component{
     this.handleSubmitWithdraw = this.handleSubmitWithdraw.bind(this);
     this.handleConfirmWithdraw = this.handleConfirmWithdraw.bind(this);
     this.handleChangeWithdraw = this.handleChangeWithdraw.bind(this);
+    this.handleOpenModalForm = this.handleOpenModalForm.bind(this);
+    this.handleCloseModalForm = this.handleCloseModalForm.bind(this);
+    this.handleOpenModalFee = this.handleOpenModalFee.bind(this);
+    this.handleCloseModalFee = this.handleCloseModalFee.bind(this);
     this.fetch_next_page = this.fetch_next_page.bind(this);
     this.fetch_page = this.fetch_page.bind(this);
     this.fetch_prev_page = this.fetch_prev_page.bind(this);
@@ -218,7 +226,7 @@ fetch_page = (index)=>{
   componentDidMount(){
     let check = checkUserStatus()
     if(check == false){
-      this.setState({modal:false})
+      this.setState({modal:true})
     }
   }
   componentDidUpdate(){ 
@@ -274,7 +282,18 @@ handleClose() {
 handleClickOpenWithdraw() {
   this.setState({show_withdraw:true});
 }
-
+handleOpenModalForm = () => {
+  this.setState({modalForm: true});
+}
+handleCloseModalForm() {
+  this.setState({modalForm:false});
+}
+handleOpenModalFee = () => {
+  this.setState({modalFee: true});
+}
+handleCloseModalFee() {
+  this.setState({modalFee:false});
+}
 handleCloseWithdraw() {
   this.setState({show_withdraw:false});
 }
@@ -283,7 +302,8 @@ handleCloseConfirmWithdraw() {
 }
   render(){
     let {theme} = this.props
-    const {pagination,wallet_bal, modal, wallet, bank_details, withdrawData, cards, loading, show, show_withdraw, data, email} = this.state
+    const {pagination,wallet_bal, modal, wallet, modalForm, registrationFee, modalFee,  bank_details,
+           withdrawData, cards, loading, show, show_withdraw, data, email} = this.state
     return (
       <div className="m-sm-30">
       { modal == false ?
@@ -549,7 +569,7 @@ handleCloseConfirmWithdraw() {
       </Dialog>
       {/* withdraw dialog end */}
 
-      {/* Loan repayment Dialog Start */}
+        {/* Loan repayment Dialog Start */}
       <Dialog
           open={modal}
           fullWidth={true}
@@ -570,7 +590,7 @@ handleCloseConfirmWithdraw() {
               </Typography>
             </Toolbar>
           </AppBar>
-          <Card className="px-6 pt-2 pb-4">
+          <Card className="px-6 pt-2 pb-4 text-center">
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Typography>
                   We have INTEREST FREE LOAN which easily accesseable 
@@ -582,30 +602,104 @@ handleCloseConfirmWithdraw() {
                 <DialogActions>
                 
                 <Grid container spacing={1}>
-                      <Grid item lg={4} md={4} sm={4} xs={12}>
-                        <Button className="uppercase"
+                      <Grid item lg={4} md={4} sm={4} xs={12}>                      
+                          <Button className="uppercase"
                             size="small"
-                            variant="contained">
+                            onClick={this.handleOpenModalForm}
+                            variant="outlined">
                             Become a Member
-                        </Button> 
+                        </Button>                       
                       </Grid> 
                       <Grid item lg={4} md={4} sm={4} xs={12}>                 
-                        <Button className="uppercase"
-                            size="small"
-                            variant="contained">
-                                Continue Business
-                        </Button> 
+                      {/* <Link to="/business_financing"> */}
+                      <Link to="/#">
+                          <Button className="uppercase"
+                              size="small"
+                              variant="outlined">
+                                  Continue Business
+                          </Button> 
+                        </Link>
                       </Grid>
                       <Grid item lg={4} md={4} sm={4} xs={12}>                  
-                        <Button className="uppercase"
+                       <Link to="/product_financing"> <Button className="uppercase"
                             size="small"
-                            variant="contained">
+                            variant="outlined">
                             Continue Shopping
                         </Button>
+                      </Link>
                       </Grid>
                 </Grid>
                   </DialogActions>
               </Card>
+        </Dialog>
+        {/* Loan repayment Dialog End */}
+        {/* Loan repayment Dialog Start */}
+      <Dialog
+          open={modalForm}
+          fullWidth={true}
+          maxWidth={"sm"}
+          onClose={this.handleCloseModalForm} >
+          <AppBar style={{position: "relative"}} color="primary">
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={this.handleCloseModalForm}
+                aria-label="Close"
+              >
+                {/* <CloseIcon /> */}
+              </IconButton>
+              <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+                Welcome To SESSI
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Card className="px-6 pt-2 pb-4 text-center">
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Typography>
+                  The registration fee is:
+                </Typography>
+                <Typography variant='h6'>
+                  <b>{numberFormat(registrationFee)}</b>
+                </Typography>
+                <Typography variant='h6'>
+                  Click the below button to continue with the payment 
+                </Typography>
+                <Button className="uppercase"
+                    size="small"
+                    onClick={this.handleOpenModalFee}
+                    variant="outlined"> Continue
+                </Button>
+              </Grid> <br/>
+                </Card>
+        </Dialog>
+        {/* Loan repayment Dialog End */}
+        {/* Loan repayment Dialog Start */}
+      <Dialog
+          open={modalFee}
+          fullWidth={true}
+          maxWidth={"sm"}
+          onClose={this.handleCloseModalFee} >
+          <AppBar style={{position: "relative"}} color="primary">
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={this.handleCloseModalFee}
+                aria-label="Close"
+              >
+                {/* <CloseIcon /> */}
+              </IconButton>
+              <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+                Welcome To SESSI
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Card className="px-1 pt-2 pb-4">
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+               <ModalForm amount={registrationFee}/>
+              </Grid>
+                </Card>
         </Dialog>
         {/* Loan repayment Dialog End */}
 

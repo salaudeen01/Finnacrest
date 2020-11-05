@@ -80,6 +80,11 @@ export const navigations = [
     path: "/loan",
   },
   {
+    name: "Business Financing",
+    icon: "money",
+    path: "/business-fianance",
+  },
+  {
     name: "Product Financing",
     icon: "shopping_cart",
     children: [

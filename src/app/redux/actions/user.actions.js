@@ -47,6 +47,10 @@ export const userActions = {
   replaceMember,
   removeMember,
 
+  businessRequest,
+  rejectRequest,
+  acceptRequest,
+  business_repayments,
   // other transactions
   saveInvestment,
   getInvestments,
@@ -72,6 +76,8 @@ export const userActions = {
   removeCard,
   verifyWithdraw,
   confirmWithdraw,
+
+  addRegistrationFee,
 
   // Shareholdings
   addFundShareholdings,
@@ -795,6 +801,106 @@ function removeMember(user) {
 
 }
 
+function businessRequest(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+    userService.businessRequest(user).then(
+      (user) => {
+        dispatch(success());
+        if(user.success){
+          history.push("/business-fianance");
+          dispatch( alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
+
+function acceptRequest(id) {
+  return (dispatch) => {
+    dispatch(request(id));
+
+    userService.acceptRequest(id).then(
+      (user) => {
+        dispatch(success());
+        if(user.success){
+          history.push("/business-fianance");
+          dispatch( alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
+        },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+}
+
+function rejectRequest(id) {
+  return (dispatch) => {
+    dispatch(request(id));
+
+    userService.rejectRequest(id).then(
+      (user) => {
+        dispatch(success());
+        if(user.success){
+          history.push("/business-fianance");
+          dispatch( alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
+        },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+}
+
+function business_repayments(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+
+    userService.business_repayments(user).then(
+      (user) => {
+        dispatch(success());
+        if(user.success){
+          history.push("/business-fianance");
+          dispatch(alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+}
+
 
 // Target savings actions
 function createTargetSavings(user) {
@@ -1331,28 +1437,6 @@ function checkOut(order_id) {
   };
 
 }
-// function userUploadRequested(user) {
-//   return (dispatch) => {
-//     dispatch(request(user));
-
-//     userService.userUploadRequested(user).then(
-//       (user) => {
-//         dispatch(success());
-//         if(user.success){
-//           history.push("/product_financing");
-//           dispatch( alertActions.success(user.message));
-//         }else{
-//           dispatch(alertActions.error(user.message));
-//         }
-//       },
-//       (error) => {
-//         dispatch(failure(error.toString()));
-//         dispatch(alertActions.error(error.toString()));
-//       }
-//     );
-//   };
-
-// }
 function userUploadRequested(user) {
   return (dispatch) => {
     dispatch(request(user));
@@ -1534,59 +1618,37 @@ function orderRepayments(user) {
 
 }
 
-// function orderRepayments(order_id) {  
-//   return (dispatch) => {
-//     dispatch(request(order_id));
-//     userService.orderRepayments(order_id).then(
-//       (user) => {
-//         dispatch(success());
-//         history.push("/products");
-//         dispatch(
-//           alertActions.error(user.message)
-//         );
-//         // window.location.reload();
-//       },
-//       (error) => {
-//         dispatch(failure(error.toString()));
-//         dispatch(alertActions.error(error));
-//       }
-//     );
-//   };
+function addRegistrationFee(user) {
+  return (dispatch) => {
+    dispatch(request(user));
 
-//   function request(user) {
-//     return { type: userConstants.SAVINGS_REQUEST, user };
-//   }
-//   function success(user) {
-//     return { type: userConstants.SAVINGS_SUCCESS, user };
-//   }
-//   function failure(error) {
-//     return { type: userConstants.SAVINGS_FAILURE, error };
-//   }
-// }
+    userService.addRegistrationFee(user).then(
+      (user) => {
+        dispatch(success());
+        if (user.success) {
+          history.push("/signin");
+          dispatch(alertActions.success(user.message));
+        } else {
+          dispatch(alertActions.error(user.message));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
 
-
-// function orderRepayments(order_id) {
-//   return (dispatch) => {
-//     dispatch(request(order_id));
-
-//     userService.orderRepayments(order_id).then(
-//       (user) => {
-//         dispatch(success());
-//         if(user.success){
-//           history.push("/products");
-//           dispatch(alertActions.success(user.message));
-//         }else{
-//           dispatch(alertActions.error(user.message));
-//         }
-//       },
-//       (error) => {
-//         dispatch(failure(error.toString()));
-//         dispatch(alertActions.error(error.toString()));
-//       }
-//     );
-//   };
-
-// }
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
 
 function addFundShareholdings(user) {
   return (dispatch) => {

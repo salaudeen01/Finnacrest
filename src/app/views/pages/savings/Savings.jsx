@@ -26,7 +26,8 @@ class Savings extends Component {
       regular:0,
       loan:0,
       loan_investment:0,
-      loading:true
+      loading:true,
+      loan_amount:0
     }
     this.fetchBalances = this.fetchBalances.bind(this);
   }
@@ -76,10 +77,26 @@ class Savings extends Component {
         }
         this.setState({loading:false});
       });
+
+      fetch(getConfig('owner_savings_balance'), requestOptions)
+      .then(async response => {
+      const data = await response.json();
+      if (!response.ok) {
+        console.log(response)
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+      }
+      console.log(data)
+      if(data.success == false  || data.length == 0 ){
+        this.setState({ loan_amount: []});
+      }else{
+        this.setState({loan_amount: data, loading:false });
+      }  
+    })
   }
 
 render(){
- const {total, target, regular, loan, loan_investment, loading} = this.state
+ const {total, target, regular,loan_amount, loan, loan_investment, loading} = this.state
   return (
     <div className="m-sm-30">
         <div className="mb-sm-30">
@@ -97,7 +114,8 @@ render(){
           <Grid container spacing={2} >
             <Grid item lg={8} md={8} xs={12} sm={12}>
               <Card elevation={8}>
-                <SavingsBalanceCard title={"Total Balance"} amount={numberFormat(total)}/>
+              <SavingsBalanceCard title={"Total Balance"} amount={numberFormat(total)}/>
+              <SavingsBalanceCard title={"Loan Balance"} amount={numberFormat(loan_amount)}/>
               </Card>
             </Grid>
             <Grid item lg={4} md={4} xs={12} sm={12}>

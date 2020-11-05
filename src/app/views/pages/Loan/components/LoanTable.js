@@ -25,7 +25,6 @@ class LoanTable extends Component{
         <Card elevation={3} className="pt-5 mb-6">
           {/* <div className="card-title px-6 mb-3">Latest Transactions</div> */}
           <div className="overflow-auto">
-            { (this.props.status == 0 || this.props.status == 2 || this.props.status == 0) ?
               <Table className="product-table">
               <TableHead>
                 <TableRow>
@@ -38,50 +37,49 @@ class LoanTable extends Component{
                   <TableCell className="px-4" colSpan={6}>
                     GUARANTEED AMOUNT
                   </TableCell>
-                  <TableCell className="px-4" colSpan={6}>
+                  {/* <TableCell className="px-4" colSpan={6}>
                     STATUS
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className="px-4" colSpan={6}>
                     ACTION
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* {this.props.tdetails.map((det, index) => ( */}
+                {this.props.tdetails.map((det, index) => (
+                   (det.status == 0 || det.status == 2)?
                   <TableRow key='index'>
                     <TableCell className="px-4" colSpan={6} >
-                      {this.props.name}
+                    {(det.first_name +" "+ det.last_name)}
                     </TableCell>
                     <TableCell className="px-4 capitalize" align="left" colSpan={6}>
-                      {this.props.loan_amount}
+                      {det.loan_amount}
                     </TableCell>
                     <TableCell className="px-4" colSpan={6}>
-                     {this.props.guaranteed_amount}
+                     {det.guaranteed_amount}
                     </TableCell>
-                    <TableCell className="px-4" colSpan={6}>
-                     {this.props.status == 2 ?
-                     <span style={{color:'red'}}>Declained</span>:
-                     this.props.status == 1?
-                    <span style={{color:'green'}}>Approved</span>:
-                    <span style={{color:'orange'}}>Pending</span>
+                    {/* <TableCell className="px-4" colSpan={6}>
+                     {det.status == 2 ?
+                     <span style={{color:'red'}}>active</span>:
+                     det.status == 0?
+                    <span style={{color:'orange'}}>Pending</span>:""
                     }
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell className="px-4" colSpan={6}>
-                   { this.props.status == 1 && <> 
-                    <Button variant="outlined" className="mb-4" size="small" type="button" onClick={this.props.view}>Guarantors</Button>
-                   </>  }
-                   { this.props.status == 0 && <> 
-                    <Button variant="outlined" className="mb-4" size="small" type="button" onClick={this.props.view}>Guarantors</Button>
-                    <Button variant="outlined" className="mb-4" size="small" type="button" onClick={this.props.approvalLoan}>Approve</Button>
-                    <Button variant="outlined" className="mb-4" size="small" type="button" onClick={this.props.declineLoan}>Decline</Button>
-                   </>  }
+                   { (det.status == 1 || det.status == 2) ?
+                    <Button variant="outlined" className="mb-4" size="small" type="button" onClick={()=>this.props.view(det.loan_id)}>Guarantors</Button>:
+                    det.status == 0 && <> 
+                    <Button variant="outlined" className="mb-4" size="small" type="button" onClick={()=>this.props.view(det.loan_id)}>Guarantors</Button>
+                    <Button variant="outlined" className="mb-4" size="small" type="button" onClick={()=>this.props.approvalLoan(det.loan_group, det.loan_id)}>Approve</Button>
+                    <Button variant="outlined" className="mb-4" size="small" type="button" onClick={()=>this.props.declineLoan(det.loan_group, det.loan_id)}>Decline</Button>
+                   </>  }                   
+
                   </TableCell>
-                  </TableRow>
-                {/* ))}  */}
+                  </TableRow>: <></>
+                // <Typography variant="body1">No Completed Loan Guaranted</Typography>
+                 ))}
               </TableBody>
-            </Table>:
-            <Typography variant="p" className="font-bold">You currently do not have any ongoing loan</Typography>
-            }
+            </Table>
           </div>
         </Card>
       );

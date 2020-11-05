@@ -225,6 +225,7 @@ handleCloseSaveCard() {
 }
 
 handleView = (loan_id) => {
+  console.log(loan_id)
   this.setState({isLoading:true})
   this.fetchSingleNonGroupLoan(loan_id)
   this.setState({showView: true});
@@ -339,39 +340,22 @@ completeTab(){
               </Grid>
               <Grid item lg={12} md={12} sm={12} xs={12}>
               {tab &&
-             <div className="px-2 bg-default" >
-                {tdetails.length != 0?
-                    tdetails.map((data, index)=>( 
-                    <LoanTable key={index} status={false} 
-                    // withdrawStatus={data.withdraw_status} amount={numberFormat(data.targeted_amount)} 
-                    approvalLoan={()=>this.handleAcceptLoan(data.loan_group, data.loan_id)} 
-                    name={(data.first_name +" "+ data.last_name)}
-                    loan_amount={numberFormat(data.loan_amount)}
-                    guaranteed_amount={numberFormat(data.guaranteed_amount)}  
-                    status={data.status}
-                    view={()=>this.handleView(data.loan_id)}
-                    declineLoan={()=>this.handleDelete(data.loan_group, data.loan_id)}
+             <div className="px-2 bg-default" >                    
+                    <LoanTable 
+                    tdetails={tdetails}
+                    view={this.handleView}
+                    declineLoan={this.handleDelete}
+                    approvalLoan={this.handleAcceptLoan}
                     />
-                    )): 
-                    <Typography variant="body1">No Ongoing Target Savings</Typography> 
-                } 
+                  
               </div>
               }
               {!tab &&
               <div className="px-2 bg-default">
-                {/* {tdetails.length != 0? */}
-                {tdetails.map((data, index)=>( 
-                    <ComLoanTable key={index} status={false} 
-                      approvalLoan={()=>this.handleAcceptLoan(data.loan_group, data.loan_id)} 
-                      name={(data.first_name +" "+ data.last_name)}
-                      loan_amount={numberFormat(data.loan_amount)}
-                      guaranteed_amount={numberFormat(data.guaranteed_amount)}  
-                      status={data.status}
-                      view={()=>this.handleView(data.loan_id)}
-                      declineLoan={()=>this.handleDelete(data.loan_group, data.loan_id)}
-                  />
-                ))}
-                 {/* <Typography variant="body1">No Completed Target Savings</Typography>} */}
+                    <ComLoanTable 
+                    view={this.handleView}
+                    tdetails={tdetails}
+                    />
               </div>
             }
               

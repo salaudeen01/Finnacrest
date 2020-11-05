@@ -202,14 +202,14 @@ class Shareholdings extends Component {
     });
     }
     };
-  callback = (response) => {
-    const { fund_data } = this.state;
-    if (fund_data.amount) {
-      this.setState({
-        fund_data: { ...fund_data, paystack_id: response.reference },
-      });
-    }
-  };
+  // callback = (response) => {
+  //   const { fund_data } = this.state;
+  //   if (fund_data.amount) {
+  //     this.setState({
+  //       fund_data: { ...fund_data, paystack_id: response.reference },
+  //     });
+  //   }
+  // };
   componentDidUpdate() {
     const { fund_data } = this.state;
     if (fund_data.paystack_id !== "") {

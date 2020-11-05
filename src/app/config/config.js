@@ -92,8 +92,15 @@ const serverVars = {
   loanBalance:"loanBalance/",
   completedLoan:"getCompletedLoans",
   showNonGroupLoan:"show_non_group_loans_members/",
-  // loanAccepted: "loanAccepted/",
+  businessRequest:"business_request",
+  business_view:"business_view_loan?token=",
+  display_request:"display_request?token=",
+  rejectRequest:"reject_request/",
+  acceptRequest: "accepts_request/",
+  business_repayments:"business_finance_repayments/",
+  owner_savings_balance:"loan_owner_savings_balance?token=",
 
+  // loanAccepted: "loanAccepted/",
   showTransaction: "transactions/details",
   saveWallet: "save_wallet/store",
   saveBank: "bank_account/add",
@@ -133,6 +140,8 @@ const serverVars = {
   updateRequest: "updateRequestQuantity/", 
   totalRequestPrice:"totalRequestPrice?token=",
   getAllUsersAutoComplete:"searchGuarantors/",
+  getRegistrationFee: "get_registration_fee",
+  addRegistrationFee: "registration_fee_payment?token=",
 
   // Shareholdings
   addFundShareholdings: "addShareHoldingsFunds?token=",
@@ -380,7 +389,22 @@ export function getConfig(apiName) {
     case "completedLoan":
       return serverVars.baseUrl + serverVars.completedLoan;   
     case "showNonGroupLoan":
-      return serverVars.baseUrl + serverVars.showNonGroupLoan;       
+      return serverVars.baseUrl + serverVars.showNonGroupLoan;
+    case "owner_savings_balance":
+      return serverVars.baseUrl + serverVars.owner_savings_balance;
+
+    case "businessRequest":
+      return serverVars.baseUrl + serverVars.businessRequest;
+    case "business_view":
+      return serverVars.baseUrl + serverVars.business_view; 
+    case "display_request":
+      return serverVars.baseUrl + serverVars.display_request; 
+    case "acceptRequest":
+      return serverVars.baseUrl + serverVars.acceptRequest;
+    case "rejectRequest":
+      return serverVars.baseUrl + serverVars.rejectRequest; 
+    case "business_repayments":
+      return serverVars.baseUrl + serverVars.business_repayments;      
     // case "loanAccepted":
     //   return serverVars.baseUrl + serverVars.loanAccepted; 
 
@@ -468,7 +492,12 @@ export function getConfig(apiName) {
     case "updateRequest":
       return serverVars.baseUrl + serverVars.updateRequest; 
     case "totalRequestPrice":   
-      return serverVars.baseUrl + serverVars.totalRequestPrice;   
+      return serverVars.baseUrl + serverVars.totalRequestPrice;        
+    case "getRegistrationFee":
+      return serverVars.baseUrl + serverVars.getRegistrationFee; 
+    case "addRegistrationFee":
+      return serverVars.baseUrl + serverVars.addRegistrationFee + user.token;
+
         // Shareholdings api
     case "addFundShareholdings":
       return serverVars.baseUrl + serverVars.addFundShareholdings + user.token;

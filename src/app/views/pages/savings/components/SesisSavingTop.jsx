@@ -35,7 +35,8 @@ class SesisSavingTop extends Component{
       loading: true,
       wallet_bal: 0.00,
       balanceRegular:0.00,
-      balance:0.00,
+      balance:0.00,      
+      loan_amount:0.00,
     };
 
     const requestOptions = {
@@ -95,7 +96,27 @@ class SesisSavingTop extends Component{
         if (error === "Unauthorized") {
           this.props.timeOut()
         }
-      });     
+      });  
+      fetch(getConfig('owner_savings_balance'), requestOptions)
+      .then(async response => {
+      const data = await response.json();
+      if (!response.ok) {
+        console.log(response)
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+      }
+      console.log(data)
+      if(data.success == false  || data.length == 0 ){
+        this.setState({ loan_amount: 0});
+      }else{
+        this.setState({loan_amount: data, loading:false });
+      }  
+    })  
+    .catch(error => {
+      if (error === "Unauthorized") {
+        this.props.timeOut()
+      }
+    });  
 }
 
   callback = (response) => {
@@ -107,7 +128,7 @@ class SesisSavingTop extends Component{
 
   render(){
     let {theme} = this.props
-    const {balance,wallet_bal, balanceRegular,loading} = this.state
+    const {balance,wallet_bal,loan_amount, balanceRegular,loading} = this.state
     return (
       <div className="">
         {/* <div className="mb-sm-30">
@@ -131,7 +152,11 @@ class SesisSavingTop extends Component{
                     <div className="ml-3">
                         <Typography className="text-white" variant="text-16">Regular Savings</Typography>
                         <h6 className="m-0 mt-1 text-white text-22">{numberFormat(balanceRegular)}</h6>
+                    </div>                   
                     </div>
+                    <div className="ml-3 pl-12">
+                        <Typography className="text-white" variant="text-16">Avaliable Balance</Typography>
+                        <h6 className="m-0 mt-1 text-white text-22">{numberFormat(loan_amount)}</h6>
                     </div>
                 </Card>
             </Grid>    

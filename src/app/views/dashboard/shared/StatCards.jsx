@@ -121,13 +121,17 @@ class StatCards extends Component {
                 <Typography className="text-white" variant="text-16">Regular Savings</Typography>
                 <h6 className="m-0 mt-1 text-white text-22">{this.props.regular_balance}</h6>
               </div>
-            </div>          
+            </div>  
+              <div className="ml-3 pl-12 py-5">
+                <Typography className="text-white" variant="text-16">Avaliable Savings</Typography>
+                <h6 className="m-0 mt-1 text-white text-22">{this.props.loan_avail_amount}</h6>
+              </div>        
             </CardContent>
-              <CardMedia
+              {/* <CardMedia
              style={{height: 80,}}
             image={bgimage1}
             title="Contemplative Reptile"
-          />
+          /> */}
         </CardActionArea>
           </Card>
           </Link>

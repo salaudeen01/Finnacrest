@@ -50,7 +50,11 @@ export const userService = {
   resendLoanNotification,
   replaceMember,
   removeMember,
-
+  
+  businessRequest,
+  acceptRequest,
+  rejectRequest,
+  business_repayments,
   // other transactions
   saveInvestment,
   getInvestments,
@@ -74,6 +78,7 @@ export const userService = {
   verifyWithdraw,
   confirmWithdraw,
 
+  addRegistrationFee,
   // Shareholdings
   addFundShareholdings,
   updateUserCart,
@@ -335,6 +340,48 @@ function addLoanRepayment(data) {
   };
   return fetch(getConfig("addLoanRepayment")+data.id, requestOptions ).then(handleResponse);
 }
+
+function businessRequest(fd) {
+  const headers =  { ...authHeader(), "Content-Type": "application/json" }
+  return axios.post(getConfig("businessRequest"), fd, {headers}).then((res) => {
+    if(res.data == "Unauthorized"){
+        history.push("/sign-in");
+    }
+    return res.data
+  })
+}
+function rejectRequest(id) {
+  
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    // body: JSON.stringify(id),
+  };
+  return fetch(getConfig("rejectRequest")+id, requestOptions ).then(handleResponse);
+}
+function acceptRequest(id) {
+  
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    // body: JSON.stringify(data),
+  };
+  return fetch(getConfig("acceptRequest")+id, requestOptions ).then(handleResponse);
+}
+function business_repayments(data) {
+  let user = JSON.parse(localStorage.getItem('user'));
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+    console.log(data.id)
+    return fetch(
+      getConfig("business_repayments") + data.id+"?token="+user.token,
+      requestOptions
+    ).then(handleResponse);
+}
+
 
 // Resend loan group Notification
 function resendGroupNotification(id) {
@@ -724,6 +771,18 @@ function checkOut(data) {
     handleResponse
   );
 }
+
+function addRegistrationFee(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(getConfig("addRegistrationFee"), requestOptions).then(
+    handleResponse
+  );
+}
+
 // Shareholdings methods
 function addFundShareholdings(data) {
   const requestOptions = {
