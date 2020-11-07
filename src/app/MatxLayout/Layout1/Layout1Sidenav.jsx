@@ -111,19 +111,21 @@ class Layout1Sidenav extends Component {
     let { user } = this.props;
     const {profile_image, name} = this.state
     return (
-      <div className="sidenav__user" style={{backgroundColor:"#191f38"}}>
-        <div className="username-photo">
+      <div className="sidenav__user" 
+      // style={{backgroundColor:"#191f38"}}
+      >
+        {/* <div className="username-photo">
           <img src={profile_image == ""? "/assets/images/dummy.jpg": profile_image} alt="user" />
-        </div>
-        <div className="ml-4">
-          <span className="username">
+        </div> */}
+        <div className="ml-4 text-center" style={{color:'#222943'}}>
+          {/* <span className="username"> */}
             {/* <Icon>lock</Icon> */}
-            {name}
-          </span>
+            {/* {name} */}
+          {/* </span> */}
           <div className="user__menu">
             {/* <MatxMenu
               menuButton={ */}
-                <Tooltip title="Settings">
+                {/* <Tooltip title="Settings">
                   <Link to="/settings" >
                     <IconButtonWhite
                       aria-label="Delete"
@@ -132,7 +134,7 @@ class Layout1Sidenav extends Component {
                       <IconSmall> settings </IconSmall>
                     </IconButtonWhite>
                   </Link>
-                </Tooltip>
+                </Tooltip> */}
                {/* }
             > */}
               {/* <MenuItem className="flex items-center">
@@ -149,7 +151,7 @@ class Layout1Sidenav extends Component {
               </MenuItem>
             </MatxMenu> */}
 
-            <Tooltip title="Home">
+            {/* <Tooltip title="Home">
               <Link to="/dashboard" >
                 <IconButtonWhite aria-label="Delete" className="" size="small">
                   <IconSmall>home</IconSmall>
@@ -165,10 +167,10 @@ class Layout1Sidenav extends Component {
               >
                 <IconSmall>exit_to_app</IconSmall>
               </IconButtonWhite>
-            </Tooltip>
+            </Tooltip> */}
           </div>
-        </div>
-      </div>
+        </div> <hr/>
+      </div> 
     );
   };
 

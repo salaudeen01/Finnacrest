@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { Grid, Card, Button,Typography, IconButton, CircularProgress, Toolbar, AppBar, Dialog, Hidden, Icon, Fab, MenuItem, TextField, Checkbox} from '@material-ui/core';
+import { Grid, Card, Button,Typography, IconButton, CircularProgress, Toolbar, AppBar, Dialog, Hidden, Icon, Fab, MenuItem, TextField, Checkbox, Slide} from '@material-ui/core';
 import CloseIcon from "@material-ui/icons/Close";
 import { Breadcrumb } from "matx";
 import AccountProfile from './components/AccountProfile';
@@ -18,6 +18,10 @@ import {Link} from "react-router-dom"
 import RemoveCard from 'app/views/dashboard/shared/RemoveCard';
 import PayOption from 'app/views/dashboard/shared/PayOption';
 import AddCardDialog from 'app/views/dashboard/shared/AddCardDialog';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 
 class Settings extends Component{
 constructor(props){
@@ -458,10 +462,13 @@ render(){
         <AddCardDialog callback={this.callback} showSave={showSave} handleClose={this.handleClose} add_card={add_card} handleChangeCard={this.handleChangeCard}/>
 
         {/* Change Password Dialog Start */}
-        <Dialog
+        <Dialog 
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
           open={editPassword}
           onClose={this.closeEditPassword}>
-          <AppBar color="secondary" style={{position: "relative"}}>
+          <AppBar color="primary" style={{position: "relative"}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -536,10 +543,13 @@ render(){
         {/* Change Password Dialog End */}
 
         {/*Bank Details Dialog Start */}
-        <Dialog
+        <Dialog 
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
           open={editBankDetails}
           onClose={this.closeEditBankDetails}>
-          <AppBar color="secondary" style={{position: "relative"}}>
+          <AppBar color="primary" style={{position: "relative"}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -625,10 +635,13 @@ render(){
         {/* Bank Details Dialog End */}
 
         {/* withdraw Dialog start */}
-        <Dialog
+        <Dialog 
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
           open={withdrawFund}
           onClose={this.closeWithdraw}>
-          <AppBar color="secondary" style={{position: "relative"}}>
+          <AppBar color="primary" style={{position: "relative"}}>
             <Toolbar>
               <IconButton
                 edge="start"

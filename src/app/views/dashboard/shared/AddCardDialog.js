@@ -1,17 +1,24 @@
 import React from 'react'
-import { Dialog, AppBar, Toolbar, IconButton, Typography, Card, Grid, Checkbox } from '@material-ui/core'
+import { Dialog, AppBar, Toolbar, IconButton, Typography, Card, Grid, Checkbox, Slide } from '@material-ui/core'
 import PayOption from './PayOption'
 import CloseIcon from "@material-ui/icons/Close";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { numberFormat } from 'app/config/config';
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
+
 const AddCardDialog = ({showSave, handleClose, add_card, callback}) => {
     return (
         // {/* Add card and pay to wallet Start */}
         <Dialog
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
           open={showSave}
           onClose={handleClose} >
-          <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+          <AppBar style={{position: "relative"}} color='primary'>
             <Toolbar>
               <IconButton
                 edge="start"

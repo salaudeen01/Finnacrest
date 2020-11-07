@@ -25,6 +25,7 @@ import {
   AppBar,
   Dialog,
   CircularProgress,
+  Slide,
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -38,6 +39,10 @@ import PayOption from "app/views/dashboard/shared/PayOption";
 import Loading from "matx/components/MatxLoading/MatxLoading";
 import bgimage from "../../../../assets/sesis8.jpeg"
 import dateFormat from "dateformat";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class Shareholdings extends Component {
   constructor(props) {
@@ -505,8 +510,11 @@ class Shareholdings extends Component {
         )}
       </div>
         {/* Quick Save Dialog Start */}
-        <Dialog open={showSave} onClose={this.handleCloseQuickSave}>
-          <AppBar style={{ position: "relative", backgroundColor: "#0d60d8" }}>
+        <Dialog open={showSave} onClose={this.handleCloseQuickSave}
+              TransitionComponent={Transition}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description">
+          <AppBar style={{ position: "relative", }} color='primary'>
             <Toolbar>
               <IconButton
                 edge='start'
@@ -601,8 +609,11 @@ class Shareholdings extends Component {
         {/* Quick Save Dialog End */}
 
         {/* Edit Dialog start */}
-        <Dialog open={showEdit} onClose={this.handleCloseEdit}>
-          <AppBar style={{ position: "relative", backgroundColor: "#0d60d8" }}>
+        <Dialog open={showEdit} onClose={this.handleCloseEdit}
+              TransitionComponent={Transition}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description">
+          <AppBar style={{ position: "relative", }} color='primary'>
             <Toolbar>
               <IconButton
                 edge='start'
@@ -744,8 +755,11 @@ class Shareholdings extends Component {
         {/* Edit dialog end */}
 
         {/* Create Dialog start */}
-        <Dialog open={show} onClose={this.handleClose}>
-          <AppBar style={{ position: "relative", backgroundColor: "#0d60d8" }}>
+        <Dialog open={show} onClose={this.handleClose}
+              TransitionComponent={Transition}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description">
+          <AppBar style={{ position: "relative", }} color='primary'>
             <Toolbar>
               <IconButton
                 edge='start'
@@ -887,8 +901,11 @@ class Shareholdings extends Component {
         {/* Create dialog end */}
 
         {/* withdraw Dialog start */}
-        <Dialog open={showWithdraw} onClose={this.handleCloseWithdraw}>
-          <AppBar style={{ position: "relative", backgroundColor: "#0d60d8" }}>
+        <Dialog open={showWithdraw} onClose={this.handleCloseWithdraw}
+              TransitionComponent={Transition}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description">
+          <AppBar style={{ position: "relative", }} color='primary'>
             <Toolbar>
               <IconButton
                 edge='start'

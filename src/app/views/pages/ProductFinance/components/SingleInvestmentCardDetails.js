@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import { Typography, Grid, } from '@material-ui/core';
 import {numberFormat} from '../../../../config/config';
 import { Grid, Card, Button, ButtonGroup, CardMedia, Typography, IconButton, Toolbar, AppBar, Dialog,
-         MenuItem, TextField, Divider, }
+         MenuItem, TextField, Divider, Slide, }
  from '@material-ui/core';
  import { withRouter } from "react-router-dom";
  import { connect } from "react-redux";
@@ -12,6 +12,11 @@ import { Grid, Card, Button, ButtonGroup, CardMedia, Typography, IconButton, Too
  import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
  import dateFormat from "dateformat"
 import { Link } from 'react-router-dom';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+
 class SingleInvestmentCardDetails extends Component {
     constructor(props){
         super(props)
@@ -113,10 +118,13 @@ class SingleInvestmentCardDetails extends Component {
                     ))}
       
             <Dialog
+              TransitionComponent={Transition}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description"
                 scroll="body"
                 open={showCart}
                 onClose={this.handleCartClose}>
-                    <AppBar color="default" style={{position: "relative"}}>
+                    <AppBar color="primary" style={{position: "relative"}}>
                     <Toolbar>
                         <IconButton
                         edge="start"

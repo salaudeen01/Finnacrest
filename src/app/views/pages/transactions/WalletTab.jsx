@@ -23,13 +23,18 @@ import {
   Toolbar,
   AppBar,
   Dialog,
-  Grid, Card, Button, TextField, MenuItem, Checkbox, DialogActions
+  Grid, Card, Button, TextField, MenuItem, Checkbox, DialogActions, Slide
 } from "@material-ui/core";
 import "date-fns";
 import PayOption from "app/views/dashboard/shared/PayOption";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import swal from "sweetalert";
 import ModalForm from "./ModalForm";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
+
 class WalletTab extends Component{
   constructor(props){
     super(props)
@@ -376,11 +381,14 @@ handleCloseConfirmWithdraw() {
       }
       </div>:
       <></>}
-      <Dialog
+      <Dialog      
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
         open={show}
         scroll="body"
         onClose={this.handleClose} >
-        <AppBar style={{position: "relative"}} color="secondary">
+        <AppBar style={{position: "relative"}} color="primary">
           <Toolbar>
             <IconButton
               edge="start"
@@ -454,10 +462,13 @@ handleCloseConfirmWithdraw() {
         </Card>
       </Dialog>
       {/* withdraw Dialog start */}
-      <Dialog
+      <Dialog      
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
         open={show_withdraw}
         onClose={this.handleCloseWithdraw}>
-          <AppBar style={{position: "relative"}} color="secondary">
+          <AppBar style={{position: "relative"}} color="primary">
             <Toolbar>
               <IconButton
                 edge="start"
@@ -571,6 +582,9 @@ handleCloseConfirmWithdraw() {
 
         {/* Loan repayment Dialog Start */}
       <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
           open={modal}
           fullWidth={true}
           maxWidth={"sm"}
@@ -586,7 +600,7 @@ handleCloseConfirmWithdraw() {
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESSI
+                Welcome To SESIS
               </Typography>
             </Toolbar>
           </AppBar>
@@ -635,6 +649,9 @@ handleCloseConfirmWithdraw() {
         {/* Loan repayment Dialog End */}
         {/* Loan repayment Dialog Start */}
       <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
           open={modalForm}
           fullWidth={true}
           maxWidth={"sm"}
@@ -650,7 +667,7 @@ handleCloseConfirmWithdraw() {
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESSI
+                Welcome To SESIS
               </Typography>
             </Toolbar>
           </AppBar>
@@ -676,6 +693,9 @@ handleCloseConfirmWithdraw() {
         {/* Loan repayment Dialog End */}
         {/* Loan repayment Dialog Start */}
       <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
           open={modalFee}
           fullWidth={true}
           maxWidth={"sm"}
@@ -691,7 +711,7 @@ handleCloseConfirmWithdraw() {
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESSI
+                Welcome To SESIS
               </Typography>
             </Toolbar>
           </AppBar>
@@ -707,9 +727,12 @@ handleCloseConfirmWithdraw() {
 
       {/* confirm withdraw Dialog start */}
       <Dialog
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
         open={this.props.savings.proceed}
         onClose={()=>console.log("close")}>
-          <AppBar style={{position: "relative"}} color="secondary">
+          <AppBar style={{position: "relative"}} color="primary">
             <Toolbar>
               <IconButton
                 edge="start"

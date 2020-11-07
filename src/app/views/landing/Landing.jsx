@@ -32,7 +32,7 @@ class Landing extends Component {
         }}
       >
         <AppAppBar user={this.state.user} />
-        <div className='py-4' />
+        <div className='' />
         <Grid container>
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <Section1 />

@@ -12,8 +12,12 @@ import { withStyles } from "@material-ui/styles";
 import Lottie from 'react-lottie';
 import cube from "../../../../lottiefiles/26519-cube-spinning";
 import Loading from "matx/components/MatxLoading/MatxLoading";
-import { AppBar, Button, Card, Dialog, DialogActions, Grid, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Button, Card, Dialog, DialogActions, Grid, IconButton, Slide, Toolbar, Typography } from "@material-ui/core";
 import ModalForm from "./ModalForm";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 
 class Transaction extends Component {
   constructor(props) {
@@ -132,6 +136,9 @@ class Transaction extends Component {
 
       {/* Loan repayment Dialog Start */}
       <Dialog
+              TransitionComponent={Transition}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description"
           open={modal}
           fullWidth={true}
           maxWidth={"sm"}
@@ -147,7 +154,7 @@ class Transaction extends Component {
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESSI
+                Welcome To SESIS
               </Typography>
             </Toolbar>
           </AppBar>
@@ -197,6 +204,9 @@ class Transaction extends Component {
 
         {/* Loan repayment Dialog Start */}
       <Dialog
+              TransitionComponent={Transition}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description"
           open={modalForm}
           fullWidth={true}
           maxWidth={"sm"}
@@ -212,7 +222,7 @@ class Transaction extends Component {
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESSI
+                Welcome To SESIS
               </Typography>
             </Toolbar>
           </AppBar>
@@ -238,6 +248,9 @@ class Transaction extends Component {
         {/* Loan repayment Dialog End */}
         {/* Loan repayment Dialog Start */}
       <Dialog
+              TransitionComponent={Transition}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description"
           open={modalFee}
           fullWidth={true}
           maxWidth={"sm"}
@@ -253,7 +266,7 @@ class Transaction extends Component {
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESSI
+                Welcome To SESIS
               </Typography>
             </Toolbar>
           </AppBar>

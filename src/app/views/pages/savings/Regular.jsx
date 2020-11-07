@@ -9,7 +9,8 @@ import { Grid, Card, Button, ButtonGroup, Switch, IconButton, TextField, MenuIte
   AppBar,
   Dialog,
   CircularProgress,
-  Checkbox} from "@material-ui/core";
+  Checkbox,
+  Slide} from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
@@ -23,6 +24,10 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 import dateFormat from "dateformat"
 import PayCard from "app/views/dashboard/shared/PayCard";
 import AddCardDialog from "app/views/dashboard/shared/AddCardDialog";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class Regular extends Component{
   constructor(props){
@@ -472,10 +477,13 @@ handleClose() {
         </>}
         {/* Quick Save Dialog Start */}
         <Dialog
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description" 
           open={showSave}
           onClose={this.handleCloseQuickSave}
           scroll="body">
-        <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+        <AppBar style={{position: "relative",}} color='primary'>
           <Toolbar>
             <IconButton
               edge="start"
@@ -571,10 +579,13 @@ handleClose() {
         {/* Quick Save Dialog End */}
 
         {/* Edit Dialog start */}
-        <Dialog
+        <Dialog 
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
         open={showEdit}
         onClose={this.handleCloseEdit}>
-          <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+          <AppBar style={{position: "relative",}} color='primary'>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -710,10 +721,13 @@ handleClose() {
 
         {/* Create Dialog start */}
         <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description" 
         open={show}
         onClose={this.handleClose}
         scroll="body">
-        <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+        <AppBar style={{position: "relative",}} color='primary'>
           <Toolbar>
             <IconButton
               edge="start"
@@ -836,11 +850,14 @@ handleClose() {
         {/* Create dialog end */}
         
         {/* withdraw Dialog start */}
-        <Dialog
+        <Dialog         
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
           open={showWithdraw}
           onClose={this.handleCloseWithdraw}
         >
-                <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+                <AppBar style={{position: "relative",}} color='primary'>
                   <Toolbar>
                     <IconButton
                       edge="start"

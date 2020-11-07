@@ -29,7 +29,7 @@ export default function CustomCarousel(props)
     return (
         <Carousel indicators={false}>
             {
-                items.map( (item, i) => <img key={i} src={item.img} style={{borderRadius:4}}/> )
+                items.map( (item, i) => <img key={i} src={item.img} style={{borderRadius:4, width:517,height:171}}/> )
             }
         </Carousel>
     )

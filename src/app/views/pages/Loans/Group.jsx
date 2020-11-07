@@ -572,6 +572,7 @@ handleChangeLoan(event) {
   }  
 }
 
+// OVER PAYMENT
 handleChangeRepay(event) {
   const { name, value } = event.target;
   const { repay_data, loan_bal } = this.state;

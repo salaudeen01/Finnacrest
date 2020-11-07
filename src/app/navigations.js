@@ -66,7 +66,7 @@ export const navigations = [
   // },
   {
     name: "Save",
-    icon: "payments",
+    icon: "business_center",
     path: "/savings-tab/regular"
   },
   {
@@ -81,7 +81,7 @@ export const navigations = [
   },
   {
     name: "Business Financing",
-    icon: "money",
+    icon: "business",
     path: "/business-fianance",
   },
   {
@@ -117,7 +117,7 @@ export const navigations = [
   },
   {
     name: "Account",
-    icon: "settings",
+    icon: "account_box",
     path: "/settings",
   },
 ];

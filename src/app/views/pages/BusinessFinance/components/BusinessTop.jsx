@@ -18,10 +18,15 @@ import {
   Toolbar,
   AppBar,
   Dialog,
-  Grid, Card, Button, TextField, MenuItem, Checkbox
+  Grid, Card, Button, TextField, MenuItem, Checkbox, Slide
 } from "@material-ui/core";
 import "date-fns";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 class BusinessTop extends Component{
   constructor(props){
     super(props)
@@ -143,33 +148,21 @@ class BusinessTop extends Component{
     const {balance, data, showLoan, balanceRegular,loading,savings} = this.state
     return (
       <div className="">
-        {/* <div className="mb-sm-30">
-          <Breadcrumb
-            routeSegments={[
-              { name: "Wallet" }
-            ]}
-          />
-        </div> */}
-        {/* {loading ?
-        <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-          <Loading />
-        </div>:
-        <> */}
         <div className="pb-2 pt-7 px-8 " style={{background:"#222943"}}>      
-        <Grid container spacing={3} className="mb-3">
-               
-            <Grid item xs={12} sm={6} md={6}>
-                <Card className="play-card p-sm-24" style={{backgroundColor:"#1999ff",height:171}} elevation={6}>
-                    <div className="flex items-cente p-3">
-                    <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>track_changes</Icon>
-                    <div className="ml-3">
-                        <Typography className="text-white" variant="text-16">Shareholdings</Typography>
-                        <h6 className="m-0 mt-1 text-white text-22"> {numberFormat(balance)} </h6>
-                    </div>
-                    </div>
-                </Card>
-            </Grid>
-            <Grid item lg={6} md={6} xs={12} sm={6}>
+            <Grid container spacing={3} className="mb-3">
+                  
+                <Grid item xs={12} sm={6} md={6}>
+                    <Card className="play-card p-sm-24" style={{backgroundColor:"#1999ff",height:171}} elevation={6}>
+                        <div className="flex items-cente p-3">
+                        <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>track_changes</Icon>
+                        <div className="ml-3">
+                            <Typography className="text-white" variant="text-16">Shareholdings</Typography>
+                            <h6 className="m-0 mt-1 text-white text-22"> {numberFormat(balance)} </h6>
+                        </div>
+                        </div>
+                    </Card>
+                </Grid>
+                <Grid item lg={6} md={6} xs={12} sm={6}>
                     <div className="flex items-cente">
                   <CustomCarousel />
               </div>
@@ -193,8 +186,12 @@ class BusinessTop extends Component{
     {/* Quick Loan Dialog Start */}
     <Dialog
       open={showLoan}
-      onClose={this.handleCloseLoan}>
-      <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+      onClose={this.handleCloseLoan}      
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
+      >
+      <AppBar style={{position: "relative"}} color="primary">
         <Toolbar>
           <IconButton
             edge="start"

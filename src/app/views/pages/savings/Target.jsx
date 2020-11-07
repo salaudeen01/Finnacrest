@@ -10,7 +10,8 @@ import { Grid, Card, Button, Switch, IconButton, TextField, MenuItem, ButtonGrou
   Toolbar,
   AppBar,
   Dialog,
-  Checkbox,} from "@material-ui/core";
+  Checkbox,
+  Slide,} from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
@@ -26,6 +27,10 @@ import PayOption from "app/views/dashboard/shared/PayOption";
 import Loading from "matx/components/MatxLoading/MatxLoading";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import AddCardDialog from "app/views/dashboard/shared/AddCardDialog";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class Target extends Component{
   constructor(props){
@@ -555,10 +560,13 @@ completeTab(){
         </>}
         {/* Quick Save Dialog Start */}
         <Dialog
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
           open={showSave}
           onClose={this.handleCloseQuickSave}
           scroll="body">
-          <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+          <AppBar style={{position: "relative",}} color='primary'>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -669,10 +677,13 @@ completeTab(){
 
         {/* Create Dialog start */}
         <Dialog
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
         scroll="body"
         open={show}
         onClose={this.handleClose}>
-        <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+        <AppBar style={{position: "relative",}} color='primary'>
           <Toolbar>
             <IconButton
               edge="start"
@@ -829,10 +840,13 @@ completeTab(){
         
         {/* Edit Dialog start */}
         <Dialog
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
           scroll="body"
           open={showEdit}
           onClose={this.handleCloseEdit}>
-          <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+          <AppBar style={{position: "relative",}} color='primary'>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -1000,10 +1014,13 @@ completeTab(){
 
         {/* View Dialog start */}
         <Dialog
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
           open={showView}
           onClose={this.handleCloseView}
         >
-            <AppBar color="primary" style={{position: "relative", backgroundColor:"#0d60d8"}}>
+            <AppBar style={{position: "relative",}} color='primary'>
               <Toolbar>
                 <IconButton
                   edge="start"

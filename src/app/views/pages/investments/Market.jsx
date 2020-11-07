@@ -20,6 +20,9 @@ import PayCard from 'app/views/dashboard/shared/PayCard';
 import AddCardDialog from "app/views/dashboard/shared/AddCardDialog";
 import swal from 'sweetalert'
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
  class Market extends Component {
   constructor(props){

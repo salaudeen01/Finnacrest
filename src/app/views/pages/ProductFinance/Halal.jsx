@@ -2,7 +2,7 @@ import React from 'react';
 import { Breadcrumb, SimpleCard } from "matx";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { Grid, Card, Button, Typography, IconButton, Toolbar, AppBar, Dialog,CardMedia,
-  CardActionArea, MenuItem, TextField, CardActions } from '@material-ui/core';
+  CardActionArea, MenuItem, TextField, CardActions, Slide } from '@material-ui/core';
 import CloseIcon from "@material-ui/icons/Close";
 import MarketCard from './components/MarketCard';
 import MarketCard2 from './components/MarketCard2';
@@ -26,6 +26,9 @@ import {
 } from 'react-router-dom';
 import Paginate from '../transactions/paginate';
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
  class Halal extends Component {
   constructor(props){
@@ -507,11 +510,14 @@ tabbed = (id) => {
       </div>
         {/* View Dialog start */}
 
-        <Dialog
+        <Dialog 
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
           open={showView}
           scroll="body"
           onClose={this.handleCloseView}>
-            <AppBar color="secondary" style={{position: "relative"}}>
+            <AppBar color="primary" style={{position: "relative"}}>
               <Toolbar>
                 <IconButton
                   edge="start"
@@ -632,11 +638,14 @@ tabbed = (id) => {
         
         {/* Invest Dialog start */}
         
-        <Dialog
+        <Dialog 
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
           scroll="body"
           open={showInvest}
           onClose={this.handleCloseInvest}>
-            <AppBar color="secondary" style={{position: "relative"}}>
+            <AppBar color="primary" style={{position: "relative"}}>
               <Toolbar>
                 <IconButton
                   edge="start"
@@ -669,7 +678,10 @@ tabbed = (id) => {
         {/* Invest dialog end */}
 
         {/* Quick Upload product */}
-        <Dialog
+        <Dialog 
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
           open={showSave}
           onClose={this.handleCloseRequest}
           scroll="body">

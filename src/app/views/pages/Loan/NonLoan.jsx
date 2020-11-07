@@ -10,7 +10,8 @@ import { Grid, Card, Button, Switch, IconButton, TextField, MenuItem, ButtonGrou
   Toolbar,
   AppBar,
   Dialog,
-  Checkbox,} from "@material-ui/core";
+  Checkbox,
+  Slide,} from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
@@ -29,6 +30,10 @@ import TargetTransactionCard from "../Shareholdings/components/TargetTransaction
 import LoanTable from "./components/LoanTable";
 import GuaranteeDetails from "./components/GuaranteeDetails";
 import ComLoanTable from "./components/ComLoanTable";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class NonLoan extends Component{
   constructor(props){
@@ -365,10 +370,13 @@ completeTab(){
         </>}
         {/* Quick Save Dialog Start */}
         <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
           open={showSave}
           onClose={this.handleCloseQuickSave}
           scroll="body">
-          <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+          <AppBar style={{position: "relative",}} color='primary'>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -390,6 +398,9 @@ completeTab(){
 
          {/* Loan Manage Dialog Start */}
         <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
           open={showView}
           onClose={this.handleClose}
           scroll="body">
@@ -428,10 +439,13 @@ completeTab(){
             
         {/* Edit Dialog start */}
         <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
           scroll="body"
           open={showEdit}
           onClose={this.handleCloseEdit}>
-          <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+          <AppBar style={{position: "relative",}} color='primary'>
             <Toolbar>
               <IconButton
                 edge="start"

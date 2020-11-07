@@ -3,7 +3,7 @@ import React,{Component} from "react";
 import {Link} from "react-router-dom"
 import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import {Typography, Grid, AppBar, Dialog, IconButton, Toolbar, Card, Avatar, List, ListItemAvatar, ListItem, MenuItem, TextField, ListItemText, Checkbox } from "@material-ui/core";
+import {Typography, Grid, AppBar, Dialog, IconButton, Toolbar, Card, Avatar, List, ListItemAvatar, ListItem, MenuItem, TextField, ListItemText, Checkbox, Slide } from "@material-ui/core";
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import DoneAll from '@material-ui/icons/DoneAll';
 import CloseIcon from "@material-ui/icons/Close";
@@ -19,6 +19,10 @@ import CompleteRequest from "./components/CompleteRequest";
 import swal from "sweetalert";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import PayOption from "app/views/dashboard/shared/PayOption";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 
 class MyBusinessLoan extends Component {
   constructor(props){
@@ -399,8 +403,12 @@ render(){
           <Dialog
               open={showSave}
               onClose={this.handleCloseQuickSave}
-              scroll="body">
-            <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+              scroll="body"
+              TransitionComponent={Transition}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description"
+              >
+            <AppBar style={{position: "relative"}} color="primary">
               <Toolbar>
                 <IconButton
                   edge="start"

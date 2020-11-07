@@ -3,7 +3,7 @@ import React,{Component} from "react";
 import {Link} from "react-router-dom"
 import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import {Typography, Grid, AppBar, Dialog, IconButton, Toolbar, Card, Avatar, List, ListItemAvatar, ListItem, MenuItem, TextField, ListItemText, Checkbox, DialogActions } from "@material-ui/core";
+import {Typography, Grid, AppBar, Dialog, IconButton, Toolbar, Card, Avatar, List, ListItemAvatar, ListItem, MenuItem, TextField, ListItemText, Checkbox, DialogActions, Icon, Slide } from "@material-ui/core";
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import DoneAll from '@material-ui/icons/DoneAll';
 import CloseIcon from "@material-ui/icons/Close";
@@ -30,6 +30,10 @@ import AddCardDialog from "app/views/dashboard/shared/AddCardDialog";
 import CustomTab from "./components/CustomTab";
 import { Autocomplete } from "@material-ui/lab";
 import ModalForm from "../transactions/ModalForm";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class Loan extends Component {
   constructor(props){
@@ -134,6 +138,7 @@ class Loan extends Component {
       showrepayment:false,
       showManageLoan:false,
       isFetching:true,
+      loan_avail_amount:0,
       group_id: "",
       request_id:"",
       code:"",
@@ -291,6 +296,20 @@ componentDidMount() {
       console.log(data)
       this.setState({ loading: false, registrationFee:data});
     })
+    fetch(getConfig('owner_savings_balance'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+      console.log(response)
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }
+    if(data.success == false  || data.length == 0 ){
+      this.setState({ loan_avail_amount: 0});
+    }else{
+      this.setState({loan_avail_amount: data, loading:false });
+}  
+})  
 }
 
 fetchLoanGroupDetails=(id)=>{
@@ -953,7 +972,7 @@ render(){
      Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage,
       showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, 
       group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, modal, showManageLoan, 
-      modalForm, registrationFee, modalFee, group_members, group_details, loading, repay_data} = this.state
+      modalForm, loan_avail_amount, registrationFee, modalFee, group_members, group_details, loading, repay_data} = this.state
   return (
     <div className="m-sm-30">
      { modal == false ?
@@ -969,38 +988,43 @@ render(){
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
           <Loading />
         </div>:
-        <>
-        <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderRadius:10}} >
-          <Grid container spacing={5} direction="row" justify="space-between">
-              <Grid item lg={9} md={9} sm={12} xs={12}>
-                {group_table ?
-                <Link to="#"><CustomCarousel /></Link>:
-                <TodoList />}
-              </Grid>
-          </Grid>
-          
-          <Grid container spacing={1}>              
-              <Grid item lg={3} md={12} sm={12} xs={12}>
-              {/* <ButtonGroup color="primary" aria-label="outlined primary button group"> */}
+        <div className="pb-2 pt-7 px-8 " style={{background:"#222943"}}>      
+          <Grid container spacing={3} className="mb-3">
+            <Grid item xs={12} sm={6} md={6}>
+                <Card className="play-card p-sm-24" style={{backgroundColor:"#1999ff",height:171}} elevation={6}>
+                    <div className="flex items-cente p-3">
+                    <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>track_changes</Icon>
+                    <div className="ml-3">
+                        <Typography className="text-white" variant="text-16">Guarantable Amount</Typography>
+                        <h6 className="m-0 mt-1 text-white text-22"> {numberFormat(loan_avail_amount)} </h6>
+                    </div>
+                    </div>
+                </Card>
+            </Grid>
+            <Grid item lg={6} md={6} xs={12} sm={6}>
+              <div className="flex items-cente">
+                      <CustomCarousel />
+              </div>
+            </Grid> 
+              <Grid item lg={5} md={12} sm={12} xs={12}>
                 <Button className="uppercase"
-                  size="small"
+                  size="large"
                   variant="contained"
-                  style={{backgroundColor:"#222943", color:"white"}}
+                  style={{backgroundColor:"#1999ff", color:"white"}}
                   onClick={this.handleCreateGroup}>
                    Create Group
                 </Button>
                 <Button className="uppercase"
-                  size="small"
+                  size="large"
                   variant="outlined"
                   style={{backgroundColor:"#04956a",color:"white"}}
                   onClick={this.handleCreateLoan}>
                    Request Loan
                 </Button>
-        {/* </ButtonGroup> */}
               </Grid>
-          </Grid>
-      </div>
-        </>}
+        </Grid>
+        </div>         
+      }
         <CustomTab />
       <AddCardDialog callback={this.callback} showSave={showSave} 
         handleClose={this.handleClose} add_card={add_card} />
@@ -1011,8 +1035,13 @@ render(){
     {/* Quick Loan Dialog Start */}
     <Dialog
       open={showLoan}
-      onClose={this.handleCloseLoan}>
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      onClose={this.handleCloseLoan}
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description">
+      <AppBar style={{position: "relative"}}
+      color="primary"      
+      >
         <Toolbar>
           <IconButton
             edge="start"
@@ -1049,6 +1078,20 @@ render(){
                 <TextField
                 className="mb-4 w-full"
                   select
+                  label="Select Payment Duration"
+                  name="payment_duration"
+                  value={data.payment_duration}
+                  onChange={this.handleChangeLoan}
+                  // helperText="Please select frequency"
+                >
+                    <MenuItem value="">Select Payment Duration</MenuItem>
+                    <MenuItem value="Daily">1</MenuItem>
+                    <MenuItem value="Weekly"> 2</MenuItem>
+                    <MenuItem value="Monthly"> 3 </MenuItem>
+                </TextField>
+                <TextField
+                className="mb-4 w-full"
+                  select
                   label="Select Frequency"
                   name="frequency"
                   value={data.frequency}
@@ -1060,7 +1103,7 @@ render(){
                     <MenuItem value={"Weekly"}> Weekly</MenuItem>
                     <MenuItem value={"Monthly"}> Monthly </MenuItem>
                 </TextField>
-                <TextValidator
+                {<TextValidator
                   className="mb-4 w-full"
                   label={data.frequency? data.frequency +" Repayment Amount": "Frequent Repayment" +" Amount"}
                   onChange={this.handleChangeLoan}
@@ -1071,7 +1114,7 @@ render(){
                     "required"
                   ]}
                   errorMessages={["this field is required"]}
-                />
+                />}
                 {data.loan_amount && data.frequency &&
                   <TextValidator
                   className="mb-4 w-full"
@@ -1085,7 +1128,7 @@ render(){
                   ]}
                   errorMessages={["this field is required"]}
                 />}
-                <TextValidator
+                {/* <TextValidator
                   className="mb-4 w-full"
                   onChange={this.handleChangeLoan}
                   type="date"
@@ -1096,7 +1139,7 @@ render(){
                     "required"
                   ]}
                   errorMessages={["this field is required"]}
-                />
+                /> */}
                 <TextField
                  className="mb-4 w-full"
                  select
@@ -1199,8 +1242,13 @@ render(){
     {/* Loan group Dialog Start */}
     <Dialog
       open={showGroup}
-      onClose={this.handleCloseGroup}>
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      onClose={this.handleCloseGroup}      
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description">
+      <AppBar style={{position: "relative"}}
+      color="primary"      
+      >
         <Toolbar>
           <IconButton
             edge="start"
@@ -1375,8 +1423,12 @@ render(){
     <Dialog
       open={showManage}
       onClose={this.handleCloseManage} 
-      scroll="body">
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      scroll="body"
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description">
+      <AppBar style={{position: "relative"}}
+      color="primary">
         <Toolbar>
           <IconButton
             edge="start"
@@ -1421,8 +1473,12 @@ render(){
     <Dialog
       open={showDetails}
       onClose={this.handleCloseDetails} 
-      scroll="body">
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      scroll="body"
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description">
+      <AppBar style={{position: "relative"}}
+      color="primary">
         <Toolbar>
           <IconButton
             edge="start"
@@ -1457,7 +1513,10 @@ render(){
           open={modal}
           fullWidth={true}
           maxWidth={"sm"}
-          onClose={this.handleCloseRepayment} >
+          onClose={this.handleCloseRepayment} 
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description">
           <AppBar style={{position: "relative"}} color="primary">
             <Toolbar>
               <IconButton
@@ -1469,7 +1528,7 @@ render(){
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESSI
+                Welcome To SESIS
               </Typography>
             </Toolbar>
           </AppBar>
@@ -1533,7 +1592,7 @@ render(){
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESSI
+                Welcome To SESIS
               </Typography>
             </Toolbar>
           </AppBar>
@@ -1562,7 +1621,10 @@ render(){
           open={modalFee}
           fullWidth={true}
           maxWidth={"sm"}
-          onClose={this.handleCloseModalFee} >
+          onClose={this.handleCloseModalFee} 
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description">
           <AppBar style={{position: "relative"}} color="primary">
             <Toolbar>
               <IconButton
@@ -1574,7 +1636,7 @@ render(){
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESSI
+                Welcome To SESIS
               </Typography>
             </Toolbar>
           </AppBar>
@@ -1591,8 +1653,12 @@ render(){
     {/* Replace or Invite new Member Dialog Start */}
     <Dialog
       open={showReplace}
-      onClose={this.handleCloseReplace} >
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      onClose={this.handleCloseReplace} 
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description">
+      <AppBar style={{position: "relative"}}
+      color='primary'>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1658,8 +1724,12 @@ render(){
     <Dialog
       open={showManageLoan}
       onClose={this.handleCloseManageLoan}
-      scroll="body">
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      scroll="body"
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description">
+      <AppBar style={{position: "relative"}}
+      color="primary">
         <Toolbar>
           <IconButton
             edge="start"
@@ -1692,8 +1762,12 @@ render(){
     {/* Loan Manage Dialog End */}
 
     {/* Show Group Action Dialog Start */}
-    <Dialog onClose={this.handleCloseAction} aria-labelledby="simple-dialog-title" open={showAction}>
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+    <Dialog onClose={this.handleCloseAction} 
+    aria-labelledby="simple-dialog-title" open={showAction}
+    TransitionComponent={Transition}
+    aria-labelledby="alert-dialog-slide-title"
+    aria-describedby="alert-dialog-slide-description">
+      <AppBar style={{position: "relative"}} color='primary'>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1745,8 +1819,11 @@ render(){
     <Dialog
       open={showLoanApproval}
       onClose={this.handleCloseApproval}
-      scroll="body">
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      scroll="body"
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description">
+      <AppBar style={{position: "relative"}} color="primary">
         <Toolbar>
           <IconButton
             edge="start"

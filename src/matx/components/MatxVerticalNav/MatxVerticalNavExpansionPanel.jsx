@@ -72,15 +72,16 @@ class MatxVerticalNavExpansionPanel extends Component {
           })}
           onClick={this.handleClick}
         >
-          <div className="flex items-center">
+          <div className="block items-center">
             {(icon && <Icon className="align-middle item-icon">{icon}</Icon>)}
             {(iconText && <span className="item-icon icon-text">{iconText}</span>)}
-            <span className="align-middle item-text">{name}</span>
           </div>
           {badge && (
             <div className={`badge bg-${badge.color}`}>{badge.value}</div>
           )}
-          <div
+          <div>
+            <span className="align-middle item-text" style={{listStyleType:'none'}}>{name}</span>
+            <span
             className={
               collapsed
                 ? classes.collapseIcon + " item-arrow"
@@ -88,7 +89,9 @@ class MatxVerticalNavExpansionPanel extends Component {
             }
           >
             <Icon className="align-middle">chevron_right</Icon>
+          </span>
           </div>
+          
         </TouchRipple>
 
         <div

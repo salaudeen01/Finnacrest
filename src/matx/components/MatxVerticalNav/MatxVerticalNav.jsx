@@ -62,19 +62,19 @@ const MatxVerticalNav = props => {
       } else {
         return (
           <NavLink key={index} to={item.path} className="nav-item">
-            <TouchRipple key={item.name} name="child" className="w-full">
+            <TouchRipple key={item.name} name="child" className="w-full" style={{display:'flex'}}>
               {(() => {
                 if (item.icon) {
                   return (
-                    <Icon className="item-icon align-middle">{item.icon}</Icon>
+                    <Icon className="item-icon align-middle" >{item.icon}</Icon>
                   );
                 } else {
                   return (
                     <span className="item-icon icon-text">{item.iconText}</span>
                   );
                 }
-              })()}
-              <span className="align-middle item-text">{item.name}</span>
+              })()} 
+              <span className="align-middle item-text px-2" style={{listStyleType:"none"}}>{item.name}</span>
               <div className="mx-auto"></div>
               {item.badge && (
                 <div className={`badge bg-${item.badge.color}`}>

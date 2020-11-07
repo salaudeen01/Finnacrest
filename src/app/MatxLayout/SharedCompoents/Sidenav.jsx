@@ -44,20 +44,18 @@ const Sidenav = props => {
       >
         {props.children}
         <MatxVerticalNav navigation={navigations} />
-        <div className="py-8" />
-        <div className="px-4" >
+        {/* <div className="py-8" /> */}
+        {/* <div className="px-4" >
         <IconButton
                 aria-label="Delete"
                 className=""
-                size="small"
-                // onClick={this.handleSignOut}
+                size="large"
               >
-                {/* <Icon>exit_to_app</Icon> */}
               </IconButton>
-        <Button  startIcon={<PowerSettingsNewIcon />} variant="outlined" size="small" color="primary" onClick={()=>props.logout()}>
+        <Button  startIcon={<PowerSettingsNewIcon />} variant="outlined" size="large" color="primary" onClick={()=>props.logout()}>
           
           Logout</Button>
-        </div>
+        </div> */}
       </Scrollbar>
       {renderOverlay()}
     </Fragment>

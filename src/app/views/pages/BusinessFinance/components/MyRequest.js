@@ -22,8 +22,12 @@ import {
     Toolbar,
     AppBar,
     Dialog, Checkbox,
-    ButtonGroup, Divider, Badge} from '@material-ui/core';
+    ButtonGroup, Divider, Badge, Slide} from '@material-ui/core';
 import OrderTrans from "../../ProductFinance/components/OrderTrans";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const BorderLinearProgress = withStyles((theme) => ({
   root: {
@@ -188,6 +192,9 @@ class MyRequest extends Component{
         <Dialog
           open={showView}
           onClose={this.handleCloseView}
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
         >
             <AppBar color="primary" className="text-white" style={{position: "relative"}}>
               <Toolbar>

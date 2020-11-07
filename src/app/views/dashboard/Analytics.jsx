@@ -21,7 +21,7 @@ import {
   Toolbar,
   AppBar,
   Dialog,
-  Grid, Card, Button, TextField, MenuItem, Checkbox, DialogActions
+  Grid, Card, Button, TextField, MenuItem, Checkbox, DialogActions, Slide
 } from "@material-ui/core";
 import "date-fns";
 import PayOption from "./shared/PayOption";
@@ -29,6 +29,11 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 import PayCard from "./shared/PayCard";
 import AddCardDialog from "./shared/AddCardDialog";
 import ModalForm from "../pages/transactions/ModalForm";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 
 class Dashboard1 extends Component {
   constructor(props){
@@ -547,10 +552,13 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
         </div>
       
       <Dialog
+      TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
         scroll="body"
         open={show}
         onClose={this.handleClose} >
-        <AppBar style={{position: "relative", backgroundColor:"#d8b71e"}}>
+        <AppBar style={{position: "relative", }} color='primary'>
           <Toolbar>
             <IconButton
               edge="start"
@@ -676,6 +684,9 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
 
          {/* Loan repayment Dialog Start */}
          <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
           open={modal}
           fullWidth={true}
           maxWidth={"sm"}
@@ -691,7 +702,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESSI
+                Welcome To SESIS
               </Typography>
             </Toolbar>
           </AppBar>
@@ -740,6 +751,9 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
         {/* Loan repayment Dialog End */}
         {/* Loan repayment Dialog Start */}
        <Dialog
+            TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
           open={modalForm}
           fullWidth={true}
           maxWidth={"sm"}
@@ -755,7 +769,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESSI
+                Welcome To SESIS
               </Typography>
             </Toolbar>
           </AppBar>
@@ -781,6 +795,9 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
         {/* Loan repayment Dialog End */}
         {/* Loan repayment Dialog Start */}
         <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
           open={modalFee}
           fullWidth={true}
           maxWidth={"sm"}
@@ -796,7 +813,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESSI
+                Welcome To SESIS
               </Typography>
             </Toolbar>
           </AppBar>

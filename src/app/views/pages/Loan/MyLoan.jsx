@@ -3,7 +3,7 @@ import React,{Component} from "react";
 import {Link} from "react-router-dom"
 import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import {Typography, Grid, AppBar, Dialog, IconButton, Toolbar, Card, Avatar, List, ListItemAvatar, ListItem, MenuItem, TextField, ListItemText, Checkbox } from "@material-ui/core";
+import {Typography, Grid, AppBar, Dialog, IconButton, Toolbar, Card, Avatar, List, ListItemAvatar, ListItem, MenuItem, TextField, ListItemText, Checkbox, Slide } from "@material-ui/core";
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import DoneAll from '@material-ui/icons/DoneAll';
 import CloseIcon from "@material-ui/icons/Close";
@@ -27,6 +27,10 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 import LoanApprovalCard from "./components/LoanApprovalCard";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import AddCardDialog from "app/views/dashboard/shared/AddCardDialog";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class MyLoan extends Component {
   constructor(props){
@@ -951,9 +955,12 @@ render(){
 
     {/* Quick Loan Dialog Start */}
     <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
       open={showLoan}
       onClose={this.handleCloseLoan}>
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      <AppBar style={{position: "relative"}} color='primary'>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1126,9 +1133,13 @@ render(){
 
     {/* Loan group Dialog Start */}
     <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
       open={showGroup}
       onClose={this.handleCloseGroup}>
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      <AppBar style={{position: "relative"}}
+      color='primary'>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1301,10 +1312,13 @@ render(){
 
     {/* Manage Group Dialog Start */}
     <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
       open={showManage}
       onClose={this.handleCloseManage} 
       scroll="body">
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      <AppBar style={{position: "relative"}} color='primary'>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1347,10 +1361,13 @@ render(){
 
     {/* Loan Group Details Dialog Start */}
     <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
       open={showDetails}
       onClose={this.handleCloseDetails} 
       scroll="body">
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      <AppBar style={{position: "relative"}} color='primary'>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1382,9 +1399,12 @@ render(){
 
     {/* Loan repayment Dialog Start */}
     <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
       open={showrepayment}
       onClose={this.handleCloseRepayment} >
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      <AppBar style={{position: "relative"}} color='primary'>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1470,9 +1490,12 @@ render(){
 
     {/* Replace or Invite new Member Dialog Start */}
     <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
       open={showReplace}
       onClose={this.handleCloseReplace} >
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      <AppBar style={{position: "relative", }} color='primary'>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1536,10 +1559,13 @@ render(){
 
     {/* Loan Manage Dialog Start */}
     <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
       open={showManageLoan}
       onClose={this.handleCloseManageLoan}
       scroll="body">
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      <AppBar style={{position: "relative", }} color='primary'>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1572,8 +1598,12 @@ render(){
     {/* Loan Manage Dialog End */}
 
     {/* Show Group Action Dialog Start */}
-    <Dialog onClose={this.handleCloseAction} aria-labelledby="simple-dialog-title" open={showAction}>
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+    <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description" 
+      onClose={this.handleCloseAction} aria-labelledby="simple-dialog-title" open={showAction}>
+      <AppBar style={{position: "relative", }} color='primary'>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1588,7 +1618,10 @@ render(){
           </Typography>
         </Toolbar>
       </AppBar>
-      {/* <DialogTitle id="simple-dialog-title"></DialogTitle> */}
+      {/* <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"Title id="simple-dialog-title"></DialogTitle> */}
       <List>
           {group_request_status != 1 && <>
           <ListItem button onClick={()=>this.confirmAlert("join", code, 0, 0)}>
@@ -1623,10 +1656,13 @@ render(){
 
     {/* Loan Approval Dialog Start */}
     <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
       open={showLoanApproval}
       onClose={this.handleCloseApproval}
       scroll="body">
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+      <AppBar style={{position: "relative", }} color='primary'>
         <Toolbar>
           <IconButton
             edge="start"

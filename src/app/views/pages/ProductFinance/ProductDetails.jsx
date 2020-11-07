@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Breadcrumb, SimpleCard } from "matx";
-import { Grid, Card, Button, Typography, IconButton,ButtonGroup, Toolbar, AppBar, Dialog, MenuItem, TextField, } 
+import { Grid, Card, Button, Typography, IconButton,ButtonGroup, Toolbar, AppBar, Dialog, MenuItem, TextField, Slide, } 
 from '@material-ui/core';
 import CustomCard from "./components/CustomCard";
 import {Link} from 'react-router-dom';
@@ -18,6 +18,10 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 import SingleInvestmentcard from './components/SingleInvestmentCard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import SingleInvestmentcardDetails from './components/SingleInvestmentCardDetails';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class ProductDetails extends Component {
   constructor(props){

@@ -32,6 +32,10 @@ import PayCard from "app/views/dashboard/shared/PayCard";
 import AddCardDialog from "app/views/dashboard/shared/AddCardDialog";
 import swal from "sweetalert";
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 class Halal extends Component {
   constructor(props) {
     setLastUrl();
@@ -432,7 +436,7 @@ class Halal extends Component {
         )}
         {/* View Dialog start */}
         <Dialog open={showView} scroll='body' onClose={this.handleCloseView}>
-          <AppBar color='secondary' style={{ position: "relative" }}>
+          <AppBar color='primary' style={{ position: "relative" }}>
             <Toolbar>
               <IconButton
                 edge='start'

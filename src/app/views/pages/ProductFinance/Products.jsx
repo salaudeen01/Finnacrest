@@ -21,7 +21,7 @@ import {
   Typography,
   Toolbar,
   AppBar,
-  Dialog, Checkbox
+  Dialog, Checkbox, Slide
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -40,6 +40,10 @@ import OrderDetails from "./components/OrderDetails";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import CompleteProduct from "./components/CompleteProduct";
 import OrderTrans from "./components/OrderTrans";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class Target extends Component {
   constructor(props) {
@@ -438,6 +442,9 @@ handleSubmitFund(event) {
         )}  
          {/* View Dialog start */}
          <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
           open={showView}
           onClose={this.handleCloseView}
         >
@@ -471,6 +478,9 @@ handleSubmitFund(event) {
 
          {/* View Dialog start */}
          <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
           open={showViewTrans}
           onClose={this.handleCloseViewTrans}
         >
@@ -504,10 +514,13 @@ handleSubmitFund(event) {
         
         {/* Quick Save Dialog Start */}
         <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
           open={showSave}
           onClose={this.handleCloseQuickSave}
           scroll="body">
-        <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+        <AppBar style={{position: "relative",}} color="primary">
           <Toolbar>
             <IconButton
               edge="start"

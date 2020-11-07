@@ -10,6 +10,7 @@ import { MatxMenu, MatxSearchBox } from "matx";
 import { isMdScreen, classList } from "utils";
 import NotificationBar from "../SharedCompoents/NotificationBar";
 import ShoppingCart from "../SharedCompoents/ShoppingCart";
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
 const styles = theme => ({
   topbar: {
@@ -35,9 +36,11 @@ class Layout1Topbar extends Component {
     super(props)
     let profile_image =  localStorage.getItem('profile_pic');
     let user =  localStorage.getItem('user');
+    const name =  localStorage.getItem('name');
     this.state = {
       user:user,
       profile_image : profile_image,
+      name:name,
     };
   }
 
@@ -87,7 +90,7 @@ class Layout1Topbar extends Component {
 
   render() {
     let { classes, fixed } = this.props;
-    const {profile_image, user} = this.state
+    const {profile_image, user, name} = this.state
     return (
       <div className={`topbar ${classes.topbar}`}>
         <div className={classList({ "topbar-hold": true, fixed: fixed })}>
@@ -113,13 +116,23 @@ class Layout1Topbar extends Component {
                   <Icon>star_outline</Icon>
                 </IconButton>
               </div> */}
+
             </div>
             {user ? <div className="flex items-center">
-              {/* <MatxSearchBox color="secondary"/> */}
+              {/* <MatxSearchBox color="secondary"/> */}                           
+              
 
               {/* <NotificationBar /> */}
 
               {/* <ShoppingCart></ShoppingCart> */}
+
+              <PowerSettingsNewIcon
+                  onClick={this.handleSignOut}
+                  titleAccess="Log-Out"
+
+                  style={{color:'white', fontSize: 30}}
+                >
+                </PowerSettingsNewIcon>
 
               <MatxMenu
                 menuButton={
@@ -157,12 +170,13 @@ class Layout1Topbar extends Component {
                   <span className="pl-4"> Logout </span>
                 </MenuItem>
               </MatxMenu>
+              <span style={{color:'#fff'}}>{name}</span>
             </div>:
             <div className="flex items-center">
-              <MatxMenu >
-                
-              </MatxMenu>
             </div>}
+
+                
+            
           </div>
         </div>
       </div>
