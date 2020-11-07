@@ -12,7 +12,6 @@ import logo from "../../../../assets/sesis.jpg";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginBottom: 10,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -28,7 +27,7 @@ export default function AppAppBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar style={{ backgroundColor: "inherit" }} position='static'>
+      <AppBar style={{ backgroundColor: "#000" }} position='static'>
         <Toolbar>
           {/* <IconButton edge="start" className={classes.menuButton} color="secondary" aria-label="menu">
             <MenuIcon />

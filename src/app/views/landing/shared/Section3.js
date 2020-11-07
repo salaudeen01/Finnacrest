@@ -12,7 +12,7 @@ class Section2 extends Component {
             }
         }
         return (
-            <Grid container direction="row" justify="space-between" alignItems="center" style={{paddingLeft:60, paddingRight:60}}>
+            <Grid container direction="row" justify="space-around" alignItems="center" style={{paddingLeft:60, paddingRight:60, backgroundColor:"#4E274E", height:400}}>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                     <img src="/assets/sesis3.jpeg" width="358px"/>
                 </Grid>

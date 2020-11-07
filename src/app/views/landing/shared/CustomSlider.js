@@ -8,7 +8,7 @@ export default function CustomSlider(props) {
     <Carousel indicators={false} animation='slide'>
       {props.items.map((item, i) => (
         <>
-        <img alt='' key={i} src={item.img} />
+        <img alt='' key={i} src={item.img} width="100%"/>
         <Typography> {item.name} </Typography>
         </>
       ))}
