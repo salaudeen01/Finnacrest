@@ -91,13 +91,13 @@ export default function Footer() {
             <Typography variant="p">Free interest loan</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={3} lg={3}  className="p-15 text-white">
-            <img src={logo} alt="company-logo" />
+            <img src="" alt="company-logo" />
           </Grid>
         </Grid>
         <Divider variant="fullWidth" style={{backgroundColor:"#ffffff"}} />
         <Grid container className="p-5 text-center" >
           <Grid item xs={6} sm={6} md={6} lg={6} >Terems & Condition Apply</Grid>
-          <Grid item xs={6} sm={6} md={6} lg={6} >Cubevest {date.getFullYear()} </Grid>
+          <Grid item xs={6} sm={6} md={6} lg={6} >SESIS {date.getFullYear()} </Grid>
         </Grid>
       </Container>
     </div>

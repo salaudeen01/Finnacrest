@@ -34,7 +34,7 @@ export default function AppAppBar(props) {
             <MenuIcon />
           </IconButton> */}
           <Link to='/'>
-            <img src={logo} alt='company-logo' />
+            <img src="" alt='company-logo' />
           </Link>
           <Typography
             variant='h6'

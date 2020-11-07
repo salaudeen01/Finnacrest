@@ -22,7 +22,7 @@ class Section5 extends Component {
                             Save and Invest At Your Convenient
                         </Typography>
                         <Typography style={style.typo} variant="p" className="text-gray font-bold pt-3">
-                        No Haram charges, no unlawful investment, no interest loan. Download Cubevest now and take control of your money.
+                        No Haram charges, no unlawful investment, no interest loan. Download SESIS now and take control of your money.
                         </Typography>
                     </Card>
                     <img src="/assets/images/download.png" />

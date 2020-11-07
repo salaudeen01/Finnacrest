@@ -16,7 +16,7 @@ class Section1 extends Component {
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                     <Card style={{backgroundColor:"inherit"}} elevation={0} className="p-5">
                         <Typography className="text-white mb-3" style={style.typo} variant="h2">
-                        Download Cubevest Mobile App
+                        Download SESIS Mobile App
                         </Typography>
                     <img src="/assets/images/download.png" />
                     </Card>
