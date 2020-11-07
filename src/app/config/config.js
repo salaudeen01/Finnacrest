@@ -15,7 +15,7 @@ const serverVars = {
   fetchAllTarget: "all_targets_in_one",
   fetchAllTargetAccount:"all_targets_plan_per_user",
   fetchAllSaveToLoan: "save_to_loan_all_api",
-
+  showGuarantorTable:"show_non_group_loans_for_approval",
   saveRegularSavings: "saving/store",
   getRegularSavings: "saving",
   editRegularSavings: "saving/",
@@ -81,6 +81,7 @@ const serverVars = {
   loanRepaymentsDetails:"loanRepaymentsDetails/",
   getLoanGroupName:"loanGroupName",
   declineLoan:"loanDeclined/",
+  cancelLoan:"cancel_loan/",
   acceptLoan: "loanAccepted/",
   getLoanGroupApproval:"loanGroupApprovalDetails/",
   resendGroupNotification:"loan/resend_join_notification/",
@@ -90,7 +91,16 @@ const serverVars = {
   removeMember:"loan/replace_member",
   loanBalance:"loanBalance/",
   completedLoan:"getCompletedLoans",
+  showNonGroupLoan:"show_non_group_loans_members/",
+  businessRequest:"business_request",
+  business_view:"business_view_loan?token=",
+  display_request:"display_request?token=",
+  rejectRequest:"reject_request/",
+  acceptRequest: "accepts_request/",
+  business_repayments:"business_finance_repayments/",
+  owner_savings_balance:"loan_owner_savings_balance?token=",
 
+  // loanAccepted: "loanAccepted/",
   showTransaction: "transactions/details",
   saveWallet: "save_wallet/store",
   saveBank: "bank_account/add",
@@ -130,6 +140,8 @@ const serverVars = {
   updateRequest: "updateRequestQuantity/", 
   totalRequestPrice:"totalRequestPrice?token=",
   getAllUsersAutoComplete:"searchGuarantors/",
+  getRegistrationFee: "get_registration_fee",
+  addRegistrationFee: "registration_fee_payment?token=",
 
   // Shareholdings
   addFundShareholdings: "addShareHoldingsFunds?token=",
@@ -162,6 +174,16 @@ export const setLastUrl = () =>{
   var pathname = new URL(lasturl).pathname;
   localStorage.setItem("lasturl", pathname);
 }
+
+export const checkUserStatus = () =>{
+  let user = JSON.parse(localStorage.getItem("user"));
+  if(user.member_status){
+    return true    
+  }else{
+    return false
+  }  
+}
+
 
 export const checkLastUrl=()=>{
   let pathname = localStorage.getItem("lasturl");
@@ -237,6 +259,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.fetchAllBalances;
     case "fetchAllTarget":
       return serverVars.baseUrl + serverVars.fetchAllTarget;
+    case "showGuarantorTable":
+      return serverVars.baseUrl + serverVars.showGuarantorTable;
     case "fetchAllSaveToLoan":
       return serverVars.baseUrl + serverVars.fetchAllSaveToLoan;
     case "fetchAllTargetAccount":
@@ -335,6 +359,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.acceptLoan;
     case "declineLoan":
       return serverVars.baseUrl + serverVars.declineLoan;
+    case "cancelLoan":
+      return serverVars.baseUrl + serverVars.cancelLoan;
     case "getLoan":
       return serverVars.baseUrl + serverVars.getLoan;
     case "getLoanDetails":
@@ -364,7 +390,26 @@ export function getConfig(apiName) {
     case "loanBalance":
       return serverVars.baseUrl + serverVars.loanBalance;
     case "completedLoan":
-      return serverVars.baseUrl + serverVars.completedLoan;
+      return serverVars.baseUrl + serverVars.completedLoan;   
+    case "showNonGroupLoan":
+      return serverVars.baseUrl + serverVars.showNonGroupLoan;
+    case "owner_savings_balance":
+      return serverVars.baseUrl + serverVars.owner_savings_balance;
+
+    case "businessRequest":
+      return serverVars.baseUrl + serverVars.businessRequest;
+    case "business_view":
+      return serverVars.baseUrl + serverVars.business_view; 
+    case "display_request":
+      return serverVars.baseUrl + serverVars.display_request; 
+    case "acceptRequest":
+      return serverVars.baseUrl + serverVars.acceptRequest;
+    case "rejectRequest":
+      return serverVars.baseUrl + serverVars.rejectRequest; 
+    case "business_repayments":
+      return serverVars.baseUrl + serverVars.business_repayments;      
+    // case "loanAccepted":
+    //   return serverVars.baseUrl + serverVars.loanAccepted; 
 
     case "addProfile":
       return serverVars.baseUrl + serverVars.addProfile;
@@ -450,7 +495,12 @@ export function getConfig(apiName) {
     case "updateRequest":
       return serverVars.baseUrl + serverVars.updateRequest; 
     case "totalRequestPrice":   
-      return serverVars.baseUrl + serverVars.totalRequestPrice;   
+      return serverVars.baseUrl + serverVars.totalRequestPrice;        
+    case "getRegistrationFee":
+      return serverVars.baseUrl + serverVars.getRegistrationFee; 
+    case "addRegistrationFee":
+      return serverVars.baseUrl + serverVars.addRegistrationFee + user.token;
+
         // Shareholdings api
     case "addFundShareholdings":
       return serverVars.baseUrl + serverVars.addFundShareholdings + user.token;

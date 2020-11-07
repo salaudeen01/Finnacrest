@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function LoanCards(props) {
+export default function LoanCard(props) {
   const classes = useStyles();
   const {data, view, manage, repayment, status, cancelLoan} = props
 
@@ -23,9 +23,7 @@ export default function LoanCards(props) {
           <Typography variant="h6">{data.group_name} </Typography><br/>
           <Typography variant="p" color="text-secondary font-bold"> Loan Amount: {numberFormat(data.loan_amount)}</Typography><br/>
           <Typography variant="p" color="text-secondary font-bold"> Amount Repaid: {numberFormat(data.repaid)}</Typography><br/>
-          <Typography variant="p" color="text-secondary font-bold"> Loan Status: <span style={{backgroundColor: "green", color:"#fff", padding:3, borderRadius:5}}>
-             {data.loan_status == 0? "Pending":data.loan_status == 1?"Active":data.loan_status == 2?"Processing"
-             :data.loan_status == 3? "Completed":data.loan_status == 9? "Cancel":data.loan_status == 3? "Completed":""}</span> </Typography>
+          <Typography variant="p" color="text-secondary font-bold"> Loan Status: <span style={{backgroundColor: "green", color:"#fff", padding:3, borderRadius:5}}> {data.loan_status == 0? "Pending":data.loan_status == 1?"Processing":data.loan_status == 2?"Approved": "Completed"}</span> </Typography>
         </Grid>
         <div className="py-4" />
         
@@ -40,6 +38,7 @@ export default function LoanCards(props) {
           <Button onClick={repayment}>Repay Loan</Button>
         </ButtonGroup>
         } 
+        {/* {data.loan_status == 1 &&} */}
         </Grid>
       </Grid>
     </div>

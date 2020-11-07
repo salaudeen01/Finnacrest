@@ -870,39 +870,7 @@ render(){
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
           <Loading />
         </div>:
-        <>
-        {/* <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20,
-             borderTopLeftRadius:20}} >
-          <Grid container spacing={5} direction="row" justify="space-between">
-              <Grid item lg={9} md={9} sm={12} xs={12}>
-                {group_table ?
-                <Link to="/savings-tab/save-to-loan"><CustomCarousel /></Link>:
-                <TodoList />}
-              </Grid>
-          </Grid>
-          <Grid container spacing={2}>
-              <Grid item lg={8} md={8} sm={6} xs={6}>
-                <Button className="uppercase"
-                  size="small"
-                  variant="contained"
-                  style={{borderBottomRightRadius:10, borderTopLeftRadius:10, backgroundColor:"#04956a",color:"white"}}
-                  onClick={this.handleCreateGroup}>
-                    Create Group
-                </Button>
-              </Grid>
-              <Grid item lg={3} md={3} sm={6} xs={6} >
-                {group_table && 
-                <Button className="uppercase"
-                  size="small"
-                  variant="contained"
-                  style={{backgroundColor:"#04956a", color:"white", borderBottomRightRadius:10, borderTopLeftRadius:10}}
-                  onClick={this.handleCreateLoan}>
-                   Request Loan
-                </Button>}
-              </Grid>
-          </Grid>
-      </div>
-         */}
+        <>        
         <div className="py-1" />
         <Grid container >
             <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -1367,7 +1335,7 @@ render(){
     {/* Loan Group Details Dialog End */}
 
     {/* Loan repayment Dialog Start */}
-    <Dialog
+    {/* <Dialog
       open={showrepayment}
       onClose={this.handleCloseRepayment} >
       <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
@@ -1451,7 +1419,7 @@ render(){
           </Grid>
         </Card>
       </ValidatorForm>
-    </Dialog>
+    </Dialog> */}
     {/* Loan repayment Dialog End */}
 
     {/* Replace or Invite new Member Dialog Start */}

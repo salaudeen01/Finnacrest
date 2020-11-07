@@ -60,13 +60,13 @@ class SingleInvestmentCardDetails extends Component {
                 {investment.map((newz, index) => (
                 <Grid key={index} container spacing={2} justify="center" >
                 
-                    <Grid item lg={5} md={5} sm={12} xs={12}>
+                    <Grid item lg={5} md={5} sm={5} xs={12}>
                     <CardMedia style={{height:240, }}
                         image={newz.image}
                         title={newz.product_name}            
                     />
                     </Grid>
-                    <Grid item lg={7} md={7} sm={12} xs={12}>
+                    <Grid item lg={7} md={7} sm={7} xs={12}>
                     <Grid className="pt-4 px-2">
                     <Typography style={{marginBottom:4, lineHeight:2, textAlign:'justify',}}>
                          {newz.product_name}
@@ -139,9 +139,6 @@ class SingleInvestmentCardDetails extends Component {
                     </Typography>                    
                     </Grid>                    
                     <Grid item lg={6} md={6} sm={6} xs={12}>
-                    {/* {this.props.savings &&
-                        <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                    } */}
                     <Button className="uppercase"
                         size="large"
                         fullWidth

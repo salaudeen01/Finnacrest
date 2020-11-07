@@ -8,10 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import {useParams} from "react-router-dom"
-import MyGroup from '../MyGroup';
-import MyLoan from '../MyLoan';
-import NewLoan from '../NonLoan';
-import NonLoan from '../NonLoan';
+import MyBusinessLoan from '../MyBusinessLoan';
+import PendingRequest from '../PendingRequest';
+import CancelledBusiness from '../CancelledBusiness';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,7 +45,7 @@ function a11yProps(index) {
   };
 }
 
-class CustomTab extends Component{
+class BusinessCustomTab extends Component{
   constructor(props){
     super(props)
     this.state ={
@@ -67,19 +66,19 @@ render(){
         <Tabs value={value} indicatorColor="primary"
           textColor="primary" style={{marginLeft:28}}
           onChange={this.handleChange} aria-label="simple tabs example">
-          <Tab label="MY GROUP" {...a11yProps(0)} />
-          <Tab label="MY LOAN" {...a11yProps(1)} />
-          <Tab label="NON GROUP APPROVAL" {...a11yProps(2)} />
+          <Tab label="MY Business" {...a11yProps(0)} />
+          <Tab label="Pending Request" {...a11yProps(1)} />
+          <Tab label="Cancelled Business" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <MyGroup />
+        <MyBusinessLoan />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <MyLoan/>
+        <PendingRequest/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <NonLoan />
+        <CancelledBusiness />
       </TabPanel>
     </div>
   );
@@ -87,4 +86,4 @@ render(){
 }
 
 
-export default CustomTab
+export default BusinessCustomTab

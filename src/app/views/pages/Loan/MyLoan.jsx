@@ -79,10 +79,10 @@ class MyLoan extends Component {
   repay_data:{
         id:"",
         trans_date: entry_date,
-        payment_method: "Wallet",
+        payment_method: "",
         repayment_amount: 0,
         paystack_id:"",
-        save_card:false,
+        save_card:true,
         card_id:"0"
     },
       formList:["name2"],
@@ -445,6 +445,7 @@ fetch(getConfig("getLoan"), requestOptions)
       this.setState({loading:false})
       return Promise.reject(error);
   }
+  console.log(data)
   if(data.success == false){
       this.setState({loan_details: []})
   }else{
@@ -658,7 +659,7 @@ handleChangeRepay(event) {
   const { name, value, checked } = event.target;
   const { repay_data, loan_bal } = this.state;
   if(name == "save_card"){
-    this.setState({repay_data:{...repay_data, [name]:checked}})
+    this.setState({repay_data:{...repay_data, [name]:checked, save_card:true}})
   }else{
     this.setState({repay_data: {...repay_data, [name]: value}});
   }
@@ -701,8 +702,9 @@ handleSubmitLoan(event) {
 handleSubmitRepay(event) {
   event.preventDefault();
   const { repay_data } = this.state;
-  if (repay_data.trans_date && repay_data.repayment_amount) {
+  if (repay_data.trans_date && repay_data.repayment_amount && repay_data.payment_method) {
       this.props.addLoanRepayment(repay_data);     
+      console.log(repay_data)
   }else{
       swal(
           `${"All fields are required"}`
@@ -861,6 +863,24 @@ completeTab(){
 approvalTab(){
   this.setState({tab:2});
 }
+handleDelete = (loan_id) => {
+  swal({
+    title: "Are you sure?",
+    text: "Once deleted, you will not be able to recover this file!",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  })
+  .then((willDelete) => {
+    if (willDelete) {
+      this.props.cancelLoan(loan_id);
+      console.log(loan_id)
+      swal("Loading...",{   
+        buttons:false
+      });
+    }
+  });
+  }
 
 render(){
   const {repayment_details, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
@@ -870,39 +890,7 @@ render(){
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
           <Loading />
         </div>:
-        <>
-        {/* <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20,
-             borderTopLeftRadius:20}} >
-          <Grid container spacing={5} direction="row" justify="space-between">
-              <Grid item lg={9} md={9} sm={12} xs={12}>
-                {group_table ?
-                <Link to="/savings-tab/save-to-loan"><CustomCarousel /></Link>:
-                <TodoList />}
-              </Grid>
-          </Grid>
-          <Grid container spacing={2}>
-              <Grid item lg={8} md={8} sm={6} xs={6}>
-                <Button className="uppercase"
-                  size="small"
-                  variant="contained"
-                  style={{borderBottomRightRadius:10, borderTopLeftRadius:10, backgroundColor:"#04956a",color:"white"}}
-                  onClick={this.handleCreateGroup}>
-                    Create Group
-                </Button>
-              </Grid>
-              <Grid item lg={3} md={3} sm={6} xs={6} >
-                {group_table && 
-                <Button className="uppercase"
-                  size="small"
-                  variant="contained"
-                  style={{backgroundColor:"#04956a", color:"white", borderBottomRightRadius:10, borderTopLeftRadius:10}}
-                  onClick={this.handleCreateLoan}>
-                   Request Loan
-                </Button>}
-              </Grid>
-          </Grid>
-      </div>
-        <div className="py-3" /> */}
+        <>       
         <div className="py-1" />
         <Grid container >
           <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -937,13 +925,13 @@ render(){
               loan_details.length == 0?
                 <Typography variant="p" className="font-bold">You currently do not have any ongoing loan</Typography>:
               loan_details.map((data, index) => (
-                <LoanCards key={index} data={data} status={true} repayment={()=>this.handleCreateRepayment(data.loan_id)} view={()=>this.handleCreateManageLoan(data.loan_id)}/>
+                <LoanCards key={index} data={data} status={true} repayment={()=>this.handleCreateRepayment(data.loan_id)} cancelLoan={()=>this.handleDelete(data.loan_id)} view={()=>this.handleCreateManageLoan(data.loan_id)}/>
               )):
               isFetching? <Typography variant="h6">Loading...</Typography>:
-              Completed.length == 0?
+              loan_details.length == 0?
                 <Typography variant="p" className="font-bold">You currently do not have any Completed loan</Typography>:
               Completed.map((data, index) => (
-                <LoanCards key={index} data={data} status={false} view={()=>this.handleCreateManageLoan(data.id)}/>
+                <LoanCards key={index} data={data} status={true} repayment={()=>this.handleCreateRepayment(data.loan_id)} view={()=>this.handleCreateManageLoan(data.loan_id)}/>
               ))
               // isFetching? <Typography variant="h6">Loading...</Typography>:
               // loan_activities.length == 0?
@@ -1422,7 +1410,7 @@ render(){
                 className="mb-4 w-full"
                 label="Enter Repayment Amount"
                 onChange={this.handleChangeRepay}
-                type="text"
+                type="number"
                 value={repay_data.repayment_amount}
                 name="repayment_amount"
                 validators={[
@@ -1447,7 +1435,7 @@ render(){
               {this.props.savings &&
                <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
               }
-              {repay_data.payment_method === "Wallet" &&
+              {(repay_data.payment_method === "Wallet" || (repay_data.card_id !="0" && repay_data.card_id !="")) &&
               <Button className="uppercase"
                 type="submit"
                 size="large"
@@ -1683,6 +1671,7 @@ const actionCreators = {
   createLoan: userActions.createLoan,
   acceptLoan: userActions.acceptLoan,
   declineLoan: userActions.declineLoan,
+  cancelLoan: userActions.cancelLoan,
   rejectGroup: userActions.rejectGroup,
   joinGroup: userActions.joinGroup,
   exitGroup: userActions.exitGroup,

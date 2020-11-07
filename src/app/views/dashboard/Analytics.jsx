@@ -4,10 +4,10 @@ import { authHeader } from "../../redux/logic";
 import StatCards from "./shared/StatCards";
 import TableCard from "./shared/TableCard";
 import RowCards from "./shared/RowCards";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import UpgradeCard from "./shared/UpgradeCard";
 import { withStyles } from "@material-ui/styles";
-import { payID, getConfig, setLastUrl, numberFormat } from '../../config/config'
+import { payID, getConfig, setLastUrl, numberFormat, checkUserStatus } from '../../config/config'
 import swal from 'sweetalert'
 import { userActions } from "../../redux/actions/user.actions";
 import { connect } from "react-redux";
@@ -21,13 +21,14 @@ import {
   Toolbar,
   AppBar,
   Dialog,
-  Grid, Card, Button, TextField, MenuItem, Checkbox
+  Grid, Card, Button, TextField, MenuItem, Checkbox, DialogActions
 } from "@material-ui/core";
 import "date-fns";
 import PayOption from "./shared/PayOption";
 import Loading from "matx/components/MatxLoading/MatxLoading";
 import PayCard from "./shared/PayCard";
 import AddCardDialog from "./shared/AddCardDialog";
+import ModalForm from "../pages/transactions/ModalForm";
 
 class Dashboard1 extends Component {
   constructor(props){
@@ -73,6 +74,7 @@ class Dashboard1 extends Component {
                 share_balance:0,
                 loan_investment:0,
                 target_balance:0,
+                loan_avail_amount:0,
                 transactions:[],
                 error: "",
                 show:false,
@@ -80,6 +82,10 @@ class Dashboard1 extends Component {
                 email: email,
                 accounts:[],
                 showSaveCard:false,
+                modal:false,
+                modalForm:false, 
+                modalFee:false,
+                registrationFee: 0,
                 } ;
             this.handleSaveCard = this.handleSaveCard.bind(this);
             this.handleCloseSaveCard = this.handleCloseSaveCard.bind(this);
@@ -87,6 +93,10 @@ class Dashboard1 extends Component {
             this.handleClickOpen = this.handleClickOpen.bind(this);
             this.handleChange = this.handleChange.bind(this);
             this.handleSubmit = this.handleSubmit.bind(this);
+            this.handleOpenModalForm = this.handleOpenModalForm.bind(this);
+            this.handleCloseModalForm = this.handleCloseModalForm.bind(this);
+            this.handleOpenModalFee = this.handleOpenModalFee.bind(this);
+            this.handleCloseModalFee = this.handleCloseModalFee.bind(this);
 }
 
 callback = (response) => {
@@ -178,7 +188,23 @@ handleClickOpen() {
 handleClose() {
   this.setState({show:false});
 }
+handleOpenModalForm = () => {
+  this.setState({modalForm: true});
+}
+handleCloseModalForm() {
+  this.setState({modalForm:false});
+}
+handleOpenModalFee = () => {
+  this.setState({modalFee: true});
+}
+handleCloseModalFee() {
+  this.setState({modalFee:false});
+}
 componentDidMount(){
+let check = checkUserStatus()
+  if(check == false){
+    this.setState({modal:true})
+  }
 const requestOptions = {
     method: 'GET',
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -372,7 +398,7 @@ fetch(getConfig("showTransaction"), requestOptions)
             this.setState({loading: false });
             return Promise.reject(error);
             }
-            console.log(data)
+            // console.log(data)
             if(data.success == false){
               this.setState({ transactions: []});
             }else{
@@ -405,14 +431,48 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
       this.setState({loading:false});
     
 });
+fetch(getConfig('owner_savings_balance'), requestOptions)
+.then(async response => {
+const data = await response.json();
+if (!response.ok) {
+  console.log(response)
+    const error = (data && data.message) || response.statusText;
+    return Promise.reject(error);
+}
+if(data.success == false  || data.length == 0 ){
+  this.setState({ loan_avail_amount: 0});
+}else{
+  this.setState({loan_avail_amount: data, loading:false });
+}  
+})  
+.catch(error => {
+if (error === "Unauthorized") {
+  this.props.timeOut()
+}
+});
+
+fetch(getConfig("getRegistrationFee"), requestOptions)
+.then(async (response) => {
+  const data = await response.json();
+  if (!response.ok) {
+    const error = (data && data.message) || response.statusText;
+    this.setState({loading: false });
+    return Promise.reject(error);
+  }
+  // console.log(data)
+  this.setState({ loading: false, registrationFee:data});
+})
 }
 
   render() {
     let { theme } = this.props;
-    const {error, accounts, show, wallet_balance, add_card, showSaveCard, cards, bank, profile, data, email, loading, transactions, target_balance, continued, regular_balance, market_balance, share_balance, loan_investment, halal_balance} = this.state
+    const {error, accounts, show, wallet_balance, add_card, showSaveCard, cards, bank, profile, data, email, 
+      loading, transactions, target_balance, continued, regular_balance, market_balance, share_balance, 
+      loan_investment, loan_avail_amount, halal_balance, modal, modalForm, registrationFee, modalFee} = this.state
     return (
       <div >
-        {loading ?
+        { modal == false ?
+        loading ?
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
           <Loading />
         </div>:
@@ -428,7 +488,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                   market_balance={numberFormat(market_balance)}
                   regular_balance={numberFormat(regular_balance)}
                   target_balance={numberFormat(target_balance)}
-                  // loan_balance={numberFormat(loan_balance)}
+                  loan_avail_amount={numberFormat(loan_avail_amount)}
                   share_balance={numberFormat(share_balance)}
                   loan_investment={numberFormat(loan_investment)}
                   openModal={this.handleClickOpen}/>
@@ -609,10 +669,144 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
         </ValidatorForm>
         </Card>
       </Dialog>
-      
+             
       <AddCardDialog callback={this.callback} showSave={showSaveCard} handleClose={this.handleCloseSaveCard} add_card={add_card} />
-    </Fragment>
-    }
+    </Fragment>:
+        <></>}
+
+         {/* Loan repayment Dialog Start */}
+         <Dialog
+          open={modal}
+          fullWidth={true}
+          maxWidth={"sm"}
+          onClose={this.handleCloseRepayment} >
+          <AppBar style={{position: "relative"}} color="primary">
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={this.handleCloseRepayment}
+                aria-label="Close"
+              >
+                {/* <CloseIcon /> */}
+              </IconButton>
+              <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+                Welcome To SESSI
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Card className="px-6 pt-2 pb-4 text-center">
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Typography>
+                  We have INTEREST FREE LOAN which easily accesseable 
+                </Typography>
+                <Typography>
+                  To access our LOAN, Click on the <span style={{color:"green"}}>Member button</span> to continue
+                </Typography>
+              </Grid> <br/>
+                <DialogActions>
+                
+                <Grid container spacing={1}>
+                      <Grid item lg={4} md={4} sm={4} xs={12}>                      
+                          <Button className="uppercase"
+                            size="small"
+                            onClick={this.handleOpenModalForm}
+                            variant="outlined">
+                            Become a Member
+                        </Button>                       
+                      </Grid> 
+                      <Grid item lg={4} md={4} sm={4} xs={12}>                 
+                      {/* <Link to="/business_financing"> */}
+                      <Link to="/#">
+                          <Button className="uppercase"
+                              size="small"
+                              variant="outlined">
+                                  Continue Business
+                          </Button> 
+                        </Link>
+                      </Grid>
+                      <Grid item lg={4} md={4} sm={4} xs={12}>                  
+                       <Link to="/product_financing"> <Button className="uppercase"
+                            size="small"
+                            variant="outlined">
+                            Continue Shopping
+                        </Button>
+                      </Link>
+                      </Grid>
+                </Grid>
+                  </DialogActions>
+              </Card>
+        </Dialog>
+        {/* Loan repayment Dialog End */}
+        {/* Loan repayment Dialog Start */}
+       <Dialog
+          open={modalForm}
+          fullWidth={true}
+          maxWidth={"sm"}
+          onClose={this.handleCloseModalForm} >
+          <AppBar style={{position: "relative"}} color="primary">
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={this.handleCloseModalForm}
+                aria-label="Close"
+              >
+                {/* <CloseIcon /> */}
+              </IconButton>
+              <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+                Welcome To SESSI
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Card className="px-6 pt-2 pb-4 text-center">
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Typography>
+                  The registration fee is:
+                </Typography>
+                <Typography variant='h6'>
+                  <b>{numberFormat(registrationFee)}</b>
+                </Typography>
+                <Typography variant='h6'>
+                  Click the below button to continue with the payment 
+                </Typography>
+                <Button className="uppercase"
+                    size="small"
+                    onClick={this.handleOpenModalFee}
+                    variant="outlined"> Continue
+                </Button>
+              </Grid> <br/>
+                </Card>
+        </Dialog>
+        {/* Loan repayment Dialog End */}
+        {/* Loan repayment Dialog Start */}
+        <Dialog
+          open={modalFee}
+          fullWidth={true}
+          maxWidth={"sm"}
+          onClose={this.handleCloseModalFee} >
+          <AppBar style={{position: "relative"}} color="primary">
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={this.handleCloseModalFee}
+                aria-label="Close"
+              >
+                {/* <CloseIcon /> */}
+              </IconButton>
+              <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+                Welcome To SESSI
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Card className="px-1 pt-2 pb-4">
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+               <ModalForm amount={registrationFee}/>
+              </Grid>
+                </Card>
+        </Dialog>
+        {/* Loan repayment Dialog End */}
   </div>
     );
   }

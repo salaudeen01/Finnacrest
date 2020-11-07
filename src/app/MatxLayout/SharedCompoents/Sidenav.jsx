@@ -54,7 +54,7 @@ const Sidenav = props => {
               >
                 {/* <Icon>exit_to_app</Icon> */}
               </IconButton>
-        <Button  startIcon={<PowerSettingsNewIcon />} variant="outlined" size="small" color="secondary" onClick={()=>props.logout()}>
+        <Button  startIcon={<PowerSettingsNewIcon />} variant="outlined" size="small" color="primary" onClick={()=>props.logout()}>
           
           Logout</Button>
         </div>

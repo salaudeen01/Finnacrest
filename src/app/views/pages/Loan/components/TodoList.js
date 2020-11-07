@@ -15,13 +15,13 @@ class TodoList extends Component {
                     <FormControlLabel
                         value="end"
                         control={<Radio color="primary" />}
-                        label="Create a Group to apply for loan"
+                        label="Search for SESIS as your Guarantor to apply for loan"
                         labelPlacement="end"
                         />
                     <FormControlLabel
                         value="end"
                         control={<Radio color="primary" />}
-                        label="A minimum of 5 member is required in a group"
+                        label="You can also create a group with SESIS member to apply for Loan"
                         labelPlacement="end"
                         />
                     </RadioGroup>
