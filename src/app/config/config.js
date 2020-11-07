@@ -135,7 +135,8 @@ const serverVars = {
   addFundShareholdings: "addShareHoldingsFunds?token=",
   getTransactionsShareholdings: "shareHoldingsTransactions",
   getTotalBalanceShareholdings: "shareHoldingsTotalBalance?token=",
-  getAccountShareholdings: "share_holding", 
+  getAccountShareholdings: "share_holding",
+  getAllProducts: "allFinanceProducts1",
 };
 
 export const numberFormat = (value) =>
@@ -196,10 +197,12 @@ export function getConfig(apiName) {
     if(apiName != "signup"){
       if(apiName != "recoverpass"){
         if(apiName != "verifypass"){
-          if(apiName != "verifyemail"){
-            history.push('/signin');
-            return
-          }
+          if(apiName != "getAllProducts"){
+            if(apiName != "verifyemail"){
+              history.push('/signin');
+              return
+            }
+          } 
         }
       }
     }
@@ -461,6 +464,8 @@ export function getConfig(apiName) {
         );
     case "getAccountShareholdings":
       return serverVars.baseUrl + serverVars.getAccountShareholdings;
+    case "getAllProducts":
+      return serverVars.baseUrl + serverVars.getAllProducts;
     
     default:
       return null;
