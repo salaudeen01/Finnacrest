@@ -43,9 +43,8 @@ class BusinessTop extends Component{
         business_name:"",
         frequency:"",
         requested_amount:"",
-        repayment_duration:"0",
+        repayment_duration:"",
         start_date:"",
-        end_date:"",
         repayment_amount:"",
         image: null
     }, 
@@ -54,6 +53,7 @@ class BusinessTop extends Component{
       loading: true,
       balance:0.00,
       showLoan:false,
+      repayment_duration:0,
     };
 
         this.handleSubmitRequest = this.handleSubmitRequest.bind(this);
@@ -86,6 +86,25 @@ class BusinessTop extends Component{
         this.props.timeOut()
       }
     });
+
+    fetch(getConfig('finance_payment_duration'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }
+    if(data.success == false || data.length == 0 ){
+      this.setState({repayment_duration: []});
+    }else{
+      this.setState({repayment_duration: data});  
+    }
+  })
+  .catch(error => {
+    if (error === "Unauthorized") {
+      this.props.timeOut()
+      }
+  });
 }
   callback = (response) => {
     const { data } = this.state;
@@ -94,9 +113,59 @@ class BusinessTop extends Component{
     }
   } 
 
-  handleChangeLoan = event => {
-    const {data} = this.state
-    this.setState({ data:{...data, [event.target.name]: event.target.value} });
+  // handleChangeLoan = event => {
+  //   const {data} = this.state
+  //   this.setState({ data:{...data, [event.target.name]: event.target.value} });
+  // }
+  handleChangeLoan(event){
+    const { name, value, checked } = event.target;
+    const { data } = this.state;
+    if(name == "repayment_duration"){
+      if ( data.requested_amount != "") {
+        let repay = data.requested_amount / value;
+        if (data.frequency == "Weekly") {
+            let week_repay = repay / 4;
+            // console.log(week_repay)
+            this.setState({ data: {...data, repayment_amount: week_repay, repayment_duration: value } })        
+        } else{
+          this.setState({ data: {...data, repayment_amount: repay, repayment_duration: value } })
+        }
+      }
+    }else if (name == "frequency"){
+          if ( data.requested_amount != "" && data.repayment_duration != "" ) {
+            let repay = data.requested_amount / data.repayment_duration;
+            // console.log(repay)
+            // console.log('Frequency: ', data.frequency);
+            if (value == "Weekly") {
+              repay = repay / 4;
+              // console.log(repay)
+              this.setState({ data: {...data, repayment_amount: repay, [name]: value } })        
+              } else{
+                this.setState({ data: {...data, repayment_amount: repay, [name]: value } })
+              }
+          }else{
+            this.setState({ data: { ...data, [name]: value} });
+          }
+    }else if (name == "requested_amount"){
+      if ( data.repayment_duration != "") {
+          // if payment duration is not empty
+          let repay = value / data.repayment_duration; // monthly repayment amount
+          // console.log("Frequency: ", data.frequency);
+          if (data.frequency == "Weekly") {
+            // if frequency is weekly
+            repay = repay / 4; // weekly repayment amount
+            // console.log("Weekly repayment", repay)
+            this.setState({ data: {...data, repayment_amount: repay, [name]: value } })        
+          } else{
+            this.setState({ data: {...data, repayment_amount: repay, [name]: value } })
+          }
+          // console.log('repayment amount: ', repay);
+      }else{
+        this.setState({ data: { ...data, [name]: value} });
+      }
+    }else{
+      this.setState({data:{...data, [name]:value}})
+    }
   }
   handleProfileImage(e){
     const [file, name] = e.target.files;
@@ -110,16 +179,16 @@ class BusinessTop extends Component{
         };
         reader.readAsDataURL(file); 
         this.setState({data:{...data, image: e.target.files[0]}})
-        console.log(file)
+        // console.log(file)
     }  
   }
   handleSubmitRequest(event) {
     event.preventDefault();  
     const { data } = this.state;
-      console.log(data);
+      // console.log(data);
       if (data.business_name && data.frequency && data.requested_amount 
-        && data.start_date && data.end_date && data.repayment_amount && data.image) {
-        console.log(data);
+        && data.start_date && data.repayment_duration && data.repayment_amount && data.image) {
+        // console.log(data);
         
         const fd = new FormData();
           fd.append("business_name", data.business_name); 
@@ -127,10 +196,9 @@ class BusinessTop extends Component{
           fd.append("requested_amount", data.requested_amount);
           fd.append("repayment_duration", data.repayment_duration);
           fd.append("start_date", data.start_date);
-          fd.append("end_date", data.end_date);
           fd.append("repayment_amount", data.repayment_amount);
           fd.append("image", data.image);
-          console.log(data.image);
+          // console.log(data.image);
         this.props.businessRequest(fd);
       }
   } 
@@ -145,7 +213,12 @@ class BusinessTop extends Component{
   }
   render(){
     let {theme} = this.props
-    const {balance, data, showLoan, balanceRegular,loading,savings} = this.state
+    const {balance, data, showLoan, repayment_duration, balanceRegular,loading,savings} = this.state
+    let arr = []
+    for (let index = 0; index < repayment_duration; index++) {
+      arr.push((index)+1);    
+    }
+    // console.log(arr)
     return (
       <div className="">
         <div className="pb-2 pt-7 px-8 " style={{background:"#222943"}}>      
@@ -154,10 +227,10 @@ class BusinessTop extends Component{
                 <Grid item xs={12} sm={6} md={6}>
                     <Card className="play-card p-sm-24" style={{backgroundColor:"#1999ff",height:171}} elevation={6}>
                         <div className="flex items-cente p-3">
-                        <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>track_changes</Icon>
+                        <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}></Icon>
                         <div className="ml-3">
-                            <Typography className="text-white" variant="text-16">Shareholdings</Typography>
-                            <h6 className="m-0 mt-1 text-white text-22"> {numberFormat(balance)} </h6>
+                            <Typography className="text-white" variant="text-16"></Typography>
+                            <h6 className="m-0 mt-1 text-white text-22">  </h6>
                         </div>
                         </div>
                     </Card>
@@ -199,7 +272,7 @@ class BusinessTop extends Component{
             onClick={this.handleCloseLoan}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:'#fff'}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Create Loan Request
@@ -237,6 +310,20 @@ class BusinessTop extends Component{
                   ]}
                   errorMessages={["this field is required"]}
                 />
+                 <TextField
+                    className="mb-4 w-full"
+                    select
+                    label="Select Loan Duration"
+                    name="repayment_duration"
+                    value={data.repayment_duration}
+                    onChange={this.handleChangeLoan}
+                    //  helperText="Please select Loan Group"
+                  >
+                      <MenuItem value={""}>Select Loan Duration</MenuItem>
+                    {arr.map((name, index) => (
+                      <MenuItem value={name}>{(name) +" "+ 'month'}</MenuItem>
+                    ))}
+                  </TextField>
                 <TextField
                 className="mb-4 w-full"
                   select
@@ -251,10 +338,11 @@ class BusinessTop extends Component{
                     <MenuItem value={"Weekly"}> Weekly</MenuItem>
                     <MenuItem value={"Monthly"}> Monthly </MenuItem>
                 </TextField>
+                {data.requested_amount && data.frequency && data.repayment_duration &&
                 <TextValidator
                   className="mb-4 w-full"
                   label={data.frequency? data.frequency +" Repayment Amount": "Frequent Repayment" +" Amount"}
-                  onChange={this.handleChangeLoan}
+                  onChange={this.handleChangeLoans}
                   type="number"
                   name="repayment_amount"
                   value={data.repayment_amount}
@@ -262,7 +350,7 @@ class BusinessTop extends Component{
                     "required"
                   ]}
                   errorMessages={["this field is required"]}
-                />
+                />}
                 {data.requested_amount && data.frequency &&
                   <TextValidator
                   className="mb-4 w-full"
@@ -275,19 +363,7 @@ class BusinessTop extends Component{
                     "required"
                   ]}
                   errorMessages={["this field is required"]}
-                />}
-                <TextValidator
-                  className="mb-4 w-full"
-                  onChange={this.handleChangeLoan}
-                  type="date"
-                  name="end_date"
-                  helperText="End Date"
-                  value={data.end_date}
-                  validators={[
-                    "required"
-                  ]}
-                  errorMessages={["this field is required"]}
-                />
+                />}                
                 <img src={data.image} 
                  style={{marginBottom: '4'}} ref={this.uploadedImage} alt="" onClick={this.handleClick}
                 />                

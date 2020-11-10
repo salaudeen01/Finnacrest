@@ -444,7 +444,7 @@ class Halal extends Component {
                 onClick={this.handleCloseView}
                 aria-label='Close'
               >
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography
                 variant='h6'
@@ -646,7 +646,7 @@ class Halal extends Component {
                 onClick={this.handleCloseInvest}
                 aria-label='Close'
               >
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography
                 variant='h6'

@@ -67,16 +67,16 @@ render(){
         <Tabs value={value} indicatorColor="primary"
           textColor="primary" style={{marginLeft:28}}
           onChange={this.handleChange} aria-label="simple tabs example">
-          <Tab label="MY GROUP" {...a11yProps(0)} />
-          <Tab label="MY LOAN" {...a11yProps(1)} />
+           <Tab label="MY LOAN" {...a11yProps(0)} />
+          <Tab label="MY GROUP" {...a11yProps(1)} />
           <Tab label="NON GROUP APPROVAL" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <MyGroup />
+        <MyLoan/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <MyLoan/>
+        <MyGroup />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <NonLoan />

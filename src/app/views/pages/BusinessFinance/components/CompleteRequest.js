@@ -68,10 +68,15 @@ export default function CompleteRequest(props) {
             <span className="mb-4 py-1 px-3" style={{background:'red',fontSize:12, color:'white', borderRadius:14}}>Cancelled</span>
           </Typography>
        </Grid>
-       </div>
+       </div>      
        : ""
         }
        </Grid>
+       <ButtonGroup color="primary" aria-label="outlined primary button group">
+          <Button className="mb-4"  size='small' variant="outlined" 
+            onClick={this.props.viewTrans}
+            >Transaction Detail</Button>               
+      </ButtonGroup>
       </Grid>
 
     </div>

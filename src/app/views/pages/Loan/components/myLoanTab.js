@@ -987,7 +987,7 @@ render(){
             onClick={this.handleCloseLoan}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:'#fff'}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Create Loan Request
@@ -1165,7 +1165,7 @@ render(){
             onClick={this.handleCloseGroup}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:'#fff'}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Create Group
@@ -1344,7 +1344,7 @@ render(){
             onClick={this.handleCloseManage}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:'#fff'}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Manage Group
@@ -1393,7 +1393,7 @@ render(){
             onClick={this.handleCloseDetails}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:'#fff'}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Group Details
@@ -1430,7 +1430,7 @@ render(){
             onClick={this.handleCloseRepayment}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:'#fff'}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Loan Repayment
@@ -1520,7 +1520,7 @@ render(){
             color="inherit"
             onClick={this.handleCloseReplace}
             aria-label="Close" >
-            <CloseIcon />
+            <CloseIcon style={{color:'#fff'}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             {code == 0? "Replace Invite":"Replace Member "} 
@@ -1590,7 +1590,7 @@ render(){
             color="inherit"
             onClick={this.handleCloseManageLoan}
             aria-label="Close">
-            <CloseIcon />
+            <CloseIcon style={{color:'#fff'}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Loan Details
@@ -1628,7 +1628,7 @@ render(){
             onClick={this.handleCloseAction}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:'#fff'}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Actions
@@ -1652,7 +1652,7 @@ render(){
           <ListItem button onClick={()=>this.confirmAlert("reject", request_id, 0, 0)}>
             <ListItemAvatar>
               <Avatar style={{ backgroundColor: blue[100], color: blue[600]}}>
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary="Reject Group" />
@@ -1686,7 +1686,7 @@ render(){
             color="inherit"
             onClick={this.handleCloseApproval}
             aria-label="Close">
-            <CloseIcon />
+            <CloseIcon style={{color:'#fff'}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Loan Approvals

@@ -371,7 +371,7 @@ tabbed = (id) => {
                   onClick={this.handleCloseView}
                   aria-label="Close"
                 >
-                  <CloseIcon />
+                  <CloseIcon style={{color:'#fff'}}/>
                 </IconButton>
                 <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
                   Investment Details
@@ -508,7 +508,7 @@ tabbed = (id) => {
                   onClick={this.handleCloseInvest}
                   aria-label="Close"
                 >
-                  <CloseIcon />
+                  <CloseIcon style={{color:'#fff'}}/>
                 </IconButton>
                 <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
                   Investment Details

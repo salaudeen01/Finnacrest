@@ -14,6 +14,7 @@ import cube from "../../../../lottiefiles/26519-cube-spinning";
 import Loading from "matx/components/MatxLoading/MatxLoading";
 import { AppBar, Button, Card, Dialog, DialogActions, Grid, IconButton, Slide, Toolbar, Typography } from "@material-ui/core";
 import ModalForm from "./ModalForm";
+import CloseIcon from "@material-ui/icons/Close";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -161,7 +162,7 @@ class Transaction extends Component {
           <Card className="px-6 pt-2 pb-4 text-center">
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Typography>
-                  We have INTEREST FREE LOAN which easily accesseable 
+                  We have INTEREST FREE LOAN which is easily accesseable 
                 </Typography>
                 <Typography>
                   To access our LOAN, Click on the <span style={{color:"green"}}>Member button</span> to continue
@@ -219,7 +220,7 @@ class Transaction extends Component {
                 onClick={this.handleCloseModalForm}
                 aria-label="Close"
               >
-                {/* <CloseIcon /> */}
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                 Welcome To SESIS
@@ -263,7 +264,7 @@ class Transaction extends Component {
                 onClick={this.handleCloseModalFee}
                 aria-label="Close"
               >
-                {/* <CloseIcon /> */}
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                 Welcome To SESIS

@@ -574,7 +574,7 @@ completeTab(){
                 onClick={this.handleCloseQuickSave}
                 aria-label="Close"
               >
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
                 Fund Your Account
@@ -691,7 +691,7 @@ completeTab(){
               onClick={this.handleClose}
               aria-label="Close"
             >
-              <CloseIcon />
+              <CloseIcon style={{color:'#fff'}}/>
             </IconButton>
             <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"white"}}>
               Create Target Plan
@@ -854,7 +854,7 @@ completeTab(){
                 onClick={this.handleCloseEdit}
                 aria-label="Close"
               >
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"white"}}>
                 Edit Target Savings
@@ -1028,7 +1028,7 @@ completeTab(){
                   onClick={this.handleCloseView}
                   aria-label="Close"
                 >
-                  <CloseIcon />
+                  <CloseIcon style={{color:'#fff'}}/>
                 </IconButton>
                 <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
                   Target Savings Transactions

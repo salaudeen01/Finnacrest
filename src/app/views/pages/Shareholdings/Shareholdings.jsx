@@ -14,6 +14,7 @@ import SesisSavingTop from "./components/SesisSavingTop";
 import ShareholdingsTab from "./ShareholdingsTab";
 import { AppBar, Button, Card, Dialog, DialogActions, Grid, IconButton, Slide, Toolbar, Typography } from "@material-ui/core";
 import ModalForm from "../transactions/ModalForm";
+import CloseIcon from "@material-ui/icons/Close";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -163,7 +164,7 @@ class Shareholdings extends Component {
                 onClick={this.handleCloseModalForm}
                 aria-label="Close"
               >
-                {/* <CloseIcon /> */}
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                 Welcome To SESIS
@@ -207,7 +208,7 @@ class Shareholdings extends Component {
                 onClick={this.handleCloseModalFee}
                 aria-label="Close"
               >
-                {/* <CloseIcon /> */}
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                 Welcome To SESIS

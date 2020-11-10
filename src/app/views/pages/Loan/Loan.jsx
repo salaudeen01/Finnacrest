@@ -50,12 +50,12 @@ class Loan extends Component {
     this.state={
       data:{
         loan_amount:"",
+        payment_duration:"",
         frequency:"",
+        repayment_amount:"",
         loan_group:"",
         start_date:"",
-        end_date:"",
-        payment_method:"",
-        repayment_amount:"",
+        payment_method:"Card",
         user_id:"",
         group_id:0,
     },    
@@ -139,6 +139,7 @@ class Loan extends Component {
       showManageLoan:false,
       isFetching:true,
       loan_avail_amount:0,
+      repayment_duration:0,
       group_id: "",
       request_id:"",
       code:"",
@@ -155,7 +156,7 @@ class Loan extends Component {
     this.handleSubmitReplace = this.handleSubmitReplace.bind(this);
     this.handleChangeReplace = this.handleChangeReplace.bind(this);
     this.handleSubmitLoan = this.handleSubmitLoan.bind(this);
-    this.handleChangeLoan = this.handleChangeLoan.bind(this);
+    this.handleChangeLoans = this.handleChangeLoans.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleDaChange = this.handleDaChange.bind(this);
     this.handleSubmitGroup = this.handleSubmitGroup.bind(this);
@@ -285,6 +286,25 @@ componentDidMount() {
             this.props.timeOut()
            }
     });
+    fetch(getConfig('repayment_duration'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }
+    console.log(data)
+    if(data.success == false || data.length == 0 ){
+      this.setState({repayment_duration: []});
+    }else{
+      this.setState({repayment_duration: data});  
+    }
+  })
+  .catch(error => {
+    if (error === "Unauthorized") {
+      this.props.timeOut()
+      }
+  });
     fetch(getConfig("getRegistrationFee"), requestOptions)
     .then(async (response) => {
       const data = await response.json();
@@ -606,118 +626,52 @@ handleChangeGroup(event) {
       group_data: {...group_data, [name]: value }
   });
 }
-
-handleChangeLoan(event) {
+handleChangeLoans(event){
   const { name, value, checked } = event.target;
   const { data } = this.state;
-  if(name == "start_date"){
-      var currentDate = new Date(value);
-      let freq = data.loan_amount / data.repayment_amount; 
-      
-      if(data.frequency == "Daily"){
-          let raw = currentDate.setDate(currentDate.getDate()+freq);
-          let end_date = new Date(raw);
-          let month = end_date.getMonth()+1;
-          let date = end_date.getFullYear() +'-'+month+'-'+ end_date.getDate();
-          this.setState({ data: {...data, end_date: date, start_date: value } })
-      }else if(data.frequency == "Weekly"){
-          let weeks = freq * 7;
-          let raw = currentDate.setDate(currentDate.getDate()+weeks);
-          let end_date = new Date(raw);
-          let month = end_date.getMonth()+1;
-          let date = end_date.getFullYear() +'-'+month+'-'+ end_date.getDate();
-          this.setState({ data: {...data, end_date: date, start_date: value } })
-      }else{
-          let raw = currentDate.setMonth(currentDate.getMonth()+freq);
-          let end_date = new Date(raw);
-          let month = end_date.getMonth()+1;
-          let date = end_date.getFullYear() +'-'+month+'-'+ end_date.getDate();
-          this.setState({ data: {...data, end_date: date, start_date: value } })
+  if(name == "payment_duration"){
+    if ( data.loan_amount != "") {
+      let repay = data.loan_amount / value;
+      if (data.frequency == "Weekly") {
+          let week_repay = repay / 4;
+          // console.log(week_repay)
+          this.setState({ data: {...data, repayment_amount: week_repay, payment_duration: value } })        
+      } else{
+        this.setState({ data: {...data, repayment_amount: repay, payment_duration: value } })
       }
-      
-  }else if(name == "frequency"){
-      if(data.start_date != "" && data.loan_amount != "" && data.repayment_amount != ""){
-          var currentDate = new Date(data.start_date);
-          let freq = data.loan_amount / data.repayment_amount;
-          if(value == "Daily"){
-              let raw = currentDate.setDate(currentDate.getDate()+freq);
-              let end_date = new Date(raw);
-              let month = end_date.getMonth()+1;
-              let date = end_date.getFullYear() +'-'+month+'-'+ end_date.getDate();
-              this.setState({ data: {...data, end_date: date, [name]:value} })
-          }else if(value == "Weekly"){
-              let weeks = freq * 7;
-              let raw = currentDate.setDate(currentDate.getDate()+weeks);
-              let end_date = new Date(raw);
-              let month = end_date.getMonth()+1;
-              let date = end_date.getFullYear() +'-'+month+'-'+ end_date.getDate();
-              this.setState({ data: {...data, end_date: date, [name]:value} })
-          }else{
-              let raw = currentDate.setMonth(currentDate.getMonth()+freq);
-              let end_date = new Date(raw);
-              let month = end_date.getMonth()+1;
-              let date = end_date.getFullYear() +'-'+month+'-'+ end_date.getDate();
-              this.setState({ data: {...data, end_date: date, [name]:value } })
-          }
-      }else{
+    }
+  }else if (name == "frequency"){
+        if ( data.loan_amount != "" && data.payment_duration != "" ) {
+          let repay = data.loan_amount / data.payment_duration;
+          // console.log(repay)
+          console.log('Frequency: ', data.frequency);
+          if (value == "Weekly") {
+            repay = repay / 4;
+            // console.log(repay)
+            this.setState({ data: {...data, repayment_amount: repay, [name]: value } })        
+            } else{
+              this.setState({ data: {...data, repayment_amount: repay, [name]: value } })
+            }
+        }else{
           this.setState({ data: { ...data, [name]: value} });
-      }
-  }else if(name == "loan_amount"){
-      if(data.repayment_amount != "" && data.start_date != "" && data.frequency != ""){
-          var currentDate = new Date(data.start_date);
-          let freq = value / data.repayment_amount;
-          if(data.frequency == "Daily"){
-              let raw = currentDate.setDate(currentDate.getDate()+freq);
-              let end_date = new Date(raw);
-              let month = end_date.getMonth()+1;
-              let date = end_date.getFullYear() +'-'+month+'-'+ end_date.getDate();
-              this.setState({ data: {...data, end_date: date, [name]:value} })
-          }else if(data.frequency == "Weekly"){
-              let weeks = freq * 7;
-              let raw = currentDate.setDate(currentDate.getDate()+weeks);
-              let end_date = new Date(raw);
-              let month = end_date.getMonth()+1;
-              let date = end_date.getFullYear() +'-'+month+'-'+ end_date.getDate();
-              this.setState({ data: {...data, end_date: date, [name]:value} })
-          }else{
-              let raw = currentDate.setMonth(currentDate.getMonth()+freq);
-              let end_date = new Date(raw);
-              let month = end_date.getMonth()+1;
-              let date = end_date.getFullYear() +'-'+month+'-'+ end_date.getDate();
-              this.setState({ data: {...data, end_date: date, [name]:value } })
-          }
-      }else{
-          this.setState({ data: { ...data, [name]: value,} });
-      }
-  }else if(name == "repayment_amount"){
-      if(data.loan_amount != "" && data.start_date != "" && data.frequency != ""){
-          var currentDate = new Date(data.start_date);
-          let freq = value / data.loan_amount;
-          if(data.frequency == "Daily"){
-              let raw = currentDate.setDate(currentDate.getDate()+freq);
-              let end_date = new Date(raw);
-              let month = end_date.getMonth()+1;
-              let date = end_date.getFullYear() +'-'+month+'-'+ end_date.getDate();
-              this.setState({ data: {...data, end_date: date, [name]:value} })
-          }else if(data.frequency == "Weekly"){
-              let weeks = freq * 7;
-              let raw = currentDate.setDate(currentDate.getDate()+weeks);
-              let end_date = new Date(raw);
-              let month = end_date.getMonth()+1;
-              let date = end_date.getFullYear() +'-'+month+'-'+ end_date.getDate();
-              this.setState({ data: {...data, end_date: date, [name]:value} })
-          }else{
-              let raw = currentDate.setMonth(currentDate.getMonth()+freq);
-              let end_date = new Date(raw);
-              let month = end_date.getMonth()+1;
-              let date = end_date.getFullYear() +'-'+month+'-'+ end_date.getDate();
-              this.setState({ data: {...data, end_date: date, [name]:value } })
-          }
-      }else{
-          this.setState({ data: { ...data, [name]: value,} });
-      }
-  }else if(name == "id"){
-    this.setState({id:checked})
+        }
+  }else if (name == "loan_amount"){
+    if ( data.payment_duration != "") {
+        // if payment duration is not empty
+        let repay = value / data.payment_duration; // monthly repayment amount
+        // console.log("Frequency: ", data.frequency);
+        if (data.frequency == "Weekly") {
+          // if frequency is weekly
+          repay = repay / 4; // weekly repayment amount
+          // console.log("Weekly repayment", repay)
+          this.setState({ data: {...data, repayment_amount: repay, [name]: value } })        
+        } else{
+          this.setState({ data: {...data, repayment_amount: repay, [name]: value } })
+        }
+        // console.log('repayment amount: ', repay);
+    }else{
+      this.setState({ data: { ...data, [name]: value} });
+    }
   }else{
     this.setState({data:{...data, [name]:value}})
   }
@@ -968,12 +922,18 @@ handleDaChange(event, id) {
   this.setState({formList: newArray});
 }
 render(){
-  const {users, repayment_details, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities,
+  const {users, repayment_duration, repayment_details, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities,
      Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage,
       showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, 
       group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, modal, showManageLoan, 
       modalForm, loan_avail_amount, registrationFee, modalFee, group_members, group_details, loading, repay_data} = this.state
-  return (
+  
+      let arr = []
+      for (let index = 0; index < repayment_duration; index++) {
+        arr.push((index)+1);    
+      }
+
+      return (
     <div className="m-sm-30">
      { modal == false ?
      <div>
@@ -1049,7 +1009,7 @@ render(){
             onClick={this.handleCloseLoan}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}} />
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Create Loan Request
@@ -1066,7 +1026,7 @@ render(){
                   <TextValidator
                   className="mb-4 w-full"
                   label="Loan Amount"
-                  onChange={this.handleChangeLoan}
+                  onChange={this.handleChangeLoans}
                   type="number"
                   name="loan_amount"
                   value={data.loan_amount}
@@ -1074,28 +1034,28 @@ render(){
                     "required"
                   ]}
                   errorMessages={["this field is required"]}
-                />
-                <TextField
-                className="mb-4 w-full"
-                  select
-                  label="Select Payment Duration"
-                  name="payment_duration"
-                  value={data.payment_duration}
-                  onChange={this.handleChangeLoan}
-                  // helperText="Please select frequency"
-                >
-                    <MenuItem value="">Select Payment Duration</MenuItem>
-                    <MenuItem value="Daily">1</MenuItem>
-                    <MenuItem value="Weekly"> 2</MenuItem>
-                    <MenuItem value="Monthly"> 3 </MenuItem>
-                </TextField>
+                />                
+                  <TextField
+                    className="mb-4 w-full"
+                    select
+                    label="Select Loan Duration"
+                    name="payment_duration"
+                    value={data.payment_duration}
+                    onChange={this.handleChangeLoans}
+                    //  helperText="Please select Loan Group"
+                  >
+                      <MenuItem value={""}>Select Loan Duration</MenuItem>
+                    {arr.map((name, index) => (
+                      <MenuItem value={name}>{(name) +" "+ 'month'}</MenuItem>
+                    ))}
+                  </TextField>
                 <TextField
                 className="mb-4 w-full"
                   select
                   label="Select Frequency"
                   name="frequency"
                   value={data.frequency}
-                  onChange={this.handleChangeLoan}
+                  onChange={this.handleChangeLoans}
                   // helperText="Please select frequency"
                 >
                     <MenuItem value={""}>Select Frequency</MenuItem>
@@ -1103,10 +1063,11 @@ render(){
                     <MenuItem value={"Weekly"}> Weekly</MenuItem>
                     <MenuItem value={"Monthly"}> Monthly </MenuItem>
                 </TextField>
-                {<TextValidator
+                {data.loan_amount && data.frequency && data.payment_duration &&
+                <TextValidator
                   className="mb-4 w-full"
                   label={data.frequency? data.frequency +" Repayment Amount": "Frequent Repayment" +" Amount"}
-                  onChange={this.handleChangeLoan}
+                  onChange={this.handleChangeLoans}
                   type="number"
                   name="repayment_amount"
                   value={data.repayment_amount}
@@ -1118,7 +1079,7 @@ render(){
                 {data.loan_amount && data.frequency &&
                   <TextValidator
                   className="mb-4 w-full"
-                  onChange={this.handleChangeLoan}
+                  onChange={this.handleChangeLoans}
                   type="date"
                   name="start_date"
                   helperText="Start Date"
@@ -1130,7 +1091,7 @@ render(){
                 />}
                 {/* <TextValidator
                   className="mb-4 w-full"
-                  onChange={this.handleChangeLoan}
+                  onChange={this.handleChangeLoans}
                   type="date"
                   name="end_date"
                   helperText="End Date"
@@ -1146,7 +1107,7 @@ render(){
                  label="Select Loan Guarantor"
                  name="loan_group"
                  value={data.loan_group}
-                 onChange={this.handleChangeLoan}
+                 onChange={this.handleChangeLoans}
                 //  helperText="Please select Loan Guarantor"
              >
                <MenuItem value={"Member"}>Member</MenuItem>
@@ -1159,7 +1120,7 @@ render(){
                  label="Select Loan Group"
                  name="loan_group"
                  value={data.loan_group}
-                 onChange={this.handleChangeLoan}
+                 onChange={this.handleChangeLoans}
                 //  helperText="Please select Loan Group"
                >
                    <MenuItem value={""}>Select Loan Group</MenuItem>
@@ -1220,7 +1181,7 @@ render(){
             
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Typography>Choose Card</Typography>
-                <PayCard cards={cards} id={id} value={data.card_id} open={this.handleQuickSave} handleChange={this.handleChangeLoan}/>
+                <PayCard cards={cards} id={id} value={data.card_id} open={this.handleQuickSave} handleChange={this.handleChangeLoans}/>
                 </Grid>
 
                 {this.props.savings && data.card_id &&
@@ -1256,7 +1217,7 @@ render(){
             onClick={this.handleCloseGroup}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}} />
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Create Group
@@ -1436,7 +1397,7 @@ render(){
             onClick={this.handleCloseManage}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}} />
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Manage Group
@@ -1486,7 +1447,7 @@ render(){
             onClick={this.handleCloseDetails}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}} />
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Group Details
@@ -1525,7 +1486,7 @@ render(){
                 onClick={this.handleCloseRepayment}
                 aria-label="Close"
               >
-                {/* <CloseIcon /> */}
+                {/* <CloseIcon style={{color:"#fff"}} /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                 Welcome To SESIS
@@ -1589,7 +1550,7 @@ render(){
                 onClick={this.handleCloseModalForm}
                 aria-label="Close"
               >
-                {/* <CloseIcon /> */}
+                {/* <CloseIcon style={{color:"#fff"}} /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                 Welcome To SESIS
@@ -1633,7 +1594,7 @@ render(){
                 onClick={this.handleCloseModalFee}
                 aria-label="Close"
               >
-                {/* <CloseIcon /> */}
+                {/* <CloseIcon style={{color:"#fff"}} /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                 Welcome To SESIS
@@ -1647,8 +1608,6 @@ render(){
                 </Card>
         </Dialog>
         {/* Loan repayment Dialog End */}
-
-
 
     {/* Replace or Invite new Member Dialog Start */}
     <Dialog
@@ -1665,7 +1624,7 @@ render(){
             color="inherit"
             onClick={this.handleCloseReplace}
             aria-label="Close" >
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}} />
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             {code == 0? "Replace Invite":"Replace Member "} 
@@ -1736,7 +1695,7 @@ render(){
             color="inherit"
             onClick={this.handleCloseManageLoan}
             aria-label="Close">
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}} />
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Loan Details
@@ -1775,7 +1734,7 @@ render(){
             onClick={this.handleCloseAction}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}} />
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Actions
@@ -1796,7 +1755,7 @@ render(){
           <ListItem button onClick={()=>this.confirmAlert("reject", request_id, 0, 0)}>
             <ListItemAvatar>
               <Avatar style={{ backgroundColor: blue[100], color: blue[600]}}>
-                <CloseIcon />
+                <CloseIcon style={{color:"#fff"}} />
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary="Reject Group" />
@@ -1830,7 +1789,7 @@ render(){
             color="inherit"
             onClick={this.handleCloseApproval}
             aria-label="Close">
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}} />
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Loan Approvals

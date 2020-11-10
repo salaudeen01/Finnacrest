@@ -47,6 +47,9 @@ const serverVars = {
   getSaveToLoanTransaction:"save_loan/transactions/",
   exitLoanSavings:"saveLoanExit/",
   deactivateAutoSaveLoan:"deactivateAutoSaveLoan",
+  repayment_duration:"loan_repayment_duration?token=",
+  finance_payment_duration:"business_finance_payment_duration?token=",
+
   //other transaction
   saveInvestment: "save_investment/store",
   getInvestments: "show_all_investment",
@@ -79,6 +82,7 @@ const serverVars = {
   getLoanGroupActivities:"loanGroupApproval/",
   addLoanRepayment:"loanRepaymentsAdd/",
   loanRepaymentsDetails:"loanRepaymentsDetails/",
+  businessRepaymentDetails:"business_repayment_details/",
   getLoanGroupName:"loanGroupName",
   declineLoan:"loanDeclined/",
   cancelLoan:"cancel_loan/",
@@ -375,6 +379,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.getLoanGroupMembers;
     case "addLoanRepayment":
       return serverVars.baseUrl + serverVars.addLoanRepayment;
+    case "businessRepaymentDetails":
+      return serverVars.baseUrl + serverVars.businessRepaymentDetails;
     case "loanRepaymentsDetails":
       return serverVars.baseUrl + serverVars.loanRepaymentsDetails;
     case "resendGroupNotification":
@@ -395,6 +401,10 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.showNonGroupLoan;
     case "owner_savings_balance":
       return serverVars.baseUrl + serverVars.owner_savings_balance;
+    case "repayment_duration":
+      return serverVars.baseUrl + serverVars.repayment_duration;
+    case "finance_payment_duration":
+      return serverVars.baseUrl + serverVars.finance_payment_duration;
 
     case "businessRequest":
       return serverVars.baseUrl + serverVars.businessRequest;

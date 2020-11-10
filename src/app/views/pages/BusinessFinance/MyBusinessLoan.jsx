@@ -19,6 +19,8 @@ import CompleteRequest from "./components/CompleteRequest";
 import swal from "sweetalert";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import PayOption from "app/views/dashboard/shared/PayOption";
+import BusinessDetails from "./components/BusinessDetails";
+import OrderTrans from "../ProductFinance/components/OrderTrans";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -58,7 +60,9 @@ class MyBusinessLoan extends Component {
       business_view:[],
       cards:[],
       id:true,
-      loading:true
+      loading:true,
+      showViewTrans:false,
+      showManageLoan:false
     }
 
     
@@ -71,6 +75,11 @@ class MyBusinessLoan extends Component {
     this.handleCloseQuickSave = this.handleCloseQuickSave.bind(this);
     this.handleChangeFund = this.handleChangeFund.bind(this);
     this.handleSubmitFund = this.handleSubmitFund.bind(this);
+    this.fetchLoanDetails = this.fetchLoanDetails.bind(this);
+    this.handleCreateManageLoan = this.handleCreateManageLoan.bind(this);
+    this.handleViewTrans = this.handleViewTrans.bind(this);
+    this.repaymentsDetails = this.repaymentsDetails.bind(this);
+    this.handleCloseViewTrans = this.handleCloseViewTrans.bind(this);
 
   
       
@@ -89,7 +98,7 @@ componentDidMount() {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
-      console.log(data)
+      // console.log(data)
       if(data.success == false  || data.length == 0 ){
         this.setState({ requested_business: []});
       }else{
@@ -115,7 +124,7 @@ componentDidMount() {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
-      console.log(data)
+      // console.log(data)
       if(data.success == false  || data.length == 0 ){
         this.setState({ business_view: []});
       }else{
@@ -132,8 +141,7 @@ componentDidMount() {
       if (error === "Unauthorized") {
         this.props.timeOut()
       }
-    });
-
+    });      
     fetch(getConfig('getAllDebitCards'), requestOptions)
     .then(async response => {
     const data = await response.json();
@@ -153,6 +161,56 @@ componentDidMount() {
       }
   });
   }
+
+  fetchLoanDetails=(id)=>{
+    const {token} = this.state
+      let requestOptions = this.getRequestOpt
+      fetch(getConfig('businessRepaymentDetails')+ id  +"?token=" + token, requestOptions)
+        .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+        }
+        if(data.success == false){
+          this.setState({repayment_details: [], pagination:[]})
+        }else{
+          this.setState({repayment_details: data, pagination:data})
+        }
+      })
+      .catch(error => {
+         if (error === "Unauthorized") {
+          this.props.timeOut()
+         }
+      });
+    }
+
+    repaymentsDetails=(id)=>{
+      const requestOptions = {
+          method: 'GET',
+          headers: { ...authHeader(), 'Content-Type': 'application/json' },
+      };
+  
+      fetch(getConfig("businessRepaymentDetails") + id, requestOptions)
+      .then(async response => {
+      const data = await response.json();
+      if (!response.ok) {
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+      }
+      if(data.success == false || data.total == 0){
+        this.setState({data: [], pagination:[], isLoading:false});
+      }else{
+        this.setState({data: data.data, pagination:data, isLoading:false});
+      } 
+    })
+      .catch(error => {
+          if (error === "Unauthorized") {
+              this.props.timeOut()
+          }
+          this.setState({isLoading:false})
+      });
+    }
 
   callback = (response) => {
     const {fund_data, add_card} = this.state
@@ -264,13 +322,32 @@ componentDidMount() {
       const {fund_data} = this.state
       this.setState({showSave: true, fund_data:{...fund_data, id: id}});
     }
+
+  handleCreateManageLoan = (id) => {
+    this.setState({loading:true})
+    this.fetchLoanDetails(id)
+    this.setState({showManageLoan: true});
+  }
+
+  handleViewTrans = (id) => {
+    this.setState({ isLoading: true });
+    this.repaymentsDetails(id);
+    this.setState({ showViewTrans: true });
+  };
+
+  handleCloseManageLoan() {
+    this.setState({showManageLoan:false});
+  }
+  handleCloseQuickSave() {
+    this.setState({showSave:false});
+  }
   
-    handleCloseQuickSave() {
-      this.setState({showSave:false});
-    }
+  handleCloseViewTrans() {
+    this.setState({showViewTrans:false});
+  }
 
 render(){
-  const {tab,loading,requested_business,business_view,showSave,fund_data,cards} = this.state
+  const {tab,loading,data,isLoading,requested_business,business_view,showSave,fund_data,cards,showManageLoan,repayment_details, showViewTrans} = this.state
    return (
     <div className="">       
          {loading ? (
@@ -337,8 +414,9 @@ render(){
                             decline={()=>this.handleDelete(data.id)}
                             repay={()=>this.handleQuickSave(data.id)}
                             // view={() => this.handleView(data.id)}
-                            // viewTrans={() => this.handleViewTrans(data.id)}
-                          />:
+                            view={()=>this.handleCreateManageLoan(data.id)}
+                            viewTrans={() => this.handleViewTrans(data.id)}
+                            />:
                           <Typography variant='body1'>
                             {/* No Ongoing Business */}
                         </Typography>
@@ -377,8 +455,8 @@ render(){
                           images={(data.image)}
                           decline={()=>this.handleDelete(data.id)}
                           accept={()=>this.handleAcceptLoan(data.id)}
-                            // stop={() => this.handleStopPlan(data.id)}
-                            // view={() => this.handleView(data.id)}
+                          view={()=>this.handleCreateManageLoan(data.id)}
+                          viewTrans={() => this.handleViewTrans(data.id)}
                             // repay={() => this.handleQuickSave(data.id)}
                           />:
                           <Typography variant='body1'>
@@ -416,7 +494,7 @@ render(){
                   onClick={this.handleCloseQuickSave}
                   aria-label="Close"
                 >
-                  <CloseIcon />
+                  <CloseIcon style={{color:'#fff'}}/>
                 </IconButton>
                 <Typography variant="h6" className="text-white" style={{marginLeft: 'theme.spacing(2)', flex: 1}}>
                   Fund Your Account
@@ -502,6 +580,43 @@ render(){
             </Card>
             </Dialog>
             {/* Quick Save Dialog End */}
+           
+
+           {/* View Dialog start */}
+              <Dialog
+              TransitionComponent={Transition}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description"
+              open={showViewTrans}
+              onClose={this.handleCloseViewTrans}
+            >
+                <AppBar color="primary" className="text-white" style={{position: "relative"}}>
+                  <Toolbar>
+                    <IconButton
+                      edge="start"
+                      color="inherit"
+                      onClick={this.handleCloseViewTrans}
+                      aria-label="Close"
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                    <Typography variant="h6" className="text-white" style={{marginLeft: "theme.spacing(2)", flex: 1, color:"#fff"}}>
+                      Repayment Transactions
+                    </Typography>
+                  </Toolbar>
+                </AppBar>
+                <Card className="px-6 pt-2 pb-4">
+                <Grid container spacing={2}>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    {isLoading ?
+                    <Typography>Loading...</Typography>:
+                    <BusinessDetails transactions={data} />
+                    }
+                  </Grid>
+                </Grid>
+              </Card>
+            </Dialog>
+            {/* View dialog end */} 
     </div>
   );
 }

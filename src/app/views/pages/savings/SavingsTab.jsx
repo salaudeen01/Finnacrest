@@ -12,6 +12,7 @@ import cube from "../../../../lottiefiles/26519-cube-spinning";
 import Loading from "matx/components/MatxLoading/MatxLoading";
 import SesisSavingTop from "./components/SesisSavingTop";
 import CustomTab from "./components/CustomTab";
+import CloseIcon from "@material-ui/icons/Close";
 import { AppBar, Button, Card, Dialog, DialogActions, Grid, IconButton, Slide, Toolbar, Typography } from "@material-ui/core";
 import ModalForm from "../transactions/ModalForm";
 
@@ -163,7 +164,7 @@ class SavingsTab extends Component {
                 onClick={this.handleCloseModalForm}
                 aria-label="Close"
               >
-                {/* <CloseIcon /> */}
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                 Welcome To SESIS
@@ -207,7 +208,7 @@ class SavingsTab extends Component {
                 onClick={this.handleCloseModalFee}
                 aria-label="Close"
               >
-                {/* <CloseIcon /> */}
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                 Welcome To SESIS

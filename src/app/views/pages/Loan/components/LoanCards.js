@@ -17,12 +17,14 @@ export default function LoanCards(props) {
   const {data, view, manage, repayment, status, cancelLoan} = props
 
   return (
-    <div className="pt-7 mb-4 px-2 bg-default" style={{flexGrow: 1, border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+    <div className="pt-2 mb-4 px-2 bg-default" style={{flexGrow: 1, border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
       <Grid container spacing={2}>
         <Grid item lg={6} md={6} sm={12} xs={12}>
           <Typography variant="h6">{data.group_name} </Typography><br/>
           <Typography variant="p" color="text-secondary font-bold"> Loan Amount: {numberFormat(data.loan_amount)}</Typography><br/>
           <Typography variant="p" color="text-secondary font-bold"> Amount Repaid: {numberFormat(data.repaid)}</Typography><br/>
+          {/* <Typography variant="p" color="text-secondary font-bold"> Repayment Start Date: {(data.start_date)}</Typography><br/>
+          <Typography variant="p" color="text-secondary font-bold"> Repayment End Date: {(data.end_date)}</Typography><br/> */}
           <Typography variant="p" color="text-secondary font-bold"> Loan Status: <span style={{backgroundColor: "green", color:"#fff", padding:3, borderRadius:5}}>
              {data.loan_status == 0? "Pending":data.loan_status == 1?"Active":data.loan_status == 2?"Processing"
              :data.loan_status == 3? "Completed":data.loan_status == 9? "Cancel":data.loan_status == 3? "Completed":""}</span> </Typography>

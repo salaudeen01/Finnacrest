@@ -54,7 +54,7 @@ class CancelledBusiness extends Component {
   }else{
     let newArray = [];
         data.forEach(d => {
-          if(d.request_status == 3){
+          if(d.request_status == 9){
             newArray.push(d)
           }
         });

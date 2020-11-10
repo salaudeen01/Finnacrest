@@ -24,9 +24,11 @@ import {
     Dialog, Checkbox,
     ButtonGroup, Divider, Badge, Slide} from '@material-ui/core';
 import OrderTrans from "../../ProductFinance/components/OrderTrans";
+import LoanDetailsCard from "../../Loans/components/LoanDetailsCard";
+import BusinessDetails from "./BusinessDetails";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="down" ref={ref} {...props} />;
 });
 
 const BorderLinearProgress = withStyles((theme) => ({
@@ -68,17 +70,17 @@ class MyRequest extends Component{
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
     };
 
-    fetch(getConfig("orderRepaymentsDetails") + order_id, requestOptions)
+    fetch(getConfig("display_request"), requestOptions)
     .then(async response => {
     const data = await response.json();
     if (!response.ok) {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }console.log(data)
-    if(data.success == false || data.total == 0){
-      this.setState({data: [], pagination:[], isLoading:false});
+    if(data.success == false){
+      this.setState({data: [], isLoading:false});
     }else{
-      this.setState({data: data, pagination:data, isLoading:false});
+      this.setState({data: data, isLoading:false});
     } 
   })
     .catch(error => {
@@ -152,75 +154,39 @@ class MyRequest extends Component{
         }
         <Grid>
            <Grid item lg={3} md={3} sm={12} xs={12}>
-           { this.props.status == 0 && this.props.admin_price != 0 ?            
+           { this.props.status == 11 ?            
         <ButtonGroup color="primary" aria-label="outlined primary button group">
            <Button className="mb-4"  size='small' variant="outlined" style={{borderColor:'green', color:'green'}}
              onClick={this.props.accept}
              >Accept</Button>
              <Button className="mb-4"  size='small' variant="outlined" style={{borderColor:'red', color:'red'}}
              onClick={this.props.decline}
-             >Decline</Button>                
+             >Decline</Button>                             
         </ButtonGroup>:
         this.props.status == 1 ?            
         <ButtonGroup color="primary" aria-label="outlined primary button group">
            <Button className="mb-4"  size='small' variant="outlined" style={{borderColor:'blue', color:'blue'}}
              onClick={this.props.repay}
-             >Repayment</Button>               
+             >Repayment</Button>
+              <Button className="mb-4"  size='small' variant="outlined" 
+                onClick={this.props.viewTrans}
+                >Transaction Detail</Button>               
         </ButtonGroup>:
           this.props.status == 2 ?            
             <ButtonGroup color="primary" aria-label="outlined primary button group">
               <Button className="mb-4"  size='small' variant="outlined"  style={{borderColor:'red', color:'red'}}
                  onClick={this.props.decline}
                  >Cancel
-              </Button>                
+              </Button> 
             </ButtonGroup>:
            <></>
            }
           </Grid>
            </Grid>
-           {/* <Grid item lg={3} md={3} sm={12} xs={12}>
-           { this.props.status == 0 ?
-                <Button className="mb-4"  size='small' variant="outlined" 
-                onClick={() => this.handleView()}
-                >Detail</Button>:
-                <div/>}
-           </Grid> */}
         </Grid>
       </Grid>
 
-        {/* View Dialog start */}
-        <Dialog
-          open={showView}
-          onClose={this.handleCloseView}
-          TransitionComponent={Transition}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-            <AppBar color="primary" className="text-white" style={{position: "relative"}}>
-              <Toolbar>
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  onClick={this.handleCloseView}
-                  aria-label="Close"
-                >
-                  <CloseIcon />
-                </IconButton>
-                <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                  Order Details
-                </Typography>
-              </Toolbar>
-            </AppBar>
-            <Card className="px-6 pt-2 pb-4">
-            <Grid container spacing={2}>
-              <Grid item lg={12} md={12} sm={12} xs={12}>
-                 <OrderTrans transactions={data} />
-              </Grid>
-            </Grid>
-          </Card>
-        </Dialog>
-        {/* View dialog end */} 
-
+      
     </div>
   );
 };

@@ -384,7 +384,7 @@ completeTab(){
                 onClick={this.handleCloseQuickSave}
                 aria-label="Close"
               >
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
                 View Guarantors
@@ -411,7 +411,7 @@ completeTab(){
                 style={{color:'#fff'}}
                 onClick={this.handleClose}
                 aria-label="Close">
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                 Loan Guarantors
@@ -453,7 +453,7 @@ completeTab(){
                 onClick={this.handleCloseEdit}
                 aria-label="Close"
               >
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"white"}}>
                 Edit Target Savings

@@ -476,7 +476,7 @@ render(){
                 onClick={this.closeEditPassword}
                 aria-label="Close"
               >
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
                 Change Password
@@ -557,7 +557,7 @@ render(){
                 onClick={this.closeEditBankDetails}
                 aria-label="Close"
               >
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
                 Change Bank details
@@ -649,7 +649,7 @@ render(){
                 onClick={this.closeWithdraw}
                 aria-label="Close"
               >
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
                 Withdraw To Bank Account

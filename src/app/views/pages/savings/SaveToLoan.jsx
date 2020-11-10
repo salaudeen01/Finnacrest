@@ -435,7 +435,7 @@ handleClose() {
                 color="inherit"
                 onClick={this.handleCloseQuickSave}
                 aria-label="Close">
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"fff"}}>
                 Fund Your Account
@@ -537,7 +537,7 @@ handleClose() {
                 color="primary"
                 onClick={this.handleClose}
                 aria-label="Close">
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
                 Create Auto Save Account
@@ -679,7 +679,7 @@ handleClose() {
               onClick={this.handleCloseEdit}
               aria-label="Close"
             >
-              <CloseIcon />
+              <CloseIcon style={{color:'#fff'}}/>
             </IconButton>
             <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
               Edit Auto Save Account

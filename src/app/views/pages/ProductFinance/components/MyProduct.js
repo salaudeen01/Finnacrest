@@ -24,6 +24,7 @@ import {
     Dialog, Checkbox,
     ButtonGroup, Divider, Badge, Slide} from '@material-ui/core';
 import OrderTrans from "./OrderTrans";
+import BusinessDetails from "../../BusinessFinance/components/BusinessDetails";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -192,7 +193,7 @@ class MyProduct extends Component{
                   onClick={this.handleCloseView}
                   aria-label="Close"
                 >
-                  <CloseIcon />
+                 <CloseIcon style={{color:'#fff'}}/>
                 </IconButton>
                 <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                   Order Details
@@ -204,7 +205,7 @@ class MyProduct extends Component{
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 {isLoading ?
                 <Typography>Loading...</Typography>:
-                 <OrderTrans transactions={data} />
+                 <BusinessDetails transactions={data} />
                  }
               </Grid>
             </Grid>

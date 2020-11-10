@@ -923,7 +923,7 @@ render(){
             onClick={this.handleCloseLoan}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Create Loan Request
@@ -1102,7 +1102,7 @@ render(){
             onClick={this.handleCloseGroup}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Create Group
@@ -1281,7 +1281,7 @@ render(){
             onClick={this.handleCloseManage}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Manage Group
@@ -1331,7 +1331,7 @@ render(){
             onClick={this.handleCloseDetails}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Group Details
@@ -1353,94 +1353,6 @@ render(){
     </Dialog>
     {/* Loan Group Details Dialog End */}
 
-    {/* Loan repayment Dialog Start */}
-    {/* <Dialog
-      open={showrepayment}
-      onClose={this.handleCloseRepayment} >
-      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={this.handleCloseRepayment}
-            aria-label="Close"
-          >
-            <CloseIcon />
-          </IconButton>
-          <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-            Loan Repayment
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <ValidatorForm
-        ref="form"
-        onSubmit={this.handleSubmitRepay}
-        onError={errors => null}>
-        <Card className="px-6 pt-2 pb-4">
-          <Grid container spacing={2}>
-            <Grid item lg={12} md={12} sm={12} xs={12}>
-                <TextValidator
-                className="mb-4 w-full"
-                label="Enter Repayment Amount"
-                onChange={this.handleChangeRepay}
-                type="text"
-                value={repay_data.repayment_amount}
-                name="repayment_amount"
-                validators={[
-                  "required"
-                ]}
-                errorMessages={["this field is required"]}
-              />
-              <TextField
-               className="mb-4 w-full"
-                id="standard-select-currency"
-                select
-                label="Select Payment Method"
-                value={repay_data.payment_method}
-                name="payment_method"
-                onChange={this.handleChangeRepay}
-                helperText="Please select Payment Method"
-              >
-                  <MenuItem value={""}></MenuItem>
-                  <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                  <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
-              </TextField>
-              {this.props.savings &&
-               <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-              }
-              {repay_data.payment_method === "Wallet" &&
-              <Button className="uppercase"
-                type="submit"
-                size="large"
-                variant="contained"
-                style={{backgroundColor:"#04956a", color:"white"}}>
-                   Repay Loan
-              </Button>}
-            </Grid>
-            {repay_data.payment_method == "Debit Card" &&
-            <Grid item lg={12} md={12} sm={12} xs={12}>
-              <Typography>Choose Card</Typography>
-              <PayCard cards={cards} value={repay_data.card_id} open={(e)=>this.setState({ repay_data:{...repay_data, card_id:""}})} handleChange={this.handleChangeRepay}/>
-            </Grid>}
-            {repay_data.payment_method == "Debit Card" && repay_data.card_id == "" &&
-              <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Checkbox
-                      name="save_card"
-                      checked={repay_data.save_card}
-                      onChange={this.handleChangeRepay}
-                      inputProps={{ 'aria-label': 'primary checkbox' }}
-                  /><Typography variant="caption">Would you like to save your card</Typography>
-              </Grid>}
-            {(repay_data.payment_method === "Debit Card"&& repay_data.card_id == "") &&
-            <Grid item lg={12} md={12} sm={12} xs={12}>
-              <PayOption callback={this.callback} amount={repay_data.repayment_amount}/>
-            </Grid>}
-          </Grid>
-        </Card>
-      </ValidatorForm>
-    </Dialog> */}
-    {/* Loan repayment Dialog End */}
-
     {/* Replace or Invite new Member Dialog Start */}
     <Dialog
       open={showReplace}
@@ -1456,7 +1368,7 @@ render(){
             color="inherit"
             onClick={this.handleCloseReplace}
             aria-label="Close" >
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             {code == 0? "Replace Invite":"Replace Member "} 
@@ -1527,7 +1439,7 @@ render(){
             color="inherit"
             onClick={this.handleCloseManageLoan}
             aria-label="Close">
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Loan Details
@@ -1565,7 +1477,7 @@ render(){
             onClick={this.handleCloseAction}
             aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Actions
@@ -1586,7 +1498,7 @@ render(){
           <ListItem button onClick={()=>this.confirmAlert("reject", request_id, 0, 0)}>
             <ListItemAvatar>
               <Avatar style={{ backgroundColor: blue[100], color: blue[600]}}>
-                <CloseIcon />
+                <CloseIcon style={{color:"#fff"}}/>
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary="Reject Group" />
@@ -1621,7 +1533,7 @@ render(){
             color="inherit"
             onClick={this.handleCloseApproval}
             aria-label="Close">
-            <CloseIcon />
+            <CloseIcon style={{color:"#fff"}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
             Loan Approvals

@@ -132,7 +132,7 @@ class SingleInvestmentCardDetails extends Component {
                         onClick={this.handleCartClose}
                         aria-label="Close"
                         >
-                        <CloseIcon />
+                        <CloseIcon style={{color:'#fff'}}/>
                         </IconButton>
                         <Typography variant="h6" style={{marginLeft: 'theme.spacing(2)', flex: 1, color:"#fff"}}>
                         Add to Cart

@@ -491,7 +491,7 @@ handleClose() {
               onClick={this.handleCloseQuickSave}
               aria-label="Close"
             >
-              <CloseIcon />
+              <CloseIcon style={{color:'#fff'}}/>
             </IconButton>
             <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
               Fund Your Account
@@ -593,7 +593,7 @@ handleClose() {
                 onClick={this.handleCloseEdit}
                 aria-label="Close"
               >
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
                 Edit Auto Save Account
@@ -735,7 +735,7 @@ handleClose() {
               onClick={this.handleClose}
               aria-label="Close"
             >
-              <CloseIcon />
+              <CloseIcon style={{color:'#fff'}}/>
             </IconButton>
             <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
               Create Auto Save Account
@@ -865,7 +865,7 @@ handleClose() {
                       onClick={this.handleCloseWithdraw}
                       aria-label="Close"
                     >
-                      <CloseIcon />
+                      <CloseIcon style={{color:'#fff'}}/>
                     </IconButton>
                     <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
                       Withdraw To Wallet

@@ -522,7 +522,7 @@ class Shareholdings extends Component {
                 onClick={this.handleCloseQuickSave}
                 aria-label='Close'
               >
-                <CloseIcon />
+               <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography
                 variant='h6'
@@ -621,7 +621,7 @@ class Shareholdings extends Component {
                 onClick={this.handleCloseEdit}
                 aria-label='Close'
               >
-                <CloseIcon />
+               <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography
                 variant='h6'
@@ -767,7 +767,7 @@ class Shareholdings extends Component {
                 onClick={this.handleClose}
                 aria-label='Close'
               >
-                <CloseIcon />
+               <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography
                 variant='h6'
@@ -913,7 +913,7 @@ class Shareholdings extends Component {
                 onClick={this.handleCloseWithdraw}
                 aria-label='Close'
               >
-                <CloseIcon />
+               <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography
                 variant='h6'

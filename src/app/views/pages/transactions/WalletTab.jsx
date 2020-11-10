@@ -396,7 +396,7 @@ handleCloseConfirmWithdraw() {
               onClick={this.handleClose}
               aria-label="Close"
             >
-              <CloseIcon />
+              <CloseIcon style={{color:'#fff'}}/>
             </IconButton>
             <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
               Fund Your Account
@@ -476,7 +476,7 @@ handleCloseConfirmWithdraw() {
                 onClick={this.handleCloseWithdraw}
                 aria-label="Close"
               >
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
                 Withdraw To Bank Account
@@ -597,7 +597,7 @@ handleCloseConfirmWithdraw() {
                 onClick={this.handleCloseRepayment}
                 aria-label="Close"
               >
-                {/* <CloseIcon /> */}
+                {/* <CloseIcon style={{color:'#fff'}}/> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                 Welcome To SESIS
@@ -607,7 +607,7 @@ handleCloseConfirmWithdraw() {
           <Card className="px-6 pt-2 pb-4 text-center">
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Typography>
-                  We have INTEREST FREE LOAN which easily accesseable 
+                  We have INTEREST FREE LOAN which is easily accesseable 
                 </Typography>
                 <Typography>
                   To access our LOAN, Click on the <span style={{color:"green"}}>Member button</span> to continue
@@ -664,7 +664,7 @@ handleCloseConfirmWithdraw() {
                 onClick={this.handleCloseModalForm}
                 aria-label="Close"
               >
-                {/* <CloseIcon /> */}
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                 Welcome To SESIS
@@ -708,7 +708,7 @@ handleCloseConfirmWithdraw() {
                 onClick={this.handleCloseModalFee}
                 aria-label="Close"
               >
-                {/* <CloseIcon /> */}
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                 Welcome To SESIS
@@ -740,7 +740,7 @@ handleCloseConfirmWithdraw() {
                 onClick={()=>console.log("close")}
                 aria-label="Close"
               >
-                <CloseIcon />
+                <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
                 Confirm Withdrawal
