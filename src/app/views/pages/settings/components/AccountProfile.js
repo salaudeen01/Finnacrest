@@ -13,7 +13,8 @@ import {
   Typography,
   Divider,
   Button,
-  LinearProgress
+  LinearProgress,
+  Box
 } from '@material-ui/core';
 
 // const useStyles = makeStyles(theme => ({
@@ -89,7 +90,25 @@ render(){
     >
     <form onSubmit={this.handleSubmit} >    
       <CardContent>
-        <div style={{display: 'flex'}}>
+        <div style={{display: 'block',textAlign:'center',alignContent:'center', alignItems:'center'}}>
+           <div> 
+            <img
+              style={{marginLeft: 'auto', height: 200, width: 200, flexShrink: 0, flexGrow: 0, borderRadius:100}}
+              src={this.props.data.profile_pic != "" ? this.props.data.profile_pic:avatar}
+              ref={this.uploadedImage}
+              onClick={this.handleClick}
+              
+            />
+            <input className="sea" 
+                name="profile_pic" 
+                type="file" 
+                accept="image/*" 
+                multiple="false" 
+                onChange={this.handleProfileImage} 
+                ref={this.imageUploader}
+                style={{display:"none",}}
+                />
+          </div>
           <div>
             <Typography
               gutterBottom
@@ -98,10 +117,9 @@ render(){
               {this.props.data.first_name +" "+ this.props.data.last_name}
             </Typography>
             <Typography
-              color="textSecondary"
               variant="body1"
             >
-              {this.props.data.address}
+              {this.props.data.email}
             </Typography>
             <Typography
               color="textSecondary"
@@ -109,35 +127,11 @@ render(){
             >
               {this.props.data.phone_no}
             </Typography>
-          </div>  
-          <img
-            style={{marginLeft: 'auto', height: 110, width: 100, flexShrink: 0, flexGrow: 0, borderRadius:50}}
-            src={this.props.data.profile_pic != "" ? this.props.data.profile_pic:avatar}
-            ref={this.uploadedImage}
-            onClick={this.handleClick}
-            
-          />
-          <input className="sea" 
-              name="profile_pic" 
-              type="file" 
-              accept="image/*" 
-              multiple="false" 
-              onChange={this.handleProfileImage} 
-              ref={this.imageUploader}
-              style={{display:"none"}}
-              />
+          </div>
         </div>
-          <Typography variaant="subtitle">click image to upload</Typography>
+          <Typography variaant="subtitle" className='text-center'>click image to upload</Typography>
       </CardContent>
-      <CardActions>
-        {/* <Button
-          type="submit"
-          style={{marginRight: 20, color:"#fff"}}
-          color="secondary"
-          variant="contained"
-        >
-          Upload picture
-        </Button> */}
+      <CardActions>        
         {this.props.savings && (
         <CircularProgress
           size={24}
@@ -148,9 +142,9 @@ render(){
         <LinearProgress
           value={this.props.completeness}
           variant="determinate"
-          color='secondary'
+          color='primary'
         />
-      </div>
+      </div>      
       <Divider />
     </form>
     </Card>

@@ -44,7 +44,7 @@ const PaginationTable = (props) => {
             .map((data, index) => (
               <TableRow key={index}>
                 <TableCell className="px-0 capitalize" align="left" colSpan={4}>
-                cub{data.id}
+                {data.id}
                 </TableCell>
                 <TableCell className="px-0 capitalize" align="left" colSpan={4}>
                   {(data.wallet_category || data.transaction_category) == 1 ? "Regular Savings": 

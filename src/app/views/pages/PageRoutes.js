@@ -17,11 +17,6 @@ const pageRoutes = [
     path: "/shareholdings",
     component: React.lazy(() => import("./Shareholdings/Shareholdings")),
   },
-  
-  // {
-  //   path: "/halal",
-  //   component: React.lazy(() => import("./investments/Halal"))
-  // },
   // {
   //   path: "/market",
   //   component: React.lazy(() => import("./investments/Market"))

@@ -18,6 +18,7 @@ import {Link} from "react-router-dom"
 import RemoveCard from 'app/views/dashboard/shared/RemoveCard';
 import PayOption from 'app/views/dashboard/shared/PayOption';
 import AddCardDialog from 'app/views/dashboard/shared/AddCardDialog';
+import Settings2 from './Settings2';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -36,6 +37,7 @@ constructor(props){
   this.state ={
     editPassword:false,
     editBankDetails:false,
+    updateProfile:false,
     withdrawFund:false,
     profile:{
       first_name:"",
@@ -88,9 +90,10 @@ constructor(props){
   this.handleChange = this.handleChange.bind(this);
   this.handleChangeCard = this.handleChangeCard.bind(this);
   this.showEditPassword = this.showEditPassword.bind(this);
+  this.showUpdateProfile = this.showUpdateProfile.bind(this);
   this.showEditBankDetails = this.showEditBankDetails.bind(this);
   this.showWithdraw = this.showWithdraw.bind(this);
-  this.closeEditPassword = this.closeEditPassword.bind(this);
+  this.closeUpdateProfile = this.closeUpdateProfile.bind(this);
   this.closeEditBankDetails = this.closeEditBankDetails.bind(this);
   this.closeWithdraw = this.closeWithdraw.bind(this);
   this.check = this.check.bind(this);
@@ -355,6 +358,9 @@ handleChangeBankDetails(event) {
 showEditPassword=()=>{
   this.setState({editPassword:true})
 }
+showUpdateProfile=()=>{
+  this.setState({updateProfile:true})
+}
 showEditBankDetails=()=>{
   this.setState({loading:true})
   this.fetchBankDetails()
@@ -366,6 +372,9 @@ showWithdraw=()=>{
 closeEditPassword=()=>{
   this.setState({editPassword:false})
 }
+closeUpdateProfile=()=>{
+  this.setState({updateProfile:false})
+}
 closeEditBankDetails=()=>{
   this.setState({editBankDetails:false})
 }
@@ -375,7 +384,7 @@ closeWithdraw=()=>{
 
 render(){
     const {theme} = this.props
-    const {profile, editPassword, cards, isChecking, editBankDetails, showSave, add_card, withdrawFund, completeness, isFetching, withdraw_data, password_data, bank_data, banks, loading} = this.state
+    const {profile, editPassword, updateProfile, cards, isChecking, editBankDetails, showSave, add_card, withdrawFund, completeness, isFetching, withdraw_data, password_data, bank_data, banks, loading} = this.state
     return (
       <div className="m-sm-30">
         <div className="mb-sm-30">
@@ -390,20 +399,43 @@ render(){
           <Loading />
         </div>:
         <div >
-          <Grid container spacing={4} >
-            <Grid item lg={4} md={6} xl={4} xs={12} >
-              <AccountProfile data={profile} completeness={completeness}/>
-
+          <Grid container spacing={4} >    
+            <Grid item lg={7} md={6} xl={7} xs={12} >
+                <AccountProfile data={profile} completeness={completeness}/>
+              </Grid>        
+              <Grid item lg={4} md={6} xl={4} xs={12} >
+              <Card onClick={this.showUpdateProfile} className="py-2 px-4 project-card">
+                <Grid container alignItems="center">
+                  <Grid item md={6} lg={6}>
+                    <div className="flex items-center">
+                      <Hidden smDown>
+                          <Fab
+                            className="ml-4 bg-primary box-shadow-none text-white"
+                            size="small"
+                          >
+                            <Icon>assignment_ind</Icon>
+                          </Fab>
+                      </Hidden>
+                    </div>
+                  </Grid>
+                  <Grid item lg={6} sm={12} md={6} xs={12}>
+                    <div className="text-muted">
+                      Update Profile
+                    </div>
+                  </Grid>
+                </Grid>
+              </Card>
+              <div className="py-2" />
               <Card onClick={this.showEditPassword} className="py-2 px-4 project-card">
                 <Grid container alignItems="center">
                   <Grid item md={6} lg={6}>
                     <div className="flex items-center">
                       <Hidden smDown>
                           <Fab
-                            className="ml-4 bg-green box-shadow-none text-white"
+                            className="ml-4 bg-primary box-shadow-none text-white"
                             size="small"
                           >
-                            <Icon>star_outline</Icon>
+                            <Icon>https</Icon>
                           </Fab>
                       </Hidden>
                     </div>
@@ -422,10 +454,10 @@ render(){
                     <div className="flex items-center">
                       <Hidden smDown>
                           <Fab
-                            className="ml-4 bg-green box-shadow-none text-white"
+                            className="ml-4 bg-primary box-shadow-none text-white"
                             size="small"
                           >
-                            <Icon>star_outline</Icon>
+                            <Icon>payment</Icon>
                           </Fab>
                       </Hidden>
                     </div>
@@ -437,7 +469,7 @@ render(){
                   </Grid>
                 </Grid>
               </Card>
-              <div className="py-2" />
+              {/* <div className="py-2" />
               <Link to="/wallet">
                 <Button
                 color="secondary"
@@ -445,21 +477,52 @@ render(){
                 style={{color:"#fff"}}
                 type="submit">Go To Wallet</Button>
               </Link>
-              <div className="py-2" />
+              <div className="py-2" /> */}
               <Typography variant="h6">My Cards</Typography>
               <RemoveCard cards={cards} open={this.handleQuickSave} date_time={add_card.date_time} saveWallet={this.props.saveWallet} removeCards={this.props.removeCard}/>
-            </Grid>
+            </Grid>            
             <Grid  item lg={8} md={6} xl={8} xs={12} >
-              <AccountDetails 
-                savings={this.props.savings}
-                profile={profile}
-                handleChange={this.handleChange} 
-                handleSubmit={this.handleSubmit}/>
             </Grid>
           </Grid>
         </div>}
 
         <AddCardDialog callback={this.callback} showSave={showSave} handleClose={this.handleClose} add_card={add_card} handleChangeCard={this.handleChangeCard}/>
+
+          
+        {/* Change Password Dialog Start */}
+        <Dialog 
+        TransitionComponent={Transition}
+        scroll='body'
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+          open={updateProfile}
+          onClose={this.closeUpdateProfile}>
+          <AppBar color="primary" style={{position: "relative"}}>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={this.closeUpdateProfile}
+                aria-label="Close"
+              >
+                <CloseIcon style={{color:'#fff'}}/>
+              </IconButton>
+              <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
+                Update Profile
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Card className="px-6 pt-2 pb-4">
+            {/* <AccountDetails 
+              savings={this.props.savings}
+              profile={profile}
+              handleChange={this.handleChange} 
+              handleSubmit={this.handleSubmit}
+            /> */}
+            <Settings2/>
+          </Card>
+        </Dialog>
+        {/* Change Password Dialog End */}
 
         {/* Change Password Dialog Start */}
         <Dialog 
@@ -530,7 +593,7 @@ render(){
                   <Button className="uppercase"
                     type="submit"
                     size="large"
-                    color="secondary"
+                    color="primary"
                     variant="contained"
                     style={{ color:"#fff"}}>
                     Change Password
@@ -618,7 +681,7 @@ render(){
                     type="submit"
                     size="large"
                     variant="contained"
-                    color="secondary"
+                    color="primary"
                     style={{color:"#fff"}}>
                     Save 
                   </Button>
@@ -635,7 +698,7 @@ render(){
         {/* Bank Details Dialog End */}
 
         {/* withdraw Dialog start */}
-        <Dialog 
+      <Dialog 
         TransitionComponent={Transition}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"

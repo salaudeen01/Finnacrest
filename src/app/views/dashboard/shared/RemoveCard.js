@@ -111,7 +111,7 @@ const classes = useStyles();
                           </CardContent>
                       </div>
                       <Tooltip title="Add New Card" aria-label="add">
-                        <Fab onClick={open} className="ml-4 mt-5 bg-green box-shadow-none text-white"
+                        <Fab onClick={open} className="ml-4 mt-5 bg-primary box-shadow-none text-white"
                             size="small" >
                           <Icon>add</Icon>
                         </Fab>
@@ -119,28 +119,31 @@ const classes = useStyles();
                     </Card>
                 </Grid>
                 {cards.map(card =>(
-                  <Grid item lg={12} md={12} xs={12} sm={12}>
-                      <Card className={classes.root} elevation={5}>
+                  <Grid item lg={12} md={12} xs={12} sm={6}>
+                      <Card className={classes.root} elevation={5} className='text-center' style={{background:'aqua'}}>
+                            <Typography component="h6" variant="h6" className='text-right px-6 py-1'>
+                                SESIS
+                            </Typography>
                           <div className={classes.details}>
-                            <CardContent className={classes.content}>
+                            <CardContent className={classes.content}>                            
+                            <Typography variant="subtitle1" color="textSecondary">
+                                {card.bin + "************************" + card.last4}
+                            </Typography>
                             <Typography component="h6" variant="h6">
                                 {card.bank}
-                            </Typography>
-                            <Typography variant="subtitle1" color="textSecondary">
-                                {card.bin + "*******" + card.last4}
                             </Typography>
                             </CardContent>
                           </div>
                           <Tooltip title="Delete Card">
                             <Fab onClick={()=>removeCard(card.id)}
-                              className="ml-4 mt-5 bg-error box-shadow-none text-white"
+                              className="ml-25 mb-5 bg-error box-shadow-none text-white"
                               size="small">
                               <Icon>delete</Icon>
                             </Fab>
                           </Tooltip>
                           <Tooltip title="Replace Card">
                             <Fab onClick={()=>handleShow(card.id)}
-                              className="ml-4 mt-5 bg-green box-shadow-none text-white"
+                              className="ml-2 mb-5  bg-green box-shadow-none text-white text-right"
                               size="small">
                               <Icon>edit</Icon>
                             </Fab>

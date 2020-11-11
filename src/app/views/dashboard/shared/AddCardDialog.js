@@ -26,7 +26,7 @@ const AddCardDialog = ({showSave, handleClose, add_card, callback}) => {
                 onClick={handleClose}
                 aria-label="Close"
               >
-                <CloseIcon />
+                <CloseIcon className='text-white'/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1}}>
                 Add New Card
