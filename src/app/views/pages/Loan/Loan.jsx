@@ -637,7 +637,7 @@ handleChangeLoans(event){
           // console.log(week_repay)
           this.setState({ data: {...data, repayment_amount: week_repay, payment_duration: value } })        
       } else{
-        this.setState({ data: {...data, repayment_amount: repay, payment_duration: value } })
+        this.setState({ data: {...data, repayment_amount: Math.round(repay), payment_duration: value } })
       }
     }
   }else if (name == "frequency"){
@@ -648,9 +648,9 @@ handleChangeLoans(event){
           if (value == "Weekly") {
             repay = repay / 4;
             // console.log(repay)
-            this.setState({ data: {...data, repayment_amount: repay, [name]: value } })        
+            this.setState({ data: {...data, repayment_amount: Math.round(repay), [name]: value } })        
             } else{
-              this.setState({ data: {...data, repayment_amount: repay, [name]: value } })
+              this.setState({ data: {...data, repayment_amount: Math.round(repay), [name]: value } })
             }
         }else{
           this.setState({ data: { ...data, [name]: value} });
@@ -664,9 +664,9 @@ handleChangeLoans(event){
           // if frequency is weekly
           repay = repay / 4; // weekly repayment amount
           // console.log("Weekly repayment", repay)
-          this.setState({ data: {...data, repayment_amount: repay, [name]: value } })        
+          this.setState({ data: {...data, repayment_amount: Math.round(repay), [name]: value } })        
         } else{
-          this.setState({ data: {...data, repayment_amount: repay, [name]: value } })
+          this.setState({ data: {...data, repayment_amount: Math.round(repay), [name]: value } })
         }
         // console.log('repayment amount: ', repay);
     }else{
@@ -676,7 +676,6 @@ handleChangeLoans(event){
     this.setState({data:{...data, [name]:value}})
   }
 }
-
 handleChangeRepay(event) {
   const { name, value, checked } = event.target;
   const { repay_data, loan_bal } = this.state;
@@ -708,7 +707,6 @@ handleSubmitGroup(event) {
       );
   }
 }
-
 handleSubmitLoan(event) {
   event.preventDefault();
   const {data, formList} = this.state
@@ -727,7 +725,6 @@ handleSubmitRepay(event) {
       );
   }
 }
-
 handleSubmitReplace(event) {
   event.preventDefault();
   const { replace_data } = this.state;
@@ -904,7 +901,7 @@ handleChangeUsers = (event, values, id) =>{
     console.log(id)
   this.fetchUsers(value);
   users.forEach(user => {
-    if(values == user.id + user.first_name + " " + user.last_name){
+    if(values == user.first_name + " " + user.last_name){
       const elementsIndex = formList.findIndex((element,index) => index == id )
       newArray[elementsIndex] = {...newArray[elementsIndex], user_id: user.id}
       console.log(newArray)
@@ -931,8 +928,8 @@ render(){
       let arr = []
       for (let index = 0; index < repayment_duration; index++) {
         arr.push((index)+1);    
-      }
-
+      };
+      const bal = data.loan_amount - loan_avail_amount
       return (
     <div className="m-sm-30">
      { modal == false ?
@@ -1140,7 +1137,7 @@ render(){
                 id="free-solo-2-demo"
                 disableClearable
                 onChange={(event, value) => this.handleChangeUsers(event, value, index)}
-                options={users.map((option) =>(option.id) + option.first_name + " " + option.last_name )}
+                options={users.map((option) =>(option.first_name + " " + option.last_name) +" "+ option.email )}
                 renderInput={(params) => (
                   <TextValidator
                     {...params}
@@ -1157,7 +1154,7 @@ render(){
                 <TextValidator
                   // fullWidth
                   // margin="normal"
-                  // helperText="Enter amount value"
+                  helperText={"Enter amount value " + bal}
                   label="Guarantee Amount"
                   name="guaranteed_amount"
                   onChange={(e)=>this.handleDaChange(e, index)}

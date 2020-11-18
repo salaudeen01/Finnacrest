@@ -47,17 +47,18 @@ class ComLoanTable extends Component{
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.props.tdetails.map((det, index) => (
-                 det.status == 1 || det.status == 9 ?
+                {this.props.tdetails.length == 0?
+                <Typography variant="p" className="font-bold text-center">You do not have any Completed loan Request</Typography>:
+                this.props.tdetails.map((det, index) => (
                   <TableRow key='index'>
                     <TableCell className="px-4" colSpan={6} >
                     {(det.first_name +" "+ det.last_name)}
                     </TableCell>
                     <TableCell className="px-4 capitalize" align="left" colSpan={6}>
-                      {det.loan_amount}
+                      {numberFormat (det.loan_amount)}
                     </TableCell>
                     <TableCell className="px-4" colSpan={6}>
-                     {det.guaranteed_amount}
+                     {numberFormat (det.guaranteed_amount)}
                     </TableCell>
                     <TableCell className="px-4" colSpan={6}>
                      {det.status == 9 ?
@@ -71,8 +72,7 @@ class ComLoanTable extends Component{
                     <Button variant="outlined" className="mb-4" size="small" type="button" onClick={()=>this.props.view(det.loan_id)}>Guarantors</Button>
                    
                   </TableCell>
-                  </TableRow>: 
-                <Typography variant="body1">No Completed Loan Guaranted</Typography> 
+                  </TableRow>
                 )) 
               } 
               </TableBody>

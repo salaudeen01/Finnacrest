@@ -40,6 +40,9 @@ class Transaction extends Component {
     this.handleCloseModalForm = this.handleCloseModalForm.bind(this);
     this.handleOpenModalFee = this.handleOpenModalFee.bind(this);
     this.handleCloseModalFee = this.handleCloseModalFee.bind(this);
+    this.fetch_next_page = this.fetch_next_page.bind(this);
+    this.fetch_page = this.fetch_page.bind(this);
+    this.fetch_prev_page = this.fetch_prev_page.bind(this);
 
     
     const requestOptions = {
@@ -54,7 +57,8 @@ class Transaction extends Component {
           this.setState({loading: false });
           return Promise.reject(error);
         }
-        this.setState({ loading: false, transactions:data, pagination: data});
+        console.log(data)
+        this.setState({ loading: false, transactions:data.data, pagination: data});
       })
       .catch((error) => {
         if (error === "Unauthorized") {
@@ -89,6 +93,61 @@ class Transaction extends Component {
          }
       });
   }
+  
+
+  fetch_next_page = ()=>{
+    const {pagination} = this.state
+    this.setState({ loading: true});
+    const requestOptions = {
+      method: "GET",
+      headers: { ...authHeader(), "Content-Type": "application/json" },
+    };
+    fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
+      const data =await response.json();
+      console.log(data)
+      this.setState({ loading: false, transactions:data.data, pagination:data });
+    }).catch(error=>{
+      if (error === "Unauthorized") {
+        this.props.logout();
+      }
+    })
+  }
+  
+  fetch_prev_page = ()=>{
+    const {pagination} = this.state
+    this.setState({ loading: true});
+    const requestOptions = {
+      method: "GET",
+      headers: { ...authHeader(), "Content-Type": "application/json" },
+    };
+    fetch(pagination.prev_page_url, requestOptions).then(async (response) =>{
+      const data =await response.json();
+      this.setState({ loading: false, transactions:data.data, pagination:data });
+    }).catch(error=>{
+      if (error === "Unauthorized") {
+        this.props.logout();
+      }
+    })
+  }
+  
+  fetch_page = (index)=>{
+    const {pagination} = this.state
+    this.setState({ loading: true});
+    const requestOptions = {
+      method: "GET",
+      headers: { ...authHeader(), "Content-Type": "application/json" },
+    };
+    fetch(pagination.path+"?page="+index, requestOptions).then(async (response) =>{
+      const data =await response.json();
+      this.setState({ loading: false, transactions:data.data, pagination:data });
+    }).catch(error=>{
+      if (error === "Unauthorized") {
+        this.props.logout();
+      }
+    })
+  }
+  
+
   componentDidMount(){
     let check = checkUserStatus()
     // console.log(check)
@@ -127,9 +186,11 @@ class Transaction extends Component {
           <Loading />
         </div>:
         <>
-        <div className="py-3" />
+        <div className="py-3" />        
         <SimpleCard title="Transactions Table">
-          <PaginationTable transactions={transactions} pagination={pagination}/>
+          <PaginationTable transactions={transactions} pagination={pagination}
+            fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page}
+            fetch_prev_page={this.fetch_prev_page}  loading={loading}/>
         </SimpleCard>
         </>}
       </div>:

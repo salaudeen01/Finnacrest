@@ -165,7 +165,7 @@ render(){
                             status={false}
                             amount={numberFormat(data.requested_amount)}
                             // balance={numberFormat(data.remaining_balance)}
-                            admin_price={numberFormat(data.total_amount)}                           
+                            admin_price={data.total_amount}                           
                             status={data.request_status}
                             title={data.business_name}
                             images={(data.image)}

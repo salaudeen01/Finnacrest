@@ -1,3 +1,4 @@
+
 import React from "react";
 import { numberFormat } from '../../../config/config'
 import {
@@ -9,7 +10,8 @@ import {
   TableCell,
   Icon,
   TablePagination,
-  Card
+  Card,
+  TableFooter
 } from "@material-ui/core";
 import Paginate from "./paginate";
 
@@ -40,19 +42,22 @@ const PaginationTable = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.transactions
-            .map((data, index) => (
-              <TableRow key={index}>
+        {props.transactions.length != 0 ?
+          props.transactions.map((data, index) => (
+              <TableRow  className='tableRow'
+              hover
+              key={data.id}>
                 <TableCell className="px-0 capitalize" align="left" colSpan={4}>
-                {data.id}
+                SES{data.id}
                 </TableCell>
                 <TableCell className="px-0 capitalize" align="left" colSpan={4}>
                   {(data.wallet_category || data.transaction_category) == 1 ? "Regular Savings": 
                   ((data.wallet_category || data.transaction_category) == 2) ? "Target Savings":
-                  ((data.wallet_category || data.transaction_category) == 3) ? "Save To Loan":
-                  ((data.wallet_category || data.transaction_category) == 4) ? "Loan":
-                  ((data.wallet_category || data.transaction_category) == 5) ? "Market Investment":
-                  ((data.wallet_category || data.transaction_category) == 6) ? "Halal Financing":
+                  ((data.wallet_category || data.transaction_category) == 3) ? "Shareholding":
+                  ((data.wallet_category || data.transaction_category) == 4) ? "Loan Repayment":
+                  ((data.wallet_category || data.transaction_category) == 8) ? "Business Finance":
+                  ((data.wallet_category || data.transaction_category) == 9) ? "Products Financing":
+                  ((data.wallet_category || data.transaction_category) == 10) ? "Disbursement":
                   ((data.wallet_category || data.transaction_category) == 7) ? 
                   ((data.wallet_type || data.transaction_type) == "credit")?"Wallet Funding":" Wallet Withdrawal": ""}
                 </TableCell>
@@ -69,14 +74,28 @@ const PaginationTable = (props) => {
                   {data.entry_date}
                 </TableCell>
               </TableRow>
-            ))}
+            )):
+              <TableRow>
+                <TableCell style={{textAlign:"center"}}>
+                    No Record Found
+                </TableCell>                
+              </TableRow>
+          }
         </TableBody>
+        <TableFooter>
+          <Paginate pagination={props.pagination}
+              fetch_prev_page={props.fetch_prev_page} 
+              fetch_next_page={props.fetch_next_page} 
+              fetch_page={props.fetch_page}
+          />
+      </TableFooter>
       </Table>
-      <Paginate pagination={props.pagination}
-          fetch_prev_page={props.fetch_prev_page} 
-          fetch_next_page={props.fetch_next_page} 
-          fetch_page={props.fetch_page}
-      />
+      
+            {/* <Paginate pagination={props.pagination} 
+            fetch_prev_page={props.fetch_prev_page} 
+            fetch_next_page={props.fetch_next_page} 
+            fetch_page={props.fetch_page}/> */}
+
     </div>
     </Card>
   );

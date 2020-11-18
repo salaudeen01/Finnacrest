@@ -108,7 +108,7 @@ render(){
                       <Grid item lg={6} md={6} sm={12} xs={12}>
                       { requested_business.length != 0 ? (
                         requested_business.map((data, index) => (                        
-                        data.request_status == 9 ? (
+                        // data.request_status == 9 ? (
                         
                           <CompleteRequest
                             key={index}
@@ -118,16 +118,19 @@ render(){
                             status={data.request_status}
                             title={data.business_name}
                             images={(data.image)}
-                          />) :
-                              <Typography variant='body1'>
-                                {/* No Cancelled Business */}
-                              </Typography>
+                          />
+                          // ) :
+                          //     <Typography variant='body1'>
+                          //       No Cancelled Business
+                          //     </Typography>
                             ))
-                          ) : (
+                          ) 
+                          : (
                         <Typography variant='body1'>
                         No Cancelled Business
                         </Typography>
-                      )}
+                      )
+                      }
                       </Grid>
                     </div>
                   </Grid>

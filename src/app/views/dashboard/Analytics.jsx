@@ -407,7 +407,7 @@ fetch(getConfig("showTransaction"), requestOptions)
             if(data.success == false){
               this.setState({ transactions: []});
             }else{
-              this.setState({ transactions: data});
+              this.setState({ transactions: data.data});
             }
 })
 .catch((error) => {

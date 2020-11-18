@@ -134,7 +134,7 @@ class SingleInvestmentCardDetails extends Component {
                         >
                         <CloseIcon style={{color:'#fff'}}/>
                         </IconButton>
-                        <Typography variant="h6" style={{marginLeft: 'theme.spacing(2)', flex: 1, color:"#fff"}}>
+                        <Typography variant="h6" className="text-white" style={{marginLeft: 'theme.spacing(2)', flex: 1, color:"#fff"}}>
                         Add to Cart
                         </Typography>
                     </Toolbar>

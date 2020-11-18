@@ -55,10 +55,10 @@ export default function TargetTransactionCard(props) {
           </Box>
         </Grid>
         <div className="py-4" />
-        <Grid item lg={6} md={6} sm={12} xs={12}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
         {!props.status ?
         <ButtonGroup variant="outlined" color="primary" aria-label="text primary button group">
-          <Button onClick={props.view}>View</Button>
+          <Button onClick={props.view}>Transactions History</Button>
           <Button onClick={props.edit}>Edit</Button>
           <Button onClick={props.stop}>Stop Plan</Button>
         </ButtonGroup>:

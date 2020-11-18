@@ -454,7 +454,18 @@ fetch(getConfig("getLoan"), requestOptions)
   if(data.success == false){
       this.setState({loan_details: []})
   }else{
-      this.setState({loan_details: data})
+    let newArray = [];
+    let newArrays = [];
+        data.forEach(d => {
+          if(d.loan_status == 3 || d.loan_status == 9){
+            newArray.push(d)
+            console.log(newArray)
+          }else{
+            newArrays.push(d)
+            console.log(newArrays)
+          }
+        });
+      this.setState({Completed: newArray, loan_details: newArrays})
   }
 })
 .catch(error => {
@@ -484,28 +495,38 @@ fetch(getConfig("getLoan"), requestOptions)
 //       this.setState({loading:false});
 //   }
 // });
-fetch(getConfig("completedLoan"), requestOptions)
-  .then(async response => {
-  const data = await response.json();
-  if (!response.ok) {
-      const error = (data && data.message) || response.statusText;
-      this.setState({loading:false})
-      return Promise.reject(error);
-  }
-  if(data.success == false){
-      this.setState({Completed: []})
-  }else{
-      this.setState({Completed: data})
-  }
+// fetch(getConfig("completedLoan"), requestOptions)
+//   .then(async response => {
+//   const data = await response.json();
+//   if (!response.ok) {
+//       const error = (data && data.message) || response.statusText;
+//       this.setState({loading:false})
+//       return Promise.reject(error);
+//   }
+//   console.log(data)
+//   if(data.success == false){
+//       this.setState({Completed: []})
+//   }else{
+//     let newArray = [];
+//     let newArrays = [];
+//         data.forEach(d => {
+//           if(d.request_status == 3){
+//             newArray.push(d)
+//           }else{
+//             newArrays.push(d)
+//           }
+//         });
+//       this.setState({Completed: newArray, })
+//   }
   
-})
-.catch(error => {
-  if (error === "Unauthorized") {
-      this.props.timeOut()
-    }else{
-      this.setState({loading:false});
-  }
-});
+// })
+// .catch(error => {
+//   if (error === "Unauthorized") {
+//       this.props.timeOut()
+//     }else{
+//       this.setState({loading:false});
+//   }
+// });
 }
 
 // value change handler
@@ -933,9 +954,9 @@ render(){
                 <LoanCards key={index} data={data} status={true} repayment={()=>this.handleCreateRepayment(data.loan_id)} cancelLoan={()=>this.handleDelete(data.loan_id)} view={()=>this.handleCreateManageLoan(data.loan_id)}/>
               )):
               isFetching? <Typography variant="h6">Loading...</Typography>:
-              loan_details.length == 0?
+              Completed.length == 0?
                 <Typography variant="p" className="font-bold">You currently do not have any Completed loan</Typography>:
-              Completed.map((data, index) => (
+                Completed.map((data, index) => (
                 <LoanCards key={index} data={data} status={true} repayment={()=>this.handleCreateRepayment(data.loan_id)} view={()=>this.handleCreateManageLoan(data.loan_id)}/>
               ))
               // isFetching? <Typography variant="h6">Loading...</Typography>:

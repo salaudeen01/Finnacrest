@@ -25,6 +25,7 @@ import {
   Switch,
 } from 'react-router-dom';
 import Paginate from '../transactions/paginate';
+import SearchInput from '../settings/components/SearchInput';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -64,7 +65,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
       showSave:false,
       isLoading:true,
       loading:true,
-      news:[],
+      pagination:[],
+      search:"",
       singleNews:[],
       singleInvestment:[],
       category:[],
@@ -94,6 +96,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     this.handleSubmitRequest = this.handleSubmitRequest.bind(this);
     this.fetch_next_page = this.fetch_next_page.bind(this);
     this.fetch_page = this.fetch_page.bind(this);
+    this.searchChange = this.searchChange.bind(this);
     this.fetch_prev_page = this.fetch_prev_page.bind(this);
   }
 
@@ -227,9 +230,9 @@ componentDidMount() {
     }
     console.log(data)
     if(data.success == false){
-      this.setState({news: [], category: []})
+      this.setState({pagination: [], category: []})
     }else{
-      this.setState({news: data.products, category: data.products.data})
+      this.setState({pagination: data.products, category: data.products.data})
     }
     // console.log(data)
 })
@@ -298,40 +301,33 @@ fetch(getConfig("getHalaiCat"), requestOptions)
 }
 
 fetch_next_page = ()=>{
-  const {news} = this.state
+  const {pagination} = this.state
   this.setState({ loading: true});
   const requestOptions = {
-    method: "POST",
+    method: "GET",
     headers: { ...authHeader(), "Content-Type": "application/json" },
   };
-  fetch(news.next_page_url, requestOptions).then(async (response) =>{
+  fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
     const data =await response.json();
-    if(data.success == false){
-      this.setState({category: [], loading:false });
-    }else{
-      this.setState({category: data.products.data, news:data.products, loading:false });
-    }
+    console.log(data)
+    this.setState({ loading: false, pagination: data.products, category: data.products.data });
   }).catch(error=>{
     if (error === "Unauthorized") {
       this.props.logout();
     }
   })
-}      
+}
 
 fetch_prev_page = ()=>{
-  const {news} = this.state
+  const {pagination} = this.state
   this.setState({ loading: true});
   const requestOptions = {
-    method: "POST",
+    method: "GET",
     headers: { ...authHeader(), "Content-Type": "application/json" },
   };
-  fetch(news.prev_page_url, requestOptions).then(async (response) =>{
+  fetch(pagination.prev_page_url, requestOptions).then(async (response) =>{
     const data =await response.json();
-    if(data.success == false){
-      this.setState({category: [], loading:false });
-    }else{
-      this.setState({category: data.products.data, news:data.products, loading:false });
-    }
+    this.setState({ loading: false, pagination: data.products, category: data.products.data });
   }).catch(error=>{
     if (error === "Unauthorized") {
       this.props.logout();
@@ -340,24 +336,133 @@ fetch_prev_page = ()=>{
 }
 
 fetch_page = (index)=>{
-  const {news} = this.state
+  const {pagination} = this.state
   this.setState({ loading: true});
   const requestOptions = {
-    method: "POST",
+    method: "GET",
     headers: { ...authHeader(), "Content-Type": "application/json" },
   };
-  fetch(news.path+"?page="+index, requestOptions).then(async (response) =>{
+  fetch(pagination.path+"?page="+index, requestOptions).then(async (response) =>{
     const data =await response.json();
-    if(data.success == false){
-      this.setState({category: [], loading:false });
-    }else{
-      this.setState({category: data.products.data, news:data.products, loading:false });
-    }
+    this.setState({ loading: false, pagination: data.products, category: data.products.data });
   }).catch(error=>{
     if (error === "Unauthorized") {
       this.props.logout();
     }
   })
+}
+// ///do
+// fetch_next_page = ()=>{
+//   const {news} = this.state
+//   this.setState({ loading: true});
+//   const requestOptions = {
+//     method: "POST",
+//     headers: { ...authHeader(), "Content-Type": "application/json" },
+//   };
+//   fetch(news.next_page_url, requestOptions).then(async (response) =>{
+//     const data =await response.json();
+//     if(data.success == false){
+//       this.setState({category: [], loading:false });
+//     }else{
+//       this.setState({category: data.products.data, news:data.products, loading:false });
+//     }
+//   }).catch(error=>{
+//     if (error === "Unauthorized") {
+//       this.props.logout();
+//     }
+//   })
+// }      
+
+// fetch_prev_page = ()=>{
+//   const {news} = this.state
+//   this.setState({ loading: true});
+//   const requestOptions = {
+//     method: "POST",
+//     headers: { ...authHeader(), "Content-Type": "application/json" },
+//   };
+//   fetch(news.prev_page_url, requestOptions).then(async (response) =>{
+//     const data =await response.json();
+//     if(data.success == false){
+//       this.setState({category: [], loading:false });
+//     }else{
+//       this.setState({category: data.products.data, news:data.products, loading:false });
+//     }
+//   }).catch(error=>{
+//     if (error === "Unauthorized") {
+//       this.props.logout();
+//     }
+//   })
+// }
+
+// fetch_page = (index)=>{
+//   const {news} = this.state
+//   this.setState({ loading: true});
+//   const requestOptions = {
+//     method: "POST",
+//     headers: { ...authHeader(), "Content-Type": "application/json" },
+//   };
+//   fetch(news.path+"?page="+index, requestOptions).then(async (response) =>{
+//     const data =await response.json();
+//     if(data.success == false){
+//       this.setState({category: [], loading:false });
+//     }else{
+//       this.setState({category: data.products.data, news:data.products, loading:false });
+//     }
+//   }).catch(error=>{
+//     if (error === "Unauthorized") {
+//       this.props.logout();
+//     }
+//   })
+// }
+fetchUsers = (search) =>{
+  const {token} = this.state
+  const requestOptions = {
+      method: 'POST',
+      headers: { ...authHeader(), 'Content-Type': 'application/json' },
+      body: JSON.stringify(search),
+  };
+  fetch(getConfig('searchProducts') + search +"?token=" + token, requestOptions)
+  .then(async response => {
+  const data = await response.json();
+  if (!response.ok) {
+      const error = (data && data.message) || response.statusText;
+      return Promise.reject(error);
+  }
+  console.log(data)
+  this.setState({users: data});
+})
+.catch(error => {
+  if (error === "Unauthorized") {
+    this.props.timeOut()
+     }
+  this.setState({loading:false, err : "internet error" });
+  console.error('There was an error!', error);
+});
+}
+
+// handleChangeUsers = (event, values, id) =>{
+//   const {name, value } = event.target;
+//     const { formList, users } = this.state;
+//     let newArray = [...formList];
+//     console.log(id)
+//   this.fetchUsers(value);
+//   users.forEach(user => {
+//     if(values == user.product_name + user.price){
+//       const elementsIndex = formList.findIndex((element,index) => index == id )
+//       newArray[elementsIndex] = {...newArray[elementsIndex], user_id: user.id}
+//       console.log(newArray)
+//     }
+//   });
+//   this.setState({formList: newArray});
+// }
+
+searchChange(event) {
+  const { name, value } = event.target;
+  const { search, category, all } = this.state;
+  
+  this.setState({ search: value, category: value == "" ? category : category.filter((q)=>
+  q.product_name.toLowerCase().indexOf(value.toLowerCase())  !== -1 
+  || q.price.toLowerCase().indexOf(value.toLowerCase())  !== -1 )});
 }
 
 handleCloseView() {
@@ -404,13 +509,13 @@ tabbed = (id) => {
 };
   render(){
     const {theme} =this.props
-    const {tab,mTab, invest_data, avatar, request_data, news, categories, count, category, loading, singleInvestment, singleNews, isLoading, current_index, investment, showView, showSave, showInvest} = this.state
+    const {tab,mTab, invest_data, search, request_data, pagination, categories, count, category, loading, singleInvestment, singleNews, isLoading, current_index, investment, showView, showSave, showInvest} = this.state
     return (
       <div className="m-sm-30">
         <AppBar color="default" position="static">
         <Toolbar>
-          <Grid container>
-            <Grid item lg={9} md={9} sm={12} xs={12}>
+          <Grid container spacing={0}>
+            <Grid item lg={6} md={6} sm={12} xs={12}>
             <div className="">
               <Breadcrumb
                 routeSegments={[
@@ -419,12 +524,20 @@ tabbed = (id) => {
               />
             </div>
             </Grid>
-            <Grid item lg={2} md={2} sm={8} xs={8}>            
+            <Grid item lg={3} md={3} sm={6} xs={12}>
+              <SearchInput
+                value={search}
+                onChange={this.searchChange}
+                style={{marginRight: theme.spacing(1)}}
+                placeholder="Search user"
+              />
+            </Grid>
+            <Grid item lg={2} md={2} sm={4} xs={6}>            
             <Button style={{backgroundColor:'#224459', color:'white'}} onClick={this.handleRequest}>
               Make Request
             </Button>
             </Grid>
-            <Grid item lg={1} md={1} sm={4} xs={4}> 
+            <Grid item lg={1} md={1} sm={2} xs={4}> 
             <Link to="/detail/cart">
             <Button style={{float:'right',color:'black'}}>
                    <ShoppingCartIcon/> ({count})
@@ -502,10 +615,11 @@ tabbed = (id) => {
         <div className="classes.pagination">
         {/* <Typography variant="caption">1-6 of 20</Typography> */}
         <Paginate 
+              pagination={pagination}
+             fetch_page={this.fetch_page}
+              fetch_next_page={this.fetch_next_page}
               fetch_prev_page={this.fetch_prev_page} 
-              fetch_next_page={this.fetch_next_page} 
-              fetch_page={this.fetch_page}
-              pagination={news}
+               loading={loading}
            />
       </div>
         {/* View Dialog start */}

@@ -124,7 +124,7 @@ componentDidMount() {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
-      // console.log(data)
+      console.log(data)
       if(data.success == false  || data.length == 0 ){
         this.setState({ business_view: []});
       }else{

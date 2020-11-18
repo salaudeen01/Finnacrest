@@ -1,7 +1,7 @@
 
 import history from '../../history';
 const serverVars = {
-  baseUrl: "https://api.cubevest.com/sesis/api/",
+  baseUrl: "http://142.93.152.229/sesis/api/",
   authUrl: "auth/login",
   regUrl: "auth/signup",
   resetPass: "profilesChangePassword",
@@ -137,6 +137,8 @@ const serverVars = {
   updateUserCart: "updateUserCart/",
   checkOut: "checkOut",
   fetchUserProducts:"fetchUserProducts?token=",
+  searchProducts:"searchProducts/",
+
   getOrderDetails:"fetchOrderDetails/",
   orderRepaymentsDetails:"orderRepaymentsDetails/",
   orderRepayments:"orderRepayments/",
@@ -494,8 +496,12 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.getOrderDetails; 
       case "orderRepaymentsDetails":
         return serverVars.baseUrl + serverVars.orderRepaymentsDetails;        
+    case "searchProducts":
+      return serverVars.baseUrl + serverVars.searchProducts;
+          
     case "getAllUsersAutoComplete":
-      return serverVars.baseUrl + serverVars.getAllUsersAutoComplete;    
+      return serverVars.baseUrl + serverVars.getAllUsersAutoComplete;
+
     case "orderRepayments":
       return serverVars.baseUrl + serverVars.orderRepayments;        
     case "userUploadRequested":

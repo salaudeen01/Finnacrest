@@ -391,7 +391,7 @@ handleSubmitFund(event) {
   event.preventDefault();
   const { fund_data } = this.state;
   if (fund_data.amount && fund_data != "") {
-      // this.props.addFundTargetSavings(fund_data);
+      this.props.addFundTargetSavings(fund_data);
       console.log(fund_data)
   }else{
       swal(
@@ -1005,7 +1005,7 @@ completeTab(){
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#0d60d8", color:"white"}}>Edit Target Plan</Button>
+                 style={{backgroundColor:"#0d60d8", color:"white"}}>Update</Button>
             </ValidatorForm>
           }
         </Card>
@@ -1030,9 +1030,9 @@ completeTab(){
                 >
                   <CloseIcon style={{color:'#fff'}}/>
                 </IconButton>
-                <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
+                <Typography variant="h6" className="text-white"  style={{marginLeft: theme.spacing(2), flex: 1, color:"white"}}>
                   Target Savings Transactions
-                </Typography>
+                </Typography>                
               </Toolbar>
             </AppBar>
             <Card className="px-6 pt-2 pb-4">

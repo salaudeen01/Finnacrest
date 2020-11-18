@@ -72,11 +72,11 @@ export default function CompleteRequest(props) {
        : ""
         }
        </Grid>
-       <ButtonGroup color="primary" aria-label="outlined primary button group">
+       {/* <ButtonGroup color="primary" aria-label="outlined primary button group">
           <Button className="mb-4"  size='small' variant="outlined" 
-            onClick={this.props.viewTrans}
+            onClick={props.viewTrans}
             >Transaction Detail</Button>               
-      </ButtonGroup>
+      </ButtonGroup> */}
       </Grid>
 
     </div>

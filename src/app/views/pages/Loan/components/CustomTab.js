@@ -69,7 +69,7 @@ render(){
           onChange={this.handleChange} aria-label="simple tabs example">
            <Tab label="MY LOAN" {...a11yProps(0)} />
           <Tab label="MY GROUP" {...a11yProps(1)} />
-          <Tab label="NON GROUP APPROVAL" {...a11yProps(2)} />
+          <Tab label="PENDING APPROVAL" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>

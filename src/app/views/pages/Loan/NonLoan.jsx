@@ -150,7 +150,18 @@ componentDidMount(){
       if(data.success == false){
         this.setState({tdetails: [], balance: 0, completed: [], accounts:[], loading:false })
       }else{
-        this.setState({tdetails: data, balance: data[0], completed:data[2], accounts:data[3], loading:false })
+        let newArray = [];
+        let newArrays = [];
+            data.forEach(d => {
+              if(d.loan_status == 0){
+                newArray.push(d)
+                console.log(newArray)
+              }else{
+                newArrays.push(d)
+                console.log(newArrays)
+              }
+            });
+        this.setState({tdetails: newArray, balance: data[0], completed: newArrays, accounts:data[3], loading:false })
       }
     })
     .catch(error => {
@@ -359,7 +370,7 @@ completeTab(){
               <div className="px-2 bg-default">
                     <ComLoanTable 
                     view={this.handleView}
-                    tdetails={tdetails}
+                    tdetails={completed}
                     />
               </div>
             }

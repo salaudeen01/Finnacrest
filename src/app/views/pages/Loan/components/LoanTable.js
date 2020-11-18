@@ -46,17 +46,18 @@ class LoanTable extends Component{
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.props.tdetails.map((det, index) => (
-                   (det.status == 0 || det.status == 2)?
+                {this.props.tdetails.length == 0?
+                <Typography variant="p" className="font-bold text-center">You do not have any loan Request</Typography>:
+                this.props.tdetails.map((det, index) => (
                   <TableRow key='index'>
                     <TableCell className="px-4" colSpan={6} >
                     {(det.first_name +" "+ det.last_name)}
                     </TableCell>
                     <TableCell className="px-4 capitalize" align="left" colSpan={6}>
-                      {det.loan_amount}
+                      {numberFormat (det.loan_amount)}
                     </TableCell>
                     <TableCell className="px-4" colSpan={6}>
-                     {det.guaranteed_amount}
+                     {numberFormat (det.guaranteed_amount)}
                     </TableCell>
                     {/* <TableCell className="px-4" colSpan={6}>
                      {det.status == 2 ?
@@ -75,9 +76,10 @@ class LoanTable extends Component{
                    </>  }                   
 
                   </TableCell>
-                  </TableRow>: <></>
-                // <Typography variant="body1">No Completed Loan Guaranted</Typography>
-                 ))}
+                  </TableRow>
+                
+                 ))
+               }
               </TableBody>
             </Table>
           </div>

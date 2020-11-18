@@ -326,7 +326,7 @@ handleSubmitFund(event) {
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Button
                   size='small'
-                  color='secondary'
+                  color='primary'
                   variant={tab ? "contained" : "outlined"}
                   style={{ color: tab ? "#fff" : "#000" }}
                   onClick={this.ongoingTab}
@@ -335,7 +335,7 @@ handleSubmitFund(event) {
                 </Button>
                 <Button
                   size='small'
-                  color='secondary'
+                  color='primary'
                   variant={tab ? "outlined" : "contained"}
                   style={{ color: tab ? "#000" : "#fff" }}
                   onClick={this.completeTab}

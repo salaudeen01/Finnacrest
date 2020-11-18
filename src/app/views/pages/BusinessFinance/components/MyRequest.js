@@ -124,25 +124,38 @@ class MyRequest extends Component{
         <div className="py-2" /> 
        { this.props.status == 0 && this.props.admin_price != 0?
         <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Typography variant="h6" style={{fontSize:16}}><span>Payeable Amount:</span> {this.props.admin_price} </Typography>
+          <Typography variant="h6" style={{fontSize:16}}><span>Mark-up:</span> {numberFormat(this.props.admin_price)} </Typography>
         </Grid>:
         <></>}
         <div className="py-2 " />
         <Grid item lg={6} md={6} sm={12} xs={12}>
-        {this.props.status == 0 && this.props.admin_price == 0 ?
+        {(this.props.status == 0 && this.props.admin_price == 0) ?
            <Typography className="mb-2">
            <span className="mb-4 py-1 px-3" style={{background:'orange', fontSize:12, color:'white', borderRadius:14}}>PENDING</span>
          </Typography>
-        : this.props.status == 1 ?
+        :
+        (this.props.status == 0 && this.props.admin_price != 0) ?
+           <Typography className="mb-2">
+           <span className="mb-4 py-1 px-3" style={{background:'orange', fontSize:12, color:'white', borderRadius:14}}>Awaiting Response</span>
+         </Typography>
+        :  this.props.status == 11 ?
         <div>
           <Grid item lg={6} md={6} sm={12} xs={12}>
           <Typography className="mb-2">
-            <span className="mb-4 py-1 px-3" style={{background:'green',fontSize:12, color:'white', borderRadius:14}}>Collected</span>
+            <span className="mb-4 py-1 px-3" style={{background:'green',fontSize:12, color:'white', borderRadius:14}}>Disbursed</span>
+          </Typography>
+         {/* <Badge className="mb-4 px-3"  badgeContent={'Approved'} {...defaultthis.Props}/> */}
+        </Grid>       
+        </div>:  this.props.status == 2 ?
+        <div>
+          <Grid item lg={6} md={6} sm={12} xs={12}>
+          <Typography className="mb-2">
+            <span className="mb-4 py-1 px-3" style={{background:'green',fontSize:12, color:'white', borderRadius:14}}>Processing</span>
           </Typography>
          {/* <Badge className="mb-4 px-3"  badgeContent={'Approved'} {...defaultthis.Props}/> */}
         </Grid>       
         </div>
-       :this.props.status == 4 ?
+       :this.props.status == 9 ?
        <div>
          <Grid item lg={6} md={6} sm={12} xs={12}>
          <Typography className="mb-2">
@@ -154,7 +167,7 @@ class MyRequest extends Component{
         }
         <Grid>
            <Grid item lg={12} md={12} sm={12} xs={12}>
-           { this.props.status == 11 ?            
+           { (this.props.status == 0 && this.props.admin_price != 0)  ?            
         <ButtonGroup color="primary" aria-label="outlined primary button group">
            <Button className="mb-4"  size='small' variant="outlined" style={{borderColor:'green', color:'green'}}
              onClick={this.props.accept}
@@ -163,7 +176,7 @@ class MyRequest extends Component{
              onClick={this.props.decline}
              >Decline</Button>                             
         </ButtonGroup>:
-        this.props.status == 1 ?            
+        this.props.status == 11 ?            
         <ButtonGroup color="primary" aria-label="outlined primary button group">
            <Button className="mb-4"  size='small' variant="outlined" style={{borderColor:'blue', color:'blue'}}
              onClick={this.props.repay}
@@ -172,13 +185,13 @@ class MyRequest extends Component{
                 onClick={this.props.viewTrans}
                 >Transaction Detail</Button>               
         </ButtonGroup>:
-          this.props.status == 2 ?            
+          (this.props.status == 1 || this.props.status == 2 || (this.props.status == 0 && this.props.admin_price == 0)) ?            
             <ButtonGroup color="primary" aria-label="outlined primary button group">
               <Button className="mb-4"  size='small' variant="outlined"  style={{borderColor:'red', color:'red'}}
                  onClick={this.props.decline}
                  >Cancel
               </Button> 
-            </ButtonGroup>:
+            </ButtonGroup>:             
            <></>
            }
           </Grid>

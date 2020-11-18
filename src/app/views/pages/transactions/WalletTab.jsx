@@ -163,11 +163,12 @@ fetch_next_page = ()=>{
   const {pagination} = this.state
   this.setState({ loading: true});
   const requestOptions = {
-    method: "POST",
+    method: "GET",
     headers: { ...authHeader(), "Content-Type": "application/json" },
   };
   fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
     const data =await response.json();
+    console.log(data)
     if(data.success == false){
       this.setState({wallet: [], loading:false });
     }else{
@@ -180,20 +181,33 @@ fetch_next_page = ()=>{
   })
 }      
 
+fetch_next_page = ()=>{
+  const {pagination} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, wallet:data.data, pagination:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
 fetch_prev_page = ()=>{
   const {pagination} = this.state
   this.setState({ loading: true});
   const requestOptions = {
-    method: "POST",
+    method: "GET",
     headers: { ...authHeader(), "Content-Type": "application/json" },
   };
   fetch(pagination.prev_page_url, requestOptions).then(async (response) =>{
     const data =await response.json();
-    if(data.success == false){
-      this.setState({wallet: [], loading:false });
-    }else{
-      this.setState({wallet: data.data, pagination:data, loading:false });
-    }
+    this.setState({ loading: false, wallet:data.data, pagination:data });
   }).catch(error=>{
     if (error === "Unauthorized") {
       this.props.logout();
@@ -205,16 +219,12 @@ fetch_page = (index)=>{
   const {pagination} = this.state
   this.setState({ loading: true});
   const requestOptions = {
-    method: "POST",
+    method: "GET",
     headers: { ...authHeader(), "Content-Type": "application/json" },
   };
   fetch(pagination.path+"?page="+index, requestOptions).then(async (response) =>{
     const data =await response.json();
-    if(data.success == false){
-      this.setState({wallet: [], loading:false });
-    }else{
-      this.setState({wallet: data.data, pagination:data, loading:false });
-    }
+    this.setState({ loading: false, wallet:data.data, pagination:data });
   }).catch(error=>{
     if (error === "Unauthorized") {
       this.props.logout();
@@ -373,7 +383,7 @@ handleCloseConfirmWithdraw() {
               <SimpleCard title="Wallet Table">
                 <PaginationTable transactions={wallet} pagination={pagination}
                  fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page}
-                 fetch_prev_page={this.fetch_prev_page}/>
+                 fetch_prev_page={this.fetch_prev_page}  loading={loading}/>
               </SimpleCard>
           </Grid>
         </Grid>
