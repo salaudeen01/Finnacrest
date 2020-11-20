@@ -154,9 +154,9 @@ class MyProduct extends Component{
            <Grid item lg={3} md={3} sm={12} xs={12}>
            { this.props.status == 3 ?
            <ButtonGroup color="primary" aria-label="outlined primary button group">
-              <Button className="mb-4"  size='small' variant="outlined" 
+              {/* <Button className="mb-4"  size='small' variant="outlined" 
                 onClick={this.props.repay}
-                >Repayment</Button>
+                >Repayment</Button> */}
                 <Button className="mb-4"  size='small' variant="outlined" 
                 onClick={this.props.viewTrans}
                 >Transaction</Button>

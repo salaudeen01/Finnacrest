@@ -29,29 +29,32 @@ export default function CompleteProduct(props) {
     <div className="pt-7 mb-4 px-2 bg-default text-white" style={{flexGrow: 1, border:1, borderStyle:"solid", 
     borderColor:"#222943", borderRadius:10}}>
       <Grid container spacing={0}>
-        <Grid item lg={6} md={6} sm={12} xs={12}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <Typography variant="h6">Order No: {props.title} </Typography>
         </Grid>
         <Divider variant="middle"/>
         <div className="py-2" />
-        <Grid item lg={6} md={6} sm={12} xs={12}>
-          <Typography variant="h6"> {props.amount} </Typography>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <Typography variant="h6">Total: {props.amount} </Typography>
         </Grid>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <Typography variant="h6" style={{fontSize:16}}><span>Amount Repaid:</span> {this.props.amount_paid} </Typography>
+        </Grid> 
         <div className="py-2" />
-        <Grid item lg={6} md={6} sm={12} xs={12}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
            {/* <ButtonGroup variant="outlined" color="primary" aria-label="text primary button group"> */}
           <Button className="mb-4" onClick={props.view} size='small' variant="outlined">View Detail</Button>
         {/* </ButtonGroup> */}
         </Grid>
         <div className="py-2" />
-        <Grid item lg={6} md={6} sm={12} xs={12}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
         {props.status == 2 ?
            <Typography className="mb-2">
            <span className="mb-4 py-1 px-3" style={{background:'green', fontSize:12, color:'white', borderRadius:14}}>PAID</span>
          </Typography>
         : props.status == 6 ?
         <div>
-          <Grid item lg={6} md={6} sm={12} xs={12}>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
           <Typography className="mb-2">
             <span className="mb-4 py-1 px-3" style={{background:'red',fontSize:12, color:'white', borderRadius:14}}>CLOSED</span>
           </Typography>
