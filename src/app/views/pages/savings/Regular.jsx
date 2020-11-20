@@ -388,7 +388,7 @@ handleClose() {
                 <Button className="uppercase"
                   size="small"
                   variant="outlined"
-                  style={{borderColor:"#0d60d8"}}
+                  style={{borderColor:"#222943"}}
                   onClick={this.handleWithdraw}>
                     Withdraw
                 </Button>
@@ -403,12 +403,12 @@ handleClose() {
                 <TableCard transactions={tdetails}/>
               </Grid>
               <Grid item lg={6} md={6} sm={12} xs={12}>
-                  <h4 className="card-title text-muted mb-4">My Account Details</h4>
+                  <h4 className="card-title text-muted mb-4">Auto Save Details</h4>
                 <Card elevation={3} className="pt-5 px-5 mb-6">
                 <Grid container spacing={3}>
                     <Grid item lg={9} md={9} sm={9} xs={9}>
                       <Typography variant="h6">
-                        {savings.auto_status? "Turn OFF Auto save": "Turn ON Auto save"}
+                        {savings.auto_status? "Disable Auto save": "Enable Auto save"}
                       </Typography>
                     </Grid>
                     <Grid item lg={3} md={3} sm={3} xs={3}>
@@ -431,7 +431,7 @@ handleClose() {
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
                       <Typography variant="subtitle1">
-                        {savings.amount}
+                        {numberFormat (savings.amount)}
                       </Typography>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
@@ -465,7 +465,7 @@ handleClose() {
                       </Typography>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
-                      <Button onClick={()=>this.handleEdit(savings.id)} contained style={{color:"#fff", backgroundColor:"#0d60d8"}}>Edit Auto save </Button>
+                      <Button onClick={()=>this.handleEdit(savings.id)} contained style={{color:"#fff", backgroundColor:"#222943"}}>Edit</Button>
                     </Grid>
                     </>:
                     <div></div>
@@ -530,17 +530,7 @@ handleClose() {
                   <MenuItem value={"Wallet"}> Wallet</MenuItem>
                   <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
               </TextField>
-              {this.props.savings &&
-               <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-              }
-              {(fund_data.payment_method == "Wallet" || (fund_data.card_id !="0" && fund_data.card_id !="")) && 
-              <Button className="uppercase"
-                type="submit"
-                size="large"
-                variant="contained"
-                style={{backgroundColor:"#0d60d8", color:"#fff"}}>
-                Add Fund
-              </Button>}
+              
               </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                 <Card className="px-6 pt-2 pb-4">
@@ -568,6 +558,17 @@ handleClose() {
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                   /><Typography variant="caption">Would you like to save your card</Typography>
               </Grid>}
+              {this.props.savings &&
+               <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+              }
+              {(fund_data.payment_method == "Wallet" || (fund_data.card_id !="0" && fund_data.card_id !="")) && 
+              <Button className="uppercase"
+                type="submit"
+                size="large"
+                variant="contained"
+                style={{backgroundColor:"#222943", color:"#fff"}}>
+                Add Fund
+              </Button>}
               {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <PayOption callback={this.callback} amount={fund_data.amount}/>
@@ -596,7 +597,7 @@ handleClose() {
                 <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
-                Edit Auto Save Account
+                Auto Save Details
               </Typography>
             </Toolbar>
           </AppBar>
@@ -638,11 +639,11 @@ handleClose() {
                 <TextField
                   className="mb-4 w-full"
                   select
-                  label="Select Transaction Month"
+                  label="Select Transaction Day"
                   value={edit_data.transaction_month}
                   name="transaction_month"
                   onChange={this.handleChangeEdit}
-                  helperText="Please select Month"
+                  helperText="Please select Day"
                 >
                   {obj.array.map((item) =>
                     <MenuItem value={item}key={item}>{item}</MenuItem>
@@ -690,20 +691,6 @@ handleClose() {
                   ]}
                   errorMessages={["this field is required"]}
                 />
-                {/* <TextField
-                className="mb-4 w-full"
-                  id="standard-select-currency"
-                  select
-                  label="Select Payment Method"
-                  value={edit_data.payment_method}
-                  name="payment_method"
-                  onChange={this.handleChangeEdit}
-                  helperText="Please select Payment Method"
-                >
-                    <MenuItem value={""}></MenuItem>
-                    <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                    <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
-                </TextField> */}
                 {this.props.savings &&
                 <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                 }
@@ -711,7 +698,7 @@ handleClose() {
                     type="submit"
                     size="large"
                     variant="contained"
-                  style={{backgroundColor:"#0d60d8", color:"#fff"}}>Edit Auto Save</Button>
+                  style={{backgroundColor:"#222943", color:"#fff"}}>Save Changes</Button>
                   </ValidatorForm>
               </Grid>
             </Grid>
@@ -841,7 +828,7 @@ handleClose() {
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#0d60d8", color:"#fff"}}>Create Auto Save</Button>
+                 style={{backgroundColor:"#222943", color:"#fff"}}>Create Auto Save</Button>
                  </ValidatorForm>
             </Grid>
           </Grid>
@@ -899,7 +886,7 @@ handleClose() {
                         type="submit"
                         size="large"
                         variant="contained"
-                        style={{backgroundColor:"#0d60d8", color:"#fff"}}>
+                        style={{backgroundColor:"#222943", color:"#fff"}}>
                         Withdraw Fund
                       </Button>
                     </Grid>

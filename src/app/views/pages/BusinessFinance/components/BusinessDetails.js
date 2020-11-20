@@ -20,6 +20,7 @@ import {
   Card,
   Paper
 } from "@material-ui/core";
+import dateFormat from "dateformat"
 
 class BusinessDetails extends Component{
   constructor(props){
@@ -96,7 +97,7 @@ render(){
           // {this.props.transactions.map(dat => ( 
               <TableRow key={dat.id}>
                 <TableCell className="px-4 capitalize" align="left" component="th" scope="row" colSpan={4}>
-                {dat.id}
+                SES{dat.id}
                 </TableCell>
                 <TableCell className="px-4 capitalize" align="left" component="th" scope="row" colSpan={4}>
                 {numberFormat(dat.repayment_amount)}
@@ -105,7 +106,8 @@ render(){
                  {dat.payment_method}
                 </TableCell>
                 <TableCell className="px-4 capitalize" align="left" component="th" scope="row" colSpan={4}>
-                 {dat.trans_date}
+                {dateFormat(dat.trans_date, "mmmm dS, yyyy")}
+
                 </TableCell>
               </TableRow>
             )):

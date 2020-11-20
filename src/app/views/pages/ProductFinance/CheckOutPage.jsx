@@ -181,7 +181,7 @@ render(){
             <Grid container spacing={2}>
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Link to="/product_financing">
-                <Button variant="outlined" color='secondary' startIcon={<ArrowBack/>}>
+                <Button variant="outlined" color='primary' startIcon={<ArrowBack/>}>
                 Back Shopping
                 </Button> 
                 </Link>

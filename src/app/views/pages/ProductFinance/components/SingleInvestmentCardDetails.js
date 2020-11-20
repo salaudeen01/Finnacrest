@@ -108,7 +108,7 @@ class SingleInvestmentCardDetails extends Component {
                         onClick={this.handleCart} 
                         variant="contained"
                         startIcon={<ShoppingCartIcon edge="start"/>}
-                        style={{backgroundColor:"#f68b1e", color:"white", borderBottomRightRadius:10, 
+                        style={{backgroundColor:"#222943", color:"white", borderBottomRightRadius:10, 
                         borderBottomLeftRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10}}>
                         Add to Cart
                     </Button>
@@ -145,28 +145,33 @@ class SingleInvestmentCardDetails extends Component {
                     <Typography>
                         Description of the goods 
                     </Typography>                    
-                    </Grid>                    
+                    </Grid> 
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <div style={{alignItems:'center', paddingLeft:"50%"}}>
+                        {this.props.savings &&
+                            <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                        }
+                        </div>
+                    </Grid>                   
                     <Grid item lg={6} md={6} sm={6} xs={12}>
                     <Button className="uppercase"
                         size="large"
                         fullWidth
                         onClick={this.props.continueShopping}
                         variant="contained"
-                        style={{backgroundColor:"#f68b1e", color:"white", borderBottomRightRadius:10, 
+                        style={{backgroundColor:"#222943", color:"white", borderBottomRightRadius:10, 
                         borderBottomLeftRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10}}>
                             Continue Shopping
                         </Button>
                     </Grid>
-                    {this.props.savings &&
-                        <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                    }
+                   
                     <Grid item lg={6} md={6} sm={6} xs={12}>                    
                     <Button className="uppercase"
                         size="large"
                         onClick={this.props.addToCart}
                         fullWidth 
                         variant="contained"
-                        style={{backgroundColor:"#f68b1e", color:"white", borderBottomRightRadius:10, 
+                        style={{backgroundColor:"#222943", color:"white", borderBottomRightRadius:10, 
                         borderBottomLeftRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10}}>
                             View Cart and Checkout
                         </Button>

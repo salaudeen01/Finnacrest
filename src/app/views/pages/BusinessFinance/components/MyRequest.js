@@ -112,59 +112,65 @@ class MyRequest extends Component{
         </Grid>
         {/* <Divider variant="middle"/> */}
         <div className="py-2" />
-        <Grid item lg={12} md={12} sm={12} xs={12}>
+        {this.props.status == 11?"":
+          <Grid item lg={12} md={12} sm={12} xs={12}>
           <Typography variant="h6" style={{fontSize:16}}><span>Requested Amount:</span> {this.props.amount} </Typography>
-        </Grid>
+        </Grid>}
+        <div className="py-2" /> 
+       { (this.props.status == 0 && this.props.admin_price != 0) || this.props.status == 11?
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <Typography variant="h6" style={{fontSize:16}}><span>Mark-up:</span> {this.props.admin_price} </Typography>
+        </Grid>:
+        <></>}
         <div className="py-2" />
-       {this.props.status == 1 ? 
+       {this.props.status == 1 || this.props.status == 11 ? 
        <Grid item lg={12} md={12} sm={12} xs={12}>
           <Typography variant="h6" style={{fontSize:16}}><span>Amount Repaid:</span> {this.props.repaid} </Typography>
         </Grid>:
         ""}
-        <div className="py-2" /> 
-       { this.props.status == 0 && this.props.admin_price != 0?
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Typography variant="h6" style={{fontSize:16}}><span>Mark-up:</span> {numberFormat(this.props.admin_price)} </Typography>
-        </Grid>:
-        <></>}
         <div className="py-2 " />
-        <Grid item lg={6} md={6} sm={12} xs={12}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
         {(this.props.status == 0 && this.props.admin_price == 0) ?
-           <Typography className="mb-2">
-           <span className="mb-4 py-1 px-3" style={{background:'orange', fontSize:12, color:'white', borderRadius:14}}>PENDING</span>
+           <Typography className=" text-primary" variant="h6" style={{fontSize:16}}>Request Status:
+           <span className="py-1 px-3" style={{background:'orange', fontSize:12, color:'white', borderRadius:14}}>PENDING</span>
          </Typography>
         :
         (this.props.status == 0 && this.props.admin_price != 0) ?
-           <Typography className="mb-2">
-           <span className="mb-4 py-1 px-3" style={{background:'orange', fontSize:12, color:'white', borderRadius:14}}>Awaiting Response</span>
+        <Typography className=" text-primary" variant="h6" style={{fontSize:16}}>Request Status:
+           <span className="py-1 px-3" style={{background:'orange', fontSize:12, color:'white', borderRadius:14}}>Awaiting Response</span>
          </Typography>
         :  this.props.status == 11 ?
         <div>
-          <Grid item lg={6} md={6} sm={12} xs={12}>
-          <Typography className="mb-2">
-            <span className="mb-4 py-1 px-3" style={{background:'green',fontSize:12, color:'white', borderRadius:14}}>Disbursed</span>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+          <Typography className=" text-primary" variant="h6" style={{fontSize:16}}>Request Status:
+            <span className="py-1 px-3" style={{background:'green',fontSize:12, color:'white', borderRadius:14}}>Disbursed</span>
           </Typography>
-         {/* <Badge className="mb-4 px-3"  badgeContent={'Approved'} {...defaultthis.Props}/> */}
+         {/* <Badge className="px-3"  badgeContent={'Approved'} {...defaultthis.Props}/> */}
         </Grid>       
         </div>:  this.props.status == 2 ?
         <div>
-          <Grid item lg={6} md={6} sm={12} xs={12}>
-          <Typography className="mb-2">
-            <span className="mb-4 py-1 px-3" style={{background:'green',fontSize:12, color:'white', borderRadius:14}}>Processing</span>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+          <Typography className=" text-primary" variant="h6" style={{fontSize:16}}>Request Status:
+            <span className="py-1 px-3" style={{background:'green',fontSize:12, color:'white', borderRadius:14}}>Processing</span>
           </Typography>
-         {/* <Badge className="mb-4 px-3"  badgeContent={'Approved'} {...defaultthis.Props}/> */}
+         {/* <Badge className="px-3"  badgeContent={'Approved'} {...defaultthis.Props}/> */}
         </Grid>       
         </div>
        :this.props.status == 9 ?
        <div>
-         <Grid item lg={6} md={6} sm={12} xs={12}>
-         <Typography className="mb-2">
-            <span className="mb-4 py-1 px-3" style={{background:'red',fontSize:12, color:'white', borderRadius:14}}>DECLAINED</span>
+         <Grid item lg={12} md={12} sm={12} xs={12}>
+         <Typography className=" text-primary" variant="h6" style={{fontSize:16}}>Request Status:
+            <span className="py-1 px-3" style={{background:'red',fontSize:12, color:'white', borderRadius:14}}>DECLAINED</span>
           </Typography>
        </Grid>
        </div>
        : ""
-        }
+        } 
+       { this.props.status == 1 || this.props.status == 11?
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <Typography variant="h6" style={{fontSize:16}}><span>Due Date:</span> {this.props.end_date} </Typography>
+        </Grid>:
+        <></>}
         <Grid>
            <Grid item lg={12} md={12} sm={12} xs={12}>
            { (this.props.status == 0 && this.props.admin_price != 0)  ?            

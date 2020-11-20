@@ -92,9 +92,8 @@ render(){
                   />
             </div>: 
         <TableBody>
-          {/* {this.props.products.length != [] ?
-                this.props.products.map(dat => ( */}
-           {this.props.products.map(dat => ( 
+         {this.props.products.length != [] ?
+           this.props.products.map(dat => ( 
               <TableRow key={dat.id}>
                 <TableCell className="px-1 capitalize" align="left" >
                 <img style={{width:100,height:50}} src={dat.image}/>
@@ -124,14 +123,13 @@ render(){
                 </TableCell> */}
               </TableRow>
             ))
-            // :
-            // <TableRow>
-            //     <TableCell ></TableCell>
-            //     <TableCell ></TableCell>
-            //     <TableCell className="px-4 capitalize" align="left" >
-            //       <b>Your cart is empty.</b>  
-            //     </TableCell>                
-            //     </TableRow>
+            :
+            <TableRow>
+                <TableCell ></TableCell>
+                <TableCell className="px-4 capitalize" align="center" >
+                  <b>Your cart is empty.</b>  
+                </TableCell>                
+                </TableRow>
           }
         </TableBody>
          }

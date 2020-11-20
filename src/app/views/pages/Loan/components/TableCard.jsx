@@ -33,6 +33,9 @@ class TableCard extends Component{
                   AMOUNT REPAID
                   </TableCell>
                   <TableCell className="px-0" colSpan={4}>
+                  Payment Method
+                  </TableCell>
+                  <TableCell className="px-0" colSpan={4}>
                   DATE
                   </TableCell>
                 </TableRow>
@@ -41,14 +44,19 @@ class TableCard extends Component{
                 {this.props.details.map((det, index) => (
                   <TableRow key={index}>
                     <TableCell className="px-0" colSpan={4} >
-                    cub{det.id}
+                    SES{det.id}
                     </TableCell>
                     <TableCell className="px-0 capitalize" align="left" colSpan={4}>
                       {numberFormat(det.repayment_amount)}
                     </TableCell>
+                    <TableCell className="px-0 capitalize" align="left" colSpan={4}>
+                    {det.payment_method  == "Bank"? "Loan Disbursement": 
+                    (det.payment_method  == "wallet")? "Loan Repayment":
+                    (det.payment_method  == "debit card")? "Loan Repayment": ""}
+                    </TableCell>
                     <TableCell className="px-0" colSpan={4}>
                       {dateFormat(det.trans_date, "mmmm dS, yyyy")}
-                    </TableCell>
+                    </TableCell>                    
                   </TableRow>
                 ))}
               </TableBody>

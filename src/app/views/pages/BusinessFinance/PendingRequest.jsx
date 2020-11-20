@@ -32,7 +32,7 @@ class PendingRequest extends Component {
     this.state={
       tab: true,
       requested_business:[],
-      loading:true
+      loading:false
     }
 
     
@@ -180,7 +180,7 @@ render(){
                             ))
                           ) : (
                         <Typography variant='body1'>
-                       No Pending Business
+                       No Pending Business Finance Request
                         </Typography>
                       )}
                       </Grid>

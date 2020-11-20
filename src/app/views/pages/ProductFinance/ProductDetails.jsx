@@ -131,13 +131,16 @@ class ProductDetails extends Component {
       console.log(cart);
       if ( cart.price && cart.id && cart.quantity) {
         this.props.addToCart(cart, where);
-      }
+      }     
 
   }
     increment() {
       let { cart, quantity, id} = this.state
       this.setState({cart:{...cart, quantity: cart.quantity+1}})     
     }
+    //   if(name =="repayment_amount" && value > loan_bal){
+    //     swal(`${"Repaid Amount is more than your remaining balance"}`);
+    // }
     Decrease() {
       let { cart, quantity, id} = this.state
       if(cart.quantity){      

@@ -26,7 +26,7 @@ const defaultProps = {
 export default function CompleteRequest(props) {
 
   return (
-    <div className="pt-7 mb-4 px-2 bg-default text-white" style={{flexGrow: 1, border:1, borderStyle:"solid", 
+    <div className="pt-4 mb-4 px-2 bg-default text-white" style={{flexGrow: 1, border:1, borderStyle:"solid", 
     borderColor:"#222943", borderRadius:10}}>
       
       <Grid container spacing={0}>      
@@ -43,7 +43,7 @@ export default function CompleteRequest(props) {
         <div className="py-2" /> 
        { props.status != 0 ?
         <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Typography variant="h6" style={{fontSize:16}}><span>Payeable Amount:</span> {props.admin_price} </Typography>
+          <Typography variant="h6" style={{fontSize:16}}><span>Mark-up:</span> {props.admin_price} </Typography>
         </Grid>:
         <></>}
         <div className="py-2 " />
@@ -72,11 +72,11 @@ export default function CompleteRequest(props) {
        : ""
         }
        </Grid>
-       {/* <ButtonGroup color="primary" aria-label="outlined primary button group">
+       <ButtonGroup color="primary" aria-label="outlined primary button group">
           <Button className="mb-4"  size='small' variant="outlined" 
             onClick={props.viewTrans}
             >Transaction Detail</Button>               
-      </ButtonGroup> */}
+      </ButtonGroup>
       </Grid>
 
     </div>

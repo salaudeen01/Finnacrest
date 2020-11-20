@@ -104,7 +104,7 @@ class Loan extends Component {
       index:3,
       user:user,
       token:token,
-      loan_bal:0,
+      loan_bal:"",
       loading:false,
       tab:0,
       group_table: false,
@@ -138,11 +138,12 @@ class Loan extends Component {
       showrepayment:false,
       showManageLoan:false,
       isFetching:true,
-      loan_avail_amount:0,
-      repayment_duration:0,
+      loan_avail_amount:"",
+      repayment_duration:"",
       group_id: "",
       request_id:"",
       code:"",
+      tdetails:"",
       id:true
     }
     this.ongoingTab = this.ongoingTab.bind(this);
@@ -329,7 +330,35 @@ componentDidMount() {
     }else{
       this.setState({loan_avail_amount: data, loading:false });
 }  
-})  
+});
+fetch(getConfig('showGuarantorTable'), requestOptions)
+.then(async response => {
+const data = await response.json();
+if (!response.ok) {
+    const error = (data && data.message) || response.statusText;
+    return Promise.reject(error);
+}
+console.log(data)
+if(data.success == false){
+  this.setState({tdetails: [], balance: 0, completed: [], accounts:[], loading:false })
+}else{
+  let newArray = [];
+  let newArrays = [];
+      data.forEach(d => {
+        if(d.loan_status == 0){
+          newArray.push(d)
+        }else{
+          newArrays.push(d)        }
+      });
+  this.setState({tdetails: newArray, balance: data[0], completed: newArrays, accounts:data[3], loading:false })
+}
+})
+.catch(error => {
+  if (error === "Unauthorized") {
+    this.props.timeOut()
+    }
+  this.setState({loading:false});
+}); 
 }
 
 fetchLoanGroupDetails=(id)=>{
@@ -901,7 +930,7 @@ handleChangeUsers = (event, values, id) =>{
     console.log(id)
   this.fetchUsers(value);
   users.forEach(user => {
-    if(values == user.first_name + " " + user.last_name){
+    if(values == (user.first_name + " " + user.last_name) +" "+ user.email){
       const elementsIndex = formList.findIndex((element,index) => index == id )
       newArray[elementsIndex] = {...newArray[elementsIndex], user_id: user.id}
       console.log(newArray)
@@ -919,7 +948,7 @@ handleDaChange(event, id) {
   this.setState({formList: newArray});
 }
 render(){
-  const {users, repayment_duration, repayment_details, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities,
+  const {users, tdetails, repayment_duration, repayment_details, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities,
      Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage,
       showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, 
       group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, modal, showManageLoan, 
@@ -982,7 +1011,7 @@ render(){
         </Grid>
         </div>         
       }
-        <CustomTab />
+        <CustomTab  tdetails={tdetails}/>
       <AddCardDialog callback={this.callback} showSave={showSave} 
         handleClose={this.handleClose} add_card={add_card} />
     </div>:
@@ -1137,7 +1166,7 @@ render(){
                 id="free-solo-2-demo"
                 disableClearable
                 onChange={(event, value) => this.handleChangeUsers(event, value, index)}
-                options={users.map((option) =>(option.first_name + " " + option.last_name) +" "+ option.email )}
+                options={users.map((option) => (option.first_name + " " + option.last_name)+" "+(option.email))}
                 renderInput={(params) => (
                   <TextValidator
                     {...params}

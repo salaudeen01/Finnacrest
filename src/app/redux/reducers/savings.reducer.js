@@ -7,7 +7,7 @@ export function savings(state = {isAvailable:false}, action) {
     case userConstants.SAVINGS_SUCCESS:
       return {card_id: action.user, isAvailable:action.user? true:false};
     case userConstants.SAVINGS_CONTINUES:
-      return {proceed: true};
+      return {proceed: action.user};
     case userConstants.SAVINGS_FAILURE:
       return {};
     default:

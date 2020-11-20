@@ -71,15 +71,15 @@ class Dashboard1 extends Component {
                 profile:[],
                 bank:[],
                 cards:[],
-                wallet_balance:0 ,
-                regular_balance:0,
-                market_balance: 0,
-                halal_balance: 0,
-                loan_balance:0,
-                share_balance:0,
-                loan_investment:0,
-                target_balance:0,
-                loan_avail_amount:0,
+                wallet_balance:"" ,
+                regular_balance:"",
+                market_balance: "",
+                halal_balance: "",
+                loan_balance:"",
+                share_balance:"",
+                loan_investment:"",
+                target_balance:"",
+                loan_avail_amount:"",
                 transactions:[],
                 error: "",
                 show:false,
@@ -563,6 +563,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
             <IconButton
               edge="start"
               color="white"
+              className="text-white"
               onClick={this.handleClose}
               aria-label="Close">
               <CloseIcon />
@@ -670,9 +671,9 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
             <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
           }
           {(data.payment_method == "Wallet" || (data.card_id !="0" && data.card_id !="")) &&
-          <Button color="secondary" className="text-white" variant="contained" type="submit">
+          <Button color="primary" className="text-white" variant="contained" type="submit">
             {/* <Icon>send</Icon> */}
-            <span className="pl-2 capitalize">Fund</span>
+            <span className="pl-2 capitalize">Fund Account</span>
           </Button>}
         </ValidatorForm>
         </Card>

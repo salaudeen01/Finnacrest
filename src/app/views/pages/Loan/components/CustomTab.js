@@ -12,6 +12,7 @@ import MyGroup from '../MyGroup';
 import MyLoan from '../MyLoan';
 import NewLoan from '../NonLoan';
 import NonLoan from '../NonLoan';
+import { Badge } from '@material-ui/core';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,7 +60,7 @@ handleChange = (event, value) => {
   this.setState({value:value})
 };
 render(){
-  const {theme} = this.props
+  const {theme,tdetails} = this.props
   const {value} = this.state
   return (
     <div style={{flexGrow: 1}}>
@@ -68,9 +69,13 @@ render(){
           textColor="primary" style={{marginLeft:28}}
           onChange={this.handleChange} aria-label="simple tabs example">
            <Tab label="MY LOAN" {...a11yProps(0)} />
-          <Tab label="MY GROUP" {...a11yProps(1)} />
-          <Tab label="PENDING APPROVAL" {...a11yProps(2)} />
-        </Tabs>
+          <Tab label="MY GROUP" {...a11yProps(1)} />  
+          <Tab label="APPROVALS" {...a11yProps(2)} />
+          <span style={{marginLeft:"-32px", marginTop:10,marginBottom:20,paddingLeft:4,paddingRight:4,
+           color:'#fff', backgroundColor:'green', borderRadius:6}}>
+            {(this.props.tdetails.length)}</span>
+
+        </Tabs> 
       </AppBar>
       <TabPanel value={value} index={0}>
         <MyLoan/>

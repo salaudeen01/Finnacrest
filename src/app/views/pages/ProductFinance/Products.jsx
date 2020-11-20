@@ -60,7 +60,7 @@ class Target extends Component {
         repayment_amount: "",
         date_time: date,
         payment_method: "",
-        save_card:true,
+        save_card:false,
         paystack_id: "",
         card_id:"0"
     },
@@ -73,8 +73,9 @@ class Target extends Component {
       card_id:""
   },
         my_products:[],
+        com_products:[],
         tab: true,
-        loading:true,
+        loading:false,
         showView:false,
         showViewTrans:false,
         isLoading:true,
@@ -132,7 +133,18 @@ componentDidMount() {
          if (data.success == false) {
           this.setState({ my_products: [] });
         } else {
-          this.setState({ my_products: data, loading: false });
+          let newArray = [];
+          let newArrays = [];
+              data.forEach(d => {
+                if(d.order_status == 1 || d.order_status == 3 || d.order_status == 5){
+                  newArray.push(d)
+                  console.log(newArray)
+                }else{
+                  newArrays.push(d)
+                  console.log(newArrays)
+                }
+              });
+          this.setState({ my_products: newArray, com_products: newArrays, newArrays:[], loading: false });
         }
         console.log(data)
       })
@@ -238,20 +250,21 @@ handleChangeFund = event => {
 };
 
 handleChangeAddCard = event => {
-  const {fund_data} = this.state
+  const {add_card} = this.state
   const {name, value, checked} = event.target
   if(name == "save_card"){
-    this.setState({fund_data:{...fund_data, [name]:checked}})
+    this.setState({add_card:{...add_card, [name]:checked}})
   }else{
-    this.setState({fund_data:{...fund_data, [name]:value}})
+    this.setState({add_card:{...add_card, [name]:value}})
   }
 };
 
 handleSubmitFund(event) {
   event.preventDefault();
   const { fund_data } = this.state;
-  if (fund_data.repayment_amount && fund_data.card_id != "") {
+  if (fund_data.repayment_amount) {
       this.props.orderRepayments(fund_data);
+      console.log(fund_data)
   }else{
       swal(
           `${"All fields are required"}`
@@ -299,7 +312,7 @@ handleSubmitFund(event) {
       obj.array[l] = l + 1;
     }
     let { theme } = this.props;
-    const {my_products, tab, loading, showView, isLoading, data, 
+    const {my_products, com_products, tab, loading, showView, isLoading, data, 
       singleTargetTransaction, fund_data, showSave ,cards,showViewTrans,} = this.state;
     return (
       <div className='m-sm-30'>
@@ -350,14 +363,14 @@ handleSubmitFund(event) {
                     style={{
                       border: 1,
                       borderStyle: "solid",
-                      borderColor: "#e74398",
+                      borderColor: "#222943",
                       borderRadius:8,
                     }}
                   >
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                     {my_products.length != 0 ? (
                       my_products.map((data, index) => (
-                        data.order_status == 1 || data.order_status == 3 || data.order_status == 5 ? 
+                        // data.order_status == 1 || data.order_status == 3 || data.order_status == 5 ? 
                         <MyProduct
 
                           key={index}
@@ -378,14 +391,15 @@ handleSubmitFund(event) {
                           view={() => this.handleView(data.id)}
                           viewTrans={() => this.handleViewTrans(data.id)}
                           repay={() => this.handleQuickSave(data.id)}
-                        />:
-                        <Typography variant='body1'>
+                        />
+                      //   :
+                      //   <Typography variant='body1'>
                         
-                      </Typography>
+                      // </Typography>
                       ))
                     ) : (
                       <Typography variant='body1'>
-                        No Ongoing Products
+                        No Ongoing Product Finanace Request
                       </Typography>
                     )}
                     </Grid>
@@ -397,15 +411,15 @@ handleSubmitFund(event) {
                     style={{
                       border: 1,
                       borderStyle: "solid",
-                      borderColor: "#e74398",
+                      borderColor: "#222943",
                       borderBottomRightRadius: 20,
                       borderTopLeftRadius: 20,
                     }}
                   >
                     <Grid item lg={6} md={6} sm={12} xs={12}>
-                    {my_products.length != 0 ? (
-                      my_products.map((data, index) => (
-                        data.order_status == 2 || data.order_status == 4 || data.order_status == 6 ? 
+                    {com_products.length != 0 ? (
+                      com_products.map((data, index) => (
+                        // data.order_status == 2 || data.order_status == 4 || data.order_status == 6 ? 
                         <CompleteProduct
                           key={index}
                           status={false}
@@ -422,15 +436,16 @@ handleSubmitFund(event) {
                           stop={() => this.handleStopPlan(data.id)}
                           view={() => this.handleView(data.id)}
                           repay={() => this.handleQuickSave(data.id)}
-                        />:
-                        <Typography variant='body1'>
+                        />
+                      //   :
+                      //   <Typography variant='body1'>
                         
-                      </Typography>
+                      // </Typography>
                       ))
                     ) 
                     : (
                       <Typography variant='body1'>
-                        No Completed Products
+                        No Completed Product Finanace Request
                       </Typography>
                     )}
                     </Grid>
@@ -442,38 +457,39 @@ handleSubmitFund(event) {
         )}  
          {/* View Dialog start */}
          <Dialog
+         fullWidth={true}
+         maxWidth="md"
           TransitionComponent={Transition}
           aria-labelledby="alert-dialog-slide-title"
           aria-describedby="alert-dialog-slide-description"
           open={showView}
           onClose={this.handleCloseView}
-        >
-            <AppBar color="primary" className="text-white" style={{position: "relative"}}>
-              <Toolbar>
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  onClick={this.handleCloseView}
-                  aria-label="Close"
-                >
-                  <CloseIcon />
-                </IconButton>
-                <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
+          scroll="body">
+          <AppBar style={{position: "relative", }} color='primary'>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={this.handleCloseView}
+                aria-label="Close">
+                <CloseIcon style={{color:'#fff'}}/>
+              </IconButton>
+              <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
                   Order Details
-                </Typography>
-              </Toolbar>
-            </AppBar>
-            <Card className="px-6 pt-2 pb-4">
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Card className="px-6 pt-2 pb-4">
             <Grid container spacing={2}>
               <Grid item lg={12} md={12} sm={12} xs={12}>
-                {isLoading ?
-                <Typography>Loading...</Typography>:
-                <OrderDetails transactions={singleTargetTransaction} />
-                }
+                  {isLoading ?
+                  <Typography>Loading...</Typography>:
+                  <OrderDetails transactions={singleTargetTransaction} />
+                  }
               </Grid>
             </Grid>
           </Card>
-        </Dialog>
+          </Dialog>
         {/* View dialog end */} 
 
          {/* View Dialog start */}
@@ -567,17 +583,7 @@ handleSubmitFund(event) {
                   <MenuItem value={"Wallet"}> Wallet</MenuItem>
                   <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
               </TextField>
-              {this.props.savings &&
-               <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-              }
-              {(fund_data.payment_method == "Wallet" || (fund_data.card_id !="0" && fund_data.card_id !="")) && 
-              <Button className="uppercase"
-                type="submit"
-                size="large"
-                variant="contained"
-                style={{backgroundColor:"#0d60d8", color:"#fff"}}>
-                Add Fund
-              </Button>}
+              
               </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                 <Card className="px-6 pt-2 pb-4">
@@ -609,6 +615,19 @@ handleSubmitFund(event) {
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <PayOption callback={this.callback} amount={fund_data.repayment_amount}/>
               </Grid>}
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+              {this.props.savings &&
+               <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+              }
+              {(fund_data.payment_method == "Wallet" || (fund_data.card_id !="0" && fund_data.card_id !="")) && 
+              <Button className="uppercase"
+                type="submit"
+                size="large"
+                variant="contained"
+                style={{backgroundColor:"#222943", color:"#fff"}}>
+                Add Fund
+              </Button>}
+              </Grid>
             </Grid>
           </ValidatorForm>
         </Card>
@@ -630,6 +649,8 @@ const actionCreators = {
   exitTargetSavings: userActions.exitTargetSavings,
   activateTargetAutosave: userActions.activateTargetAutosave,
   deactivateTargetAutosave: userActions.deactivateTargetAutosave,
+  saveWallet: userActions.saveWallet
+
 };
 
 function mapState(state) {

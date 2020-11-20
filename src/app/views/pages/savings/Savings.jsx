@@ -21,13 +21,13 @@ class Savings extends Component {
     super(props)
     setLastUrl()
     this.state = {
-      total: 0,
-      target:0,
-      regular:0,
-      loan:0,
-      loan_investment:0,
+      total: "",
+      target:"",
+      regular:"",
+      loan:"",
+      loan_investment:"",
       loading:true,
-      loan_amount:0
+      loan_amount:""
     }
     this.fetchBalances = this.fetchBalances.bind(this);
   }
@@ -48,7 +48,7 @@ class Savings extends Component {
             return Promise.reject(error);
         }
         if(loan_data.success == false){
-          this.setState({loan_investment: 0, loan:0})  
+          this.setState({loan_investment: [], loan:[]})  
         }else{
           this.setState({loan_investment: loan_data[0], loan:loan_data[1]})  
         }
@@ -66,7 +66,7 @@ class Savings extends Component {
           return Promise.reject(error);
       }
       if(dat.success == false || dat == 0){
-        this.setState({total: 0, regular: 0, target: 0, loan: 0, loading:false})
+        this.setState({total: [], regular: [], target: [], loan: [], loading:false})
       }else{
         this.setState({total: dat[0], regular: dat[1], target: dat[2], loading:false})
       }

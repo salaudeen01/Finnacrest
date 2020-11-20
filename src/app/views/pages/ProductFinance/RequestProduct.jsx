@@ -32,7 +32,7 @@ class RequestProduct extends Component {
     const id = this.props.match.params.id;
     setLastUrl()
     this.state = {
-      loading:true,
+      loading:false,
       products:[],
       count:[],
       totalbalance:0,

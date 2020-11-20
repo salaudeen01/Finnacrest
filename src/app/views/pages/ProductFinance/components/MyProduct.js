@@ -105,16 +105,16 @@ class MyProduct extends Component{
     <div className="pt-7 mb-4 px-2 bg-default text-white" style={{flexGrow: 1, border:1, borderStyle:"solid", 
     borderColor:"#222943", borderRadius:10}}>
       <Grid container spacing={0}>
-        <Grid item lg={6} md={6} sm={12} xs={12}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <Typography variant="h6" style={{fontSize:16}}><span>Order No:</span> {this.props.title} </Typography>
         </Grid>
-        <Divider variant="middle"/>
+        {/* <Divider variant="middle"/> */}
         <div className="py-2" />
-        <Grid item lg={6} md={6} sm={6} xs={12}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <Typography variant="h6" style={{fontSize:16}}><span>Total:</span> {this.props.amount} </Typography>
         </Grid>
         <div className="py-2" />
-        <Grid item lg={6} md={6} sm={6} xs={12}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           
         </Grid> 
         <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -126,14 +126,14 @@ class MyProduct extends Component{
          </Typography>
         </Grid> */}
         <div className="py-2 " />
-        <Grid item lg={6} md={6} sm={12} xs={12}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
         {this.props.status == 1 ?
            <Typography className="mb-2">
            <span className="mb-4 py-1 px-3" style={{background:'orange', fontSize:12, color:'white', borderRadius:14}}>PENDING</span>
          </Typography>
         : this.props.status == 3 ?
         <div>
-          <Grid item lg={6} md={6} sm={12} xs={12}>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
           <Typography className="mb-2">
             <span className="mb-4 py-1 px-3" style={{background:'green',fontSize:12, color:'white', borderRadius:14}}>APPROVED</span>
           </Typography>
@@ -142,13 +142,13 @@ class MyProduct extends Component{
         </div>
        :this.props.status == 4 ?
        <div>
-         <Grid item lg={6} md={6} sm={12} xs={12}>
+         <Grid item lg={12} md={12} sm={12} xs={12}>
          <Typography className="mb-2">
             <span className="mb-4 py-1 px-3" style={{background:'red',fontSize:12, color:'white', borderRadius:14}}>DECLAINED</span>
           </Typography>
        </Grid>
        </div>
-       : "stop"
+       : ""
         }
         <Grid>
            <Grid item lg={3} md={3} sm={12} xs={12}>

@@ -21,7 +21,7 @@ class StatCards extends Component {
     return (
       <Grid container spacing={3} className="mb-3"
       >
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={6}>
         <Link to ="/wallet">
           <Card className="play-card" elevation={6} style={{backgroundColor:"#006eb3"}}>
           <CardActionArea>
@@ -44,7 +44,7 @@ class StatCards extends Component {
           </Card>
         </Link>
         </Grid>
-        <Grid item xs={12} md={4}>
+        {/* <Grid item xs={12} md={6}>
         <Link to ="/product_financing">
           <Card className="play-card" style={{backgroundColor:"#"}} elevation={6}>
           <CardActionArea>
@@ -65,8 +65,8 @@ class StatCards extends Component {
           </CardActionArea>
           </Card>
           </Link>
-        </Grid> 
-        <Grid item xs={12} md={4}>
+        </Grid>  */}
+        <Grid item xs={12} md={6}>
         <Link to ="/shareholdings">
           <Card className="play-card" style={{backgroundColor:"#"}} elevation={6}>
           <CardActionArea>
@@ -123,7 +123,7 @@ class StatCards extends Component {
               </div>
             </div>  
               <div className="ml-3 pl-12 py-5">
-                <Typography className="text-white" variant="text-16">Avaliable Savings</Typography>
+                <Typography className="text-white" variant="text-16">Avaliable Balance</Typography>
                 <h6 className="m-0 mt-1 text-white text-22">{this.props.loan_avail_amount}</h6>
               </div>        
             </CardContent>
@@ -136,7 +136,7 @@ class StatCards extends Component {
           </Card>
           </Link>
         </Grid>
-         {/* <Grid item xs={12} md={4}>
+         {/* <Grid item xs={12} md={6}>
           <Link to ="#">
             <Card className="play-card" style={{backgroundColor:"#"}} elevation={6}>
             <CardActionArea>

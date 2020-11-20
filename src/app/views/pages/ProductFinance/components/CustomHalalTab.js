@@ -64,11 +64,11 @@ render(){
   return (
     <div style={{flexGrow: 1}}>
       <AppBar position="static" color="default" >
-        <Tabs value={value} indicatorColor="secondary"
-            textColor="secondary" 
+        <Tabs value={value} indicatorColor="primary"
+            textColor="primary" style={{marginLeft:28}}
             onChange={this.handleChange} aria-label="simple tabs example">
-            <Tab label="My Products" {...a11yProps(0)} />
-            <Tab label="Requested Products" {...a11yProps(1)} />
+            <Tab label="REQUESTED PRODUCTS" {...a11yProps(0)} />
+            <Tab label="PENDING REQUEST" {...a11yProps(1)} />
             {/* <Tab label="Finance Investment" {...a11yProps(2)} /> */}
         </Tabs>
       </AppBar>

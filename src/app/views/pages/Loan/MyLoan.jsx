@@ -311,6 +311,7 @@ fetchLoanDetails=(id)=>{
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
+      console.log(data)
       if(data.success == false){
         this.setState({repayment_details: [], pagination:[]})
       }else{
@@ -923,24 +924,24 @@ render(){
             <Typography variant="h6">My Loans</Typography>
           </Grid>
           <Grid item lg={8} md={8} sm={12} xs={12}>
-            <div className="pb-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20,
+            <div className="pb-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#222943", borderBottomRightRadius:20,
                   borderTopLeftRadius:20}}>
               <Grid item lg={8} md={8} sm={12} xs={12}>
                 <Button size="small"
                     variant={tab == 0 ? "contained" : tab == 1 ?"outlined": "outlined"}
-                    style={{backgroundColor: tab == 0 ? "#04956a":tab == 1 ?"":"", color:tab == 0 ? "#fff":tab == 1 ?"":"#000"}}
+                    style={{backgroundColor: tab == 0 ? "#222943":tab == 1 ?"":"", color:tab == 0 ? "#fff":tab == 1 ?"":"#000"}}
                     onClick={this.ongoingTab}
                     >Ongoing</Button>
                 {/* <Button 
                     size="small"
                     variant={tab == 0 ? "outlined" : tab == 1 ?"outlined": "contained"}
-                    style={{backgroundColor: tab == 0 ? "":tab == 1 ?"":"#04956a", color:tab == 0 ? "#000":tab == 1 ?"#000":"#fff"}}
+                    style={{backgroundColor: tab == 0 ? "":tab == 1 ?"":"#222943", color:tab == 0 ? "#000":tab == 1 ?"#000":"#fff"}}
                     onClick={this.approvalTab}
                     >Approvals</Button> */}
                 <Button 
                     size="small"
                     variant={tab == 0 ? "outlined" : tab == 1 ?"contained": "outlined"}
-                    style={{backgroundColor: tab == 0 ? "":tab == 1 ?"#04956a":"", color:tab == 0 ? "#000":tab == 1 ?"#fff":"#000"}}
+                    style={{backgroundColor: tab == 0 ? "":tab == 1 ?"#222943":"", color:tab == 0 ? "#000":tab == 1 ?"#fff":"#000"}}
                     onClick={this.completeTab}
                     >Completed</Button>
                 
@@ -1144,7 +1145,7 @@ render(){
                     type="submit"
                     size="large"
                     variant="contained"
-                  style={{backgroundColor:"#04956a", color:"white"}}>Apply Loan</Button>
+                  style={{backgroundColor:"#222943", color:"white"}}>Apply Loan</Button>
                 
               </Grid>
             </Grid>
@@ -1324,7 +1325,7 @@ render(){
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#04956a", color:"white", width:"100%"}}>Create Loan Group</Button>
+                 style={{backgroundColor:"#222943", color:"white", width:"100%"}}>Create Loan Group</Button>
             </Grid>
           </Grid>
         </Card>
@@ -1363,7 +1364,7 @@ render(){
             <>
             <Typography variant="h6" className="font-bold text-green" >Group Members</Typography>
             
-            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#222943", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
             {manage_details.map((dat, index) => (
               <ManageLoanCard
               name={dat.name}
@@ -1409,7 +1410,7 @@ render(){
           <Grid item lg={12} md={12} sm={12} xs={12}>
             {loading ?
             <Typography>Loading...</Typography>:
-            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#222943", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
               <LoanGroupDetailsCard data={group_details} members={group_members} />
             </div>
             }
@@ -1474,17 +1475,7 @@ render(){
                   <MenuItem value={"Wallet"}> Wallet</MenuItem>
                   <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
               </TextField>
-              {this.props.savings &&
-               <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-              }
-              {(repay_data.payment_method === "Wallet" || (repay_data.card_id !="0" && repay_data.card_id !="")) &&
-              <Button className="uppercase"
-                type="submit"
-                size="large"
-                variant="contained"
-                style={{backgroundColor:"#04956a", color:"white"}}>
-                   Repay Loan
-              </Button>}
+            
             </Grid>
             {repay_data.payment_method == "Debit Card" &&
             <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -1500,6 +1491,19 @@ render(){
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                   /><Typography variant="caption">Would you like to save your card</Typography>
               </Grid>}
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+              {this.props.savings &&
+               <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+              }
+              {(repay_data.payment_method === "Wallet" || (repay_data.card_id !="0" && repay_data.card_id !="")) &&
+              <Button className="uppercase"
+                type="submit"
+                size="large"
+                variant="contained"
+                style={{backgroundColor:"#222943", color:"white"}}>
+                   Repay Loan
+              </Button>}
+              </Grid>
             {(repay_data.payment_method === "Debit Card"&& repay_data.card_id == "") &&
             <Grid item lg={12} md={12} sm={12} xs={12}>
               <PayOption callback={this.callback} amount={repay_data.repayment_amount}/>
@@ -1569,7 +1573,7 @@ render(){
                 type="submit"
                 size="large"
                 variant="contained"
-                style={{backgroundColor:"#04956a", color:"white"}}>
+                style={{backgroundColor:"#222943", color:"white"}}>
                   {code == 0? "Replace Invite":"Replace Member "} 
               </Button>
             </Grid>
@@ -1606,9 +1610,9 @@ render(){
           <Grid item lg={12} md={12} sm={12} xs={12}>
             {loading ?
             <Typography>Loading...</Typography>:
-            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#222943", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
               <LoanDetailsCard 
-              loan_details={loan_details}
+              // loan_details={loan_details}
               data={loan_approval} 
               approvals={repayment_details} 
               resend_notif={()=>this.confirmAlert("Resend Loan Notification", 0, data.loan_group, data.user_id)} />
@@ -1704,7 +1708,7 @@ render(){
           <Grid item lg={12} md={12} sm={12} xs={12}>
             {loading ?
             <Typography>Loading...</Typography>:
-            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#222943", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
                { loan_activities.length == 0?
                  <Typography variant="p" className="font-bold">You currently do not have any loan that require your approval</Typography>:
                 loan_activities.map((data, index) =>(

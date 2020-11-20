@@ -494,7 +494,7 @@ completeTab(){
                     <Button className="uppercase"
                       size="small"
                       variant="contained"
-                      style={{ backgroundColor:"#19a6ff", color:"#fff"}}
+                      style={{ backgroundColor:"#222943", color:"#fff"}}
                       onClick={this.handleAutoSave}>
                         Create Target
                     </Button>
@@ -630,14 +630,7 @@ completeTab(){
                   {this.props.savings.savings &&
                 <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                 }
-                {(fund_data.payment_method == "Wallet" || (fund_data.card_id !="0" && fund_data.card_id !="")) && 
-                <Button className="uppercase"
-                  type="submit"
-                  size="large"
-                  variant="contained"
-                  style={{backgroundColor:"#0d60d8", color:"#fff"}}>
-                  Add Fund
-                </Button>}
+               
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                   <Card className="px-6 pt-2 pb-4">
@@ -664,11 +657,21 @@ completeTab(){
                         onChange={this.handleChangeFund}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     /><Typography variant="caption">Would you like to save your card</Typography>
-                </Grid>}
+                </Grid>}               
                 {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                   <PayOption callback={this.callback} amount={fund_data.amount}/>
                 </Grid>}
+                <Grid lg={12} md={12} sm={12} xs={12}>
+                {(fund_data.payment_method == "Wallet" || (fund_data.card_id !="0" && fund_data.card_id !="")) && 
+                <Button className="uppercase"
+                  type="submit"
+                  size="large"
+                  variant="contained"
+                  style={{backgroundColor:"#222943", color:"#fff"}}>
+                  Add Fund
+                </Button>}
+                </Grid>
               </Grid>
             </ValidatorForm>
           </Card>
@@ -830,7 +833,7 @@ completeTab(){
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#0d60d8", color:"white"}}>Create Target Plan</Button>
+                 style={{backgroundColor:"#222943", color:"white"}}>Create Target Plan</Button>
               </ValidatorForm>
             </Grid>
           </Grid>
@@ -1005,7 +1008,7 @@ completeTab(){
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#0d60d8", color:"white"}}>Update</Button>
+                 style={{backgroundColor:"#222943", color:"white"}}>Update</Button>
             </ValidatorForm>
           }
         </Card>

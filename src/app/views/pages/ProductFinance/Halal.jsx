@@ -2,7 +2,7 @@ import React from 'react';
 import { Breadcrumb, SimpleCard } from "matx";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { Grid, Card, Button, Typography, IconButton, Toolbar, AppBar, Dialog,CardMedia,
-  CardActionArea, MenuItem, TextField, CardActions, Slide } from '@material-ui/core';
+  CardActionArea, MenuItem, TextField, CardActions, Slide, Fab, CardContent } from '@material-ui/core';
 import CloseIcon from "@material-ui/icons/Close";
 import MarketCard from './components/MarketCard';
 import MarketCard2 from './components/MarketCard2';
@@ -24,6 +24,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+import AddIcon from '@material-ui/icons/Add';
 import Paginate from '../transactions/paginate';
 import SearchInput from '../settings/components/SearchInput';
 
@@ -569,7 +570,7 @@ tabbed = (id) => {
           <Loading />
         </div>:
         tab? 
-        <Grid container spacing={3} justify="flex-start">
+        <Grid container spacing={3} justify="flex-start" className="px-4">
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <Button size="small"
                 variant={current_index == 0 ?"contained":"outlined"}
@@ -600,6 +601,19 @@ tabbed = (id) => {
               </Link>              
             </Grid>
           ))}
+           <Grid item lg={3} md={3} sm={4} xs={12}>            
+            <Card style={{maxWidth:250, height:330, }} onClick={this.handleRequest}>
+              <CardActionArea style={{margin:'auto', paddingLeft:"18%", paddingTop:"38%"}}>              
+                <Fab color="primary" aria-label="add" onClick={this.handleRequest} 
+                style={{alignItems:'center',color:'white', padding:"40%"}}>
+                  <AddIcon style={{fontSize:40}}/>
+                </Fab>
+                <CardContent>
+                  <Typography className='text-bold' size="24"><b>Request Product</b></Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+            </Grid>
         </Grid>:
         <Grid container spacing={3}>
           {investment.map((ne) => (

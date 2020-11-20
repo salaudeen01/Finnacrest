@@ -37,7 +37,7 @@ resend_notif = (group_id, loan_id)=>{
   render(){
     return (
       <>
-      <div className="pt-2 mb-4 px-2 bg-default" style={{flexGrow: 1, border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+      {/* <div className="pt-2 mb-4 px-2 bg-default" style={{flexGrow: 1, border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
       <Grid container spacing={2}>
        {this.props.loan_details.map((data, index) => (
           <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -52,8 +52,8 @@ resend_notif = (group_id, loan_id)=>{
         </Grid>
        ))}
       </Grid><div className="py-2"/>
-    </div>
-      <Typography variant="h6" className="text-green" >Loan Guarantors Details</Typography>
+    </div> */}
+      <Typography variant="h6" className="text-green" >Guarantors Details</Typography>
       {this.props.data.length == 0 ?
       <Typography variant="subtitle" className="font-bold text-green" >Sorry You Currently Do Not Have any Standing Loan</Typography>:
       this.props.data.map((dat, index) => (
@@ -85,7 +85,7 @@ resend_notif = (group_id, loan_id)=>{
       <div className="py-2" />
       <Divider variant="middle" />
       <div className="py-2" />
-      <Typography variant="h6" className="font-bold text-green">Loan Repayment Transactions </Typography>
+      <Typography variant="h6" className="font-bold text-green">Repayment Transactions </Typography>
       <TableCard details={this.props.approvals} />
       </>
     );

@@ -244,7 +244,7 @@ import {
                         size="medium"
                         fullWidth 
                         variant="contained"
-                        style={{backgroundColor:"#33B27B", color:"white", borderBottomRightRadius:10, 
+                        style={{backgroundColor:"#222943", color:"white", borderBottomRightRadius:10, 
                         borderBottomLeftRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10}}>
                    Checkout
                    </Button>

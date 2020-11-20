@@ -32,7 +32,7 @@ class CancelledBusiness extends Component {
     this.state={
       tab: true,
       requested_business:[],
-      loading:true
+      loading:false
     }
     
     const requestOptions = {
@@ -127,7 +127,7 @@ render(){
                           ) 
                           : (
                         <Typography variant='body1'>
-                        No Cancelled Business
+                        No Cancelled Business Finance Request
                         </Typography>
                       )
                       }

@@ -30,6 +30,8 @@ import PayOption from "app/views/dashboard/shared/PayOption";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import swal from "sweetalert";
 import ModalForm from "./ModalForm";
+import { userConstants } from "app/redux/_constants";
+import { Store } from "app/redux/Store";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -80,6 +82,7 @@ class WalletTab extends Component{
     this.handleCloseWithdraw = this.handleCloseWithdraw.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.saveWallet = this.saveWallet.bind(this);
+    this.handleClosePin = this.handleClosePin.bind(this);    
     this.handleSubmitWithdraw = this.handleSubmitWithdraw.bind(this);
     this.handleConfirmWithdraw = this.handleConfirmWithdraw.bind(this);
     this.handleChangeWithdraw = this.handleChangeWithdraw.bind(this);
@@ -149,7 +152,7 @@ class WalletTab extends Component{
         if (!response.ok) {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
-        }
+        }console.log(data)
         this.setState({ wallet: data.data, pagination: data, loading: false });
       })
       .catch((error) => {
@@ -291,6 +294,13 @@ handleChangeWithdraw(event) {
 handleClickOpen() {
   this.setState({show:true});
 }
+handleClosePin() {
+  Store.dispatch({
+    type:userConstants.SAVINGS_CONTINUES,
+    user:false
+  })
+  this.setState({showPin:false});
+}
 handleClose() {
   this.setState({show:false});
 }
@@ -409,7 +419,7 @@ handleCloseConfirmWithdraw() {
               <CloseIcon style={{color:'#fff'}}/>
             </IconButton>
             <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
-              Fund Your Account
+              Fund Wallet
             </Typography>
           </Toolbar>
         </AppBar>
@@ -434,16 +444,7 @@ handleCloseConfirmWithdraw() {
                 />
                 {this.props.savings.savings &&
                 <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                }
-              {(data.card_id != "" && data.card_id !="0") && 
-              <Button className="uppercase"
-                type="submit"
-                size="large"
-                variant="contained"
-                color="secondary"
-                style={{color:"#fff"}}>
-                Add Fund
-              </Button>}
+                }              
               </Grid>
               <Grid item lg={6} md={6} sm={12} xs={12}>
                 <Card className="px-6 pt-2 pb-4">
@@ -464,6 +465,17 @@ handleCloseConfirmWithdraw() {
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                   /><Typography variant="caption">Would you like to save your card</Typography>
               </Grid>}
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                {(data.card_id != "" && data.card_id !="0") && 
+                <Button className="uppercase"
+                  type="submit"
+                  size="large"
+                  variant="contained"
+                  color="primary"
+                  style={{color:"#fff"}}>
+                  Add Fund
+                </Button>}
+              </Grid>
               {data.card_id == "" && <Grid item lg={12} md={12} sm={12} xs={12}>
                 <PayOption callback={this.callback} amount={data.amount}/>
               </Grid>}
@@ -489,7 +501,7 @@ handleCloseConfirmWithdraw() {
                 <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
-                Withdraw To Bank Account
+                Withdraw To Bank
               </Typography>
             </Toolbar>
           </AppBar>
@@ -572,7 +584,7 @@ handleCloseConfirmWithdraw() {
                     type="submit"
                     size="large"
                     variant="contained"
-                    color="secondary"
+                    color="primary"
                     style={{color:"#fff"}}>
                     Withdraw
                   </Button>
@@ -741,13 +753,13 @@ handleCloseConfirmWithdraw() {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
         open={this.props.savings.proceed}
-        onClose={()=>console.log("close")}>
+        onClose={this.handleClosePin}>
           <AppBar style={{position: "relative"}} color="primary">
             <Toolbar>
               <IconButton
                 edge="start"
                 color="inherit"
-                onClick={()=>console.log("close")}
+                onClick={this.handleClosePin}
                 aria-label="Close"
               >
                 <CloseIcon style={{color:'#fff'}}/>
@@ -784,7 +796,7 @@ handleCloseConfirmWithdraw() {
                   type="submit"
                   size="large"
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   style={{color:"#fff"}}>
                   Withdraw
                 </Button>

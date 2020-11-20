@@ -29,16 +29,49 @@ class Business extends Component {
     let entry_date = currentDate.getFullYear() + "-" + month + "-" + day;
     // let rand_id =this.getRand()
     this.state={
-      
+      requested_business:0
     }
-    
+
+    const requestOptions = {
+      method: "GET",
+      headers: { ...authHeader(), "Content-Type": "application/json" },
+    };
+    // let user = JSON.parse(localStorage.getItem("user"));
+    fetch(getConfig('display_request'), requestOptions)
+  .then(async response => {
+  const data = await response.json();
+  if (!response.ok) {
+    console.log(response)
+      const error = (data && data.message) || response.statusText;
+      return Promise.reject(error);
   }
+  console.log(data)
+  if(data.success == false  || data.length == 0 ){
+    this.setState({ requested_business: []});
+  }else{
+    let newArray = [];
+    data.forEach(d => {
+      if(d.request_status == 0){
+        newArray.push(d)
+      }
+    });
+    this.setState({requested_business: newArray, loading:false });
+  }  
+})
+    .catch(error => {
+      if (error === "Unauthorized") {
+        this.props.timeOut()
+      }
+    });
+}
+    
 
 render(){
+  const{requested_business} = this.state
    return (
     <div className="m-sm-30">
         <BusinessTop />
-        <BusinessCustomTab />
+        <BusinessCustomTab  tdetails={requested_business}/>
      
     </div>
   );

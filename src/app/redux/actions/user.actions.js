@@ -228,7 +228,7 @@ function verifyWithdraw(data) {
       (user) => {
         dispatch(success(user));
        if(user.success){
-          dispatch(continues(user));
+          dispatch(continues(true));
         }
         dispatch(alertActions.continues(user.message));
        },
@@ -1624,9 +1624,12 @@ function addRegistrationFee(user) {
 
     userService.addRegistrationFee(user).then(
       (user) => {
-        dispatch(success());
+        dispatch(success());        
+        // history.push("/signin");
+        history.push({
+          pathname: "/signin"
+        });
         if (user.success) {
-          history.push("/signin");
           dispatch(alertActions.success(user.message));
         } else {
           dispatch(alertActions.error(user.message));

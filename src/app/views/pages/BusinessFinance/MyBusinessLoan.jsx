@@ -21,6 +21,7 @@ import PayCard from "app/views/dashboard/shared/PayCard";
 import PayOption from "app/views/dashboard/shared/PayOption";
 import BusinessDetails from "./components/BusinessDetails";
 import OrderTrans from "../ProductFinance/components/OrderTrans";
+import dateFormat from "dateformat"
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -59,8 +60,9 @@ class MyBusinessLoan extends Component {
       requested_business:[],
       business_view:[],
       cards:[],
+      loan_bal:0,
       id:true,
-      loading:true,
+      loading:false,
       showViewTrans:false,
       showManageLoan:false
     }
@@ -98,7 +100,7 @@ componentDidMount() {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
-      // console.log(data)
+      console.log(data)
       if(data.success == false  || data.length == 0 ){
         this.setState({ requested_business: []});
       }else{
@@ -130,7 +132,7 @@ componentDidMount() {
       }else{
         let newArray = [];
         data.forEach(d => {
-          if(d.request_status == 1 || d.request_status == 2){
+          if(d.request_status == 1 || d.request_status == 2 || d.request_status == 11){
             newArray.push(d)
           }
         });
@@ -197,8 +199,8 @@ componentDidMount() {
       if (!response.ok) {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
-      }
-      if(data.success == false || data.total == 0){
+      }console.log(data)
+      if(data.success == false || data.total == []){
         this.setState({data: [], pagination:[], isLoading:false});
       }else{
         this.setState({data: data.data, pagination:data, isLoading:false});
@@ -285,16 +287,40 @@ componentDidMount() {
       }
     });
     }
-    handleChangeFund = event => {
-      const {fund_data} = this.state
-      const {name, value, checked} = event.target
-      if(name == "save_card"){
-        this.setState({fund_data:{...fund_data, [name]:checked}})
-      }else{
-        this.setState({fund_data:{...fund_data, [name]:value}})
-      }
-    };
-    
+
+  handleChangeFund = event => {
+    const {fund_data, loan_bal} = this.state
+    const {name, value, checked} = event.target
+    if(name == "save_card"){
+      this.setState({fund_data:{...fund_data, [name]:checked, save_card:true}})
+    }else{
+      this.setState({fund_data:{...fund_data, [name]:value}})
+    }
+    // if(name =="repayment_amount" && value > loan_bal){
+    //     swal(`${"Repaid Amount is more than your remaining balance"}`);
+    // }
+  };
+  
+  // handleCreateRepayment = (id) => {
+  //   this.setState({loading: true});
+  //   const {repay_data, token} = this.state
+  //   fetch(getConfig("loanBalance")+id + "?token="+token, this.getRequestOpt)
+  //       .then(async response => {
+  //       const data = await response.json();
+  //       if (!response.ok) {
+  //           const error = (data && data.message) || response.statusText;
+  //           return Promise.reject(error);
+  //       }
+  //       this.setState({loan_bal: data})
+  //   })
+  //   .catch(error => {
+  //     if (error === "Unauthorized") {
+  //         this.props.timeOut()
+  //       }
+  //   });
+  //   this.setState({showrepayment: true, repay_data: {...repay_data, id: id} });
+  // }
+  
     handleChangeAddCard = event => {
       const {fund_data} = this.state
       const {name, value, checked} = event.target
@@ -401,7 +427,7 @@ render(){
                       <Grid item lg={6} md={6} sm={12} xs={12}>
                       {business_view.length != 0 ? (
                         business_view.map((data, index) => (
-                          data.request_status == 1 || data.request_status == 2 ? 
+                          // data.request_status == 1 || data.request_status == 2 ? 
                           <MyRequest
                             key={index}
                             status={false}
@@ -409,6 +435,7 @@ render(){
                             repaid={numberFormat(data.repaid)}
                             admin_price={numberFormat(data.total_amount)}                           
                             status={data.request_status}
+                            end_date={dateFormat(data.end_date, "mmmm dS, yyyy")}
                             title={data.business_name}
                             images={(data.image)}
                             decline={()=>this.handleDelete(data.id)}
@@ -416,14 +443,15 @@ render(){
                             // view={() => this.handleView(data.id)}
                             view={()=>this.handleCreateManageLoan(data.id)}
                             viewTrans={() => this.handleViewTrans(data.id)}
-                            />:
-                          <Typography variant='body1'>
-                            {/* No Ongoing Business */}
-                        </Typography>
+                            />
+                            // :
+                          // <Typography variant='body1'>
+                            // {/* No Ongoing Business */}
+                        // </Typography>
                         ))
                       ) : (
                         <Typography variant='body1'>
-                        No Ongoing Business
+                        No Ongoing Business Finance Request
                         </Typography>
                       )}
                       </Grid>
@@ -435,15 +463,14 @@ render(){
                       style={{
                         border: 1,
                         borderStyle: "solid",
-                        borderColor: "#e74398",
-                        borderBottomRightRadius: 20,
-                        borderTopLeftRadius: 20,
+                        borderColor: "#0d60d8",
+                        borderRadius:8,
                       }}
                     >
                       <Grid item lg={6} md={6} sm={12} xs={12}>
                       {requested_business.length != 0 ? (
                         requested_business.map((data, index) => (
-                          data.request_status == 3 ? 
+                          // data.request_status == 3 ? 
                           <CompleteRequest
                           key={index}
                           status={false}
@@ -453,20 +480,21 @@ render(){
                           status={data.request_status}
                           title={data.business_name}
                           images={(data.image)}
-                          decline={()=>this.handleDelete(data.id)}
-                          accept={()=>this.handleAcceptLoan(data.id)}
+                          // decline={()=>this.handleDelete(data.id)}
+                          // accept={()=>this.handleAcceptLoan(data.id)}
                           view={()=>this.handleCreateManageLoan(data.id)}
                           viewTrans={() => this.handleViewTrans(data.id)}
                             // repay={() => this.handleQuickSave(data.id)}
-                          />:
-                          <Typography variant='body1'>
-                            No Completed Business
-                        </Typography>
+                          />
+                        //   :
+                        //   <Typography variant='body1'>
+                        //     No Completed Business Finance Request
+                        // </Typography>
                         ))
                       ) 
                       : (
                         <Typography variant='body1'>
-                        No Completed Business
+                         No Completed Business Finance Request
                         </Typography>
                       )}
                       </Grid>

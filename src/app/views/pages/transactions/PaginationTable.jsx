@@ -11,9 +11,11 @@ import {
   Icon,
   TablePagination,
   Card,
-  TableFooter
+  TableFooter,
+  Typography
 } from "@material-ui/core";
 import Paginate from "./paginate";
+import dateFormat from "dateformat"
 
 const PaginationTable = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -36,7 +38,7 @@ const PaginationTable = (props) => {
             <TableCell className="px-6" colSpan={4}>I.D</TableCell>
             <TableCell className="px-0" colSpan={4}>TYPE</TableCell>
             <TableCell className="px-0" colSpan={4}>AMOUNT</TableCell>
-            <TableCell className="px-0" colSpan={3}>PAYMENT</TableCell>
+            <TableCell className="px-0" colSpan={3}>PAYMENT METHOD</TableCell>
             <TableCell className="px-0" colSpan={4}>TRANSACTION</TableCell>
             <TableCell className="px-0" colSpan={2}>DATE</TableCell>
           </TableRow>
@@ -51,9 +53,11 @@ const PaginationTable = (props) => {
                 SES{data.id}
                 </TableCell>
                 <TableCell className="px-0 capitalize" align="left" colSpan={4}>
-                  {(data.wallet_category || data.transaction_category) == 1 ? "Regular Savings": 
-                  ((data.wallet_category || data.transaction_category) == 2) ? "Target Savings":
-                  ((data.wallet_category || data.transaction_category) == 3) ? "Shareholding":
+                {(data.wallet_category || data.transaction_category) == 1 && (data.wallet_type == "debit" || data.transaction_type== "debit") ? "Regular Savings": 
+                 ((data.wallet_category || data.transaction_category) == 1 && (data.wallet_type == "credit"|| data.transaction_type == "credit"))? "Savings Withdrawal": 
+                 ((data.wallet_category || data.transaction_category) == 2 && (data.wallet_type == "debit" || data.transaction_type == "debit" )) ? "Target Savings":
+                 ((data.wallet_category || data.transaction_category) == 2 && (data.wallet_type == "credit"|| data.transaction_type== "credit")) ? "Target Withdrawal":
+                 ((data.wallet_category || data.transaction_category) == 3) ? "Shareholding":
                   ((data.wallet_category || data.transaction_category) == 4) ? "Loan Repayment":
                   ((data.wallet_category || data.transaction_category) == 8) ? "Business Finance":
                   ((data.wallet_category || data.transaction_category) == 9) ? "Products Financing":
@@ -71,15 +75,12 @@ const PaginationTable = (props) => {
                   {data.wallet_type || data.transaction_type}
                 </TableCell>
                 <TableCell className="px-0 capitalize" colSpan={3}>
-                  {data.entry_date}
+                  {dateFormat(data.entry_date, "mmmm dS, yyyy")}
                 </TableCell>
               </TableRow>
             )):
-              <TableRow>
-                <TableCell style={{textAlign:"center"}}>
-                    No Record Found
-                </TableCell>                
-              </TableRow>
+              
+              <Typography style={{textAlign:'center'}}>  No Record Found</Typography>
           }
         </TableBody>
         <TableFooter>

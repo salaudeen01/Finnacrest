@@ -50,8 +50,8 @@ class BusinessTop extends Component{
     }, 
       key: payID(),
       savings: [],
-      loading: true,
-      balance:0.00,
+      loading: false,
+      balance:"",
       showLoan:false,
       repayment_duration:0,
     };
@@ -128,7 +128,7 @@ class BusinessTop extends Component{
             // console.log(week_repay)
             this.setState({ data: {...data, repayment_amount: week_repay, repayment_duration: value } })        
         } else{
-          this.setState({ data: {...data, repayment_amount: repay, repayment_duration: value } })
+          this.setState({ data: {...data, repayment_amount: Math.round(repay), repayment_duration: value } })
         }
       }
     }else if (name == "frequency"){
@@ -139,9 +139,9 @@ class BusinessTop extends Component{
             if (value == "Weekly") {
               repay = repay / 4;
               // console.log(repay)
-              this.setState({ data: {...data, repayment_amount: repay, [name]: value } })        
+              this.setState({ data: {...data, repayment_amount: Math.round(repay), [name]: value } })        
               } else{
-                this.setState({ data: {...data, repayment_amount: repay, [name]: value } })
+                this.setState({ data: {...data, repayment_amount: Math.round(repay), [name]: value } })
               }
           }else{
             this.setState({ data: { ...data, [name]: value} });
@@ -155,9 +155,9 @@ class BusinessTop extends Component{
             // if frequency is weekly
             repay = repay / 4; // weekly repayment amount
             // console.log("Weekly repayment", repay)
-            this.setState({ data: {...data, repayment_amount: repay, [name]: value } })        
+            this.setState({ data: {...data, repayment_amount: Math.round(repay), [name]: value } })        
           } else{
-            this.setState({ data: {...data, repayment_amount: repay, [name]: value } })
+            this.setState({ data: {...data, repayment_amount: Math.round(repay), [name]: value } })
           }
           // console.log('repayment amount: ', repay);
       }else{
@@ -248,7 +248,7 @@ class BusinessTop extends Component{
                       style={{backgroundColor:"#0d60d8",color:"white"}}
                       onClick={this.handleCreateLoan}
                       >
-                      Request Loan
+                      Place Request
                    </Button>
               </div>
             </Grid>           
@@ -275,7 +275,7 @@ class BusinessTop extends Component{
             <CloseIcon style={{color:'#fff'}}/>
           </IconButton>
           <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-            Create Loan Request
+            Create Business Request
           </Typography>
         </Toolbar>
       </AppBar>
@@ -386,7 +386,7 @@ class BusinessTop extends Component{
                     type="submit"
                     size="large"
                     variant="contained"
-                  style={{backgroundColor:"#0d60d8", color:"white"}}>Apply Loan</Button>
+                  style={{backgroundColor:"#222943", color:"white"}}>Submit Request</Button>
                 
               </Grid>
             </Grid>

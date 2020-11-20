@@ -8,14 +8,14 @@ export default function Paginate(props) {
     const pages = page(props.pagination);
     return (
       <div >
-      {props.pagination.total > 0 && <Button variant="contained" color="primary" style={{color:"white"}}
+      {props.pagination.total > 0 && <Button variant="contained" size="small" color="primary" style={{color:"white"}}
       onClick={props.fetch_prev_page}><ArrowBackIosIcon/></Button>}
       {pages.map((page)=>(
           <Button component="span" size="small" 
           variant={props.pagination.current_page == page ? "contained":""}
            onClick={()=>props.fetch_page(page)}>{page}</Button>
       ))}
-      {props.pagination.total > 20 &&<Button variant="contained" color="primary" style={{color:"white"}} 
+      {props.pagination.total > 10 &&<Button variant="contained" size="small" color="primary" style={{color:"white"}} 
       onClick={props.fetch_next_page}><ArrowForwardIosIcon/></Button>}
       </div>
     )

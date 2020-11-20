@@ -61,10 +61,10 @@ class TableCard extends Component{
             <Table className="product-table">
               <TableHead>
                 <TableRow>
-                  <TableCell className="px-6" colSpan={4}>
+                  <TableCell className="px-6" colSpan={5}>
                   CATEGORY
                   </TableCell>
-                  <TableCell className="px-0" colSpan={2}>
+                  <TableCell className="px-0" colSpan={4}>
                   TYPE
                   </TableCell>
                   <TableCell className="px-0" colSpan={4}>
@@ -77,17 +77,20 @@ class TableCard extends Component{
               </TableHead>
               <TableBody>
                 {this.props.transactions.map((product, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="px-0 capitalize" colSpan={4} align="left">
-                    {product.transaction_category == 1 ? "Regular Savings": 
-                    (product.transaction_category == 2) ? "Target Savings":
-                    (product.transaction_category == 9) ? "Product Financing":
-                    (product.transaction_category == 4) ? "Loan":
+                  <TableRow key={index}>                   
+                  <TableCell className="px-0 capitalize" colSpan={5} align="left">
+                    {product.transaction_category == 1 && product.transaction_type== "debit" ? "Regular Savings": 
+                    (product.transaction_category == 1 && product.transaction_type == "credit")? "Savings Withdrawal": 
+                    (product.transaction_category == 2 && product.transaction_type == "debit" ) ? "Target Savings":
+                    (product.transaction_category == 2 && product.transaction_type== "credit") ? "Target Withdrawal":
                     (product.transaction_category == 3) ? "Shareholding":
-                    // (product.transaction_category == 6) ? "Halal Financing":
+                      (product.transaction_category == 4) ? "Loan Repayment":
+                      (product.transaction_category == 8) ? "Business Finance":
+                      (product.transaction_category == 9) ? "Products Financing":
+                      (product.transaction_category == 10) ? "Disbursement":
                     (product.transaction_category == 7) ? (product.transaction_type == "credit")?"Wallet Funding":" Wallet Withdrawal": ""}
-                    </TableCell>
-                    <TableCell className="px-0" colSpan={2} >
+                  </TableCell>
+                    <TableCell className="px-0" colSpan={4} >
                       {product.transaction_type}
                     </TableCell>
                     <TableCell className="px-0 capitalize" align="left" colSpan={4}>

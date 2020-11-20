@@ -66,9 +66,12 @@ render(){
         <Tabs value={value} indicatorColor="primary"
           textColor="primary" style={{marginLeft:28}}
           onChange={this.handleChange} aria-label="simple tabs example">
-          <Tab label="MY Business" {...a11yProps(0)} />
+          <Tab label="Active Request" {...a11yProps(0)} />
           <Tab label="Pending Request" {...a11yProps(1)} />
-          <Tab label="Cancelled Business" {...a11yProps(2)} />
+          {/* <span style={{marginLeft:"-10px", marginTop:10,marginBottom:20,paddingLeft:4,paddingRight:4,
+           color:'#fff', backgroundColor:'green', borderRadius:6}}>
+            {(this.props.tdetails.length)}</span> */}
+          <Tab label="Cancelled Request" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>

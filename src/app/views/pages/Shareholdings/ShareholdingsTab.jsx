@@ -407,13 +407,13 @@ class Shareholdings extends Component {
                     size='small'
                     variant='contained'
                     style={{
-                      backgroundColor: "#0d60d8",
+                      backgroundColor: "#222943",
                       color: "white",
                       borderRadius: 4
                     }}
                     onClick={this.handleQuickSave}
                   >
-                    Fund Account
+                    Quick Save
                   </Button>
                 </Grid>
               </Grid>
@@ -563,25 +563,7 @@ class Shareholdings extends Component {
                     <MenuItem value={""}></MenuItem>
                     <MenuItem value={"Wallet"}> Wallet</MenuItem>
                     <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
-                  </TextField>
-                  {this.props.savings && (
-                    <img
-                      img
-                      alt=''
-                      src='data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=='
-                    />
-                  )}
-                  {fund_data.payment_method == "Wallet" && (
-                    <Button
-                      className='uppercase'
-                      type='submit'
-                      size='large'
-                      variant='contained'
-                      style={{ backgroundColor: "#0d60d8", color: "#fff" }}
-                    >
-                      Add Fund
-                    </Button>
-                  )}
+                  </TextField>                  
                 </Grid>
 
                 <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -600,6 +582,24 @@ class Shareholdings extends Component {
                       callback={this.callback}
                       amount={fund_data.amount}
                     />
+                  )}
+                  {this.props.savings && (
+                    <img
+                      img
+                      alt=''
+                      src='data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=='
+                    />
+                  )}
+                  {fund_data.payment_method == "Wallet" && (
+                    <Button
+                      className='uppercase'
+                      type='submit'
+                      size='large'
+                      variant='contained'
+                      style={{ backgroundColor: "#222943", color: "#fff" }}
+                    >
+                      Add Fund
+                    </Button>
                   )}
                 </Grid>
               </Grid>
@@ -743,7 +743,7 @@ class Shareholdings extends Component {
                     type='submit'
                     size='large'
                     variant='contained'
-                    style={{ backgroundColor: "#0d60d8", color: "#fff" }}
+                    style={{ backgroundColor: "#222943", color: "#fff" }}
                   >
                     Edit Auto Save
                   </Button>
@@ -889,7 +889,7 @@ class Shareholdings extends Component {
                     type='submit'
                     size='large'
                     variant='contained'
-                    style={{ backgroundColor: "#0d60d8", color: "#fff" }}
+                    style={{ backgroundColor: "#222943", color: "#fff" }}
                   >
                     Create Auto Save
                   </Button>
@@ -954,7 +954,7 @@ class Shareholdings extends Component {
                     type='submit'
                     size='large'
                     variant='contained'
-                    style={{ backgroundColor: "#0d60d8", color: "#fff" }}
+                    style={{ backgroundColor: "#222943", color: "#fff" }}
                   >
                     Withdraw Fund
                   </Button>
