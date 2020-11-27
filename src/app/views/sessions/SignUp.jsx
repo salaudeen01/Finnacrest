@@ -125,7 +125,7 @@ class SignUp extends Component {
                             alignItems='center'
                           >
                             <Grid lg={6} md={6} sm={6} xs={6}>
-                              <img src='/assets/images/sesis.jpg' />
+                              {/* <img src='/assets/images/sesis.jpg' /> */}
                             </Grid>
                           </Grid>
                         </div>

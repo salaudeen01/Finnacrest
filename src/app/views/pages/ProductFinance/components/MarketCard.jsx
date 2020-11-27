@@ -1,8 +1,10 @@
+
 import React from "react";
 import { Grid, Card, Typography, Button, CardActionArea, CardActions, CardContent, CardMedia } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import { Component } from "react";
 import {numberFormat} from '../../../../config/config'
+import Color from 'color';
 import Paginate from "../../transactions/paginate";
 
 class MarketCard extends Component {
@@ -11,38 +13,28 @@ class MarketCard extends Component {
   }
   render(){
     let { theme, category, data, invest, view, status} = this.props;
+    let total_price = Number(data.price) + Number(data.mark_up)
     return (
-          <Card style={{maxWidth:250}}>
-            <CardActionArea>
-              <CardMedia style={{height:240, margin:'auto'}}
+      <CardActionArea style={{borderRadius: 16,transition: '0.2s','&:hover': {transform: 'scale(1.1)', },}}>
+          <Card style={{maxWidth:250, borderRadius: 16,'&:hover': {
+            boxShadow: `0 6px 12px 0 ${Color('blue') .rotate(-12) .darken(0.2) .fade(0.5)}`, },}}>
+            {/* <CardActionArea> */}
+              <CardMedia style={{height:240, alignContent:'center', alignItems:'center', margin:'auto'}}
                 image={data.image}
                 title={data.product_name}
               />
-              <CardContent>
-                <Typography gutterBottom  component="h2"  style={{overflow: 'hidden', whiteSpace: "nowrap", textOverFlow: 'ellipsis', width:200}}>
-                  ...{data.product_name} 
+              <CardContent style={{background:'#222341'}}>
+                <Typography gutterBottom className="text-center text-white" component="h2" textOverflow="ellipsis" overflow="hidden" my={2}
+                 style={{overflow: 'hidden', whiteSpace: "nowrap", textOverFlow: 'ellipsis', width:200}}>
+                  {data.product_name}
                 </Typography>
-                <Typography variant="body2" variant="h6" className="font-bold" color="textSecondary" component="p">
-                  {numberFormat(data.price)}
+                <Typography variant="body2" variant="h6" className="font-bold text-center text-white" color="textSecondary" component="p">
+                  {numberFormat(total_price)}
                 </Typography>
-                {/* {data.unit_remaining == 0 ?
-                <span style={{color: '#fff', backgroundColor: "red", padding:3, marginTop:20, borderRadius:5}}>
-                  Sold Out
-                </span>:
-                <span style={{color: '#fff', backgroundColor: "green", padding:3, marginTop:20, borderRadius:5}}>
-                  {data.unit_remaining + " Slot"} Remaining
-                </span>} */}
               </CardContent>
-            </CardActionArea>
-            {/* <CardActions>
-            <Paginate pagination={this.props.pagination}
-              fetch_prev_page={this.props.fetch_prev_page} 
-              fetch_next_page={this.props.fetch_next_page} 
-              fetch_page={this.props.fetch_page}
-           />
-            </CardActions> */}
-
+            {/* </CardActionArea> */}
           </Card>
+      </CardActionArea>
     );
   };
   

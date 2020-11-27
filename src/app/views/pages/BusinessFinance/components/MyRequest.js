@@ -173,7 +173,7 @@ class MyRequest extends Component{
         <></>}
         <Grid>
            <Grid item lg={12} md={12} sm={12} xs={12}>
-           { (this.props.status == 0 && this.props.admin_price != 0)  ?            
+           {(this.props.status == 0 && this.props.admin_price != 0)  ?            
         <ButtonGroup color="primary" aria-label="outlined primary button group">
            <Button className="mb-4"  size='small' variant="outlined" style={{borderColor:'green', color:'green'}}
              onClick={this.props.accept}

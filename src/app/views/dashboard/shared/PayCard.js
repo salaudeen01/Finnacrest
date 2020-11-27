@@ -73,7 +73,7 @@ const classes = useStyles();
                     <Grid item md={6} xs={7}>
                       <div className="flex items-center">
                         <Fab
-                          className="ml-4 mr-4 bg-green box-shadow-none text-white"
+                          className="ml-4 mr-4 bg-primary box-shadow-none text-white"
                           size="small">
                           <Icon>fiber_new</Icon>
                         </Fab>
@@ -97,7 +97,7 @@ const classes = useStyles();
                       <Grid item md={5} xs={5}>
                         <div className="flex items-center">
                           <Fab
-                            className="ml-4 mr-4 bg-green box-shadow-none text-white"
+                            className="ml-4 mr-4 bg-primary box-shadow-none text-white"
                             size="small">
                                 <Icon>credit_card</Icon>
                           </Fab>

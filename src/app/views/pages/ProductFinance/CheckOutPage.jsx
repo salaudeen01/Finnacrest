@@ -34,7 +34,8 @@ class CheckOutPage extends Component {
       products:[],
       count:[],
       totalbalance:0,
-      cart_quantity:[]
+      cart_quantity:[],
+      product_quantity:[]
     }
     this.incrementItem =this.incrementItem.bind(this);
     this.DecrementItem = this.DecrementItem.bind(this)
@@ -68,8 +69,15 @@ componentDidMount(){
       quantity.push(dat.cart_quantity)
   })
   this.setState({cart_quantity: quantity})
-  console.log(quantity)  
-})
+  console.log(quantity) 
+
+  let quan= []
+  data.my_carts.forEach(dat => {
+      quan.push(dat.product_quantity)
+  })
+  this.setState({product_quantity: quan})
+  console.log(quan)   
+  })
 .catch(error => {
   if (error === "Unauthorized") {
         this.props.logout()
@@ -140,9 +148,13 @@ incrementItem = (id) => {
   const { products, totalbalance} = this.state;
   const elementIndex = products.findIndex(prod=> prod.cart_id == id);
   let newArray = [...products];
+  let product_quantity= products[elementIndex].product_quantity
   let price = Number(newArray[elementIndex].cart_price);
-  console.log('price', totalbalance);
-  newArray[elementIndex] = {...newArray[elementIndex], cart_quantity: Number(newArray[elementIndex].cart_quantity)+1}
+  // console.log('price', totalbalance);
+  newArray[elementIndex] = {...newArray[elementIndex], cart_quantity: Number(newArray[elementIndex].cart_quantity)+1}  
+  if(Number(newArray[elementIndex].cart_quantity)+1 > product_quantity){
+    swal(`${ product_quantity +" "+"Items Available In Stock"}`);
+}else
   this.setState({products:newArray, totalbalance: Number(totalbalance) + price})
       this.props.updateUserCart(newArray[elementIndex].cart_id, newArray[elementIndex].cart_quantity);
 }  
@@ -190,7 +202,7 @@ render(){
                     <CartTable products={products} loading={loading} cart_quantity={cart_quantity} incrementItem={this.incrementItem} DecrementItem={this.DecrementItem}/>
                 </Grid>
                 <Grid item lg={4} md={4} sm={12} xs={12}>
-                    <CartSummary count={count} total={totalbalance}/>
+                    <CartSummary count={count} total={totalbalance} products={products}/>
                 </Grid>
             </Grid>
       </div>

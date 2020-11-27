@@ -128,13 +128,13 @@ class MyProduct extends Component{
         <div className="py-2 " />
         <Grid item lg={12} md={12} sm={12} xs={12}>
         {this.props.status == 1 ?
-           <Typography className="mb-2">
+           <Typography className="mb-2" style={{fontSize:16}}><span className="text-primary">Status:</span>
            <span className="mb-4 py-1 px-3" style={{background:'orange', fontSize:12, color:'white', borderRadius:14}}>PENDING</span>
          </Typography>
         : this.props.status == 3 ?
         <div>
           <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Typography className="mb-2">
+          <Typography className="mb-2" style={{fontSize:16}}><span className="text-primary">Status:</span>
             <span className="mb-4 py-1 px-3" style={{background:'green',fontSize:12, color:'white', borderRadius:14}}>APPROVED</span>
           </Typography>
          {/* <Badge className="mb-4 px-3"  badgeContent={'Approved'} {...defaultthis.Props}/> */}
@@ -143,7 +143,7 @@ class MyProduct extends Component{
        :this.props.status == 4 ?
        <div>
          <Grid item lg={12} md={12} sm={12} xs={12}>
-         <Typography className="mb-2">
+         <Typography className="mb-2" style={{fontSize:16}}><span className="text-primary">Status:</span>
             <span className="mb-4 py-1 px-3" style={{background:'red',fontSize:12, color:'white', borderRadius:14}}>DECLAINED</span>
           </Typography>
        </Grid>

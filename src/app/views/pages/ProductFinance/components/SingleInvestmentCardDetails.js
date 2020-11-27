@@ -83,7 +83,7 @@ class SingleInvestmentCardDetails extends Component {
                     <Divider/>
                     <Grid className="pt-4 mb-4 px-2 bg-default">
                     <h4>
-                     {numberFormat(newz.price)}
+                     {numberFormat(Number(newz.price) + Number(newz.mark_up))}
                      </h4>
                     </Grid>
                     <Grid>

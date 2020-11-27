@@ -103,7 +103,7 @@ render(){
                 {numberFormat(dat.repayment_amount)}
                 </TableCell>
                 <TableCell className="px-4 capitalize" align="left" component="th" scope="row" colSpan={4}>
-                 {dat.payment_method}
+                <span style={{color: dat.payment_method == 'credit'?"green":"red"}}>{dat.payment_method}</span>
                 </TableCell>
                 <TableCell className="px-4 capitalize" align="left" component="th" scope="row" colSpan={4}>
                 {dateFormat(dat.trans_date, "mmmm dS, yyyy")}

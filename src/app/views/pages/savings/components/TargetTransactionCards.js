@@ -32,7 +32,8 @@ export default function TargetTransactionCard(props) {
             checked={props.auto_status? true:false}
             onChange={props.autoSave}
             value="checked"
-            color="secondary"
+            color="primary"
+            style={{color:'#1999ff'}}
           />
           <Typography variant="h6">
             {props.auto_status? "Turn OFF Auto save": "Turn ON Auto save"}

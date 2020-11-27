@@ -26,6 +26,7 @@ import {
   Dialog,
   CircularProgress,
   Slide,
+  Checkbox,
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -39,6 +40,7 @@ import PayOption from "app/views/dashboard/shared/PayOption";
 import Loading from "matx/components/MatxLoading/MatxLoading";
 import bgimage from "../../../../assets/sesis8.jpeg"
 import dateFormat from "dateformat";
+import PayCard from "app/views/dashboard/shared/PayCard";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -61,19 +63,27 @@ class Shareholdings extends Component {
         transaction_day: "null",
         transaction_month: "0",
         start_date: "",
-        payment_method: "Wallet",
+        payment_method: "",
       },
       withdraw_data: {
         amount: 0,
-        payment_method: "Wallet",
+        payment_method: "",
         date_time: date,
       },
       fund_data: {
         amount: "",
         date_time: date,
-        payment_method: "Wallet",
+        payment_method: "",
         paystack_id: "",
       },
+      add_card:{
+        amount: 100,
+        date_time: date,
+        payment_method: "Debit Card",
+        save_card:true,
+        paystack_id: "",
+        card_id:""
+     },
       edit_data: {
         id: "",
         amount: 0,
@@ -82,7 +92,7 @@ class Shareholdings extends Component {
         transaction_day: "null",
         transaction_month: "0",
         start_date: "",
-        payment_method: "Wallet",
+        payment_method: "",
       },
       key: payID(),
       email: email,
@@ -199,27 +209,35 @@ class Shareholdings extends Component {
     this.setState({loading:false});
     });       
     }
+    
     callback = (response) => {
-    const { fund_data } = this.state;
-    if (fund_data.amount) {
-    this.setState({
-      fund_data: { ...fund_data, paystack_id: response.reference },
-    });
+      const {fund_data, add_card} = this.state
+      if (fund_data.amount ) {
+          this.setState({fund_data:{...fund_data, paystack_id: response.reference }})
+          swal("Loading...", {
+            buttons: false
+          })
+      }else{
+        this.setState({add_card:{...add_card, paystack_id: response.reference }, showSaveCard:false})
+        swal("Saving Card...", {
+          buttons: false
+        })
+      }
     }
-    };
-  // callback = (response) => {
-  //   const { fund_data } = this.state;
-  //   if (fund_data.amount) {
-  //     this.setState({
-  //       fund_data: { ...fund_data, paystack_id: response.reference },
-  //     });
-  //   }
-  // };
-  componentDidUpdate() {
-    const { fund_data } = this.state;
+  componentDidUpdate(){
+    const { fund_data, add_card, data } = this.state;
     if (fund_data.paystack_id !== "") {
       this.props.addFundShareholdings(fund_data);
-      this.setState({ fund_data: { ...fund_data, paystack_id: "" } });
+      this.setState({fund_data:{...fund_data, paystack_id:""}})
+    }
+    if (add_card.paystack_id !== "" ) {
+      this.props.saveWallet(add_card)
+      this.setState({add_card:{...add_card, paystack_id:"" }, id:false})
+    }
+    if(localStorage.getItem("card_id")){
+      this.setState({data:{...data, card_id: localStorage.getItem("card_id") }})
+      console.log(localStorage.getItem("card_id"))
+      localStorage.removeItem("card_id")
     }
   }
   getReference = () => {
@@ -321,10 +339,23 @@ class Shareholdings extends Component {
     const { name, value } = event.target;
     this.setState({ withdraw_data: { ...withdraw_data, [name]: value } });
   };
-  handleChangeFund = (event) => {
-    const { fund_data } = this.state;
-    const { name, value } = event.target;
-    this.setState({ fund_data: { ...fund_data, [name]: value } });
+  handleChangeFund = event => {
+    const {fund_data} = this.state
+    const {name, value, checked} = event.target
+    if(name == "save_card"){
+      this.setState({fund_data:{...fund_data, [name]:checked}})
+    }else{
+      this.setState({fund_data:{...fund_data, [name]:value}})
+    }
+  };
+  handleChangeAddCard = event => {
+    const {fund_data} = this.state
+    const {name, value, checked} = event.target
+    if(name == "save_card"){
+      this.setState({fund_data:{...fund_data, [name]:checked}})
+    }else{
+      this.setState({fund_data:{...fund_data, [name]:value}})
+    }
   };
   handleClose() {
     this.setState({ show: false });
@@ -353,6 +384,7 @@ class Shareholdings extends Component {
       showSave,
       showWithdraw,
       data,
+      cards,
       show,
       savings,
     } = this.state;
@@ -509,102 +541,119 @@ class Shareholdings extends Component {
           </>
         )}
       </div>
+            
         {/* Quick Save Dialog Start */}
         <Dialog open={showSave} onClose={this.handleCloseQuickSave}
-              TransitionComponent={Transition}
-              aria-labelledby="alert-dialog-slide-title"
-              aria-describedby="alert-dialog-slide-description">
-          <AppBar style={{ position: "relative", }} color='primary'>
-            <Toolbar>
-              <IconButton
-                edge='start'
-                color='inherit'
-                onClick={this.handleCloseQuickSave}
-                aria-label='Close'
-              >
-               <CloseIcon style={{color:'#fff'}}/>
-              </IconButton>
-              <Typography
-                variant='h6'
-                className='text-white'
-                style={{ marginLeft: theme.spacing(2), flex: 1 }}
-              >
-                Fund Your Account
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <Card className='px-6 pt-2 pb-4'>
-            <ValidatorForm
-              ref='form'
-              onSubmit={this.handleSubmitFund}
-              onError={(errors) => null}
-            >
-              <Grid container spacing={6}>
-                <Grid item lg={6} md={6} sm={12} xs={12}>
-                  <TextValidator
-                    className='mb-4 w-full'
-                    label='Enter Amount'
-                    onChange={this.handleChangeFund}
-                    type='number'
-                    name='amount'
-                    value={fund_data.amount}
-                    validators={["required"]}
-                    errorMessages={["this field is required"]}
-                  />
-                  <TextField
-                    className='mb-4 w-full'
-                    select
-                    label='Select Frequency'
-                    value={fund_data.payment_method}
-                    name='payment_method'
-                    onChange={this.handleChangeFund}
-                    helperText='Please select frequency'
-                  >
-                    <MenuItem value={""}></MenuItem>
-                    <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                    <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
-                  </TextField>                  
-                </Grid>
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description">
+        <AppBar style={{ position: "relative", }} color='primary'>
+        <Toolbar>
+        <IconButton
+        edge='start'
+        color='inherit'
+        onClick={this.handleCloseQuickSave}
+        aria-label='Close'
+        >
+        <CloseIcon style={{color:'#fff'}}/>
+        </IconButton>
+        <Typography
+        variant='h6'
+        className='text-white'
+        style={{ marginLeft: theme.spacing(2), flex: 1 }}
+        >
+        Fund Your Account
+        </Typography>
+        </Toolbar>
+        </AppBar>
+        <Card className='px-6 pt-2 pb-4'>
+        <ValidatorForm
+        ref='form'
+        onSubmit={this.handleSubmitFund}
+        onError={(errors) => null}
+        >
+        <Grid container spacing={6}>
+        <Grid item lg={6} md={6} sm={12} xs={12}>
+          <TextValidator
+            className='mb-4 w-full'
+            label='Enter Amount'
+            onChange={this.handleChangeFund}
+            type='number'
+            name='amount'
+            value={fund_data.amount}
+            validators={["required"]}
+            errorMessages={["this field is required"]}
+          />
+          <TextField
+            className='mb-4 w-full'
+            select
+            label='Select Payment Frequency'
+            value={fund_data.payment_method}
+            name='payment_method'
+            onChange={this.handleChangeFund}
+            helperText='Please select frequency'
+          >
+            <MenuItem value={""}></MenuItem>
+            <MenuItem value={"Wallet"}> Wallet</MenuItem>
+            <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+          </TextField>                  
+        </Grid>
 
-                <Grid item lg={6} md={6} sm={12} xs={12}>
-                  <Card className='px-6 pt-2 pb-4'>
-                    <Typography variant='h6' gutterBottom>
-                      {numberFormat(fund_data.amount)}
-                    </Typography>
-                  </Card>
-                  <Card className='px-6 pt-2 pb-4'>
-                    <Typography variant='h6' gutterBottom>
-                      {fund_data.payment_method}
-                    </Typography>
-                  </Card>
-                  {fund_data.payment_method == "Debit Card" && (
-                    <PayOption
-                      callback={this.callback}
-                      amount={fund_data.amount}
-                    />
-                  )}
-                  {this.props.savings && (
-                    <img
-                      img
-                      alt=''
-                      src='data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=='
-                    />
-                  )}
-                  {fund_data.payment_method == "Wallet" && (
-                    <Button
-                      className='uppercase'
-                      type='submit'
-                      size='large'
-                      variant='contained'
-                      style={{ backgroundColor: "#222943", color: "#fff" }}
-                    >
-                      Add Fund
-                    </Button>
-                  )}
-                </Grid>
-              </Grid>
-            </ValidatorForm>
+        <Grid item lg={6} md={6} sm={12} xs={12}>
+          <Card className='px-6 pt-2 pb-4'>
+            <Typography variant='h6' gutterBottom>
+              {numberFormat(fund_data.amount)}
+            </Typography>
           </Card>
+          <Card className='px-6 pt-2 pb-4'>
+            <Typography variant='h6' gutterBottom>
+              {fund_data.payment_method}
+            </Typography>
+          </Card>
+        </Grid>
+          {fund_data.payment_method == "Debit Card" &&
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+            <Typography>Choose Card</Typography>
+            <PayCard cards={cards} value={fund_data.card_id} open={(e)=>this.setState({ fund_data:{...fund_data, card_id:""}})} handleChange={this.handleChangeFund}/>
+            </Grid>}
+            {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+            <Checkbox
+                name="save_card"
+                checked={fund_data.save_card}
+                onChange={this.handleChangeFund}
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+            /><Typography variant="caption">Would you like to save your card</Typography>
+            </Grid>}
+
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <div style={{textAlign:'center', alignItems:'center',alignContent:'center'}}>
+            {this.props.savings && (
+              <img
+                img
+                alt=''
+                src='data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=='
+              />
+            )}  
+          </div>      
+        </Grid>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+        {(fund_data.payment_method == "Wallet" || (fund_data.card_id !="0" && fund_data.card_id !="")) && 
+          <Button className="uppercase"
+            type="submit"
+            size="large"
+            variant="contained"
+            style={{backgroundColor:"#222943", color:"#fff"}}>
+            Add Fund
+          </Button>}        
+        </Grid>
+        {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <PayOption callback={this.callback} amount={fund_data.amount}/>
+        </Grid>}
+        </Grid>
+        </ValidatorForm>
+        </Card>
         </Dialog>
         {/* Quick Save Dialog End */}
 

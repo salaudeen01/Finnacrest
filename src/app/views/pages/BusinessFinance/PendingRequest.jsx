@@ -60,8 +60,11 @@ class PendingRequest extends Component {
   }else{
     let newArray = [];
     data.forEach(d => {
-      if(d.request_status == 0){
+      if(d.request_status == 0 || d.request_status.length == []){
         newArray.push(d)
+      }
+      if(d.length == 0){
+        this.setState({requested_business:[]});
       }
     });
     this.setState({requested_business: newArray, loading:false });
@@ -165,7 +168,7 @@ render(){
                             status={false}
                             amount={numberFormat(data.requested_amount)}
                             // balance={numberFormat(data.remaining_balance)}
-                            admin_price={data.total_amount}                           
+                            admin_price={numberFormat(data.total_amount)}                           
                             status={data.request_status}
                             title={data.business_name}
                             images={(data.image)}

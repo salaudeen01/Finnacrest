@@ -1545,7 +1545,7 @@ function updateUserCart(cart_id, quantity) {
         dispatch(
           alertActions.error(user.message)
         );
-        // window.location.reload();
+        window.location.reload();
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1626,13 +1626,11 @@ function addRegistrationFee(user) {
       (user) => {
         dispatch(success());        
         // history.push("/signin");
-        history.push({
-          pathname: "/signin"
-        });
-        if (user.success) {
-          dispatch(alertActions.success(user.message));
-        } else {
+        if (user.success === false) {
           dispatch(alertActions.error(user.message));
+        } else {
+          dispatch(alertActions.success(user.message));
+          userService.logout()
         }
       },
       (error) => {

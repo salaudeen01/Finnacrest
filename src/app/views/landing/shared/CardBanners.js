@@ -21,7 +21,7 @@ export default function CardBanners(props) {
   const classes = useStyles();
 
   return (
-    <Card style={{width:400, height:200, backgroundColor:props.color}}>
+    <Card className="card" style={{backgroundColor:props.color}}>
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">

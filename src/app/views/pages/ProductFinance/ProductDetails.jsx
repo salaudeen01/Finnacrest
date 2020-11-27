@@ -17,6 +17,7 @@ import CustomCarousel from "./components/CustomCarousel";
 import Loading from "matx/components/MatxLoading/MatxLoading";
 import SingleInvestmentcard from './components/SingleInvestmentCard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import swal from 'sweetalert'
 import SingleInvestmentcardDetails from './components/SingleInvestmentCardDetails';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -34,11 +35,16 @@ class ProductDetails extends Component {
         price:'',
         payment_method:'',
         quantity: 1,
+        down_payment:'',
+        mark_up:'',
+        total_product:'',
+        total:'',
       },
       // quantity: 1,
       singleNews:[],
       singleInvestment:[],      
-      id:id,      
+      id:id,  
+      prod:0,    
       isLoading:true,
       loading:true,
       count:[],
@@ -86,7 +92,10 @@ class ProductDetails extends Component {
           if(data.success == false){
             this.setState({singleInvestment: [], isLoading: false})
           }else{
-            this.setState({singleInvestment: data, cart:{...this.state.cart, id:data[0].id, payment_method:'payment_method', price:data[0].price}, isLoading: false})
+            this.setState({singleInvestment: data, prod: data[0].quantity, isLoading: false,
+              cart:{...this.state.cart, id:data[0].id, payment_method:'payment_method', 
+              price:data[0].price,down_payment:data[0].down_payment,mark_up:data[0].mark_up,
+              total_product:data[0].total_product,total:data[0].total}})
           }
       })
       .catch(error => {
@@ -127,7 +136,7 @@ class ProductDetails extends Component {
   }
  
   addToCart(where) {  
-      const { cart } = this.state;
+      const { cart,mark } = this.state;
       console.log(cart);
       if ( cart.price && cart.id && cart.quantity) {
         this.props.addToCart(cart, where);
@@ -135,12 +144,14 @@ class ProductDetails extends Component {
 
   }
     increment() {
-      let { cart, quantity, id} = this.state
+      let { cart, quantity, id, prod} = this.state
+      let quan = prod;
+      console.log(quan)
+      if(cart.quantity+1 > quan){
+        swal(`${ quan +" "+"Items Available In Stock"}`);
+    }else
       this.setState({cart:{...cart, quantity: cart.quantity+1}})     
-    }
-    //   if(name =="repayment_amount" && value > loan_bal){
-    //     swal(`${"Repaid Amount is more than your remaining balance"}`);
-    // }
+    }     
     Decrease() {
       let { cart, quantity, id} = this.state
       if(cart.quantity){      
@@ -149,20 +160,6 @@ class ProductDetails extends Component {
         this.setState({cart:{...cart, quantity:cart.quantity= 1}});
     }
   }
-
-    // IncrementItem = (index) => {
-    //   let { formList} = this.state
-    //   this.setState({formList:[...formList, "name"+index], index:index+1})
-    // }
-    // DecreaseItem = (index) => {
-    //   this.state.formList.splice("name"+index,1)
-    //   this.setState({formList:this.state.formList})
-    // }
-    // increment() {
-    //   this.setState({
-    //     cart: this.state.cart.quantity + 1
-    //   });
-    // };
 
 render(){
  const {total, halal, singleNews, cart, count, singleInvestment, addToCart,Decrease, increment, isLoading} = this.state
@@ -180,6 +177,7 @@ render(){
                       { name: "Product Details " }
                     ]}
                   />
+                  
                 </div>
                 <Link to="/detail/cart">
                 <Button style={{float:'right',color:'black'}}>
@@ -196,20 +194,11 @@ render(){
               <Grid container spacing={2}>
                 <Grid item lg={9} md={9} sm={12} xs={12}>
                   <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
-                    <SingleInvestmentcardDetails investment={singleInvestment} cart={this.state.cart} addToCart={()=>this.addToCart(true)}
-                    continueShopping={()=>this.addToCart(false)}
+                    <SingleInvestmentcardDetails investment={singleInvestment} cart={this.state.cart} 
+                    addToCart={()=>this.addToCart(true)} continueShopping={()=>this.addToCart(false)}
                     increment={this.increment} handleChange={this.handleChange} Decrease={this.Decrease}/>
                   </div>
                 </Grid>
-                {/* <Grid>
-                        <ButtonGroup size="small" aria-label="small outlined button group">
-                            <Button>-</Button>
-                            <Button>
-                                {cart.quantity}
-                            </Button>
-                            <Button onClick={this.increment}>+</Button>
-                        </ButtonGroup>
-                    </Grid> */}
               </Grid>              
               <div className="py-3" />
               <Grid container spacing={2}>

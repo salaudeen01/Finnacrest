@@ -51,7 +51,7 @@ class TableCard extends Component{
                       {numberFormat(product.amount)}
                     </TableCell>
                     <TableCell className="px-0" colSpan={3} >
-                      {product.transaction_type}
+                    <span style={{color: product.transaction_type == 'credit'?"green":"red"}}>{product.transaction_type}</span>
                     </TableCell>
                     <TableCell className="px-0" colSpan={4}>
                       {dateFormat(product.date_time, "mmmm dS, yyyy")}

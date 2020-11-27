@@ -22,6 +22,7 @@ import {
 } from "@material-ui/core";
 import "date-fns";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
+import NumberFormat from "react-number-format";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -117,12 +118,63 @@ class BusinessTop extends Component{
   //   const {data} = this.state
   //   this.setState({ data:{...data, [event.target.name]: event.target.value} });
   // }
+  // handleChangeLoan(event){
+  //   const { name, value, checked } = event.target;
+  //   const { data } = this.state;
+  //   if(name == "repayment_duration"){
+  //     if ( data.requested_amount != "") {
+  //       let repay = data.requested_amount / value;
+  //       if (data.frequency == "Weekly") {
+  //           let week_repay = repay / 4;
+  //           // console.log(week_repay)
+  //           this.setState({ data: {...data, repayment_amount: week_repay, repayment_duration: value } })        
+  //       } else{
+  //         this.setState({ data: {...data, repayment_amount: Math.round(repay), repayment_duration: value } })
+  //       }
+  //     }
+  //   }else if (name == "frequency"){
+  //         if ( data.requested_amount != "" && data.repayment_duration != "" ) {
+  //           let repay = data.requested_amount / data.repayment_duration;
+  //           // console.log(repay)
+  //           // console.log('Frequency: ', data.frequency);
+  //           if (value == "Weekly") {
+  //             repay = repay / 4;
+  //             // console.log(repay)
+  //             this.setState({ data: {...data, repayment_amount: Math.round(repay), [name]: value } })        
+  //             } else{
+  //               this.setState({ data: {...data, repayment_amount: Math.round(repay), [name]: value } })
+  //             }
+  //         }else{
+  //           this.setState({ data: { ...data, [name]: value} });
+  //         }
+  //   }else if (name == "requested_amount"){
+  //     if ( data.repayment_duration != "") {
+  //         // if payment duration is not empty
+  //         let repay = value / data.repayment_duration; // monthly repayment amount
+  //         // console.log("Frequency: ", data.frequency);
+  //         if (data.frequency == "Weekly") {
+  //           // if frequency is weekly
+  //           repay = repay / 4; // weekly repayment amount
+  //           // console.log("Weekly repayment", repay)
+  //           this.setState({ data: {...data, repayment_amount: Math.round(repay), [name]: value } })        
+  //         } else{
+  //           this.setState({ data: {...data, repayment_amount: Math.round(repay), [name]: value } })
+  //         }
+  //         // console.log('repayment amount: ', repay);
+  //     }else{
+  //       this.setState({ data: { ...data, [name]: value} });
+  //     }
+  //   }else{
+  //     this.setState({data:{...data, [name]:value}})
+  //   }
+  // }
+
   handleChangeLoan(event){
     const { name, value, checked } = event.target;
     const { data } = this.state;
     if(name == "repayment_duration"){
       if ( data.requested_amount != "") {
-        let repay = data.requested_amount / value;
+        let repay = data.requested_amount.replace(/,/g, '') / value;
         if (data.frequency == "Weekly") {
             let week_repay = repay / 4;
             // console.log(week_repay)
@@ -133,9 +185,9 @@ class BusinessTop extends Component{
       }
     }else if (name == "frequency"){
           if ( data.requested_amount != "" && data.repayment_duration != "" ) {
-            let repay = data.requested_amount / data.repayment_duration;
+            let repay = data.requested_amount.replace(/,/g, '') / data.repayment_duration;
             // console.log(repay)
-            // console.log('Frequency: ', data.frequency);
+            console.log('Frequency: ', data.frequency);
             if (value == "Weekly") {
               repay = repay / 4;
               // console.log(repay)
@@ -149,7 +201,7 @@ class BusinessTop extends Component{
     }else if (name == "requested_amount"){
       if ( data.repayment_duration != "") {
           // if payment duration is not empty
-          let repay = value / data.repayment_duration; // monthly repayment amount
+          let repay = value.replace(/,/g, '') / data.repayment_duration; // monthly repayment amount
           // console.log("Frequency: ", data.frequency);
           if (data.frequency == "Weekly") {
             // if frequency is weekly
@@ -161,12 +213,13 @@ class BusinessTop extends Component{
           }
           // console.log('repayment amount: ', repay);
       }else{
-        this.setState({ data: { ...data, [name]: value} });
+        this.setState({ data: { ...data, [name]: value.replace(/,/g, '')} });
       }
     }else{
       this.setState({data:{...data, [name]:value}})
     }
   }
+
   handleProfileImage(e){
     const [file, name] = e.target.files;
     const {data} = this.state
@@ -298,7 +351,21 @@ class BusinessTop extends Component{
                   ]}
                   errorMessages={["this field is required"]}
                 />
-                <TextValidator
+                 <NumberFormat
+                    value={data.requested_amount}
+                    thousandSeparator={true} 
+                      // prefix={'₦'}
+                    label="Loan Request Amount"
+                    name="requested_amount"
+                    className="mb-4 w-full"
+                    onChange={this.handleChangeLoan}
+                    customInput={TextValidator}
+                    validators={[
+                      "required"
+                    ]}
+                    errorMessages={["this field is required"]}
+                  />
+                {/* <TextValidator
                   className="mb-4 w-full"
                   label="Loan Request Amount"
                   onChange={this.handleChangeLoan}
@@ -309,7 +376,7 @@ class BusinessTop extends Component{
                     "required"
                   ]}
                   errorMessages={["this field is required"]}
-                />
+                /> */}
                  <TextField
                     className="mb-4 w-full"
                     select
@@ -334,11 +401,10 @@ class BusinessTop extends Component{
                   // helperText="Please select frequency"
                 >
                     <MenuItem value={""}>Select Frequency</MenuItem>
-                    <MenuItem value={"Daily"}>Daily</MenuItem>
                     <MenuItem value={"Weekly"}> Weekly</MenuItem>
                     <MenuItem value={"Monthly"}> Monthly </MenuItem>
                 </TextField>
-                {data.requested_amount && data.frequency && data.repayment_duration &&
+                {/* {data.requested_amount && data.frequency && data.repayment_duration &&
                 <TextValidator
                   className="mb-4 w-full"
                   label={data.frequency? data.frequency +" Repayment Amount": "Frequent Repayment" +" Amount"}
@@ -350,7 +416,22 @@ class BusinessTop extends Component{
                     "required"
                   ]}
                   errorMessages={["this field is required"]}
-                />}
+                />} */}
+                {data.requested_amount && data.frequency && data.repayment_duration &&
+                  <NumberFormat
+                      value={data.repayment_amount}
+                      thousandSeparator={true} 
+                        // prefix={'₦'}
+                      label={data.frequency? data.frequency +" Repayment Amount": "Frequent Repayment" +" Amount"}
+                      name="repayment_amount"
+                      className="mb-4 w-full"
+                      onChange={this.handleChangeLoan}
+                      customInput={TextValidator}
+                      validators={[
+                        "required"
+                      ]}
+                      errorMessages={["this field is required"]}
+                  />}
                 {data.requested_amount && data.frequency &&
                   <TextValidator
                   className="mb-4 w-full"

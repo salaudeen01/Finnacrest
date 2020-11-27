@@ -50,9 +50,10 @@ class TableCard extends Component{
                       {numberFormat(det.repayment_amount)}
                     </TableCell>
                     <TableCell className="px-0 capitalize" align="left" colSpan={4}>
+                    <span style={{color:(det.payment_method) == "Bank"?'red':"green"}}>
                     {det.payment_method  == "Bank"? "Loan Disbursement": 
                     (det.payment_method  == "wallet")? "Loan Repayment":
-                    (det.payment_method  == "debit card")? "Loan Repayment": ""}
+                    (det.payment_method  == "debit card")? "Loan Repayment": ""}</span>
                     </TableCell>
                     <TableCell className="px-0" colSpan={4}>
                       {dateFormat(det.trans_date, "mmmm dS, yyyy")}

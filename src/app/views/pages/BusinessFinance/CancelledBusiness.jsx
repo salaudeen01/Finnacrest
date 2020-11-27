@@ -57,6 +57,9 @@ class CancelledBusiness extends Component {
           if(d.request_status == 9){
             newArray.push(d)
           }
+          if(d.length == 0){
+            this.setState({requested_business:[]});
+          }
         });
     this.setState({requested_business: newArray, loading:false });
   }  

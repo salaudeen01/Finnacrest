@@ -71,7 +71,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
       singleNews:[],
       singleInvestment:[],
       category:[],
-      pagination:[],
+      news:[],
       investment:[],
       current_index:0,
       avatar: '/assets/images/dummy.jpg',
@@ -231,9 +231,9 @@ componentDidMount() {
     }
     console.log(data)
     if(data.success == false){
-      this.setState({pagination: [], category: []})
+      this.setState({pagination: [], category: [], news: []})
     }else{
-      this.setState({pagination: data.products, category: data.products.data})
+      this.setState({pagination: data.products, news:data.products.data, category: data.products.data})
     }
     // console.log(data)
 })
@@ -352,69 +352,10 @@ fetch_page = (index)=>{
     }
   })
 }
-// ///do
-// fetch_next_page = ()=>{
-//   const {news} = this.state
-//   this.setState({ loading: true});
-//   const requestOptions = {
-//     method: "POST",
-//     headers: { ...authHeader(), "Content-Type": "application/json" },
-//   };
-//   fetch(news.next_page_url, requestOptions).then(async (response) =>{
-//     const data =await response.json();
-//     if(data.success == false){
-//       this.setState({category: [], loading:false });
-//     }else{
-//       this.setState({category: data.products.data, news:data.products, loading:false });
-//     }
-//   }).catch(error=>{
-//     if (error === "Unauthorized") {
-//       this.props.logout();
-//     }
-//   })
-// }      
 
-// fetch_prev_page = ()=>{
-//   const {news} = this.state
-//   this.setState({ loading: true});
-//   const requestOptions = {
-//     method: "POST",
-//     headers: { ...authHeader(), "Content-Type": "application/json" },
-//   };
-//   fetch(news.prev_page_url, requestOptions).then(async (response) =>{
-//     const data =await response.json();
-//     if(data.success == false){
-//       this.setState({category: [], loading:false });
-//     }else{
 //       this.setState({category: data.products.data, news:data.products, loading:false });
-//     }
-//   }).catch(error=>{
-//     if (error === "Unauthorized") {
-//       this.props.logout();
-//     }
-//   })
-// }
 
-// fetch_page = (index)=>{
-//   const {news} = this.state
-//   this.setState({ loading: true});
-//   const requestOptions = {
-//     method: "POST",
-//     headers: { ...authHeader(), "Content-Type": "application/json" },
-//   };
-//   fetch(news.path+"?page="+index, requestOptions).then(async (response) =>{
-//     const data =await response.json();
-//     if(data.success == false){
-//       this.setState({category: [], loading:false });
-//     }else{
-//       this.setState({category: data.products.data, news:data.products, loading:false });
-//     }
-//   }).catch(error=>{
-//     if (error === "Unauthorized") {
-//       this.props.logout();
-//     }
-//   })
-// }
+
 fetchUsers = (search) =>{
   const {token} = this.state
   const requestOptions = {
@@ -440,22 +381,6 @@ fetchUsers = (search) =>{
   console.error('There was an error!', error);
 });
 }
-
-// handleChangeUsers = (event, values, id) =>{
-//   const {name, value } = event.target;
-//     const { formList, users } = this.state;
-//     let newArray = [...formList];
-//     console.log(id)
-//   this.fetchUsers(value);
-//   users.forEach(user => {
-//     if(values == user.product_name + user.price){
-//       const elementsIndex = formList.findIndex((element,index) => index == id )
-//       newArray[elementsIndex] = {...newArray[elementsIndex], user_id: user.id}
-//       console.log(newArray)
-//     }
-//   });
-//   this.setState({formList: newArray});
-// }
 
 searchChange(event) {
   const { name, value } = event.target;
@@ -516,7 +441,7 @@ tabbed = (id) => {
         <AppBar color="default" position="static">
         <Toolbar>
           <Grid container spacing={0}>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
+            <Grid item lg={6} md={6} sm={6} xs={12}>
             <div className="">
               <Breadcrumb
                 routeSegments={[
@@ -525,20 +450,16 @@ tabbed = (id) => {
               />
             </div>
             </Grid>
-            <Grid item lg={3} md={3} sm={6} xs={12}>
+            <Grid item lg={5} md={5} sm={5} xs={10}>
               <SearchInput
                 value={search}
                 onChange={this.searchChange}
-                style={{marginRight: theme.spacing(1)}}
-                placeholder="Search user"
+                style={{marginRight: theme.spacing(2)}}
+                placeholder="Search Product"
               />
             </Grid>
-            <Grid item lg={2} md={2} sm={4} xs={6}>            
-            <Button style={{backgroundColor:'#224459', color:'white'}} onClick={this.handleRequest}>
-              Make Request
-            </Button>
-            </Grid>
-            <Grid item lg={1} md={1} sm={2} xs={4}> 
+            
+            <Grid item lg={1} md={1} sm={1} xs={2}> 
             <Link to="/detail/cart">
             <Button style={{float:'right',color:'black'}}>
                    <ShoppingCartIcon/> ({count})
@@ -548,29 +469,14 @@ tabbed = (id) => {
           </Grid>
           
         </Toolbar>
-      </AppBar>        
-        {/* <Grid container>
-          <Grid item lg={8} md={8} sm={12} xs={12}>
-            <Button size="large"
-                variant={tab? "contained" : "outlined"}
-                color="secondary"
-                onClick={this.ongoingTab}
-                >Explore</Button>
-            <Button 
-                size="large"
-                variant={tab? "outlined" : "contained"}
-                color="secondary"
-                onClick={this.completeTab}
-                >My Investment</Button>
-          </Grid>
-        </Grid> */}
+      </AppBar>   
         <div className="py-3" />
         {loading?
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
           <Loading />
         </div>:
         tab? 
-        <Grid container spacing={3} justify="flex-start" className="px-4">
+        <Grid container spacing={3} justify="flex-center" className="px-4">
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <Button size="small"
                 variant={current_index == 0 ?"contained":"outlined"}
@@ -916,17 +822,7 @@ tabbed = (id) => {
             </ValidatorForm>
           </Card>
         </Dialog>
-        {/* Quick Save Dialog End */}
-
-        {/* <CardActions>
-            <Paginate 
-              fetch_prev_page={this.fetch_prev_page} 
-              fetch_next_page={this.fetch_next_page} 
-              fetch_page={this.fetch_page}
-              pagination={news}
-           />
-           
-      </CardActions> */}
+        {/* Quick Save Dialog End */}       
 
       </div>
     );

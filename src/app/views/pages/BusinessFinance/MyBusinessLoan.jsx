@@ -108,7 +108,7 @@ componentDidMount() {
         data.forEach(d => {
           if(d.request_status == 3){
             newArray.push(d)
-          }
+            }
         });
         this.setState({requested_business: newArray, loading:false });
       }  
@@ -134,7 +134,7 @@ componentDidMount() {
         data.forEach(d => {
           if(d.request_status == 1 || d.request_status == 2 || d.request_status == 11){
             newArray.push(d)
-          }
+          }          
         });
         this.setState({business_view: newArray, loading:false });
       }  
@@ -525,7 +525,7 @@ render(){
                   <CloseIcon style={{color:'#fff'}}/>
                 </IconButton>
                 <Typography variant="h6" className="text-white" style={{marginLeft: 'theme.spacing(2)', flex: 1}}>
-                  Fund Your Account
+                  Business Loan Repayment
                 </Typography>
               </Toolbar>
             </AppBar>

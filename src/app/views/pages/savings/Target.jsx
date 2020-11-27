@@ -27,6 +27,7 @@ import PayOption from "app/views/dashboard/shared/PayOption";
 import Loading from "matx/components/MatxLoading/MatxLoading";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import AddCardDialog from "app/views/dashboard/shared/AddCardDialog";
+import NumberFormat from "react-number-format";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -63,8 +64,9 @@ class Target extends Component{
           transaction_day: '',
           transaction_month: '',
           end_date: '',
-          start_date: '',
+          start_date: '',          
           payment_method: 'Debit Card',
+          card_id:"",
       },
       add_card:{
         amount: 100,
@@ -103,6 +105,8 @@ class Target extends Component{
         showEdit:false,
         showView:false,
         tab:true,
+        tar_amt:0,
+        bal_amt:0,
         isLoading:true,
         showSaveCard:false,
         id:true
@@ -163,10 +167,11 @@ componentDidMount(){
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
+      console.log(data)
       if(data.success == false){
         this.setState({tdetails: [], balance: 0, completed: [], accounts:[], loading:false })
       }else{
-        this.setState({tdetails: data[1], balance: data[0], completed:data[2], accounts:data[3], loading:false })
+        this.setState({tdetails: data[1], tar_amt:data[1][0].targeted_amount, bal_amt:data[1][0].target_balance, balance: data[0], completed:data[2], accounts:data[3], loading:false })
       }
     })
     .catch(error => {
@@ -368,7 +373,7 @@ handleEdit = (id) => {
 handleSubmitEdit(event) {
   event.preventDefault();
   const { edit_data } = this.state;
-  if (edit_data.amount && edit_data.frequency && edit_data.start_date   && edit_data.end_date  && edit_data.payment_method) {
+  if (edit_data.amount && edit_data.frequency && edit_data.start_date && edit_data.card_id && edit_data.end_date  && edit_data.payment_method) {
       this.props.editTargetSavings(edit_data);
   }else{
       swal(
@@ -381,6 +386,7 @@ handleSubmit(event) {
   const { data } = this.state;
   if (data.amount && data.frequency && data.start_date && data.payment_method && data.card_id) {
     this.props.createTargetSavings(data);
+    console.log(data)
   }else{
       swal(
           `${"check box to add new card "}`
@@ -406,14 +412,22 @@ handleChange = event => {
   const {name, value, checked} = event.target
   if(name == "id"){
     this.setState({id:checked})
+  }else if(name == "amount" || name == "targeted_amount"){
+  this.setState({data:{...data, [name]:value.replace(/,/g, '')}})
   }else{
-  this.setState({data:{...data, [name]:value}})
+    this.setState({data:{...data, [name]:value}}) 
   }
 };
 handleChangeEdit = event => {
   const {edit_data} = this.state
-  const {name, value} = event.target
+  const {name, value, checked} = event.target
+  if(name == "id"){
+    this.setState({id:checked})
+  }else if(name == "amount"){
+    this.setState({edit_data:{...edit_data, [name]:value.replace(/,/g, '')}})
+    }else{
   this.setState({edit_data:{...edit_data, [name]:value}})
+  }
 };
 handleChangeFund = event => {
   const {fund_data, tdetails} = this.state
@@ -473,7 +487,8 @@ completeTab(){
           obj.array[l] = l+1;
       }
     let {theme} = this.props
-    const {balance, tdetails, loading, isLoading, tab, cards, add_card, showSaveCard, id, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, show, savings} = this.state
+    const {balance, tdetails, bal_amt, tar_amt, loading, isLoading, tab, cards, add_card, showSaveCard, id, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, show, savings} = this.state
+    const bal = tar_amt - bal_amt
     return (
       <div className="m-sm-10">
         {loading ?
@@ -494,11 +509,11 @@ completeTab(){
                     <Button className="uppercase"
                       size="small"
                       variant="contained"
-                      style={{ backgroundColor:"#222943", color:"#fff"}}
+                      style={{ backgroundColor:"#1999ff", color:"#fff"}}
                       onClick={this.handleAutoSave}>
                         Create Target
                     </Button>
-                 </ ButtonGroup>  
+                 </ ButtonGroup> 
               </Grid>
             </Grid>
     <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#222943",borderRadius:8}}>  
@@ -592,6 +607,7 @@ completeTab(){
                     className="mb-4 w-full"
                     label="Enter Amount"
                     onChange={this.handleChangeFund}
+                    helperText={"Remaining amount to complete plan is" + bal}
                     type="number"
                     name="amount"
                     value={fund_data.amount}
@@ -626,10 +642,7 @@ completeTab(){
                     <MenuItem value={""}></MenuItem>
                     <MenuItem value={"Wallet"}> Wallet</MenuItem>
                     <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
-                  </TextField>
-                  {this.props.savings.savings &&
-                <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                }
+                  </TextField>              
                
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -657,12 +670,15 @@ completeTab(){
                         onChange={this.handleChangeFund}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     /><Typography variant="caption">Would you like to save your card</Typography>
-                </Grid>}               
-                {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+                </Grid>} 
                 <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <PayOption callback={this.callback} amount={fund_data.amount}/>
-                </Grid>}
-                <Grid lg={12} md={12} sm={12} xs={12}>
+                  <div style={{textAlign:'center', alignItems:'center',alignContent:'center'}}>
+                      {this.props.savings.savings &&
+                    <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                    }
+                  </div>      
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
                 {(fund_data.payment_method == "Wallet" || (fund_data.card_id !="0" && fund_data.card_id !="")) && 
                 <Button className="uppercase"
                   type="submit"
@@ -671,7 +687,11 @@ completeTab(){
                   style={{backgroundColor:"#222943", color:"#fff"}}>
                   Add Fund
                 </Button>}
-                </Grid>
+              </Grid>
+                {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <PayOption callback={this.callback} amount={fund_data.amount}/>
+                </Grid>}
               </Grid>
             </ValidatorForm>
           </Card>
@@ -720,19 +740,7 @@ completeTab(){
                 ]}
                 errorMessages={["this field is required"]}
               />
-              <TextValidator
-                className="mb-4 w-full"
-                label="Frequent Savings Amount"
-                onChange={this.handleChange}
-                type="number"
-                name="amount"
-                value={data.amount}
-                validators={[
-                  "required"
-                ]}
-                errorMessages={["this field is required"]}
-              />
-              <TextValidator
+              {/* <TextValidator
                 className="mb-4 w-full"
                 label="Overall Targeted Amount"
                 onChange={this.handleChange}
@@ -743,7 +751,25 @@ completeTab(){
                   "required"
                 ]}
                 errorMessages={["this field is required"]}
-              />
+              /> */}
+              <NumberFormat
+                  value={data.targeted_amount}
+                  thousandSeparator={true} 
+                  label="Overall Targeted Amount"
+                  name="targeted_amount"
+                  className="mb-4 w-full"
+                  onChange={this.handleChange}
+                  customInput={TextValidator}
+                />
+              <NumberFormat
+                  value={data.amount}
+                  thousandSeparator={true} 
+                  label="Frequent Savings Amount"
+                  name="amount"
+                  className="mb-4 w-full"
+                  onChange={this.handleChange}
+                  customInput={TextValidator}
+                />
               <TextField
                className="mb-4 w-full"
                 select
@@ -761,7 +787,7 @@ completeTab(){
               <TextField
                 className="mb-4 w-full"
                 select
-                label="Select Transaction Month"
+                label="Select Transaction Day"
                 value={data.transaction_month}
                 name="transaction_month"
                 onChange={this.handleChange}
@@ -824,11 +850,18 @@ completeTab(){
                 ]}
                 errorMessages={["this field is required"]}
               />
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+              <div style={{float:'right'}}>
               <Typography>Choose Card</Typography>
-              <PayCard cards={cards} id={id} value={data.card_id} open={this.handleSaveCard} handleChange={this.handleChange}/>
+               <PayCard cards={cards} id={id} value={data.card_id} open={this.handleSaveCard} handleChange={this.handleChange}/>
+               </div>
+               </Grid>
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+              <div style={{textAlign:'center', alignItems:'center',alignContent:'center'}}>
               {this.props.savings.savings && data.card_id &&
                <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-              }
+              }</div>
+              </Grid>
               <Button className="uppercase"
                   type="submit"
                   size="large"
@@ -883,22 +916,28 @@ completeTab(){
                 ]}
                 errorMessages={["this field is required"]}
               />
-              <TextValidator
-                className="mb-4 w-full"
-                label="Frequent Savings Amount"
-                onChange={this.handleChangeEdit}
-                type="number"
-                name="amount"
-                value={edit_data.amount}
-                validators={[
-                  "required"
-                ]}
-                errorMessages={["this field is required"]}
-              />
-              <TextValidator
+              <NumberFormat
+                  value={edit_data.targeted_amount}
+                  thousandSeparator={true} 
+                  label="Overall Targeted Amount"
+                  name="targeted_amount"
+                  className="mb-4 w-full"
+                  onChange={this.handleChangeEdit}
+                  customInput={TextValidator}
+                />
+              <NumberFormat
+                  value={edit_data.amount}
+                  thousandSeparator={true} 
+                  label="Frequent Savings Amount"
+                  name="amount"
+                  className="mb-4 w-full"
+                  onChange={this.handleChangeEdit}
+                  customInput={TextValidator}
+                />
+               {/* <TextValidator
                 className="mb-4 w-full"
                 label="Overall Targeted Amount"
-                onChange={this.handleChangeEdit}
+                onChange={this.handleChange}
                 type="number"
                 name="targeted_amount"
                 value={edit_data.targeted_amount}
@@ -907,6 +946,18 @@ completeTab(){
                 ]}
                 errorMessages={["this field is required"]}
               />
+              <TextValidator
+                className="mb-4 w-full"
+                label="Frequent Savings Amount"
+                onChange={this.handleChange}
+                type="number"
+                name="amount"
+                value={edit_data.amount}
+                validators={[
+                  "required"
+                ]}
+                errorMessages={["this field is required"]}
+              />              */}
               <TextField
                className="mb-4 w-full"
                 select
@@ -924,7 +975,7 @@ completeTab(){
               <TextField
                 className="mb-4 w-full"
                 select
-                label="Select Transaction Month"
+                label="Select Transaction Day"
                 value={edit_data.transaction_month}
                 name="transaction_month"
                 onChange={this.handleChangeEdit}
@@ -987,23 +1038,16 @@ completeTab(){
                 ]}
                 errorMessages={["this field is required"]}
               />
-              {/* <TextField
-               className="mb-4 w-full"
-                id="standard-select-currency"
-                select
-                label="Select Payment Method"
-                value={edit_data.payment_method}
-                name="payment_method"
-                onChange={this.handleChangeEdit}
-                helperText="Please select Payment Method"
-              >
-                  <MenuItem value={""}></MenuItem>
-                  <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                  <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
-              </TextField> */}
-              {this.props.savings.savings &&
+             <Typography>Choose Card</Typography>
+             <Grid item lg={12} md={12} sm={12} xs={12}>
+              <PayCard cards={cards} id={id} value={edit_data.card_id} open={this.handleSaveCard} handleChange={this.handleChangeEdit}/>
+              </Grid>
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+              <div style={{textAlign:'center', alignItems:'center',alignContent:'center'}}>
+              {this.props.savings.savings && edit_data.card_id &&
                <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-              }
+              }</div>
+              </Grid>
               <Button className="uppercase"
                   type="submit"
                   size="large"

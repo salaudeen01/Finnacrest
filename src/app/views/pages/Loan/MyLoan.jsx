@@ -27,10 +27,13 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 import LoanApprovalCard from "./components/LoanApprovalCard";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import AddCardDialog from "app/views/dashboard/shared/AddCardDialog";
+import NumberFormat from "react-number-format";
+import PropTypes from 'prop-types';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
 
 class MyLoan extends Component {
   constructor(props){
@@ -84,7 +87,7 @@ class MyLoan extends Component {
         id:"",
         trans_date: entry_date,
         payment_method: "",
-        repayment_amount: 0,
+        repayment_amount: "",
         paystack_id:"",
         save_card:true,
         card_id:"0"
@@ -688,10 +691,11 @@ handleChangeRepay(event) {
   if(name == "save_card"){
     this.setState({repay_data:{...repay_data, [name]:checked, save_card:true}})
   }else{
-    this.setState({repay_data: {...repay_data, [name]: value}});
-  }
-  if(name =="repayment_amount" && value > loan_bal){
-      swal(`${"Repaid Amount is more than your remaining balance"}`);
+    if(name =="repayment_amount" && value.replace(/,/g, '') > loan_bal){
+        swal(`${"Repaid Amount is more than your remaining balance"}`);
+    }else{
+      this.setState({repay_data: {...repay_data, [name]: value.replace(/,/g, '')}});
+    }
   }
 }
 
@@ -824,12 +828,13 @@ handleCreateRepayment = (id) => {
   this.setState({loading: true});
   const {repay_data, token} = this.state
   fetch(getConfig("loanBalance")+id + "?token="+token, this.getRequestOpt)
-      .then(async response => {
+      .then(async response => { 
       const data = await response.json();
       if (!response.ok) {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
+      // console.log(data)
       this.setState({loan_bal: data})
   })
   .catch(error => {
@@ -910,7 +915,7 @@ handleDelete = (loan_id) => {
   }
 
 render(){
-  const {repayment_details, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
+  const {repayment_details, user, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
   return (
     <div className="">       
        {isFetching ?
@@ -1017,6 +1022,7 @@ render(){
                   ]}
                   errorMessages={["this field is required"]}
                 />
+                
                 <TextField
                 className="mb-4 w-full"
                   select
@@ -1449,7 +1455,19 @@ render(){
         <Card className="px-6 pt-2 pb-4">
           <Grid container spacing={2}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
-                <TextValidator
+              <NumberFormat
+               value={repay_data.repayment_amount} 
+               thousandSeparator={true} 
+              //  prefix={'₦'}
+               name="repayment_amount"
+               className="mb-4 w-full"
+               onChange={this.handleChangeRepay}
+               customInput={TextValidator}
+                />
+           </Grid>
+         
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+                {/* <TextValidator
                 className="mb-4 w-full"
                 label="Enter Repayment Amount"
                 onChange={this.handleChangeRepay}
@@ -1460,7 +1478,7 @@ render(){
                   "required"
                 ]}
                 errorMessages={["this field is required"]}
-              />
+              /> */}
               <TextField
                className="mb-4 w-full"
                 id="standard-select-currency"
@@ -1615,6 +1633,7 @@ render(){
               // loan_details={loan_details}
               data={loan_approval} 
               approvals={repayment_details} 
+              user = {user.id}
               resend_notif={()=>this.confirmAlert("Resend Loan Notification", 0, data.loan_group, data.user_id)} />
             </div>
             }

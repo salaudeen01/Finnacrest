@@ -30,6 +30,7 @@ import AddCardDialog from "app/views/dashboard/shared/AddCardDialog";
 import CustomTab from "./components/CustomTab";
 import { Autocomplete } from "@material-ui/lab";
 import ModalForm from "../transactions/ModalForm";
+import NumberFormat from "react-number-format";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -275,7 +276,6 @@ componentDidMount() {
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
         }
-        console.log(data)
         if(data.success == false){
           this.setState({group_name: [], isFetching:false})
         }else{
@@ -338,7 +338,6 @@ if (!response.ok) {
     const error = (data && data.message) || response.statusText;
     return Promise.reject(error);
 }
-console.log(data)
 if(data.success == false){
   this.setState({tdetails: [], balance: 0, completed: [], accounts:[], loading:false })
 }else{
@@ -660,7 +659,7 @@ handleChangeLoans(event){
   const { data } = this.state;
   if(name == "payment_duration"){
     if ( data.loan_amount != "") {
-      let repay = data.loan_amount / value;
+      let repay = data.loan_amount.replace(/,/g, '') / value;
       if (data.frequency == "Weekly") {
           let week_repay = repay / 4;
           // console.log(week_repay)
@@ -671,7 +670,7 @@ handleChangeLoans(event){
     }
   }else if (name == "frequency"){
         if ( data.loan_amount != "" && data.payment_duration != "" ) {
-          let repay = data.loan_amount / data.payment_duration;
+          let repay = data.loan_amount.replace(/,/g, '') / data.payment_duration;
           // console.log(repay)
           console.log('Frequency: ', data.frequency);
           if (value == "Weekly") {
@@ -687,7 +686,7 @@ handleChangeLoans(event){
   }else if (name == "loan_amount"){
     if ( data.payment_duration != "") {
         // if payment duration is not empty
-        let repay = value / data.payment_duration; // monthly repayment amount
+        let repay = value.replace(/,/g, '') / data.payment_duration; // monthly repayment amount
         // console.log("Frequency: ", data.frequency);
         if (data.frequency == "Weekly") {
           // if frequency is weekly
@@ -699,7 +698,7 @@ handleChangeLoans(event){
         }
         // console.log('repayment amount: ', repay);
     }else{
-      this.setState({ data: { ...data, [name]: value} });
+      this.setState({ data: { ...data, [name]: value.replace(/,/g, '')} });
     }
   }else{
     this.setState({data:{...data, [name]:value}})
@@ -972,7 +971,7 @@ render(){
        </div>
        {isFetching ?
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-          <Loading />
+          <Loading/>
         </div>:
         <div className="pb-2 pt-7 px-8 " style={{background:"#222943"}}>      
           <Grid container spacing={3} className="mb-3">
@@ -1049,7 +1048,21 @@ render(){
         <Card className="px-6 pt-2 pb-4">
             <Grid container spacing={2}>
               <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <TextValidator
+                  <NumberFormat
+                    value={data.loan_amount}
+                    thousandSeparator={true} 
+                      // prefix={'₦'}
+                    label="Loan Amount"
+                    name="loan_amount"
+                    className="mb-4 w-full"
+                    onChange={this.handleChangeLoans}
+                    customInput={TextValidator}
+                    validators={[
+                      "required"
+                    ]}
+                    errorMessages={["this field is required"]}
+                  />
+                  {/* <TextValidator
                   className="mb-4 w-full"
                   label="Loan Amount"
                   onChange={this.handleChangeLoans}
@@ -1060,7 +1073,7 @@ render(){
                     "required"
                   ]}
                   errorMessages={["this field is required"]}
-                />                
+                />                 */}
                   <TextField
                     className="mb-4 w-full"
                     select
@@ -1085,11 +1098,10 @@ render(){
                   // helperText="Please select frequency"
                 >
                     <MenuItem value={""}>Select Frequency</MenuItem>
-                    <MenuItem value={"Daily"}>Daily</MenuItem>
                     <MenuItem value={"Weekly"}> Weekly</MenuItem>
                     <MenuItem value={"Monthly"}> Monthly </MenuItem>
                 </TextField>
-                {data.loan_amount && data.frequency && data.payment_duration &&
+                {/* {data.loan_amount && data.frequency && data.payment_duration &&
                 <TextValidator
                   className="mb-4 w-full"
                   label={data.frequency? data.frequency +" Repayment Amount": "Frequent Repayment" +" Amount"}
@@ -1101,7 +1113,22 @@ render(){
                     "required"
                   ]}
                   errorMessages={["this field is required"]}
-                />}
+                />} */}
+                 {data.loan_amount && data.frequency && data.payment_duration &&
+                  <NumberFormat
+                      value={data.repayment_amount}
+                      thousandSeparator={true} 
+                        // prefix={'₦'}
+                      label={data.frequency? data.frequency +" Repayment Amount": "Frequent Repayment" +" Amount"}
+                      name="repayment_amount"
+                      className="mb-4 w-full"
+                      onChange={this.handleChangeLoans}
+                      customInput={TextValidator}
+                      validators={[
+                        "required"
+                      ]}
+                      errorMessages={["this field is required"]}
+                  />}
                 {data.loan_amount && data.frequency &&
                   <TextValidator
                   className="mb-4 w-full"
@@ -1217,7 +1244,8 @@ render(){
                     type="submit"
                     size="large"
                     variant="contained"
-                  style={{backgroundColor:"#04956a", color:"white"}}>Apply Loan</Button>
+                    color='primary'
+                  style={{color:"white"}}>Apply Loan</Button>
                 
               </Grid>
             </Grid>

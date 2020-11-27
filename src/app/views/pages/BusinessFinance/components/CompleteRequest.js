@@ -49,34 +49,37 @@ export default function CompleteRequest(props) {
         <div className="py-2 " />
         <Grid item lg={6} md={6} sm={12} xs={12}>
         {props.status == 0 ?
-           <Typography className="mb-2">
+           <Typography className="mb-2" variant="h6" style={{fontSize:16}}><span className="text-primary">Requested Status:</span>
            <span className="mb-4 py-1 px-3" style={{background:'orange', fontSize:12, color:'white', borderRadius:14}}>PENDING</span>
          </Typography>
         : props.status == 3 ?
         <div>
-          <Grid item lg={6} md={6} sm={12} xs={12}>
-          <Typography className="mb-2">
-            <span className="mb-4 py-1 px-3" style={{background:'green',fontSize:12, color:'white', borderRadius:14}}>Completed</span>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+          <Typography className="mb-2" variant="h6" style={{fontSize:16}}><span className="text-primary">Requested Status:</span>
+            <span className="mb-4 py-1 px-3" style={{background:'green',fontSize:12, color:'white', borderRadius:14}}>COMPLETED</span>
           </Typography>
          {/* <Badge className="mb-4 px-3"  badgeContent={'Approved'} {...defaultProps}/> */}
         </Grid>       
         </div>
        :props.status == 9 ?
        <div>
-         <Grid item lg={6} md={6} sm={12} xs={12}>
-         <Typography className="mb-2">
-            <span className="mb-4 py-1 px-3" style={{background:'red',fontSize:12, color:'white', borderRadius:14}}>Cancelled</span>
+         <Grid item lg={12} md={12} sm={12} xs={12}>
+         <Typography className="mb-2" variant="h6" style={{fontSize:16}}><span className="text-primary">Requested Status:</span>
+            <span className="mb-4 py-1 px-3" style={{background:'red',fontSize:12, color:'white', borderRadius:14}}>CANCELLED</span>
           </Typography>
        </Grid>
        </div>      
        : ""
         }
        </Grid>
-       <ButtonGroup color="primary" aria-label="outlined primary button group">
+       {props.status == 3 ?
+      <Grid item lg={12} md={12} sm={12} xs={12}>
+        <ButtonGroup color="primary" aria-label="outlined primary button group">
           <Button className="mb-4"  size='small' variant="outlined" 
             onClick={props.viewTrans}
             >Transaction Detail</Button>               
       </ButtonGroup>
+      </Grid>:""}
       </Grid>
 
     </div>

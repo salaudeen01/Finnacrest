@@ -425,6 +425,7 @@ handleSubmitFund(event) {
                           status={false}
                           withdrawStatus={data.withdraw_status}
                           amount={numberFormat(data.total)}
+                          amount_paid={numberFormat(data.amount_paid)}
                           value={
                             (100 * data.target_balance) / data.targeted_amount
                           }

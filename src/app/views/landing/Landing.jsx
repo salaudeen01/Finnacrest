@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import AppAppBar from "./shared/AppBar";
-import { Grid, Typography, Backdrop, Button } from "@material-ui/core";
+import { Grid, Typography, Backdrop, Button, Card, CardHeader, CardMedia } from "@material-ui/core";
 import CustomSlider from "./shared/CustomSlider";
 import Section1 from "./shared/Section1";
 import Section2 from "./shared/Section2";
@@ -9,9 +9,6 @@ import Section3 from "./shared/Section3";
 import Section4 from "./shared/Section4";
 import Footer from "./shared/Footer";
 import Section5 from "./shared/Section5";
-import img1 from "../../../assets/sesis-shareholding.jpg";
-import img2 from "../../../assets/sesis-shareholding2.jpg";
-import img3 from "../../../assets/sesis-shareholding3.jpg";
 import product from "../../../assets/sesis3.jpeg";
 import invest from "../../../assets/sesis4.jpeg";
 import loan from "../../../assets/sesis6.jpeg";
@@ -19,6 +16,11 @@ import CardBanners from "./shared/CardBanners";
 import { makeStyles } from '@material-ui/core/styles';
 import { getConfig } from "app/config/config";
 import { authHeader } from "app/redux/logic";
+import SolidGameCardDemo from "./shared/CustomCard";
+// import img1 from "../../../assets/television.jpg";
+// import img2 from "../../../assets/shoe.jpg";
+// import img3 from "../../../assets/jug.jpg";
+// import img4 from "../../../assets/phone.jpg";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -63,45 +65,77 @@ class Landing extends Component {
     });
   }
 
-  render() {
-    let item = [
-      {id:1, name:"", img:img1},
-      {id:2, name:"", img:img2},
-      {id:3, name:"", img:img3}
-    ]
+  render() {    
     const {products} = this.state
+    // let item = [
+    //   {id:1, title:"", subtitle:"", img:img1},
+    //   {id:2, title:"", subtitle:"", img:img2},
+    //   {id:3, title:"", subtitle:"", img:img3},
+    //   {id:3, title:"", subtitle:"", img:img4}
+    // ]
     return (
       <div >
-        {/* <Backdrop style={{zIndex: theme.zIndex.drawer + 1, color: '#fff'}}> */}
-        <AppAppBar user={this.state.user} />
-        <div className='' />
-        <Grid container>
-          <Grid item lg={12} md={12} sm={12} xs={12}>
-            <CustomSlider items={item
-            }/>
-          </Grid>
-        </Grid>
-        <div className='py-6' />
-        <Grid container direction="row" justify="space-around" alignItems="center" spacing={2}>
-            <CardBanners color={"#3E89BF"} name={"Product finance"} description={"Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"} img={product}/>
-            <CardBanners color={"#43e25e"} name={"Product finance"} description={"Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"}img={invest}/>
-            <CardBanners color={"#a5ad2a"} name={"Product finance"} description={"Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"} img={loan}/>
-        </Grid>
-        <div className='py-4' />
-        <Grid container>
-          <Section3 />
-        </Grid>
-        <div className='py-4' />
-        {/* <Grid container>
-          <Grid item lg={12} md={12} sm={12} xs={12}>
-            <Typography variant='h4' className='text-dark text-center pt-3'>
-              Products Finance.
-            </Typography>
-          </Grid>
-          {/* <Section4 products={products}/> */}
-        {/* </Grid> */}
-        <Footer />
-        {/* </Backdrop> */}
+        
+            <AppAppBar user={this.state.user} />
+        <div className="m-sm-30">    
+            <Grid container spacing={2}>
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                <CustomSlider />
+              </Grid>
+            </Grid>
+            <div>
+              <Grid container spacing={3} justify="flex-start" className="px-4">
+                  <Grid item lg={3} md={3} sm={3} xs={12}>
+                    <CardBanners color={"#3E89BF"} name={"Product finance"} 
+                    description={"Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"} 
+                    img={product}/>
+                  </Grid> 
+                  <Grid item lg={3} md={3} sm={3} xs={12}>
+                    <CardBanners color={"#3E89BF"} name={"Product finance"} 
+                    description={"Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"} 
+                    img={invest}/>
+                  </Grid> 
+                  <Grid item lg={3} md={3} sm={3} xs={12}>
+                    <CardBanners color={"#3E89BF"} name={"Product finance"} 
+                    description={"Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"} 
+                    img={loan}/>
+                  </Grid>
+                  <Grid item lg={3} md={3} sm={3} xs={12}>
+                    <CardBanners color={"#3E89BF"} name={"Product finance"} 
+                    description={"Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"} 
+                    img={loan}/>
+                  </Grid> 
+                </Grid>
+            </div>
+            <div className='py-2' />
+            <Grid container spacing={2} justify="flex-start" className="px-4">
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Section1/>
+              </Grid>
+            </Grid>
+            <Grid container spacing={2} justify="flex-center">
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Card>
+                  {/* <CardHeader> */}
+                      <Typography variant='h5' className='text-center py-6'>Buy Our Products</Typography>
+                  {/* </CardHeader> */}
+                  <CardMedia>
+                      <SolidGameCardDemo/>
+                  </CardMedia> 
+                </Card>
+              </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+              {/* <div className='py-2' /> */}
+              {/* <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Section3 />            
+              </Grid> */}
+              <div className='py-2' />
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Footer />            
+              </Grid>
+            </Grid>
+        </div>
       </div>
     );
   }

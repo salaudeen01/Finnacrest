@@ -58,7 +58,7 @@ const serverVars = {
   //other transaction
   saveHalaiInvestment: "save_halai/store",
   // getHalaiNews: "show_all_halai",
-  getSingleHalai: "single_halai/",
+  // getSingleHalai: "single_halai/",
   addHalaiInvestors: "halai/add_investment",
   getTotalMarketFund:"marketTotal",
   getTotalHalalFund:"halaiTotal",
@@ -338,8 +338,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.saveHalaiInvestment;
     // case "getHalaiNews":
     //   return serverVars.baseUrl + serverVars.getHalaiNews;
-    case "getSingleHalai":
-      return serverVars.baseUrl + serverVars.getSingleHalai;
+    // case "getSingleHalai":
+    //   return serverVars.baseUrl + serverVars.getSingleHalai;
     case "addHalaiInvestors":
       return serverVars.baseUrl + serverVars.addHalaiInvestors;
     case "getTotalMarketFund":

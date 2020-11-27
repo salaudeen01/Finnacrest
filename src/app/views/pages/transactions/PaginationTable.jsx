@@ -53,10 +53,10 @@ const PaginationTable = (props) => {
                 SES{data.id}
                 </TableCell>
                 <TableCell className="px-0 capitalize" align="left" colSpan={4}>
-                {(data.wallet_category || data.transaction_category) == 1 && (data.wallet_type == "debit" || data.transaction_type== "debit") ? "Regular Savings": 
-                 ((data.wallet_category || data.transaction_category) == 1 && (data.wallet_type == "credit"|| data.transaction_type == "credit"))? "Savings Withdrawal": 
-                 ((data.wallet_category || data.transaction_category) == 2 && (data.wallet_type == "debit" || data.transaction_type == "debit" )) ? "Target Savings":
-                 ((data.wallet_category || data.transaction_category) == 2 && (data.wallet_type == "credit"|| data.transaction_type== "credit")) ? "Target Withdrawal":
+                {(data.wallet_category || data.transaction_category) == 1 && (data.wallet_type == "debit" || data.transaction_type== "debit") ? "Savings Withdrawal": 
+                 ((data.wallet_category || data.transaction_category) == 1 && (data.wallet_type == "credit"|| data.transaction_type == "credit"))? "Regular Savings": 
+                 ((data.wallet_category || data.transaction_category) == 2 && (data.wallet_type == "debit" || data.transaction_type == "debit" )) ? "Target Withdrawal":
+                 ((data.wallet_category || data.transaction_category) == 2 && (data.wallet_type == "credit"|| data.transaction_type== "credit")) ? "Target Savings":
                  ((data.wallet_category || data.transaction_category) == 3) ? "Shareholding":
                   ((data.wallet_category || data.transaction_category) == 4) ? "Loan Repayment":
                   ((data.wallet_category || data.transaction_category) == 8) ? "Business Finance":
@@ -72,7 +72,7 @@ const PaginationTable = (props) => {
                   {data.payment_method}
                 </TableCell>
                 <TableCell className="px-0 capitalize" colSpan={4}>
-                  {data.wallet_type || data.transaction_type}
+                  <span style={{color:(data.wallet_type || data.transaction_type) == "credit"?'green':"red"}}><b>{data.wallet_type || data.transaction_type}</b></span>
                 </TableCell>
                 <TableCell className="px-0 capitalize" colSpan={3}>
                   {dateFormat(data.entry_date, "mmmm dS, yyyy")}

@@ -30,7 +30,7 @@ const Loading = props => {
   return (
     <div className={classes.loading}>
       {/* <img src="/assets/images/logo-circle.png" alt="" /> */}
-      <CircularProgress style={{color:props.color}}/>
+      <CircularProgress style={{color:"#1999ff"}}/>
     </div>
   );
 };
