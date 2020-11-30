@@ -160,6 +160,17 @@ class WalletTab extends Component{
           this.props.timeOut()
         }
     });
+     fetch(getConfig("getRegistrationFee"), requestOptions)
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) {
+          const error = (data && data.message) || response.statusText;
+          this.setState({loading: false });
+          return Promise.reject(error);
+        }
+        // console.log(data)
+        this.setState({ loading: false, registrationFee:data});
+      })
 }
 
 fetch_next_page = ()=>{
@@ -506,7 +517,7 @@ handleCloseConfirmWithdraw() {
             </Toolbar>
           </AppBar>
           <Card className="px-6 pt-2 pb-4">
-            <Grid container lg={12} md={12} sm={12} xs={12}>
+            <Grid container spacing={1}>
                 {bank_details == null ?
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                   <Typography variant="subtitle1">
@@ -648,7 +659,7 @@ handleCloseConfirmWithdraw() {
                       </Grid> 
                       <Grid item lg={4} md={4} sm={4} xs={12}>                 
                       {/* <Link to="/business_financing"> */}
-                      <Link to="/#">
+                      <Link to="/business-fianance">
                           <Button className="uppercase"
                               size="small"
                               variant="outlined">
@@ -694,13 +705,19 @@ handleCloseConfirmWithdraw() {
             </Toolbar>
           </AppBar>
           <Card className="px-6 pt-2 pb-4 text-center">
+               {loading ?
+                <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
+                  <Loading />
+                </div>:
+                <>
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Typography>
                   The registration fee is:
-                </Typography>
+                </Typography>                
                 <Typography variant='h6'>
                   <b>{numberFormat(registrationFee)}</b>
                 </Typography>
+                
                 <Typography variant='h6'>
                   Click the below button to continue with the payment 
                 </Typography>
@@ -709,7 +726,8 @@ handleCloseConfirmWithdraw() {
                     onClick={this.handleOpenModalFee}
                     variant="outlined"> Continue
                 </Button>
-              </Grid> <br/>
+               </Grid>
+               </>} <br/>
                 </Card>
         </Dialog>
         {/* Loan repayment Dialog End */}

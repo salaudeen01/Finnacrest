@@ -33,7 +33,8 @@ export default function AppAppBar(props) {
             <MenuIcon />
           </IconButton> */}
           <Link to='/'>
-            <img src={logo} width='100px' height='30px' alt='company-logo' />
+            {/* <img src={logo} width='100px' height='30px' alt='company-logo' /> */}
+            <Typography variant="h4" className="text-bold text-white">SESIS</Typography>
           </Link>
           <Typography
             variant='h6'

@@ -242,7 +242,7 @@ class Transaction extends Component {
                       </Grid> 
                       <Grid item lg={4} md={4} sm={4} xs={12}>                 
                       {/* <Link to="/business_financing"> */}
-                      <Link to="/#">
+                      <Link to="/business-fianance">
                           <Button className="uppercase"
                               size="small"
                               variant="outlined">

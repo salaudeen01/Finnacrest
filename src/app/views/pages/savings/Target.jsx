@@ -28,6 +28,7 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 import PayCard from "app/views/dashboard/shared/PayCard";
 import AddCardDialog from "app/views/dashboard/shared/AddCardDialog";
 import NumberFormat from "react-number-format";
+import ShareholdingFee from "../Shareholdings/ShareholdingFee";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -107,6 +108,9 @@ class Target extends Component{
         tab:true,
         tar_amt:0,
         bal_amt:0,
+        shareMinFee:"",
+        share_balance:"",
+        shareFee:false,
         isLoading:true,
         showSaveCard:false,
         id:true
@@ -130,6 +134,8 @@ class Target extends Component{
         this.handleChangeAddCard = this.handleChangeAddCard.bind(this);
         this.handleCloseWithdraw = this.handleCloseWithdraw.bind(this);
         this.handleCloseView = this.handleCloseView.bind(this);
+        this.handleShareOpen = this.handleShareOpen.bind(this);
+        this.handleShareClose = this.handleShareClose.bind(this);
         this.handleCloseQuickSave = this.handleCloseQuickSave.bind(this);
         this.handleCloseEdit = this.handleCloseEdit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -179,6 +185,44 @@ componentDidMount(){
           this.props.timeOut()
           }
         this.setState({loading:false});
+    });
+    fetch(getConfig("shareholdingMinFee"), requestOptions)
+    .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            this.setState({loading:false})
+            return Promise.reject(error);
+        }
+        if(data.success == false){
+          this.setState({shareMinFee: 0})  
+        }else{
+          this.setState({shareMinFee: data})  
+        }
+    })
+    .catch((error) => {
+        if (error === "Unauthorized") {
+          this.props.timeOut()
+        }
+    });
+    fetch(getConfig("getTotalBalanceShareholdings"), requestOptions)
+    .then(async response => {
+        const shareholding = await response.json();
+        if (!response.ok) {
+            const error = (shareholding && shareholding.message) || response.statusText;
+            this.setState({loading:false})
+            return Promise.reject(error);
+        }
+        if(shareholding.success == false){
+          this.setState({share_balance: 0})  
+        }else{
+          this.setState({share_balance: shareholding})  
+        }
+    })
+    .catch((error) => {
+        if (error === "Unauthorized") {
+          this.props.timeOut()
+        }
     });
 }
 
@@ -469,6 +513,12 @@ handleCloseView() {
 handleCloseQuickSave() {
   this.setState({showSave:false});
 }
+handleShareOpen() {
+  this.setState({shareFee:true});
+}
+handleShareClose() {
+  this.setState({shareFee:false});
+}
 handleCloseWithdraw() {
   this.setState({showWithdraw:false});
   }
@@ -487,7 +537,7 @@ completeTab(){
           obj.array[l] = l+1;
       }
     let {theme} = this.props
-    const {balance, tdetails, bal_amt, tar_amt, loading, isLoading, tab, cards, add_card, showSaveCard, id, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, show, savings} = this.state
+    const {balance, tdetails, bal_amt, tar_amt, share_balance, shareFee, shareMinFee, loading, isLoading, tab, cards, add_card, showSaveCard, id, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, show, savings} = this.state
     const bal = tar_amt - bal_amt
     return (
       <div className="m-sm-10">
@@ -498,7 +548,15 @@ completeTab(){
         <>
         <Grid container spacing={2} className="pb-5 pt-7 px-2 bg-default">
                <Grid item lg={6} md={6} sm={12} xs={12} >
-                  <ButtonGroup color="primary" aria-label="outlined primary button group">
+                  {share_balance < shareMinFee ?
+                      <Button className="uppercase"
+                        size="small"
+                        variant="contained"
+                        style={{backgroundColor:"#222943", color:"white"}}
+                        onClick={this.handleShareOpen}>
+                         Create Target
+                    </Button>:
+                    <ButtonGroup color="primary" aria-label="outlined primary button group">
                     {tdetails.length != 0 && <Button className="uppercase"
                       size="small"
                       variant="contained"
@@ -509,11 +567,11 @@ completeTab(){
                     <Button className="uppercase"
                       size="small"
                       variant="contained"
-                      style={{ backgroundColor:"#1999ff", color:"#fff"}}
+                      style={{ backgroundColor:"#222943", color:"#fff"}}
                       onClick={this.handleAutoSave}>
                         Create Target
                     </Button>
-                 </ ButtonGroup> 
+                 </ ButtonGroup> }
               </Grid>
             </Grid>
     <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#222943",borderRadius:8}}>  
@@ -1094,6 +1152,41 @@ completeTab(){
           </Card>
         </Dialog>
         {/* View dialog end */}
+        {/* Loan repayment Dialog Start */}
+        <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+          open={shareFee}
+          fullWidth={true}
+          maxWidth={"sm"}
+          onClose={this.handleShareClose} >
+          <AppBar style={{position: "relative"}} color="primary">
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="white"
+                className="text-white"
+                onClick={this.handleShareClose}
+                aria-label="Close"
+              >
+                <CloseIcon />
+              </IconButton>
+              <Typography variant="h6" className="text-white text-center" style={{ flex: 1, color:"#fff"}}>
+                    Shareholding Funding
+              </Typography>
+            </Toolbar>
+          </AppBar> 
+          <Card className="px-1 pt-2 pb-4">
+            <Grid item lg={12} md={12} sm={12} xs={12}>                      
+              <Typography variant="h6" className="text-primary text-center" style={{ flex: 1,}}>
+                  A minimum of {numberFormat(shareMinFee)} is required in your Shareholding before you can create a Target 
+                </Typography>             
+               <ShareholdingFee />
+              </Grid>
+            </Card>
+        </Dialog>
+        {/* Loan repayment Dialog End */}
 
         <AddCardDialog callback={this.callback} showSave={showSaveCard} handleClose={this.handleCloseSaveCard} add_card={add_card} handleChangeCard={this.handleChangeAddCard}/>
       </div>

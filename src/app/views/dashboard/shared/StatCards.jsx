@@ -165,11 +165,18 @@ class StatCards extends Component {
               <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>shopping_cart</Icon>
               <div className="ml-3"> */}
                 <Grid item xs={12} md={12}>
-                <Button className="uppercase font-bold"
-                  size="large"
-                  variant="contained"
-                  color="primary"
-                  onClick={this.props.openModal} style={{color:"#fff"}}>Quick Save</Button>
+                  { this.props.share < this.props.shareMinFee ?
+                    <Button className="uppercase font-bold"
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    onClick={this.props.shareModal} style={{color:"#fff"}}>Quick Save</Button>:
+
+                    <Button className="uppercase font-bold"
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    onClick={this.props.openModal} style={{color:"#fff"}}>Quick Save</Button>}
                 </Grid>
               {/* </div> */}
             {/* </div> */}

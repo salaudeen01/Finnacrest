@@ -39,31 +39,31 @@ class Landing extends Component {
     };
   }
 
-  componentDidMount(){
-    const requestOptions = {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json' },
-    };
-    fetch(getConfig('getAllProducts'), requestOptions)
-      .then(async response => {
-      const data = await response.json();
-      if (!response.ok) {
-          const error = (data && data.message) || response.statusText;
-          return Promise.reject(error);
-      }
-      if(data.success == false){
-        this.setState({products: []});
-      }else{
-        this.setState({products: data.products.data});
-      }console.log(data)
-    })
-    .catch(error => {
+  // componentDidMount(){
+  //   const requestOptions = {
+  //     method: 'GET',
+  //     headers: {'Content-Type': 'application/json' },
+  //   };
+  //   fetch(getConfig('getAllProducts'), requestOptions)
+  //     .then(async response => {
+  //     const data = await response.json();
+  //     if (!response.ok) {
+  //         const error = (data && data.message) || response.statusText;
+  //         return Promise.reject(error);
+  //     }
+  //     if(data.success == false){
+  //       this.setState({products: []});
+  //     }else{
+  //       this.setState({products: data.products.data});
+  //     }console.log(data)
+  //   })
+    // .catch(error => {
       // if (error === "Unauthorized") {
       //   this.props.timeOut()
       // }
-      console.log(error)
-    });
-  }
+  //     console.log(error)
+  //   });
+  // }
 
   render() {    
     const {products} = this.state

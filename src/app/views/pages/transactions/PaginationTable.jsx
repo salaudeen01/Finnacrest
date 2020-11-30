@@ -62,6 +62,8 @@ const PaginationTable = (props) => {
                   ((data.wallet_category || data.transaction_category) == 8) ? "Business Finance":
                   ((data.wallet_category || data.transaction_category) == 9) ? "Products Financing":
                   ((data.wallet_category || data.transaction_category) == 10) ? "Disbursement":
+                  ((data.wallet_category || data.transaction_category) == 21) ? "Loan Form":
+                  ((data.wallet_category || data.transaction_category) == 20) ? "Membership Form":
                   ((data.wallet_category || data.transaction_category) == 7) ? 
                   ((data.wallet_type || data.transaction_type) == "credit")?"Wallet Funding":" Wallet Withdrawal": ""}
                 </TableCell>

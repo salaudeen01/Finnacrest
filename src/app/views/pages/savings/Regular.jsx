@@ -25,6 +25,7 @@ import dateFormat from "dateformat"
 import PayCard from "app/views/dashboard/shared/PayCard";
 import AddCardDialog from "app/views/dashboard/shared/AddCardDialog";
 import NumberFormat from "react-number-format";
+import ShareholdingFee from "../Shareholdings/ShareholdingFee";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -85,14 +86,17 @@ class Regular extends Component{
             savings: [],
             cards:[],
             details: [],
-            balance: 0.00,
+            balance: "",
             tdetails: [],
             loading: true, 
             cancreate: true, 
             autoSave: false,
             pagination:[],
+            shareMinFee:"",
+            share_balance:"",
             err:"",
             auto_save: "",
+            shareFee:false,
             show:false,
             showSave:false,
             showWithdraw:false,
@@ -114,6 +118,8 @@ class Regular extends Component{
         this.handleCloseEdit = this.handleCloseEdit.bind(this);
         this.handleQuickSave = this.handleQuickSave.bind(this);
         this.handleSaveCard = this.handleSaveCard.bind(this);
+        this.handleShareOpen = this.handleShareOpen.bind(this);
+        this.handleShareClose = this.handleShareClose.bind(this);
         this.handleCloseQuickSave = this.handleCloseQuickSave.bind(this);
         this.handleCloseSaveCard = this.handleCloseSaveCard.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -200,6 +206,44 @@ class Regular extends Component{
       }
       this.setState({loading:false});
     });
+    fetch(getConfig("shareholdingMinFee"), requestOptions)
+      .then(async response => {
+          const data = await response.json();
+          if (!response.ok) {
+              const error = (data && data.message) || response.statusText;
+              this.setState({loading:false})
+              return Promise.reject(error);
+          }
+          if(data.success == false){
+            this.setState({shareMinFee: 0})  
+          }else{
+            this.setState({shareMinFee: data})  
+          }
+      })
+      .catch((error) => {
+          if (error === "Unauthorized") {
+            this.props.timeOut()
+          }
+      });
+      fetch(getConfig("getTotalBalanceShareholdings"), requestOptions)
+      .then(async response => {
+          const shareholding = await response.json();
+          if (!response.ok) {
+              const error = (shareholding && shareholding.message) || response.statusText;
+              this.setState({loading:false})
+              return Promise.reject(error);
+          }
+          if(shareholding.success == false){
+            this.setState({share_balance: 0})  
+          }else{
+            this.setState({share_balance: shareholding})  
+          }
+      })
+      .catch((error) => {
+          if (error === "Unauthorized") {
+            this.props.timeOut()
+          }
+      });
   }
 
 callback = (response) => {
@@ -249,7 +293,12 @@ handleAutoSave = event => {
 handleQuickSave = event => {
   this.setState({showSave: true});
 }
-
+handleShareOpen() {
+  this.setState({shareFee:true});
+}
+handleShareClose() {
+  this.setState({shareFee:false});
+}
 handleSaveCard = event => {
   this.setState({showSaveCard: true});
 }
@@ -376,7 +425,9 @@ handleClose() {
           obj.array[l] = l+1;
       }
     let {theme} = this.props
-    const {balance, tdetails, loading, cards, auto_save, id, add_card, showSaveCard, email, bank_details, edit_data, showEdit, fund_data, withdraw_data, autoSave, showSave,showWithdraw, data, show, savings} = this.state
+    const {balance, tdetails, share_balance, shareFee, shareMinFee, loading, cards, auto_save, id, add_card, 
+            showSaveCard, email, bank_details, edit_data, showEdit, fund_data, withdraw_data, autoSave, showSave,
+            showWithdraw, data, show, savings} = this.state
     return (
       <div className="m-sm-30">
        {loading ?
@@ -386,22 +437,30 @@ handleClose() {
         <>
           <Grid container spacing={1}>              
               <Grid item lg={3} md={3} sm={12} xs={12}>
-              <ButtonGroup color="primary" aria-label="outlined primary button group">
-                <Button className="uppercase"
+              { share_balance < shareMinFee ?
+                  <Button className="uppercase"
                   size="small"
                   variant="contained"
                   style={{backgroundColor:"#222943", color:"white"}}
-                  onClick={this.handleQuickSave}>
-                   Quick Save
+                  onClick={this.handleShareOpen}>
+                  Quick Save
                 </Button>
-                <Button className="uppercase"
-                  size="small"
-                  variant="outlined"
-                  style={{borderColor:"#222943"}}
-                  onClick={this.handleWithdraw}>
-                    Withdraw
-                </Button>
-           </ButtonGroup>
+                :<ButtonGroup color="primary" aria-label="outlined primary button group">
+                  <Button className="uppercase"
+                    size="small"
+                    variant="contained"
+                    style={{backgroundColor:"#222943", color:"white"}}
+                    onClick={this.handleQuickSave}>
+                    Quick Save
+                  </Button>
+                  <Button className="uppercase"
+                    size="small"
+                    variant="outlined"
+                    style={{borderColor:"#222943"}}
+                    onClick={this.handleWithdraw}>
+                      Withdraw
+                  </Button>
+            </ButtonGroup>}
               </Grid>
           </Grid>
         
@@ -957,6 +1016,41 @@ handleClose() {
                 </Card>
               </Dialog>
         {/* withdraw dialog end */}
+        {/* Loan repayment Dialog Start */}
+        <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+          open={shareFee}
+          fullWidth={true}
+          maxWidth={"sm"}
+          onClose={this.handleShareClose} >
+          <AppBar style={{position: "relative"}} color="primary">
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="white"
+                className="text-white"
+                onClick={this.handleShareClose}
+                aria-label="Close"
+              >
+                <CloseIcon />
+              </IconButton>
+              <Typography variant="h6" className="text-white text-center" style={{ flex: 1, color:"#fff"}}>
+                    Shareholding Funding
+              </Typography>
+            </Toolbar>
+          </AppBar> 
+          <Card className="px-1 pt-2 pb-4">
+            <Grid item lg={12} md={12} sm={12} xs={12}>                      
+              <Typography variant="h6" className="text-primary text-center" style={{ flex: 1,}}>
+                  A minimum of {numberFormat(shareMinFee)} is required in your Shareholding before you can Fund other Accounts 
+                </Typography>             
+               <ShareholdingFee />
+              </Grid>
+            </Card>
+        </Dialog>
+        {/* Loan repayment Dialog End */}
 
         <AddCardDialog callback={this.callback} showSave={showSaveCard} handleClose={this.handleCloseSaveCard} add_card={add_card} />
       </div>

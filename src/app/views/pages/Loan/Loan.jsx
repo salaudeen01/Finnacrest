@@ -31,6 +31,7 @@ import CustomTab from "./components/CustomTab";
 import { Autocomplete } from "@material-ui/lab";
 import ModalForm from "../transactions/ModalForm";
 import NumberFormat from "react-number-format";
+import ShareholdingFee from "../Shareholdings/ShareholdingFee";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -86,11 +87,10 @@ class Loan extends Component {
       group_name:"",
       group_id:"cub"+rand_id
   },
-  repay_data:{
-        id:"",
-        trans_date: entry_date,
-        payment_method: "Wallet",
-        repayment_amount: 0,
+  form_data:{
+        // date_time: entry_date,
+        payment_method: "",
+        form_payment: 0,
         paystack_id:"",
         save_card:false,
         card_id:"0"
@@ -112,6 +112,7 @@ class Loan extends Component {
       group_request_status: 0,
       group_member_status: 0,
       cards:[],
+      LoanFee:0,
       loan_group: [],
       loan_details: [],
       loan_activities:[],
@@ -136,7 +137,7 @@ class Loan extends Component {
       showApproval:false,
       showManage:false,
       showDetails:false,
-      showrepayment:false,
+      LoanFormPayment:false,
       showManageLoan:false,
       isFetching:true,
       loan_avail_amount:"",
@@ -145,6 +146,9 @@ class Loan extends Component {
       request_id:"",
       code:"",
       tdetails:"",
+      shareMinFee:"",
+      share_balance:"",
+      shareFee:false,
       id:true
     }
     this.ongoingTab = this.ongoingTab.bind(this);
@@ -163,8 +167,10 @@ class Loan extends Component {
     this.handleDaChange = this.handleDaChange.bind(this);
     this.handleSubmitGroup = this.handleSubmitGroup.bind(this);
     this.handleChangeGroup = this.handleChangeGroup.bind(this);
-    this.handleSubmitRepay = this.handleSubmitRepay.bind(this);
-    this.handleChangeRepay = this.handleChangeRepay.bind(this);
+    // this.handleSubmitRepay = this.handleSubmitRepay.bind(this);
+    this.handleShareOpen = this.handleShareOpen.bind(this);
+    this.handleShareClose = this.handleShareClose.bind(this);
+    this.handleChangeForm = this.handleChangeForm.bind(this);
     this.handleQuickSave = this.handleQuickSave.bind(this);
     this.handleShowApproval = this.handleShowApproval.bind(this);
     this.handleShowAction = this.handleShowAction.bind(this);
@@ -173,7 +179,7 @@ class Loan extends Component {
     this.handleCreateGroup = this.handleCreateGroup.bind(this);
     this.handleCreateManage = this.handleCreateManage.bind(this);
     this.handleCreateDetails = this.handleCreateDetails.bind(this);
-    this.handleCreateRepayment = this.handleCreateRepayment.bind(this);
+    this.handleLoanFormFee = this.handleLoanFormFee.bind(this);
     this.handleCreateManageLoan = this.handleCreateManageLoan.bind(this);
     this.handleCloseApproval = this.handleCloseApproval.bind(this);
     this.handleCloseAction = this.handleCloseAction.bind(this);
@@ -183,10 +189,11 @@ class Loan extends Component {
     this.handleCloseGroup = this.handleCloseGroup.bind(this);
     this.handleCloseManage = this.handleCloseManage.bind(this);
     this.handleCloseDetails = this.handleCloseDetails.bind(this);
-    this.handleCloseRepayment = this.handleCloseRepayment.bind(this);
+    this.handleCloseForm = this.handleCloseForm.bind(this);
     this.handleCloseManageLoan = this.handleCloseManageLoan.bind(this);
     this.handleOpenModalForm = this.handleOpenModalForm.bind(this);
     this.handleCloseModalForm = this.handleCloseModalForm.bind(this);
+    this.handleCloseModalForms = this.handleCloseModalForms.bind(this);
     this.handleOpenModalFee = this.handleOpenModalFee.bind(this);
     this.handleCloseModalFee = this.handleCloseModalFee.bind(this);
     this.getRand = this.getRand.bind(this);
@@ -197,9 +204,9 @@ class Loan extends Component {
   }
 
 callback = (response) => {
-  const { repay_data, add_card, key } = this.state;
-  if (repay_data.trans_date && repay_data.repayment_amount) {
-    this.setState({repay_data:{...repay_data, paystack_id: response.reference }})
+  const { form_data, add_card, key } = this.state;
+  if (form_data.trans_date && form_data.form_payment) {
+    this.setState({form_data:{...form_data, paystack_id: response.reference }})
     swal("Loading...", {
       buttons: false
     })
@@ -211,10 +218,10 @@ callback = (response) => {
   }
 }
 componentDidUpdate(){
-  const { repay_data, add_card, data } = this.state;
-  if (repay_data.paystack_id !== "") {
-    this.props.addLoanRepayment(repay_data);
-    this.setState({repay_data:{...repay_data, paystack_id:""}})
+  const { form_data, add_card, data } = this.state;
+  if (form_data.paystack_id !== "") {
+    this.props.loanFormFee(form_data);
+    this.setState({form_data:{...form_data, paystack_id:""}})
   }
   if (add_card.paystack_id !== "") {
     this.props.saveWallet(add_card);
@@ -250,6 +257,7 @@ componentDidMount() {
       method: 'GET',
       headers: { ...authHeader(), 'Content-Type': 'application/json' },
   };
+  const {form_data} = this.state
   this.fetchAllLoanApi(requestOptions);
   fetch(getConfig('getAllDebitCards'), requestOptions)
       .then(async response => {
@@ -331,6 +339,17 @@ componentDidMount() {
       this.setState({loan_avail_amount: data, loading:false });
 }  
 });
+fetch(getConfig("getLoanFee"), requestOptions)
+.then(async (response) => {
+  const data = await response.json();
+  if (!response.ok) {
+    const error = (data && data.message) || response.statusText;
+    this.setState({loading: false });
+    return Promise.reject(error);
+  }
+  console.log(data)
+  this.setState({ loading: false, LoanFee:data, form_data:{...form_data, form_payment:data}});
+})
 fetch(getConfig('showGuarantorTable'), requestOptions)
 .then(async response => {
 const data = await response.json();
@@ -358,6 +377,44 @@ if(data.success == false){
     }
   this.setState({loading:false});
 }); 
+  fetch(getConfig("shareholdingMinFee"), requestOptions)
+    .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            this.setState({loading:false})
+            return Promise.reject(error);
+        }
+        if(data.success == false){
+          this.setState({shareMinFee: 0})  
+        }else{
+          this.setState({shareMinFee: data})  
+        }
+    })
+    .catch((error) => {
+        if (error === "Unauthorized") {
+          this.props.timeOut()
+        }
+    });
+    fetch(getConfig("getTotalBalanceShareholdings"), requestOptions)
+    .then(async response => {
+        const shareholding = await response.json();
+        if (!response.ok) {
+            const error = (shareholding && shareholding.message) || response.statusText;
+            this.setState({loading:false})
+            return Promise.reject(error);
+        }
+        if(shareholding.success == false){
+          this.setState({share_balance: 0})  
+        }else{
+          this.setState({share_balance: shareholding})  
+        }
+    })
+    .catch((error) => {
+        if (error === "Unauthorized") {
+          this.props.timeOut()
+        }
+    });
 }
 
 fetchLoanGroupDetails=(id)=>{
@@ -704,19 +761,24 @@ handleChangeLoans(event){
     this.setState({data:{...data, [name]:value}})
   }
 }
-handleChangeRepay(event) {
+handleChangeForm(event) {
   const { name, value, checked } = event.target;
-  const { repay_data, loan_bal } = this.state;
+  const { form_data, loan_bal } = this.state;
   if(name == "save_card"){
-    this.setState({repay_data:{...repay_data, [name]:checked}})
+    this.setState({form_data:{...form_data, [name]:checked}})
   }else{
-    this.setState({repay_data: {...repay_data, [name]: value}});
+    this.setState({form_data: {...form_data, [name]: value}});
   }
   if(name =="repayment_amount" && value > loan_bal){
       swal(`${"Repaid Amount is more than your remaining balance"}`);
   }
 }
-
+handleShareOpen() {
+  this.setState({shareFee:true});
+}
+handleShareClose() {
+  this.setState({shareFee:false});
+}
 handleChangeReplace(event) {
   const { name, value } = event.target;
   const { replace_data } = this.state;
@@ -735,18 +797,26 @@ handleSubmitGroup(event) {
       );
   }
 }
+// handleSubmitLoan(event) {
+//   event.preventDefault();
+//   const {data, formList,form_data} = this.state
+//     let dat = {first:[data], data: formList};
+//     if (form_data.form_payment && data.loan_amount && data.payment_duration) {
+//         this.props.createLoan(dat)    
+//         this.props.loanFormFee(form_data);     
+//     }else{
+//         swal(
+//             `${"All fields are required"}`
+//         );
+//     }
+    
+//     console.log(dat,form_data)
+// }
 handleSubmitLoan(event) {
   event.preventDefault();
-  const {data, formList} = this.state
-    let dat = {first:[data], data: formList};
-    console.log(dat)
-    this.props.createLoan(dat)
-}
-handleSubmitRepay(event) {
-  event.preventDefault();
-  const { repay_data } = this.state;
-  if (repay_data.trans_date && repay_data.repayment_amount) {
-      this.props.addLoanRepayment(repay_data);     
+  const { form_data } = this.state;
+  if (form_data.form_payment  && form_data.card_id != "") {
+      this.props.loanFormFee(form_data);     
   }else{
       swal(
           `${"All fields are required"}`
@@ -805,6 +875,9 @@ handleOpenModalForm = () => {
 handleCloseModalForm() {
   this.setState({modalForm:false});
 }
+handleCloseModalForms() {
+  this.setState({modalForm:false});
+}
 handleOpenModalFee = () => {
   this.setState({modalFee: true});
 }
@@ -852,24 +925,23 @@ handleCreateDetails = (id) => {
   this.fetchLoanGroupDetails(id)
   this.setState({showDetails: true});
 }
-handleCreateRepayment = (id) => {
-  this.setState({loading: true});
-  const {repay_data, token} = this.state
-  fetch(getConfig("loanBalance")+id + "?token="+token, this.getRequestOpt)
-      .then(async response => {
-      const data = await response.json();
-      if (!response.ok) {
-          const error = (data && data.message) || response.statusText;
-          return Promise.reject(error);
-      }
-      this.setState({loan_bal: data})
+handleLoanFormFee = () => {
+  const {LoanFee} = this.state
+  swal({
+    title: "Loan Form Fee,",
+    text: "To make a loan request, you are required to pay"+' '+ numberFormat(LoanFee)+' '+ "as Loan Form Fee",
+    icon: "warning",
+    buttons: true,
+    successMode: true,
   })
-  .catch(error => {
-    if (error === "Unauthorized") {
-        this.props.timeOut()
-      }
+  .then((willDelete) => {
+    if (willDelete) {
+      this.setState({LoanFormPayment: true})
+      // swal("Loading...",{   
+      //   buttons:false
+      // });
+    }
   });
-  this.setState({showrepayment: true, repay_data: {...repay_data, id: id} });
 }
 handleCreateManageLoan = (id) => {
   this.setState({loading:true})
@@ -906,8 +978,8 @@ handleCloseManage() {
 handleCloseDetails() {
   this.setState({showDetails:false});
 }
-handleCloseRepayment() {
-  this.setState({showrepayment:false});
+handleCloseForm() {
+  this.setState({LoanFormPayment:false});
 }
 handleCloseManageLoan() {
   this.setState({showManageLoan:false});
@@ -937,6 +1009,15 @@ handleChangeUsers = (event, values, id) =>{
   });
   this.setState({formList: newArray});
 }
+handleChangeForm(event) {
+  const { name, value, checked } = event.target;
+  const { form_data, loan_bal } = this.state;
+  if(name == "save_card"){
+    this.setState({form_data:{...form_data, [name]:checked, save_card:true}})
+  }else{
+      this.setState({form_data: {...form_data, [name]: value}});
+   }
+}
 handleDaChange(event, id) {
   const { name, value } = event.target;
   const { formList} = this.state;
@@ -948,10 +1029,10 @@ handleDaChange(event, id) {
 }
 render(){
   const {users, tdetails, repayment_duration, repayment_details, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities,
-     Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage,
+     Completed, replace_data, share_balance, shareFee, shareMinFee, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage,
       showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, 
-      group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, modal, showManageLoan, 
-      modalForm, loan_avail_amount, registrationFee, modalFee, group_members, group_details, loading, repay_data} = this.state
+      group_name, LoanFormPayment, manage_details, loan_details, data, group_data, showDetails, modal, showManageLoan, 
+      modalForm, loan_avail_amount, LoanFee, registrationFee, modalFee, group_members, group_details, loading, form_data} = this.state
   
       let arr = []
       for (let index = 0; index < repayment_duration; index++) {
@@ -991,6 +1072,15 @@ render(){
                       <CustomCarousel />
               </div>
             </Grid> 
+            {share_balance < shareMinFee ?
+                <Button className="uppercase"
+                  size="large"
+                  className="ml-3" 
+                  variant="contained"
+                  style={{backgroundColor:"#1999ff", color:"white"}}
+                  onClick={this.handleShareOpen}>
+                    Request Loan
+              </Button>:
               <Grid item lg={5} md={12} sm={12} xs={12}>
                 <Button className="uppercase"
                   size="large"
@@ -1006,7 +1096,7 @@ render(){
                   onClick={this.handleCreateLoan}>
                    Request Loan
                 </Button>
-              </Grid>
+              </Grid>}
         </Grid>
         </div>         
       }
@@ -1043,7 +1133,6 @@ render(){
       </AppBar>
       <ValidatorForm
         ref="form"
-        onSubmit={this.handleSubmitLoan}
         onError={errors => null}>
         <Card className="px-6 pt-2 pb-4">
             <Grid container spacing={2}>
@@ -1062,18 +1151,6 @@ render(){
                     ]}
                     errorMessages={["this field is required"]}
                   />
-                  {/* <TextValidator
-                  className="mb-4 w-full"
-                  label="Loan Amount"
-                  onChange={this.handleChangeLoans}
-                  type="number"
-                  name="loan_amount"
-                  value={data.loan_amount}
-                  validators={[
-                    "required"
-                  ]}
-                  errorMessages={["this field is required"]}
-                />                 */}
                   <TextField
                     className="mb-4 w-full"
                     select
@@ -1101,19 +1178,6 @@ render(){
                     <MenuItem value={"Weekly"}> Weekly</MenuItem>
                     <MenuItem value={"Monthly"}> Monthly </MenuItem>
                 </TextField>
-                {/* {data.loan_amount && data.frequency && data.payment_duration &&
-                <TextValidator
-                  className="mb-4 w-full"
-                  label={data.frequency? data.frequency +" Repayment Amount": "Frequent Repayment" +" Amount"}
-                  onChange={this.handleChangeLoans}
-                  type="number"
-                  name="repayment_amount"
-                  value={data.repayment_amount}
-                  validators={[
-                    "required"
-                  ]}
-                  errorMessages={["this field is required"]}
-                />} */}
                  {data.loan_amount && data.frequency && data.payment_duration &&
                   <NumberFormat
                       value={data.repayment_amount}
@@ -1142,18 +1206,6 @@ render(){
                   ]}
                   errorMessages={["this field is required"]}
                 />}
-                {/* <TextValidator
-                  className="mb-4 w-full"
-                  onChange={this.handleChangeLoans}
-                  type="date"
-                  name="end_date"
-                  helperText="End Date"
-                  value={data.end_date}
-                  validators={[
-                    "required"
-                  ]}
-                  errorMessages={["this field is required"]}
-                /> */}
                 <TextField
                  className="mb-4 w-full"
                  select
@@ -1244,8 +1296,10 @@ render(){
                     type="submit"
                     size="large"
                     variant="contained"
+                    onClick={this.handleLoanFormFee}
                     color='primary'
-                  style={{color:"white"}}>Apply Loan</Button>
+                    style={{color:"white"}}>Apply Loan
+                </Button>
                 
               </Grid>
             </Grid>
@@ -1434,234 +1488,298 @@ render(){
     </Dialog>
     {/* Loan group Dialog End */}
 
-    {/* Manage Group Dialog Start */}
+    {/* Quick Save Dialog Start */}
     <Dialog
-      open={showManage}
-      onClose={this.handleCloseManage} 
-      scroll="body"
-      TransitionComponent={Transition}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description">
-      <AppBar style={{position: "relative"}}
-      color="primary">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={this.handleCloseManage}
-            aria-label="Close"
-          >
-            <CloseIcon style={{color:"#fff"}} />
-          </IconButton>
-          <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-            Manage Group
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Card className="px-6 pt-2 pb-4">
-        <Grid container spacing={2}>
-          <Grid item lg={12} md={12} sm={12} xs={12}>
-            {loading ?
-            <Typography>Loading...</Typography>:
-            <>
-            <Typography variant="h6" className="font-bold text-green" >Group Members</Typography>
-            
-            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
-            {manage_details.map((dat, index) => (
-              <ManageLoanCard
-              name={dat.name}
-              status={dat.status}
-              resend_notif={()=>this.confirmAlert("Resend Notification", dat.request_id, 0, 0)} 
-              replace_member={()=>this.handleCreateReplace(dat.request_id, dat.id)} 
-              replace_invite={()=>this.handleCreateReplace( dat.request_id, 0)}/>
-              ))}
-            </div>
-            </>
-            }
-          </Grid>
-        </Grid>
-      </Card>
-    </Dialog>
-    {/* Manage Group Dialog End */}
-
-    {/* Loan Group Details Dialog Start */}
-    <Dialog
-      open={showDetails}
-      onClose={this.handleCloseDetails} 
-      scroll="body"
-      TransitionComponent={Transition}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description">
-      <AppBar style={{position: "relative"}}
-      color="primary">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={this.handleCloseDetails}
-            aria-label="Close"
-          >
-            <CloseIcon style={{color:"#fff"}} />
-          </IconButton>
-          <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-            Group Details
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Card className="px-6 pt-2 pb-4">
-        <Grid container spacing={2}>
-          <Grid item lg={12} md={12} sm={12} xs={12}>
-            {loading ?
-            <Typography>Loading...</Typography>:
-            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
-              <LoanGroupDetailsCard data={group_details} members={group_members} />
-            </div>
-            }
-          </Grid>
-        </Grid>
-      </Card>
-    </Dialog>
-    {/* Loan Group Details Dialog End */}
-
-      {/* Loan repayment Dialog Start */}
-      <Dialog
-          open={modal}
-          fullWidth={true}
-          maxWidth={"sm"}
-          onClose={this.handleCloseRepayment} 
-          TransitionComponent={Transition}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description">
-          <AppBar style={{position: "relative"}} color="primary">
-            <Toolbar>
-              <IconButton
-                edge="start"
-                color="inherit"
-                onClick={this.handleCloseRepayment}
-                aria-label="Close"
-              >
-                {/* <CloseIcon style={{color:"#fff"}} /> */}
-              </IconButton>
-              <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESIS
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <Card className="px-6 pt-2 pb-4 text-center">
-              <Grid item lg={12} md={12} sm={12} xs={12}>
-                <Typography>
-                  We have INTEREST FREE LOAN which easily accesseable 
-                </Typography>
-                <Typography>
-                  To access our LOAN, Click on the <span style={{color:"green"}}>Member button</span> to continue
-                </Typography>
-              </Grid> <br/>
-                <DialogActions>
-                
-                <Grid container spacing={1}>
-                      <Grid item lg={4} md={4} sm={4} xs={12}>                      
-                          <Button className="uppercase"
-                            size="small"
-                            onClick={this.handleOpenModalForm}
-                            variant="outlined">
-                            Become a Member
-                        </Button>                       
-                      </Grid> 
-                      <Grid item lg={4} md={4} sm={4} xs={12}>                 
-                      {/* <Link to="/business_financing"> */}
-                      <Link to="/#">
-                          <Button className="uppercase"
-                              size="small"
-                              variant="outlined">
-                                  Continue Business
-                          </Button> 
-                        </Link>
-                      </Grid>
-                      <Grid item lg={4} md={4} sm={4} xs={12}>                  
-                       <Link to="/product_financing"> <Button className="uppercase"
-                            size="small"
-                            variant="outlined">
-                            Continue Shopping
-                        </Button>
-                      </Link>
-                      </Grid>
-                </Grid>
-                  </DialogActions>
-              </Card>
-        </Dialog>
-        {/* Loan repayment Dialog End */}
-        {/* Loan repayment Dialog Start */}
-      <Dialog
-          open={modalForm}
-          fullWidth={true}
-          maxWidth={"sm"}
-          onClose={this.handleCloseModalForm} >
-          <AppBar style={{position: "relative"}} color="primary">
-            <Toolbar>
-              <IconButton
-                edge="start"
-                color="inherit"
-                onClick={this.handleCloseModalForm}
-                aria-label="Close"
-              >
-                {/* <CloseIcon style={{color:"#fff"}} /> */}
-              </IconButton>
-              <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESIS
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <Card className="px-6 pt-2 pb-4 text-center">
-              <Grid item lg={12} md={12} sm={12} xs={12}>
-                <Typography>
-                  The registration fee is:
-                </Typography>
-                <Typography variant='h6'>
-                  <b>{numberFormat(registrationFee)}</b>
-                </Typography>
-                <Typography variant='h6'>
-                  Click the below button to continue with the payment 
-                </Typography>
-                <Button className="uppercase"
-                    size="small"
-                    onClick={this.handleOpenModalFee}
-                    variant="outlined"> Continue
-                </Button>
-              </Grid> <br/>
-                </Card>
-        </Dialog>
-        {/* Loan repayment Dialog End */}
-        {/* Loan repayment Dialog Start */}
-      <Dialog
-          open={modalFee}
-          fullWidth={true}
-          maxWidth={"sm"}
-          onClose={this.handleCloseModalFee} 
-          TransitionComponent={Transition}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description">
-          <AppBar style={{position: "relative"}} color="primary">
-            <Toolbar>
-              <IconButton
-                edge="start"
-                color="inherit"
-                onClick={this.handleCloseModalFee}
-                aria-label="Close"
-              >
-                {/* <CloseIcon style={{color:"#fff"}} /> */}
-              </IconButton>
-              <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESIS
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <Card className="px-1 pt-2 pb-4">
-              <Grid item lg={12} md={12} sm={12} xs={12}>
-               <ModalForm />
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description" 
+          open={LoanFormPayment}
+          onClose={this.handleCloseForm}
+          scroll="body">
+        <AppBar style={{position: "relative",}} color='primary'>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.handleCloseForm}
+              aria-label="Close"
+            >
+              <CloseIcon style={{color:'#fff'}}/>
+            </IconButton>
+            <Typography variant="h6" className="text-white" style={{flex: 1}}>
+              Loan Form Fee
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Card className="px-6 pt-2 pb-4">
+        <List>
+           <ListItem className="pt-5">
+             <Grid item lg={6} md={6} sm={6} xs={6}>
+                 <Typography>Loan Form Fee:</Typography>
+             </Grid>
+             <Grid item lg={6} md={6} sm={6} xs={6} style={{textAlign:'right'}}>
+                 <b>
+                 {numberFormat(LoanFee)}
+                 </b>
+             </Grid>
+           </ListItem>
+           <ListItem>
+              <ValidatorForm
+            ref="form"
+            onSubmit={this.handleSubmitLoan}
+            onError={errors => null}>
+            <Grid container spacing={6}>
+              <Grid item lg={6} md={6} sm={12} xs={12}>
+               
+                <TextField
+                  className="mb-4 w-full"
+                  select
+                  label="Select Payment Method"
+                  value={form_data.payment_method}
+                  name="payment_method"
+                  onChange={this.handleChangeForm}
+                  helperText="Please select Payment Method"
+                >
+                  <MenuItem value={""}></MenuItem>
+                  <MenuItem value={"Wallet"}> Wallet</MenuItem>
+                  <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+              </TextField>
+              
               </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                <Card className="px-6 pt-2 pb-4">
+                  <Typography variant="h6" gutterBottom>
+                    {numberFormat(form_data.form_payment)}
+                  </Typography>
                 </Card>
-        </Dialog>
-        {/* Loan repayment Dialog End */}
+                <Card className="px-6 pt-2 pb-4">
+                  <Typography variant="h6" gutterBottom>
+                    {form_data.payment_method}
+                  </Typography>
+                </Card>
+              </Grid>
+              {form_data.payment_method == "Debit Card" &&
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Typography>Choose Card</Typography>
+                <PayCard cards={cards} value={form_data.card_id} open={(e)=>this.setState({ form_data:{...form_data, card_id:""}})} handleChange={this.handleChangeForm}/>
+              </Grid>}
+              {form_data.card_id == "" && form_data.payment_method == "Debit Card" &&
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Checkbox
+                      name="save_card"
+                      checked={form_data.save_card}
+                      onChange={this.handleChangeForm}
+                      inputProps={{ 'aria-label': 'primary checkbox' }}
+                  /><Typography variant="caption">Would you like to save your card</Typography>
+              </Grid>}
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+              <div style={{textAlign:'center', alignItems:'center',alignContent:'center'}}>
+                {this.props.savings && (
+                  <img
+                    img
+                    alt=''
+                    src='data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=='
+                  />
+                )}  
+              </div>      
+            </Grid>
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                {(form_data.payment_method == "Wallet" || (form_data.card_id !="0" && form_data.card_id !="")) && 
+                <Button className="uppercase"
+                  type="submit"
+                  size="large"
+                  variant="contained"
+                  style={{backgroundColor:"#222943", color:"#fff"}}>
+                  Add Fund
+                </Button>}
+              </Grid>
+              {form_data.card_id == "" && form_data.payment_method == "Debit Card" &&
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                <PayOption callback={this.callback} amount={form_data.form_payment}/>
+              </Grid>}
+            </Grid>
+          </ValidatorForm>
+          </ListItem>
+        </List>
+        </Card>
+      </Dialog>
+    {/* Quick Save Dialog End */}
+
+    {/* Loan repayment Dialog Start */}
+    <Dialog
+        open={modal}
+        fullWidth={true}
+        maxWidth={"sm"}
+        onClose={this.handleCloseModalForms} 
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description">
+        <AppBar style={{position: "relative"}} color="primary">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.handleCloseModalForms}
+              aria-label="Close"
+            >
+              {/* <CloseIcon style={{color:"#fff"}} /> */}
+            </IconButton>
+            <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+              Welcome To SESIS
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Card className="px-6 pt-2 pb-4 text-center">
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+              <Typography>
+                We have INTEREST FREE LOAN which easily accesseable 
+              </Typography>
+              <Typography>
+                To access our LOAN, Click on the <span style={{color:"green"}}>Member button</span> to continue
+              </Typography>
+            </Grid> <br/>
+              <DialogActions>
+              
+              <Grid container spacing={1}>
+                    <Grid item lg={4} md={4} sm={4} xs={12}>                      
+                        <Button className="uppercase"
+                          size="small"
+                          onClick={this.handleOpenModalForm}
+                          variant="outlined">
+                          Become a Member
+                      </Button>                       
+                    </Grid> 
+                    <Grid item lg={4} md={4} sm={4} xs={12}>                 
+                    {/* <Link to="/business_financing"> */}
+                    <Link to="/business-fianance">
+                        <Button className="uppercase"
+                            size="small"
+                            variant="outlined">
+                                Continue Business
+                        </Button> 
+                      </Link>
+                    </Grid>
+                    <Grid item lg={4} md={4} sm={4} xs={12}>                  
+                      <Link to="/product_financing"> <Button className="uppercase"
+                          size="small"
+                          variant="outlined">
+                          Continue Shopping
+                      </Button>
+                    </Link>
+                    </Grid>
+              </Grid>
+                </DialogActions>
+            </Card>
+      </Dialog>
+      {/* Loan repayment Dialog End */}
+      {/* Loan repayment Dialog Start */}
+    <Dialog
+        open={modalForm}
+        fullWidth={true}
+        maxWidth={"sm"}
+        onClose={this.handleCloseModalForm} >
+        <AppBar style={{position: "relative"}} color="primary">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.handleCloseModalForm}
+              aria-label="Close"
+            >
+              {/* <CloseIcon style={{color:"#fff"}} /> */}
+            </IconButton>
+            <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+              Welcome To SESIS
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Card className="px-6 pt-2 pb-4 text-center">
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+              <Typography>
+                The registration fee is:
+              </Typography>
+              <Typography variant='h6'>
+                <b>{numberFormat(registrationFee)}</b>
+              </Typography>
+              <Typography variant='h6'>
+                Click the below button to continue with the payment 
+              </Typography>
+              <Button className="uppercase"
+                  size="small"
+                  onClick={this.handleOpenModalFee}
+                  variant="outlined"> Continue
+              </Button>
+            </Grid> <br/>
+              </Card>
+      </Dialog>
+      {/* Loan repayment Dialog End */}
+      {/* Loan repayment Dialog Start */}
+    <Dialog
+        open={modalFee}
+        fullWidth={true}
+        maxWidth={"sm"}
+        onClose={this.handleCloseModalFee} 
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description">
+        <AppBar style={{position: "relative"}} color="primary">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.handleCloseModalFee}
+              aria-label="Close"
+            >
+              {/* <CloseIcon style={{color:"#fff"}} /> */}
+            </IconButton>
+            <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+              Welcome To SESIS
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Card className="px-1 pt-2 pb-4">
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+              <ModalForm />
+            </Grid>
+              </Card>
+      </Dialog>
+      {/* Loan repayment Dialog End */}
+
+    {/* Loan repayment Dialog Start */}
+    <Dialog
+      TransitionComponent={Transition}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
+      open={shareFee}
+      fullWidth={true}
+      maxWidth={"sm"}
+      onClose={this.handleShareClose} >
+      <AppBar style={{position: "relative"}} color="primary">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="white"
+            className="text-white"
+            onClick={this.handleShareClose}
+            aria-label="Close"
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" className="text-white text-center" style={{ flex: 1, color:"#fff"}}>
+                Shareholding Funding
+          </Typography>
+        </Toolbar>
+      </AppBar> 
+      <Card className="px-1 pt-2 pb-4">
+        <Grid item lg={12} md={12} sm={12} xs={12}>                      
+          <Typography variant="h6" className="text-primary text-center" style={{ flex: 1,}}>
+              A minimum of {numberFormat(shareMinFee)} is required in your Shareholding before you can Request for Loan 
+            </Typography>             
+            <ShareholdingFee />
+          </Grid>
+        </Card>
+    </Dialog>
+    {/* Loan repayment Dialog End */}
 
     {/* Replace or Invite new Member Dialog Start */}
     <Dialog
@@ -1878,6 +1996,7 @@ render(){
 const actionCreators = {
   timeOut: userActions.timeOut,
   createLoanGroup: userActions.createLoanGroup,
+  loanFormFee: userActions.loanFormFee,
   createLoan: userActions.createLoan,
   acceptLoan: userActions.acceptLoan,
   declineLoan: userActions.declineLoan,

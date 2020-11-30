@@ -16,13 +16,14 @@ class MarketCard extends Component {
     let total_price = Number(data.price) + Number(data.mark_up)
     return (
       <CardActionArea style={{borderRadius: 16,transition: '0.2s','&:hover': {transform: 'scale(1.1)', },}}>
-          <Card style={{maxWidth:250, borderRadius: 16,'&:hover': {
-            boxShadow: `0 6px 12px 0 ${Color('blue') .rotate(-12) .darken(0.2) .fade(0.5)}`, },}}>
+          <Card style={{maxWidth:250, alignItems:'center', alignContent:'center', borderRadius: 16,'&:hover': {
+            boxShadow: `0 12px 12px 0 ${Color('blue') .rotate(-12) .darken(0.2) .fade(0.5)}`, },}}>
             {/* <CardActionArea> */}
-              <CardMedia style={{height:240, alignContent:'center', alignItems:'center', margin:'auto'}}
+              {/* <CardMedia style={{height:240}}
                 image={data.image}
                 title={data.product_name}
-              />
+              /> */}
+              <img style={{height:240}} src={data.image} alt={data.product_name}/>
               <CardContent style={{background:'#222341'}}>
                 <Typography gutterBottom className="text-center text-white" component="h2" textOverflow="ellipsis" overflow="hidden" my={2}
                  style={{overflow: 'hidden', whiteSpace: "nowrap", textOverFlow: 'ellipsis', width:200}}>

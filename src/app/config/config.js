@@ -69,6 +69,8 @@ const serverVars = {
 
 
   // Loan  
+  getLoanFee: "get_loan_fee",
+  loanFormFee: "loan_form_fee",
   createLoanGroup:"loan/create_loan_group",
   createLoan:"loanAdd",
   joinGroup:"loan/join_group",
@@ -138,6 +140,7 @@ const serverVars = {
   checkOut: "checkOut",
   fetchUserProducts:"fetchUserProducts?token=",
   searchProducts:"searchProducts/",
+  make_down_payment:"make_down_payment",
 
   getOrderDetails:"fetchOrderDetails/",
   orderRepaymentsDetails:"orderRepaymentsDetails/",
@@ -155,6 +158,7 @@ const serverVars = {
   getTotalBalanceShareholdings: "shareHoldingsTotalBalance?token=",
   getAccountShareholdings: "share_holding",
   getAllProducts: "allFinanceProducts1",
+  shareholdingMinFee:"get_minimum_fee",
 };
 
 export const numberFormat = (value) =>
@@ -183,6 +187,7 @@ export const setLastUrl = () =>{
 
 export const checkUserStatus = () =>{
   let user = JSON.parse(localStorage.getItem("user"));
+  console.log(user)
   if(user.member_status){
     return true    
   }else{
@@ -193,11 +198,12 @@ export const checkUserStatus = () =>{
 
 export const checkLastUrl=()=>{
   let pathname = localStorage.getItem("lasturl");
+  let user = JSON.parse(localStorage.getItem("user"));
   if (pathname == null || pathname == "") {
     history.push({
       pathname: "/dashboard"
     });
-    }else{
+    } else{
       history.push({
         pathname: pathname
       });
@@ -347,6 +353,11 @@ export function getConfig(apiName) {
     case "getTotalHalalFund":
       return serverVars.baseUrl + serverVars.getTotalHalalFund;
     
+        
+    case "loanFormFee":
+      return serverVars.baseUrl + serverVars.loanFormFee
+    case "getLoanFee":   
+      return serverVars.baseUrl + serverVars.getLoanFee;
     case "createLoanGroup":
       return serverVars.baseUrl + serverVars.createLoanGroup;
     case "createLoan":
@@ -490,6 +501,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.updateUserCart;
     case "checkOut":
       return serverVars.baseUrl + serverVars.checkOut;
+    case "make_down_payment":
+      return serverVars.baseUrl + serverVars.make_down_payment;
     case "fetchUserProducts":
       return serverVars.baseUrl + serverVars.fetchUserProducts; 
     case "getOrderDetails":
@@ -511,9 +524,9 @@ export function getConfig(apiName) {
     case "updateRequest":
       return serverVars.baseUrl + serverVars.updateRequest; 
     case "totalRequestPrice":   
-      return serverVars.baseUrl + serverVars.totalRequestPrice;        
+      return serverVars.baseUrl + serverVars.totalRequestPrice;      
     case "getRegistrationFee":
-      return serverVars.baseUrl + serverVars.getRegistrationFee; 
+      return serverVars.baseUrl + serverVars.getRegistrationFee; ; 
     case "addRegistrationFee":
       return serverVars.baseUrl + serverVars.addRegistrationFee + user.token;
 
@@ -532,6 +545,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.getAccountShareholdings;
     case "getAllProducts":
       return serverVars.baseUrl + serverVars.getAllProducts;
+    case "shareholdingMinFee":
+      return serverVars.baseUrl + serverVars.shareholdingMinFee;
     
     default:
       return null;

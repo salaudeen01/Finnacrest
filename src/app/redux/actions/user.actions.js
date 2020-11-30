@@ -33,6 +33,7 @@ export const userActions = {
   exitLoanSavings,
 
   // create loan group
+  loanFormFee,
   createLoanGroup,
   createLoan,
   acceptLoan,
@@ -88,6 +89,7 @@ export const userActions = {
   checkOut,
   userUploadRequested,
   updateRequest,
+  make_down_payment,
 };
 
 function login(username, password) {
@@ -493,7 +495,28 @@ function exitLoanSavings(loan_id) {
   };
 
 }
+function loanFormFee(user) {
+  return (dispatch) => {
+    dispatch(request(user));
 
+    userService.loanFormFee(user).then(
+      (user) => {
+        dispatch(success());
+        if(user.success){
+          history.push("/loan");
+          dispatch( alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+}
 // create loan group action
 function createLoanGroup(user) {
   return (dispatch) => {
@@ -515,7 +538,6 @@ function createLoanGroup(user) {
       }
     );
   };
-
 }
 
 // create loan action
@@ -1437,6 +1459,29 @@ function checkOut(order_id) {
   };
 
 }
+function make_down_payment(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+
+    userService.make_down_payment(user).then(
+      (user) => {
+        dispatch(success());
+        if(user.success){
+          history.push("/detail/cart");
+          dispatch( alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+}
+
 function userUploadRequested(user) {
   return (dispatch) => {
     dispatch(request(user));
@@ -1617,20 +1662,40 @@ function orderRepayments(user) {
   };
 
 }
+// function addRegistrationFee(user) {
+//   return (dispatch) => {
+//     dispatch(request(user));
+
+//     userService.addRegistrationFee(user).then(
+//       (user) => {
+//         dispatch(success());
+//         if(user.success){
+//           history.push("/product_financing");
+//           dispatch( alertActions.success(user.message));
+//         }else{
+//           dispatch(alertActions.error(user.message));
+//         }
+//       },
+//       (error) => {
+//         dispatch(failure(error.toString()));
+//         dispatch(alertActions.error(error.toString()));
+//       }
+//     );
+//   };
+// }
+
 
 function addRegistrationFee(user) {
   return (dispatch) => {
     dispatch(request(user));
-
     userService.addRegistrationFee(user).then(
       (user) => {
-        dispatch(success());        
-        // history.push("/signin");
-        if (user.success === false) {
-          dispatch(alertActions.error(user.message));
-        } else {
+        dispatch(success());       
+        if (user.success == true) {
           dispatch(alertActions.success(user.message));
           userService.logout()
+        } else {
+          dispatch(alertActions.error(user.message));
         }
       },
       (error) => {

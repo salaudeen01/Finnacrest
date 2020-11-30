@@ -57,7 +57,6 @@ componentDidMount(){
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
   }
-  console.log(data)
   if(data.success == false){
     this.setState({ products: []});
   }else{
@@ -69,14 +68,12 @@ componentDidMount(){
       quantity.push(dat.cart_quantity)
   })
   this.setState({cart_quantity: quantity})
-  console.log(quantity) 
 
   let quan= []
   data.my_carts.forEach(dat => {
       quan.push(dat.product_quantity)
   })
   this.setState({product_quantity: quan})
-  console.log(quan)   
   })
 .catch(error => {
   if (error === "Unauthorized") {
@@ -97,7 +94,6 @@ fetch(getConfig("userCartCount"), requestOptions)
       }else{
         this.setState({ count: data});
       }    
-      console.log(data)
     })
     .catch((error) => {
       if (error === "Unauthorized") {
@@ -113,7 +109,6 @@ fetch(getConfig("userCartCount"), requestOptions)
     return Promise.reject(error);
     }
     
-    console.log(data)
     this.setState({totalbalance: data[0].total_cart, loading:false });
     })  
 
@@ -143,7 +138,6 @@ fetch(getConfig("userCartCount"), requestOptions)
       }
   });
 }
-
 incrementItem = (id) => {
   const { products, totalbalance} = this.state;
   const elementIndex = products.findIndex(prod=> prod.cart_id == id);
@@ -173,6 +167,7 @@ DecrementItem = (id) => {
 
 render(){
  const {loading, products, count, totalbalance, handleDelete, cart_quantity} = this.state
+ 
   return (
     <div className="m-sm-30">
         <AppBar color="default" style={{position: "relative"}} className="mb-sm-30">

@@ -84,14 +84,16 @@ class TableCard extends Component{
                     (product.transaction_category == 2 && product.transaction_type == "debit" ) ? "Target Savings":
                     (product.transaction_category == 2 && product.transaction_type== "credit") ? "Target Withdrawal":
                     (product.transaction_category == 3) ? "Shareholding":
+                    (product.transaction_category == 21) ? "Loan Form":
+                    (product.transaction_category == 20) ? "Membership Form":
                       (product.transaction_category == 4) ? "Loan Repayment":
                       (product.transaction_category == 8) ? "Business Finance":
                       (product.transaction_category == 9) ? "Products Financing":
                       (product.transaction_category == 10) ? "Disbursement":
                     (product.transaction_category == 7) ? (product.transaction_type == "credit")?"Wallet Funding":" Wallet Withdrawal": ""}
                   </TableCell>
-                    <TableCell className="px-0" colSpan={4} >
-                      {product.transaction_type}
+                    <TableCell className="px-0" colSpan={4} className="secondary">
+                      <b style={{color: product.transaction_type == "credit"?'green':"red"}}>{product.transaction_type}</b>
                     </TableCell>
                     <TableCell className="px-0 capitalize" align="left" colSpan={4}>
                       {numberFormat(product.amount)}

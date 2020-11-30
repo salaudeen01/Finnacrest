@@ -29,6 +29,7 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 import PayCard from "./shared/PayCard";
 import AddCardDialog from "./shared/AddCardDialog";
 import ModalForm from "../pages/transactions/ModalForm";
+import ShareholdingFee from "../pages/Shareholdings/ShareholdingFee";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -81,6 +82,7 @@ class Dashboard1 extends Component {
                 target_balance:"",
                 loan_avail_amount:"",
                 transactions:[],
+                shareMinFee:"",
                 error: "",
                 show:false,
                 continued: false,
@@ -90,12 +92,15 @@ class Dashboard1 extends Component {
                 modal:false,
                 modalForm:false, 
                 modalFee:false,
+                shareFee:false,
                 registrationFee: 0,
                 } ;
             this.handleSaveCard = this.handleSaveCard.bind(this);
             this.handleCloseSaveCard = this.handleCloseSaveCard.bind(this);
             this.handleClose = this.handleClose.bind(this);
             this.handleClickOpen = this.handleClickOpen.bind(this);
+            this.handleShareOpen = this.handleShareOpen.bind(this);
+            this.handleShareClose = this.handleShareClose.bind(this);
             this.handleChange = this.handleChange.bind(this);
             this.handleSubmit = this.handleSubmit.bind(this);
             this.handleOpenModalForm = this.handleOpenModalForm.bind(this);
@@ -189,9 +194,14 @@ if(name == "target_name"){
 handleClickOpen() {
   this.setState({show:true});
 }
-
 handleClose() {
   this.setState({show:false});
+}
+handleShareOpen() {
+  this.setState({shareFee:true});
+}
+handleShareClose() {
+  this.setState({shareFee:false});
 }
 handleOpenModalForm = () => {
   this.setState({modalForm: true});
@@ -299,25 +309,25 @@ fetch(getConfig('fetchAllTarget'), requestOptions)
           this.props.timeOut()
           }
     });
-// fetch(getConfig("totalFundSaveToLoanSavings"), requestOptions)
-// .then(async response => {
-//     const loan_data = await response.json();
-//     if (!response.ok) {
-//         const error = (loan_data && loan_data.message) || response.statusText;
-//         this.setState({loading:false})
-//         return Promise.reject(error);
-//     }
-//     if(loan_data.success == false){
-//       this.setState({loan_balance: 0, loan_investment: 0})  
-//     }else{
-//       this.setState({loan_balance: loan_data[1], loan_investment: loan_data[0]})  
-//     }
-// })
-// .catch((error) => {
-//     if (error === "Unauthorized") {
-//       this.props.timeOut()
-//     }
-// });
+fetch(getConfig("shareholdingMinFee"), requestOptions)
+.then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        this.setState({loading:false})
+        return Promise.reject(error);
+    }
+    if(data.success == false){
+      this.setState({shareMinFee: 0})  
+    }else{
+      this.setState({shareMinFee: data})  
+    }
+})
+.catch((error) => {
+    if (error === "Unauthorized") {
+      this.props.timeOut()
+    }
+});
 fetch(getConfig("getTotalBalanceShareholdings"), requestOptions)
 .then(async response => {
     const shareholding = await response.json();
@@ -472,8 +482,8 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
   render() {
     let { theme } = this.props;
     const {error, accounts, show, wallet_balance, add_card, showSaveCard, cards, bank, profile, data, email, 
-      loading, transactions, target_balance, continued, regular_balance, market_balance, share_balance, 
-      loan_investment, loan_avail_amount, halal_balance, modal, modalForm, registrationFee, modalFee} = this.state
+      loading, shareFee, transactions, target_balance, continued, regular_balance, market_balance, share_balance, 
+      loan_investment,shareMinFee, loan_avail_amount, halal_balance, modal, modalForm, registrationFee, modalFee} = this.state
     return (
       <div >
         { modal == false ?
@@ -488,6 +498,8 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
           <Grid container spacing={3}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
               <StatCards
+                  shareMinFee={shareMinFee}
+                  share={share_balance}
                   wallet_balance={numberFormat(wallet_balance)} 
                   halal_balance={numberFormat(halal_balance)}
                   market_balance={numberFormat(market_balance)}
@@ -496,7 +508,8 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                   loan_avail_amount={numberFormat(loan_avail_amount)}
                   share_balance={numberFormat(share_balance)}
                   loan_investment={numberFormat(loan_investment)}
-                  openModal={this.handleClickOpen}/>
+                  openModal={this.handleClickOpen}
+                  shareModal={this.handleShareOpen}/>
                   {/* <ScrollCards /> */}
             </Grid>
             <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -729,7 +742,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                       </Grid> 
                       <Grid item lg={4} md={4} sm={4} xs={12}>                 
                       {/* <Link to="/business_financing"> */}
-                      <Link to="/#">
+                      <Link to="/business-fianance">
                           <Button className="uppercase"
                               size="small"
                               variant="outlined">
@@ -823,6 +836,41 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                <ModalForm amount={registrationFee}/>
               </Grid>
                 </Card>
+        </Dialog>
+        {/* Loan repayment Dialog End */}
+        {/* Loan repayment Dialog Start */}
+        <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+          open={shareFee}
+          fullWidth={true}
+          maxWidth={"sm"}
+          onClose={this.handleShareClose} >
+          <AppBar style={{position: "relative"}} color="primary">
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="white"
+                className="text-white"
+                onClick={this.handleShareClose}
+                aria-label="Close"
+              >
+                <CloseIcon />
+              </IconButton>
+              <Typography variant="h6" className="text-white text-center" style={{ flex: 1, color:"#fff"}}>
+                    Shareholding Funding
+              </Typography>
+            </Toolbar>
+          </AppBar> 
+          <Card className="px-1 pt-2 pb-4">
+            <Grid item lg={12} md={12} sm={12} xs={12}>                      
+              <Typography variant="h6" className="text-primary text-center" style={{ flex: 1,}}>
+                  A minimum of {numberFormat(shareMinFee)} is required in your Shareholding before you can Fund other Accounts 
+                </Typography>             
+               <ShareholdingFee />
+              </Grid>
+            </Card>
         </Dialog>
         {/* Loan repayment Dialog End */}
   </div>

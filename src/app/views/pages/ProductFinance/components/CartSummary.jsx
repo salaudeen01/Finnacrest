@@ -20,13 +20,18 @@ import {
   Card,
   ListItem,
   Divider,
-  Button
+  Button,
+  AppBar,
+  Toolbar,
+  Dialog,
+  IconButton,
+  Slide
 } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 
-// const CartSummary = (props) => {
-//   const {count, total, loading, ...rest} = props;
-//   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-//   const [page, setPage] = React.useState(0);
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
   class CartSummary extends Component{
     constructor(props){
       super(props)
@@ -46,6 +51,14 @@ import {
             paystack_id: "",
             card_id:"0"
         },
+        down_data:{
+          total_down_payment: "",
+          date_time: date,
+          form_payment: "",
+          save_card:true,
+          paystack_id: "",
+          card_id:"0"
+      },
         add_card:{
             total: 100,
             date_time: date,
@@ -57,18 +70,25 @@ import {
         cards:[],
         page:0,
         rowsPerPage:5,  
-        showSaveCard:false,      
+        showSave:false,
+        showSaveCard:false,
+        total:0,
+        amount:0,
+        price:0,
+        products:[] 
       }
+      this.getTotalAmount = this.getTotalAmount.bind(this);
       this.handleSaveCard = this.handleSaveCard.bind(this);
       this.handleCloseSaveCard = this.handleCloseSaveCard.bind(this);
       this.handleChangeAddCard = this.handleChangeAddCard.bind(this);
       this.handleChangeFund = this.handleChangeFund.bind(this);
+      this.handleChangeFunds = this.handleChangeFunds.bind(this);
       this.handleSubmitFund = this.handleSubmitFund.bind(this);
+      this.handleQuickSave = this.handleQuickSave.bind(this);
+      this.handleCloseQuickSave = this.handleCloseQuickSave.bind(this);
     }
 
     componentDidMount(){
-        const {id} = this.state
-        let user = JSON.parse(localStorage.getItem('user'));
         const requestOptions = {
             method: 'GET',
             headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -91,82 +111,142 @@ import {
           this.props.timeOut()
           }
       });
-    }
-    callback = (response) => {
-        const {fund_data, add_card} = this.state
-        if (fund_data.total ) {
-            this.setState({fund_data:{...fund_data, paystack_id: response.reference }})
-            swal("Loading...", {
-              buttons: false
-            })
-        }else{
-          this.setState({add_card:{...add_card, paystack_id: response.reference }, showSaveCard:false})
-          swal("Saving Card...", {
+      fetch(getConfig('getAllProductInCart'), requestOptions)
+      .then(async response => {
+      const data = await response.json();
+      if (!response.ok) {
+        console.log(response)
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+      } 
+      if(data.success == false){
+        this.setState({ products: []});
+      }else{
+        this.setState({products: data.my_carts, loading:false });
+      }
+      this.getTotalAmount()
+      })
+    // .catch(error => {
+    //   if (error === "Unauthorized") {
+    //         this.props.logout()
+    //      }
+    //   this.setState({loading:false, err : "internet error" });
+    //   console.error('There was an error!', error);
+    // });
+  }
+  callback = (response) => {
+      const {fund_data, add_card,down_data} = this.state
+      if (fund_data.total ) {
+          this.setState({fund_data:{...fund_data, paystack_id: response.reference }})
+          swal("Loading...", {
             buttons: false
           })
-        }
+      }else{
+        this.setState({down_data:{...down_data, paystack_id: response.reference }})
+        swal("Loading...", {
+          buttons: false
+        })
+    }
+  }
+
+    getTotalAmount=()=>{
+      const {down_data, products} = this.state
+      let amt = 0
+      let tol = 0
+      products.forEach(p => {
+        amt+=p.down_payment * p.cart_quantity
+        tol+=p.cart_price * p.cart_quantity
+      });
+      const price = tol - amt
+      this.setState({down_data: {...down_data, total_down_payment:amt}, total:tol, amount:amt, price:price})
+    
+    }
+    
+    componentDidUpdate(){
+      const { fund_data, add_card, data,down_data } = this.state;
+      if (fund_data.paystack_id !== "") {
+        this.props.checkOut(fund_data);
+        this.setState({fund_data:{...fund_data, paystack_id:""}})
       }
-      componentDidUpdate(){
-        const { fund_data, add_card, data } = this.state;
-        if (fund_data.paystack_id !== "") {
+      if (down_data.paystack_id !== "") {
+        this.props.make_down_payment(down_data);
+        this.setState({down_data:{...down_data, paystack_id:""}})
+      }
+      // if (add_card.paystack_id !== "" ) {
+      //   this.props.saveWallet(add_card)
+      //   this.setState({add_card:{...add_card, paystack_id:"" }, id:false})
+      // }
+      // if(localStorage.getItem("card_id")){
+      //   this.setState({data:{...data, card_id: localStorage.getItem("card_id") }})
+      //   console.log(localStorage.getItem("card_id"))
+      //   localStorage.removeItem("card_id")
+      // }
+    }
+      
+    close = () => {
+      console.log("Payment closed");
+    }
+    handleSubmitFund(event) {
+      event.preventDefault();
+      const { fund_data,down_data } = this.state;
+      if (fund_data.payment_method == "co-operative") {
           this.props.checkOut(fund_data);
-          this.setState({fund_data:{...fund_data, paystack_id:""}})
-        }
-      }
-      
-      close = () => {
-        console.log("Payment closed");
-      }
-      handleSubmitFund(event) {
-        event.preventDefault();
-        const { fund_data } = this.state;
-        console.log(fund_data)
-        if (fund_data.total && fund_data.payment_method) {
-            this.props.checkOut(fund_data);
+          this.props.make_down_payment(down_data);
+        }else if(fund_data.payment_method == "Debit Card"){
+          this.props.checkOut(fund_data);
         }else{
-            swal(
-                `${"All fields are required"}`
-            );
-        }
+          swal(
+              `${"All fields are required"}`
+          );
       }
-      handleSaveCard = event => {
-        this.setState({showSaveCard: true});
+    }
+    handleSaveCard = event => {
+      this.setState({showSaveCard: true});
+    }
+    handleQuickSave = event => {
+      this.setState({showSave: true});
+    }
+    handleCloseQuickSave() {
+      this.setState({showSave:false});
+    }
+    handleCloseSaveCard() {
+      this.setState({showSaveCard:false});
+    }
+    handleChangeAddCard = event => {
+      const {fund_data} = this.state
+      const {name, value, checked} = event.target
+      if(name == "save_card"){
+        this.setState({fund_data:{...fund_data, [name]:checked}})
+      }else{
+        this.setState({fund_data:{...fund_data, [name]:value}})
       }
-      
-      handleCloseSaveCard() {
-        this.setState({showSaveCard:false});
+    };
+    handleChangeFund = event => {
+      const {fund_data, total} = this.state
+      const {name, value, checked} = event.target
+      if(name == "save_card"){
+        this.setState({fund_data:{...fund_data, [name]:checked}})
+      }else if(name == "payment_method"){
+        this.setState({fund_data:{...fund_data, [name]:value, total:total}})
+      }else{
+        this.setState({fund_data:{...fund_data, [name]:value }})
       }
-      handleChangeAddCard = event => {
-        const {fund_data} = this.state
-        const {name, value, checked} = event.target
-        if(name == "save_card"){
-          this.setState({fund_data:{...fund_data, [name]:checked}})
-        }else{
-          this.setState({fund_data:{...fund_data, [name]:value}})
-        }
-      };
-      handleChangeFund = event => {
-        const {fund_data} = this.state
-        const {name, value, checked} = event.target
-        if(name == "save_card"){
-          this.setState({fund_data:{...fund_data, [name]:checked}})
-        }else if(name == "payment_method"){
-          this.setState({fund_data:{...fund_data, [name]:value, total:this.props.total}})
-        }else{
-          this.setState({fund_data:{...fund_data, [name]:value }})
-        }
-      };
+    };
+    handleChangeFunds = event => {
+      const {down_data,amount} = this.state
+      const {name, value, checked} = event.target
+      if(name == "save_card"){
+        this.setState({down_data:{...down_data, [name]:checked}})
+      }else if(name == "payment_method"){
+        this.setState({down_data:{...down_data, [name]:value, total_down_payment:amount}})
+      }else{
+        this.setState({down_data:{...down_data, [name]:value}});
+      }
+    };
  render(){
    
-    const { count, products, total, loading,} = this.props;
-    const { cards, fund_data, add_card, showSaveCard } =this.state
-    let amt = 0
-    let tol = 0
-    this.props.products.forEach(p => {
-      amt+=p.down_payment * p.cart_quantity
-      tol+=p.cart_price * p.cart_quantity
-    });
-    const price = tol - amt
+    // const { count, products, down_amt, loading,} = this.props;
+    const { cards, fund_data, showSave, down_data, add_card, showSaveCard, total, amount, price } =this.state
   return (
     <Card elevation={3} className="mb-6">
     {/* <CardContent> */}
@@ -188,7 +268,7 @@ import {
                 </Grid>
                 <Grid item lg={6} md={6} sm={6} xs={6} style={{textAlign:'right'}}>
                     <b>
-                    {numberFormat(tol)}
+                    {numberFormat(total)}
                     </b>
                 </Grid>
             </ListItem>
@@ -201,7 +281,7 @@ import {
                   </Grid>
                   <Grid item lg={6} md={6} sm={6} xs={6} style={{textAlign:'right'}}>
                       <b>
-                      {numberFormat(amt)}
+                      {numberFormat(amount)}
                       </b>
                   </Grid>
               </ListItem>
@@ -263,47 +343,6 @@ import {
                       <PayOption callback={this.callback} amount={this.props.total}/>
                       </Grid>}
                   
-                    {fund_data.payment_method == "co-operative" &&                      
-                        <Grid item lg={12} md={12} sm={12} xs={12}>      
-                        <TextField
-                            className="w-full"
-                            select
-                            label="Select Payment Method"
-                            value={fund_data.payment}
-                            name="payment"
-                            onChange={this.handleChangeFund}
-                            helperText="Please select Payment Method"
-                        >
-                            <MenuItem value={""}></MenuItem>
-                            <MenuItem value={"Wallet"}>Wallet</MenuItem>
-                            <MenuItem value={"Card"}> Debit Card </MenuItem>
-                        </TextField>                       
-                        </Grid>                      
-                        }
-                        {fund_data.payment_method == "co-operative" && 
-                        <>
-                        {fund_data.payment == "Card" &&
-                          <Grid item lg={12} md={12} sm={12} xs={12}>
-                          <Typography>Choose Card</Typography>
-                          <PayCard cards={cards} value={fund_data.card_id} 
-                          open={(e)=>this.setState({ fund_data:{...fund_data, card_id:""}})} 
-                          handleChange={this.handleChangeFund}/>
-                          </Grid>}
-                          {fund_data.card_id == "" && fund_data.payment == "Card" &&
-                          <Grid item lg={12} md={12} sm={12} xs={12}>
-                              <Checkbox
-                                  name="save_card"
-                                  checked={fund_data.save_card}
-                                  onChange={this.handleChangeFund}
-                                  inputProps={{ 'aria-label': 'primary checkbox' }}
-                              /><Typography variant="caption">Would you like to save your card</Typography>
-                          </Grid>}
-                          {fund_data.card_id == "" && fund_data.payment == "Card" &&
-                          <Grid item lg={12} md={12} sm={12} xs={12}>
-                          <PayOption callback={this.callback} amount={this.props.total}/>
-                          </Grid>}                  
-                      </>
-                        }
                    </Grid>
                   </ValidatorForm>
 
@@ -316,8 +355,7 @@ import {
                 {this.props.savings &&
                   <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                   }
-               {(fund_data.payment == "Wallet" || fund_data.payment == "Card" ||
-                fund_data.payment_method == "Debit Card" || (fund_data.card_id !="0" && fund_data.card_id !="")) &&
+               {( fund_data.payment_method == "Debit Card" || (fund_data.card_id !="0" && fund_data.card_id !="")) &&
                 <Button className="uppercase"
                         onClick={this.handleSubmitFund}
                         size="medium"
@@ -327,12 +365,153 @@ import {
                         borderBottomLeftRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10}}>
                    Checkout
                    </Button>}
+                   {( fund_data.payment_method == "co-operative" )&&
+                    <Button className="uppercase"
+                        onClick={this.handleQuickSave}
+                        size="medium"
+                        fullWidth 
+                        variant="contained"
+                        style={{backgroundColor:"#222943", color:"white", borderBottomRightRadius:10, 
+                        borderBottomLeftRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10}}>
+                    Checkout
+                    </Button>}
                 </Grid>
             </ListItem>
         </List>
         <AddCardDialog callback={this.callback} showSave={showSaveCard} handleClose={this.handleCloseSaveCard} add_card={add_card} />
     {/* </CardContent> */}
+
+        {/* Quick Save Dialog Start */}
+        <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description" 
+            open={showSave}
+            onClose={this.handleCloseQuickSave}
+            scroll="body">
+          <AppBar style={{position: "relative",}} color='primary'>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={this.handleCloseQuickSave}
+                aria-label="Close"
+              >
+                <CloseIcon style={{color:'#fff'}}/>
+              </IconButton>
+              <Typography variant="h6" className="text-white" style={{flex: 1}}>
+                Down Payment
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Card className="px-6 pt-2 pb-4">
+            <Card>
+              <Typography>
+                    30% of the Actual Price is required to be paid to procceed
+              </Typography>
+            </Card>
+            <List>
+                <ListItem className="pt-5">
+                  <Grid item lg={6} md={6} sm={6} xs={6}>
+                      <Typography>Down Payment:</Typography>
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={6} xs={6} style={{textAlign:'right'}}>
+                      <b>
+                      {numberFormat(amount)}
+                      </b>
+                  </Grid>
+              </ListItem>
+              <ListItem className="">          
+                  <ValidatorForm
+                  ref="form"
+                  onSubmit={this.handleSubmitFund}
+                  onError={errors => null}>
+                  <Grid container spacing={6}>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                        className="mb-2 w-full"
+                        select
+                        label="Select Payment Method"
+                        value={down_data.form_payment}
+                        name="form_payment"
+                        onChange={this.handleChangeFunds}
+                        helperText="Please select Payment Method"
+                      >
+                        <MenuItem value={""}></MenuItem>
+                        <MenuItem value={"Wallet"}> Wallet</MenuItem>
+                        <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+                    </TextField>
+                    
+                    </Grid>
+
+                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Card className="">
+                        <Typography variant="h6" gutterBottom>
+                          {numberFormat(down_data.total_down_payment)}
+                        </Typography>
+                      {/* </Card>
+                      <Card className=""> */}
+                        <Typography variant="h6" gutterBottom>
+                          {down_data.form_payment}
+                        </Typography>
+                      </Card>
+                    </Grid>
+                    
+                    {down_data.form_payment == "Debit Card" &&
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Typography>Choose Card</Typography>
+                      <PayCard cards={cards} value={down_data.card_id} 
+                      open={(e)=>this.setState({ down_data:{...down_data, card_id:""}})} 
+                      handleChange={this.handleChangeFunds}/>
+                    </Grid>}
+
+                    {down_data.card_id == "" && down_data.form_payment == "Debit Card" &&
+                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                        <Checkbox
+                            name="save_card"
+                            checked={down_data.save_card}
+                            onChange={this.handleChangeFunds}
+                            inputProps={{ 'aria-label': 'primary checkbox' }}
+                        /><Typography variant="caption">Would you like to save your card</Typography>
+                    </Grid>}
+
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <div style={{textAlign:'center', alignItems:'center',alignContent:'center'}}>
+                      {this.props.savings && (
+                        <img
+                          img
+                          alt=''
+                          src='data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=='
+                        />
+                      )}  
+                    </div>      
+                  </Grid>
+
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                      {((down_data.form_payment == "Wallet") || (down_data.card_id !="0" && down_data.card_id !="")) && 
+                      <Button className="uppercase"
+                        type="submit"
+                        size="large"
+                        variant="contained"
+                        style={{backgroundColor:"#222943", color:"#fff"}}>
+                        Make Payment
+                      </Button>}
+                    </Grid>
+
+                    {down_data.card_id == "" && down_data.payment_method == "Debit Card" &&
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                      <PayOption callback={this.callback} amount={down_data.total_down_payment}/>
+                    </Grid>}
+
+                  </Grid>
+                </ValidatorForm>
+              </ListItem>
+            </List>
+          </Card>
+        </Dialog>
+        {/* Quick Save Dialog End */}    
     </Card>
+    
   );
 };
 };
@@ -344,7 +523,8 @@ const actionCreators = {
   createRegularSavings: userActions.createRegularSavings,
   checkOut:userActions.checkOut,
   withdrawRegularSavings: userActions.withdrawRegularSavings,
-  editRegularSavings:userActions.editRegularSavings
+  editRegularSavings:userActions.editRegularSavings,
+  make_down_payment:userActions.make_down_payment
 };
 
 function mapState(state) {

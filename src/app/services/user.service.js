@@ -37,6 +37,7 @@ export const userService = {
   exitLoanSavings,
 
   // loan
+  loanFormFee,
   createLoanGroup,
   createLoan,
   acceptLoan,
@@ -87,7 +88,8 @@ export const userService = {
   addToCart,
   userUploadRequested,
   updateRequest,
-  checkOut
+  checkOut,
+  make_down_payment
 };
 
 function login(email, password) {
@@ -246,6 +248,16 @@ function exitLoanSavings(id) {
     getConfig("exitLoanSavings")+id, requestOptions ).then(handleResponse);
 }
 
+function loanFormFee(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(getConfig("loanFormFee"), requestOptions).then(
+    handleResponse
+  );
+}
 // create loan group
 function createLoanGroup(data) {
   const requestOptions = {
@@ -771,7 +783,16 @@ function checkOut(data) {
     handleResponse
   );
 }
-
+function make_down_payment(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(getConfig("make_down_payment"), requestOptions).then(
+    handleResponse
+  );
+}
 function addRegistrationFee(data) {
   const requestOptions = {
     method: "POST",
