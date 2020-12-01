@@ -1690,12 +1690,13 @@ function addRegistrationFee(user) {
     dispatch(request(user));
     userService.addRegistrationFee(user).then(
       (user) => {
-        dispatch(success());       
-        if (user.success == true) {
-          dispatch(alertActions.success(user.message));
-          userService.logout()
-        } else {
+        dispatch(success());  
+        if (user.success === false) {
           dispatch(alertActions.error(user.message));
+        } else {
+          userService.logout()
+          history.push("/signin");
+          dispatch(alertActions.success(user.message));
         }
       },
       (error) => {
