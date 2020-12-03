@@ -89,8 +89,8 @@ class Loan extends Component {
   },
   form_data:{
         // date_time: entry_date,
-        payment_method: "",
-        form_payment: 0,
+        // payment_method: "",
+        form_payment: "0",
         paystack_id:"",
         save_card:false,
         card_id:"0"
@@ -348,7 +348,7 @@ fetch(getConfig("getLoanFee"), requestOptions)
     return Promise.reject(error);
   }
   console.log(data)
-  this.setState({ loading: false, LoanFee:data, form_data:{...form_data, form_payment:data}});
+  this.setState({ loading: false, LoanFee:data});
 })
 fetch(getConfig('showGuarantorTable'), requestOptions)
 .then(async response => {
@@ -797,32 +797,32 @@ handleSubmitGroup(event) {
       );
   }
 }
-// handleSubmitLoan(event) {
-//   event.preventDefault();
-//   const {data, formList,form_data} = this.state
-//     let dat = {first:[data], data: formList};
-//     if (form_data.form_payment && data.loan_amount && data.payment_duration) {
-//         this.props.createLoan(dat)    
-//         this.props.loanFormFee(form_data);     
-//     }else{
-//         swal(
-//             `${"All fields are required"}`
-//         );
-//     }
-    
-//     console.log(dat,form_data)
-// }
 handleSubmitLoan(event) {
   event.preventDefault();
-  const { form_data } = this.state;
-  if (form_data.form_payment  && form_data.card_id != "") {
-      this.props.loanFormFee(form_data);     
-  }else{
-      swal(
-          `${"All fields are required"}`
-      );
-  }
+  const {data, formList,form_data} = this.state
+    let dat = {first:[data], data: formList};
+    if (form_data.form_payment && data.loan_amount && data.payment_duration) {
+        this.props.createLoan(dat)    
+        this.props.loanFormFee(form_data);     
+    }else{
+        swal(
+            `${"All fields are required"}`
+        );
+    }
+    
+    console.log(dat,form_data)
 }
+// handleSubmitLoan(event) {
+//   event.preventDefault();
+//   const { form_data } = this.state;
+//   if (form_data.form_payment  && form_data.card_id != "") {
+//       this.props.loanFormFee(form_data);     
+//   }else{
+//       swal(
+//           `${"All fields are required"}`
+//       );
+//   }
+// }
 handleSubmitReplace(event) {
   event.preventDefault();
   const { replace_data } = this.state;
@@ -1517,7 +1517,7 @@ render(){
              <Grid item lg={6} md={6} sm={6} xs={6}>
                  <Typography>Loan Form Fee:</Typography>
              </Grid>
-             <Grid item lg={6} md={6} sm={6} xs={6} style={{textAlign:'right'}}>
+             <Grid item lg={6} md={6} sm={6} xs={6} style={{textAlign:'left'}}>
                  <b>
                  {numberFormat(LoanFee)}
                  </b>
@@ -1535,8 +1535,8 @@ render(){
                   className="mb-4 w-full"
                   select
                   label="Select Payment Method"
-                  value={form_data.payment_method}
-                  name="payment_method"
+                  value={form_data.form_payment}
+                  name="form_payment"
                   onChange={this.handleChangeForm}
                   helperText="Please select Payment Method"
                 >
@@ -1549,21 +1549,21 @@ render(){
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                 <Card className="px-6 pt-2 pb-4">
                   <Typography variant="h6" gutterBottom>
-                    {numberFormat(form_data.form_payment)}
+                    {numberFormat(LoanFee)}
                   </Typography>
                 </Card>
                 <Card className="px-6 pt-2 pb-4">
                   <Typography variant="h6" gutterBottom>
-                    {form_data.payment_method}
+                    {form_data.form_payment}
                   </Typography>
                 </Card>
               </Grid>
-              {form_data.payment_method == "Debit Card" &&
+              {form_data.form_payment == "Debit Card" &&
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Typography>Choose Card</Typography>
                 <PayCard cards={cards} value={form_data.card_id} open={(e)=>this.setState({ form_data:{...form_data, card_id:""}})} handleChange={this.handleChangeForm}/>
               </Grid>}
-              {form_data.card_id == "" && form_data.payment_method == "Debit Card" &&
+              {form_data.card_id == "" && form_data.form_payment == "Debit Card" &&
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                   <Checkbox
                       name="save_card"
@@ -1584,7 +1584,7 @@ render(){
               </div>      
             </Grid>
               <Grid item lg={12} md={12} sm={12} xs={12}>
-                {(form_data.payment_method == "Wallet" || (form_data.card_id !="0" && form_data.card_id !="")) && 
+                {(form_data.form_payment == "Wallet" || (form_data.card_id !="0" && form_data.card_id !="")) && 
                 <Button className="uppercase"
                   type="submit"
                   size="large"
@@ -1593,9 +1593,9 @@ render(){
                   Add Fund
                 </Button>}
               </Grid>
-              {form_data.card_id == "" && form_data.payment_method == "Debit Card" &&
+              {form_data.card_id == "" && form_data.form_payment == "Debit Card" &&
               <Grid item lg={12} md={12} sm={12} xs={12}>
-                <PayOption callback={this.callback} amount={form_data.form_payment}/>
+                <PayOption callback={this.callback} amount={LoanFee}/>
               </Grid>}
             </Grid>
           </ValidatorForm>
