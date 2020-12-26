@@ -98,11 +98,11 @@ class ForgotPassword extends Component {
 					</Grid>
 				</Grid>
 				<Grid container className='bg-light-gray justify-center w-full'>
-				<ValidatorForm
-					ref='form'
-					onSubmit={this.handleFormSubmit}>
-					<Grid item lg={12} md={12} sm={12} xs={12} className='p-9 h-full position-relative'>
-						{/* <div className='p-9 h-full position-relative'> */}
+				  <Grid item lg={12} md={12} sm={12} xs={12}>
+					<ValidatorForm
+						ref='form'
+						onSubmit={this.handleFormSubmit}>
+						<div className='p-9 h-full position-relative'>
 							<TextValidator
 								className='mb-6 w-full'
 								variant='outlined'
@@ -118,27 +118,27 @@ class ForgotPassword extends Component {
 								]}
 							/>
 							<Grid
-							  item
-						      lg={12}
-							  md={12}
-							  sm={12}
-							  xs={12}
+							item
+							lg={12}
+							md={12}
+							sm={12}
+							xs={12}
 							>
-								<Button
-									variant='contained'
-									color='warning'
-									disabled={this.props.loggingIn}
-									type='submit'
-									className='capitalize font-medium w-full mb-4'
-									style={{
-										background: '#224459',
-										color: '#fff',
-										// width: '84%',
-										padding: 10,
-										// marginLeft: 36,
-										// marginRight: 36,
-									}}>
-									Reset
+							<Button
+								variant='contained'
+								color='warning'
+								disabled={this.props.loggingIn}
+								type='submit'
+								className='capitalize font-medium w-full mb-4'
+								style={{
+									background: '#224459',
+									color: '#fff',
+									// width: '84%',
+									padding: 10,
+									// marginLeft: 36,
+									// marginRight: 36,
+								}}>
+								Reset
 								</Button>
 								{this.props.loggingIn && (
 									<CircularProgress
@@ -146,27 +146,27 @@ class ForgotPassword extends Component {
 										className={classes.buttonProgress}
 									/>
 								)}
-						    </Grid>
-						{/* </div> */}
-						<Grid
-							item
-							lg={12}
-							md={12}
-							sm={12}
-							xs={12}
-							className='mb-1'
-							style={{ textAlign: 'center' }}>
-							<span className='mr-2 ml-5'>Already have an account?</span>
-							<Button
-								className='capitalize font-medium'
-								onClick={() =>
-									this.props.history.push('/signin')
-								}>
-								Sign In
-							</Button>
-						</Grid>
+							</Grid>
+						</div>
+							<Grid
+								item
+								lg={12}
+								md={12}
+								sm={12}
+								xs={12}
+								className='mb-1'
+								style={{ textAlign: 'center' }}>
+								<span className='mr-2 ml-5'>Already have an account?</span>
+								<Button
+									className='capitalize font-medium'
+									onClick={() =>
+										this.props.history.push('/signin')
+									}>
+									Sign In
+								</Button>
+							</Grid>
+						</ValidatorForm>
 					</Grid>
-				</ValidatorForm>
 				</Grid>
 			  </Card>
 			</Grid>

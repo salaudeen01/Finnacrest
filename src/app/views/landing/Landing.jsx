@@ -77,7 +77,7 @@ class Landing extends Component {
       <div >
         
             <AppAppBar user={this.state.user} />
-        <div className="m-sm-30">    
+        {/* <div className="m-sm-30">    
             <Grid container spacing={2}>
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <CustomSlider />
@@ -116,9 +116,8 @@ class Landing extends Component {
             <Grid container spacing={2} justify="flex-center">
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Card>
-                  {/* <CardHeader> */}
                       <Typography variant='h5' className='text-center py-6'>Buy Our Products</Typography>
-                  {/* </CardHeader> */}
+                  
                   <CardMedia>
                       <SolidGameCardDemo/>
                   </CardMedia> 
@@ -126,16 +125,13 @@ class Landing extends Component {
               </Grid>
             </Grid>
             <Grid container spacing={2}>
-              {/* <div className='py-2' /> */}
-              {/* <Grid item lg={12} md={12} sm={12} xs={12}>
-                <Section3 />            
-              </Grid> */}
               <div className='py-2' />
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Footer />            
               </Grid>
             </Grid>
         </div>
+       */}
       </div>
     );
   }

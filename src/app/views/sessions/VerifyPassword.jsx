@@ -108,10 +108,10 @@ class VerifyPassword extends Component {
 								</Grid>
 							</Grid>
 							<Grid container className='bg-light-gray'>
+								<Grid item lg={12} md={12} sm={12} xs={12}>
 								<ValidatorForm
 									ref='form'
 									onSubmit={this.handleFormSubmit}>
-									<Grid item lg={12} md={12} sm={12} xs={12}>
 										<div className='p-9 h-full position-relative'>
 											<TextValidator
 												className='mb-6 w-full'
@@ -214,8 +214,8 @@ class VerifyPassword extends Component {
 												Already have an account? Login
 											</Button>
 										</Grid>
-									</Grid>
-								</ValidatorForm>
+									</ValidatorForm>
+								</Grid>
 							</Grid>
 						</Card>
 					</Grid>

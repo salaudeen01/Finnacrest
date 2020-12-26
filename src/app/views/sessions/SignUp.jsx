@@ -107,7 +107,7 @@ class SignUp extends Component {
             alignItems='center'
           >
             <Grid lg={11} md={11} sm={11} xs={11}>
-              <Card className='' style={{ background: "#224459" }}>
+              <Card className='' style={{ background: "#224459", height:'60%'}}>
                 <Grid container className='p-2' spacing={3}>
                   <Grid lg={4} md={4} sm={12} xs={12}>
                     <Card className='signup-card '>
@@ -138,12 +138,15 @@ class SignUp extends Component {
                           </Typography>
                         </Grid>
                       </Grid>
-                      <Grid container className='bg-light-gray'>
+                      <Grid container className='bg-light-gray'
+                      	className='p-2 bg-light-gray'
+                        justify='center'
+                        alignItems='center'>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <ValidatorForm
                           ref='form'
                           onSubmit={this.handleFormSubmit}
                         >
-                          <Grid item lg={12} md={12} sm={12} xs={12}>
                             <div className='p-9 h-full position-relative'>
                               <TextValidator
                                 className='mb-3 w-full'
@@ -229,7 +232,7 @@ class SignUp extends Component {
                                   type='submit'
                                   className='capitalize font-medium w-full'
                                   style={{
-                                    background: "#04956b",
+                                    background: "#224459",
                                     color: "#fff",
                                     // width: "84%",
                                     padding: 10,
@@ -268,8 +271,8 @@ class SignUp extends Component {
                                 Sign In
                               </Button>
                             </Grid>
-                          </Grid>
-                        </ValidatorForm>
+                          </ValidatorForm>
+                        </Grid>
                       </Grid>
                     </Card>
                   </Grid>

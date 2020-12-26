@@ -168,7 +168,8 @@ export const numberFormat = (value) =>
   }).format(value);
 
 export const payID = () => {
-  return "pk_test_d96f199a0651f1162b81c56256d5842372b845f2";
+  return "pk_test_c236c6a4facaed7a4cb7968769410ca980c10fdf";
+  //  "pk_test_d96f199a0651f1162b81c56256d5842372b845f2";
 };
 
 export const getReference = () => {

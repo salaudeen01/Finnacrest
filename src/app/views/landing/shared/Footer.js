@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     backgroundColor: "#000",
+    color: 'white'
   },
   container: {
     display: "flex",
@@ -74,11 +75,11 @@ export default function Footer() {
   const classes = useStyles();
   const date = new Date();
   return (
-    <div component='footer' className={classes.root}>
+    <div component='footer' className={classes.root} className="bg-primary">
       <Container className={classes.container}>
         <Grid container justify='space-between' spacing={5} className='mb-10'>
           <Grid item xs={6} sm={6} md={3} lg={3} className='p-5 text-white'>
-            <Typography variant='h6' style={{ fontStyle: "underline" }}>
+            <Typography variant='h6' className="text-white" style={{ fontStyle: "underline"}}>
               Links
             </Typography>
             <br />
@@ -89,7 +90,7 @@ export default function Footer() {
             <Typography variant='p'>About Us</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={3} lg={3} className='p-5 text-white'>
-            <Typography variant='h6'>Features</Typography>
+            <Typography variant='h6' className="text-white">Features</Typography>
             <br />
             <Divider variant='inset' />
             <Typography variant='p'>Savings</Typography>
@@ -99,7 +100,7 @@ export default function Footer() {
             <Typography variant='p'>Free interest loan</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={3} lg={3} className='p-5 text-white'>
-            <Typography variant='h6'>Social Media</Typography>
+            <Typography variant='h6' className="text-white">Social Media</Typography>
             <br />
             <Typography variant='p'>Savings</Typography>
             <br />
@@ -111,15 +112,8 @@ export default function Footer() {
             <img src={logo} width='100px' height='30px' alt='company-logo' />
           </Grid>
         </Grid>
-        <Divider variant='fullWidth' style={{ backgroundColor: "#ffffff" }} />
-        <Grid container className='p-5 text-center'>
-          <Grid item xs={6} sm={6} md={6} lg={6}>
-            Terems & Condition Apply
-          </Grid>
-          <Grid item xs={6} sm={6} md={6} lg={6}>
-            SESIS {date.getFullYear()}{" "}
-          </Grid>
-        </Grid>
+        <Divider variant='fullWidth' style={{ backgroundColor: "#ffffff" }} />        
+        <p className="text-white">&copy; 2017-2020 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
       </Container>
     </div>
   );

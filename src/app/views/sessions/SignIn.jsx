@@ -105,66 +105,69 @@ class SignIn extends Component {
 									</Typography>
 								</Grid>
 							</Grid>
-							<Grid container className='bg-light-gray justify-center w-full'>
+							<Grid container
+							   className='bg-light-gray'
+							   justify='center'
+							   alignItems='center'>
+							  <Grid item lg={12} md={12} sm={12} xs={12}>
 								<ValidatorForm
-									ref='form'
-									onSubmit={this.handleFormSubmit}>
-									<Grid item lg={12} md={12} sm={12} xs={12}>
-										<div className='p-9 h-full position-relative'>
-											<TextValidator
-												className='mb-6 w-full'
-												variant='outlined'
-												label='Email'
-												onChange={this.handleChange}
-												type='email'
-												name='email'
-												value={email}
-												validators={['required', 'isEmail']}
-												errorMessages={[
-													'this field is required',
-													'email is not valid',
-												]}
-											/>
-											<TextValidator
-												className='mb-6 w-full'
-												label='Password'
-												variant='outlined'
-												onChange={this.handleChange}
-												name='password'
-												type='password'
-												value={password}
-												validators={['required']}
-												errorMessages={['this field is required']}
-											/>
+								  ref='form'
+								  onSubmit={this.handleFormSubmit}>
+										<div className='p-9 w-full position-relative'>
+									<TextValidator
+										className='mb-6 w-full'
+										variant='outlined'
+										label='Email'
+										onChange={this.handleChange}
+										type='email'
+										name='email'
+										value={email}
+										validators={['required', 'isEmail']}
+										errorMessages={[
+											'this field is required',
+											'email is not valid',
+										]}
+									/>
+									<TextValidator
+										className='mb-6 w-full'
+										label='Password'
+										variant='outlined'
+										onChange={this.handleChange}
+										name='password'
+										type='password'
+										value={password}
+										validators={['required']}
+										errorMessages={['this field is required']}
+									/>
 										
-										<Grid
-											item
-											lg={12}
-											md={12}
-											sm={12}
-											xs={12}
-											>
-											<Button
-												variant='contained'
-												color='warning'
-												disabled={this.props.loggingIn}
-												type='submit'
-												className='capitalize font-medium w-full'
-												style={{
-													background: '#224459',
-													color: '#fff',
-													// width: '84%',
-													padding: 10,
-													// marginLeft: 36,
-													// marginRight: 36,
-												}}>
-												Login
-											</Button>
-											{this.props.loggingIn && (
-												<CircularProgress
-													size={24}
-													className={classes.buttonProgress}
-												/>
+									<Grid
+										item
+										lg={12}
+										md={12}
+										sm={12}
+										xs={12}
+										>
+										<Button
+											variant='contained'
+											color='warning'
+											disabled={this.props.loggingIn}
+											type='submit'
+											className='capitalize font-medium w-full'
+											style={{
+												background: '#224459',
+												color: '#fff',
+												// width: '84%',
+												padding: 10,
+												// marginLeft: 36,
+												// marginRight: 36,
+											}}>
+											Login
+										</Button>
+										{this.props.loggingIn && (
+											<CircularProgress
+												size={24}
+												className={classes.buttonProgress}
+											/>
 											)}
 										</Grid>
 									</div>
@@ -201,8 +204,8 @@ class SignIn extends Component {
 												Forgot password?
 											</Button>
 										</Grid>
-									</Grid>
-								</ValidatorForm>
+								   </ValidatorForm>
+								</Grid>
 							</Grid>
 						</Card>
 					</Grid>

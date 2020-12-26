@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Color from 'color';
 // import GoogleFont from 'react-google-font-loader';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,6 +14,8 @@ import img2 from "../../../../assets/shoe.jpg";
 import img3 from "../../../../assets/jug.jpg";
 import img4 from "../../../../assets/phone.jpg";
 import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
+import { Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
@@ -64,7 +66,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const CustomCard = ({ classes, image, title, subtitle }) => {
+const CustomCard = ({ classes, image, title, subtitle, user }) => {
   const mediaStyles = useFourThreeCardMediaStyles();
   return (
     <CardActionArea className={classes.actionArea}>
@@ -77,6 +79,27 @@ const CustomCard = ({ classes, image, title, subtitle }) => {
             {title}
           </Typography>
           <Typography className={classes.subtitle} className="text-white">{subtitle}</Typography>
+            {user != null ? (
+              <Link to='/product_financing' className="nav-link">
+                <Button
+                  variant='outlined'
+                  color='secondary'
+                  style={{ color: "#fff" }}
+                >
+                  Details
+                </Button>
+              </Link>
+            ) : (
+              <Link to='/signin' className="nav-link">
+                <Button
+                  variant='outlined'
+                  color='secondary'
+                  style={{ color: "#fff" }}
+                >
+                  Details
+                </Button>
+              </Link>
+            )}
         </CardContent>
       </Card>
     </CardActionArea>
@@ -95,43 +118,36 @@ export const SolidGameCardDemo = React.memo(function SolidGameCard(props) {
         <Grid  item lg={3} md={4} sm={6} xs={12}>
           <CustomCard
             classes={styles}
-            title={"item.title"}
-            subtitle={"item.subtitle"}
+            title={"Television"}
+            subtitle={""}
             image={img1}
+            user={props.user}
           />
         </Grid> 
         <Grid  item lg={3} md={4} sm={6} xs={12}>
           <CustomCard
               classes={styles}
-              title={'Dota 2'}
-              subtitle={'Be a Legend!'}
+              title={'Footwares'}
+              subtitle={''}
               image={img2}
             />
         </Grid>
         <Grid  item lg={3} md={4} sm={6} xs={12}>
           <CustomCard
               classes={styles}
-              title={'Dota 2'}
-              subtitle={'Be a Legend!'}
+              title={'Electronics'}
+              subtitle={''}
               image={img3}
             />
         </Grid>
         <Grid  item lg={3} md={4} sm={6} xs={12}>
           <CustomCard
               classes={styles}
-              title={'Dota 2'}
-              subtitle={'Be a Legend!'}
+              title={'Phones'}
+              subtitle={''}
               image={img4}
             />
-        </Grid>
-        <Grid  item lg={3} md={4} sm={6} xs={12}>
-          <CustomCard
-              classes={styles}
-              title={'Dota 2'}
-              subtitle={'Be a Legend!'}
-              image={img2}
-            />
-        </Grid>
+        </Grid>        
       </Grid>
     </>
   );
