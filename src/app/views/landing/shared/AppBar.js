@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import logo from "../../../../assets/sesis.jpg";
-import logos from "../../../../assets/sesis9.jpeg";
+import logos from "../../../../assets/logo3.png";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import img4 from "../../../../assets/baner.png";
@@ -16,6 +16,7 @@ import Section2 from "./Section2";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    overflowX:'hidden'
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -34,7 +35,7 @@ export default function AppAppBar(props) {
       <nav className="navbar navbar-expand-lg navbar-dark bg-white sticky-top">
           <div className="container-fluid">
             <Link className="navbar-brand" to='/'>
-              <img src={logos} width='200px' height='60px' alt='company-logo'/>
+              <img src={logos} alt='company-logo'/>
             </Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
@@ -49,7 +50,8 @@ export default function AppAppBar(props) {
                       <Link to='/dashboard' className="nav-link">
                         <Button
                           variant='outlined'
-                          color='secondary'
+                          color='primary'
+                          className='bg-primary text-white'
                           style={{ color: "" }}
                         >
                           Login
@@ -59,7 +61,8 @@ export default function AppAppBar(props) {
                       <Link to='/signin' className="nav-link">
                         <Button
                           variant='outlined'
-                          color='secondary'
+                          color='primary'
+                          className='bg-primary text-white'
                           style={{ color: "" }}
                         >
                           Login
@@ -71,7 +74,8 @@ export default function AppAppBar(props) {
                     <Link to='/signin' className="nav-link">
                         <Button
                           variant='outlined'
-                          color='secondary'
+                          color='primary'
+                          className='bg-primary text-white'
                           style={{ color: "" }}
                         >
                           Create An Account 
@@ -82,48 +86,49 @@ export default function AppAppBar(props) {
             </div>                
           </div>
         </nav>
+      <div className=''>
         <div id="carouselExampleFade" className="carousel slide carousel-fade" data-bs-ride="carousel">
-          <div className="carousel-inner">
-            <div className="carousel-item active" style={{position:'relative'}}>
-              <div className="carousel-caption d-none d-md-block text-dark" style={{top:100,right:600, width:400}}>
-                <h5>First slide label</h5>
-                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.
-                    Nulla vitae elit libero, a pharetra augue mollis interdum
-                    Nulla vitae elit libero, a pharetra augue mollis interdum</p>
-                <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="#" role="button">Get Started &raquo;</a></p>
+            <div className="carousel-inner">
+              <div className="carousel-item active" style={{position:'relative'}}>
+                <div className="carousel-caption d-none d-md-block text-white" style={{top:350, left:500, width:400}}>
+                  <h4 className="text-white">Savings</h4>
+                  <p>Nulla vitae elit libero, a pharetra augue mollis interdum.
+                      Nulla vitae elit libero, a pharetra augue mollis interdum
+                      Nulla vitae elit libero, a pharetra augue mollis interdum</p>
+                  <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="#" role="button">Get Started &raquo;</a></p>
+                </div>
+                <img src={img4} className="d-block" width="100%" height="80%" alt="..." />
               </div>
-              <img src={img4} className="d-block" width="100%" height="80%" alt="..." />
-            </div>
-            <div className="carousel-item" style={{position:'relative'}}>
-              <div className="carousel-caption d-none d-md-block text-white" style={{top:100,right:600, width:400}}>
-                <h5 className="text-white">First slide label</h5>
-                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.
-                    Nulla vitae elit libero, a pharetra augue mollis interdum
-                    Nulla vitae elit libero, a pharetra augue mollis interdum</p>
-                <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="#" role="button">Get Started &raquo;</a></p>
+              <div className="carousel-item" style={{position:'relative'}}>
+                <div className="carousel-caption d-none d-md-block text-white text-center" style={{top:350, left:500, width:400}}>
+                  <h4 className="text-white">Free Interest Loan</h4>
+                  <p>Nulla vitae elit libero, a pharetra augue mollis interdum.
+                      Nulla vitae elit libero, a pharetra augue mollis interdum
+                      Nulla vitae elit libero, a pharetra augue mollis interdum</p>
+                  <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="#" role="button">Get Started &raquo;</a></p>
+                </div>
+                <img src={img4} className="d-block" width="100%" height="80%" alt="..." />
               </div>
-              <img src={img4} className="d-block" width="100%" height="80%" alt="..." />
-            </div>
-            <div className="carousel-item" style={{position:'relative'}}>
-              <div className="carousel-caption d-none d-md-block text-dark" style={{top:100,right:600, width:400}}>
-                <h5>First slide label</h5>
-                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.
-                    Nulla vitae elit libero, a pharetra augue mollis interdum
-                    Nulla vitae elit libero, a pharetra augue mollis interdum</p>
-                <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="#" role="button">Get Started &raquo;</a></p>
+              <div className="carousel-item" style={{position:'relative'}}>
+                <div className="carousel-caption d-none d-md-block text-white" style={{top:350, left:500, width:400}}>
+                  <h4 className="text-white">Business Finance</h4>
+                  <p>Nulla vitae elit libero, a pharetra augue mollis interdum.
+                      Nulla vitae elit libero, a pharetra augue mollis interdum
+                      Nulla vitae elit libero, a pharetra augue mollis interdum</p>
+                  <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="#" role="button">Get Started &raquo;</a></p>
+                </div>
+                <img src={img4} className="d-block" width="100%" height="80%" alt="..." />
               </div>
-              <img src={img4} className="d-block" width="100%" height="80%" alt="..." />
             </div>
-          </div>
-          <a className="carousel-control-prev" href="#carouselExampleFade" role="button" data-bs-slide="prev">
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Previous</span>
-          </a>
-          <a className="carousel-control-next" href="#carouselExampleFade" role="button" data-bs-slide="next">
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Next</span>
-          </a>
-        </div> 
+            <a className="carousel-control-prev" href="#carouselExampleFade" role="button" data-bs-slide="prev">
+              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span className="visually-hidden">Previous</span>
+            </a>
+            <a className="carousel-control-next" href="#carouselExampleFade" role="button" data-bs-slide="next">
+              <span className="carousel-control-next-icon" aria-hidden="true"></span>
+              <span className="visually-hidden">Next</span>
+            </a>
+          </div> 
         <div className="container-fluid">
           <div className="row featurette text-center">
             <Section1 />
@@ -137,18 +142,18 @@ export default function AppAppBar(props) {
               <h3 className="mb-8">OUR SERVICES</h3>
               <div className="row row-cols-1 row-cols-md-3 g-3">          
                 <div className="col-lg-3 col-md-6">
-                  <div className="card h-280">
-                    <img src={logo} className="card-img-top" alt="..." />
+                  <div className="card bg-dark py-10 rounded-xxl">
+                    {/* <img src={logo} className="card-img-top" alt="..." /> */}
                     <div className="card-body">
-                      <h5 className="card-title">Savings</h5>
+                      <h5 className="card-title text-white ">Savings</h5>
                       <p className="card-text">Fast, secure and reliable. Saving and withdrawing your money at your convinient and also make a target .</p>
                       <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="#" role="button">Get Started &raquo;</a></p>             
                     </div>
                   </div>
                 </div> 
                 <div className="col-lg-3 col-md-6">
-                  <div className="card h-280">
-                    <img src={logo} className="card-img-top" alt="..." />
+                  <div className="card py-10 rounded-xxl">
+                    {/* <img src={logo} className="card-img-top" alt="..." /> */}
                     <div className="card-body">
                       <h5 className="card-title">Interest Free Loan</h5>
                       <p className="card-text">Say bye-bye to high interest rates. Get access to zero interest Personal or Business loans to take care of your most pressing needs, loans with workable payback periods. Build your credit ratings to unlock larger loan amounts.</p>
@@ -157,18 +162,18 @@ export default function AppAppBar(props) {
                   </div>
                 </div>          
                 <div className="col-lg-3 col-md-6">
-                  <div className="card h-280">
-                    <img src={logo} className="card-img-top" alt="..." />
+                  <div className="card bg-dark py-10 rounded-xxl">
+                    {/* <img src={logo} className="card-img-top" alt="..." /> */}
                     <div className="card-body">
-                      <h5 className="card-title">Business Financing</h5>
+                      <h5 className="card-title text-white">Business Financing</h5>
                       <p className="card-text">Say bye-bye to high interest rates. Get access to zero interest Personal or Business loans to take care of your most pressing needs, loans with workable payback periods. Build your credit ratings to unlock larger loan amounts.</p>
                       <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="#" role="button">Get Started &raquo;</a></p>
                     </div>
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-6">
-                  <div className="card h-280">
-                    <img src={logo} className="card-img-top" alt="..." />
+                  <div className="card py-10 rounded-xxl">
+                    {/* <img src={logo} className="card-img-top" alt="..." /> */}
                     <div className="card-body">
                       <h5 className="card-title">Product Financing</h5>
                       <p className="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
@@ -201,6 +206,8 @@ export default function AppAppBar(props) {
             <Footer />
           </footer>
 
+      </div>
+    
       </div>
     </div>
   );

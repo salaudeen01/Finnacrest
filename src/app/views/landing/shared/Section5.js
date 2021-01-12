@@ -30,11 +30,11 @@ class Section5 extends Component {
 
                 <div className="card">
                     <div className="row g-0">
-                    <div className="col-md-4">
+                    <div className="col-md-4 col-xs-12">
                         <img src="/assets/images/01.png" style={{height:300, paddingLeft:100, paddingRight:40}}/>
                     </div>
-                    <div className="col-md-8">
-                        <div className="card-body text-center" style={{paddingRight:100, paddingLeft:40}}>
+                    <div className="col-md-8 col-xs-12">
+                        <div className="card-body text-center" >
                         <h2 className="card-title mt-10">Save and Invest At Your Convenience</h2>
                         <p className="card-text">No Haram charges, no unlawful investments, no interest loan. <br/>
                              Download SESIS now and take control of your money and wealth.</p>

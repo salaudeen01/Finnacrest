@@ -15,10 +15,11 @@ class PayOption extends Component {
         let email =  localStorage.getItem('email');
         this.state = {
             email: email,
-            key: "",
+            key: payID(),
             reference:"",
         }
         this.close = this.close.bind(this);
+        
     }
 componentDidMount(){
     const requestOptions = {
@@ -33,7 +34,7 @@ componentDidMount(){
             return Promise.reject(error);
         }
         localStorage.setItem("token", data[0].token);
-        this.setState({key: data[0].public_key, reference:data[0].code})
+        this.setState({reference:data[0].code})
     })
     .catch((error) => {
         if (error === "Unauthorized") {
@@ -48,6 +49,7 @@ close = () => {
     render() {
         const {email, key} = this.state
         const {amount, callback} = this.props
+        console.log(amount, email)
         return (
             <div>
                 {key ?

@@ -34,36 +34,36 @@ class Section2 extends Component {
             </div>
         </Grid>
         <Grid item lg={6} md={6} sm={10} xs={12}>
-            <div className="bg text-justify" style={{padding:10, fontSize:16,textAlign:"justify", backgroundColor:'#FF9800'}}>
-              <Typography variant="h4" className="text-justify py-4">
+            <div className="bg text-justify py-8" style={{padding:10, fontSize:16,textAlign:"justify",marginTop:120, backgroundColor:'#FFDF4D'}}>
+              <Typography variant="h4" className="text-center">
                   <b>Why Us</b>
               </Typography>
-                <ol style={{lineHeight:2}}>
-                    <li>
+                <ul style={{lineHeight:2, listStyleType:'none'}}>
+                    <li><i class="fa fa-atom text-bold px-4"></i>
                         You deserve good things. Grow 
                         your savings on your own terms 
                         with our completely automated 
                         process & plans.
                     </li>
-                    <li>
+                    <li><i class="fa fa-atom text-bold px-4"></i>
                         You deserve good things. Grow 
                         your savings on your own terms 
                         with our completely automated 
                         process & plans.
                     </li>
-                    <li>
+                    <li><i class="fa fa-atom text-bold px-4"></i>
                         You deserve good things. Grow 
                         your savings on your own terms 
                         with our completely automated 
                         process & plans.
                     </li>
-                    <li>
+                    <li><i class="fa fa-atom text-bold px-4"></i>
                         You deserve good things. Grow 
                         your savings on your own terms 
                         with our completely automated 
                         process & plans.
                     </li>
-                </ol>
+                </ul>
               {/* <Typography className="text-center py-4" style={{fontSize:16}}>
                     But I must explain to you how all this is a mistaken <br/> idea of denouncing pleasure. 
                     But I must explain to you <br/> how all this is a mistaken idea of denouncing.

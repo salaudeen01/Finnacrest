@@ -25,8 +25,8 @@ class Section1 extends Component {
         spacing={2}
         className='px-4'
       >
-        <Grid item lg={6} md={6} sm={10} xs={12} className='p-80'>
-            <div style={{padding:100, fontSize:16, textAlign:'center',alignContent:'center'}}>
+        <Grid item lg={6} md={6} sm={10} xs={12}>
+            <div style={{paddingTop:100, fontSize:16, textAlign:'center',alignContent:'center'}}>
               <Typography variant="h4" className="text-center py-4">
                   <b>About Us</b>
               </Typography>

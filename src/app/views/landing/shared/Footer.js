@@ -13,7 +13,7 @@ import {
   List,
   ListSubheader,
 } from "@material-ui/core";
-import logo from "../../../../assets/sesis.jpg";
+import logo from "../../../../assets/logo3.png";
 
 function Copyright() {
   return (
@@ -77,7 +77,7 @@ export default function Footer() {
   return (
     <div component='footer' className={classes.root} className="bg-primary">
       <Container className={classes.container}>
-        <Grid container justify='space-between' spacing={5} className='mb-10'>
+        <Grid container justify='space-between' spacing={5} className='mb-10 py-5'>
           <Grid item xs={6} sm={6} md={3} lg={3} className='p-5 text-white'>
             <Typography variant='h6' className="text-white" style={{ fontStyle: "underline"}}>
               Links

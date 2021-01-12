@@ -249,7 +249,7 @@ check = (e)=>{
   const { bank_data, bank_code } = this.state;
   this.setState({ bank_data:{ ...bank_data, [name]:value }, isChecking:true })
   if(e.target.value.length == 10){
-    const requestOptions = {
+    const requestOptions = { 
       method: 'GET',
       headers: { 'authorization': 'Bearer sk_test_629b392e2345d122b5941f00b27cdd91957ca848', 'Content-Type': 'application/json' },
   };

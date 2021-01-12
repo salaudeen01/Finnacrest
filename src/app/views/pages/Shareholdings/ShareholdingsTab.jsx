@@ -546,7 +546,8 @@ class Shareholdings extends Component {
         <Dialog open={showSave} onClose={this.handleCloseQuickSave}
         TransitionComponent={Transition}
         aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description">
+        aria-describedby="alert-dialog-slide-description"
+        scroll="body">
         <AppBar style={{ position: "relative", }} color='primary'>
         <Toolbar>
         <IconButton
