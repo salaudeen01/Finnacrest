@@ -246,7 +246,7 @@ class Transaction extends Component {
                           <Button className="uppercase"
                               size="small"
                               variant="outlined">
-                                  Continue Business
+                                  Business Finance
                           </Button> 
                         </Link>
                       </Grid>
@@ -254,7 +254,7 @@ class Transaction extends Component {
                        <Link to="/product_financing"> <Button className="uppercase"
                             size="small"
                             variant="outlined">
-                            Continue Shopping
+                            Product Finance
                         </Button>
                       </Link>
                       </Grid>

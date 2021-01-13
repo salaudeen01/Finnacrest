@@ -130,7 +130,7 @@ class Shareholdings extends Component {
                           <Button className="uppercase"
                               size="small"
                               variant="outlined">
-                                  Continue Business
+                                  Business Finance
                           </Button> 
                         </Link>
                       </Grid>
@@ -138,7 +138,7 @@ class Shareholdings extends Component {
                        <Link to="/product_financing"> <Button className="uppercase"
                             size="small"
                             variant="outlined">
-                            Continue Shopping
+                            Product Finance
                         </Button>
                       </Link>
                       </Grid>

@@ -117,7 +117,7 @@ class SignUp extends Component {
                         justify='center'
                         alignItems='center'
                       >
-                        <div className='p-4 mt-4'>
+                        <div className='p-4 mt-1'>
                           <Grid
                             container
                             className='p-2 '
@@ -175,7 +175,10 @@ class SignUp extends Component {
                                 variant='outlined'
                                 label='Phone Number'
                                 onChange={this.handleChange}
-                                type='type'
+                                type='tel'
+                                inputProps={{
+                                  maxLength: 11,
+                                }}
                                 name='phone_no'
                                 value={data.phone_no}
                                 validators={["required"]}
@@ -207,7 +210,7 @@ class SignUp extends Component {
                                 errorMessages={["this field is required"]}
                               />
                               <TextValidator
-                                className='mb-3 w-full'
+                                className='mb-1 w-full'
                                 variant='outlined'
                                 label='Confirm Password'
                                 onChange={this.handleChange}
@@ -223,7 +226,7 @@ class SignUp extends Component {
                                 md={12}
                                 sm={12}
                                 xs={12}
-                                className='mb-3'
+                                className='mb-1'
                               >
                                 <Button
                                   variant='contained'
@@ -234,10 +237,7 @@ class SignUp extends Component {
                                   style={{
                                     background: "#224459",
                                     color: "#fff",
-                                    // width: "84%",
                                     padding: 10,
-                                    // marginLeft: 36,
-                                    // marginRight: 36,
                                   }}
                                 >
                                   Sign Up
@@ -280,7 +280,7 @@ class SignUp extends Component {
                     <Hidden xsDown smDown>
                       <Grid
                         container
-                        className='p-2 mt-8'
+                        className='p-2 mt-2'
                         justify='center'
                         alignItems='center'
                       >

@@ -746,7 +746,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                           <Button className="uppercase"
                               size="small"
                               variant="outlined">
-                                  Continue Business
+                                  Business Finance
                           </Button> 
                         </Link>
                       </Grid>
@@ -754,7 +754,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                        <Link to="/product_financing"> <Button className="uppercase"
                             size="small"
                             variant="outlined">
-                            Continue Shopping
+                            Product Finance
                         </Button>
                       </Link>
                       </Grid>
