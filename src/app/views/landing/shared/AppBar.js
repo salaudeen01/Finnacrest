@@ -71,7 +71,7 @@ export default function AppAppBar(props) {
                     )}
                 </li>
                 <li className="nav-item">
-                    <Link to='/signin' className="nav-link">
+                    <Link to='/signup' className="nav-link">
                         <Button
                           variant='outlined'
                           color='primary'
@@ -199,7 +199,7 @@ export default function AppAppBar(props) {
           </div>
           <hr className="featurette-divider" />
           <div>
-            <Section5 />
+            {/* <Section5 /> */}
           </div>
           <br className="featurette-divider" />
           <footer className="">
