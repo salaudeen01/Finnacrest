@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import {getReference, getConfig, payID } from '../../../config/config'
-// import PaystackButton from 'react-paystack';
-import  { usePaystackPayment, PaystackButton, PaystackConsumer } from 'react-paystack';
+import PaystackButton from 'react-paystack';
 import { authHeader } from "../../../redux/logic";
 import { withStyles } from "@material-ui/styles";
 import { withRouter } from "react-router-dom";
@@ -54,7 +53,7 @@ close = () => {
         return (
             <div>
                 {key ?
-                <PaystackConsumer
+                <PaystackButton
                     text="Make Payment"
                     className="payButton"
                     callback={callback}
