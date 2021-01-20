@@ -38,108 +38,152 @@ export default function AppAppBar(props) {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-white sticky-top">
-          <div className="container-fluid">
+    <div>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-transparent sticky-top">
+        <div className="container-fluid">
             <Link className="navbar-brand" to='/'>
-              <img src={logos} alt='company-logo'/>
+            <img src={logos} alt='company-logo'/>
             </Link>
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
+            <button className="navbar-toggler bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse navbar-right" id="navbarTogglerDemo02">
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              </ul>
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            </ul>
 
-              <ul className="navbar-nav mb-2 mb-lg-0 navbar-right">
+            <ul className="navbar-nav mb-2 mb-lg-0 navbar-right">
+            <li className="nav-item mt-2">
+                <a className="nav-link text-dark active" aria-current="page" href="#home-section">Home</a>
+            </li>
+            {/* <li className="nav-item mt-2 dropdown">
+                <a className="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    About
+                </a>
+            <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a className="dropdown-item" href="#team-section">Team</a></li>
+                <li><a className="dropdown-item" href="#faq-section">FAQ</a></li>
+                <li><a className="dropdown-item" href="#testimonials-section">Testimonials</a></li>
+            </ul>
+            </li> */}
+            <li className="nav-item mt-2">
+                <a className="nav-link text-dark" href="#about-section">About</a>
+            </li>
+            <li className="nav-item mt-2">
+                <a className="nav-link text-dark" href="#services-section">Services</a>
+            </li>
+            <li className="nav-item mt-2">
+                <a className="nav-link text-dark" href="#faq">FAQ</a>
+            </li>
+            <li className="nav-item mt-2">
+                <a className="nav-link text-dark" href="#contact-section">Contact</a>
+            </li>
                 <li className="nav-item">
                     {props.user != null ? (
-                      <Link to='/dashboard' className="nav-link">
+                    <Link to='/dashboard' className="nav-link">
                         <Button
-                          variant='outlined'
-                          color='primary'
-                          className='bg-primary text-white'
-                          style={{ color: "" }}
+                        variant='outlined'
+                        color='primary'
+                        className='bg-primary text-white'
+                        style={{ color: "" }}
                         >
-                          Login
+                        Login
                         </Button>
-                      </Link>
+                    </Link>
                     ) : (
-                      <Link to='/signin' className="nav-link">
+                    <Link to='/signin' className="nav-link">
                         <Button
-                          variant='outlined'
-                          color='primary'
-                          className='bg-primary text-white'
-                          style={{ color: "" }}
+                        variant='outlined'
+                        color='primary'
+                        className='bg-primary text-white'
+                        style={{ color: "" }}
                         >
-                          Login
+                        Login
                         </Button>
-                      </Link>
+                    </Link>
                     )}
                 </li>
                 <li className="nav-item">
                     <Link to='/signup' className="nav-link">
                         <Button
-                          variant='outlined'
-                          color='primary'
-                          className='bg-primary text-white'
-                          style={{ color: "" }}
+                        variant='outlined'
+                        color='primary'
+                        className='bg-primary text-white'
+                        style={{ color: "" }}
                         >
-                          Create An Account 
+                        Create An Account 
                         </Button>
-                  </Link>
+                </Link>
                 </li>
-              </ul>
+            </ul>
             </div>                
-          </div>
-        </nav>
+        </div>
+    </nav>
       <div className=''>
-        <div id="carouselExampleFade" className="carousel slide carousel-fade" data-bs-ride="carousel">
-            <ol className="carousel-indicators">
-                <li data-bs-target="#carouselExampleFade" data-bs-slide-to="0" className="active"></li>
-                <li data-bs-target="#carouselExampleFade" data-bs-slide-to="1"></li>
-                <li data-bs-target="#carouselExampleFade" data-bs-slide-to="2"></li>
-            </ol>
-            <div className="carousel-inner">
-              <div className="carousel-item active" style={{position:'relative'}}>
-                <div className="carousel-caption d-none d-md-block text-white" style={{top:350, left:500, width:400}}>
-                  <h4 className="text-white">Savings</h4>
-                  <p>Save periodically, automatically or manually. You can also save as you go, on your own terms. </p>
-                  <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="/signin" role="button">Get Started &raquo;</a></p>
+      <div className="site-blocks-cover overlay" data-bs-slide="fade" id="home-section" style={{
+        backgroundImage: `url(${"/assets/baner.png"})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+        minHeight: "500px",
+        overflowX:'hidden',
+        height: "calc(100vh)"
+    }}>
+        <div className="contaner">
+            <div className="row align-items-center justify-content-center text-center">
+                <div className="col-md-10 mt-lg-5 text-center">
+                    <div id="carouselExampleDark" className="carousel carousel-dark slide" data-bs-ride="carousel">
+                    <ol className="carousel-indicators" >
+                        <li data-bs-target="#carouselExampleDark" data-bs-slide-to="0" className="active text-white"></li>
+                        <li data-bs-target="#carouselExampleDark" data-bs-slide-to="1" className="text-white"></li>
+                        <li data-bs-target="#carouselExampleDark" data-bs-slide-to="2" className="text-white"></li>
+                    </ol>
+                    <div className="carousel-inner" style={{paddingTop:400}}>
+                        <div className="carousel-item active" data-bs-interval="10000">
+                        {/* <img  src={img4} className="d-block w-100" alt="..." /> */}
+                        <div className="carousel-caption d-none d-md-block">
+                          <h4 className="text-white">Savings</h4>
+                          <p className="text-white">Save periodically, automatically or manually. You can also save as you go, on your own terms. </p>
+                        </div>
+                        </div>
+                        <div className="carousel-item" data-bs-interval="2000">
+                        {/* <img  src={img4} className="d-block w-100" alt="..." /> */}
+                        <div className="carousel-caption d-none d-md-block">
+                          <h4 className="text-white">Free Interest Loan</h4>
+                          <p className="text-white">Say bye-bye to high interest rates. Get access to zero interest Personal or Business loans to take care of
+                            your most pressing needs, loans with workable payback periods. </p>
+                        </div>
+                        </div>
+                        <div className="carousel-item">
+                        {/* <img  src={img4} className="d-block w-100" alt="..." /> */}
+                        <div className="carousel-caption d-none d-md-block">
+                          <h4 className="text-white">Business Finance</h4>
+                          <p className="text-white">We financially support Small Scale Business or Personnal Business in other to achieve you business goal and plans   </p>
+                        </div>
+                        </div>
+                    </div>
+                    {/* <a className="carousel-control-prev" href="#carouselExampleDark" role="button" data-bs-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Previous</span>
+                    </a>
+                    <a className="carousel-control-next" href="#carouselExampleDark" role="button" data-bs-slide="next"> */}
+                        {/* <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Next</span>
+                    </a> */}
+                    </div>
                 </div>
-                <img src={img4} className="d-block" width="100%" height="80%" alt="..." />
-              </div>
-              <div className="carousel-item" style={{position:'relative'}}>
-                <div className="carousel-caption d-none d-md-block text-white text-center" style={{top:350, left:500, width:400}}>
-                  <h4 className="text-white">Free Interest Loan</h4>
-                  <p>Say bye-bye to high interest rates. Get access to zero interest Personal or Business loans to take care of
-                     your most pressing needs, loans with workable payback periods. </p>
-                  <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="/signin" role="button">Get Started &raquo;</a></p>
-                </div>
-                <img src={img4} className="d-block" width="100%" height="80%" alt="..." />
-              </div>
-              <div className="carousel-item" style={{position:'relative'}}>
-                <div className="carousel-caption d-none d-md-block text-white" style={{top:350, left:500, width:400}}>
-                  <h4 className="text-white">Business Finance</h4>
-                  <p>We financially support Small Scale Business or Personnal Business in other to achieve you business goal and plans   </p>
-
-                  <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="/signin" role="button">Get Started &raquo;</a></p>
-                </div>
-                <img src={img4} className="d-block" width="100%" height="80%" alt="..." />
-              </div>
+                <a href="#next" className="mouse smoothscroll text-white">
+                    <span className="fas fa-mouse text-white">
+                    <span className="fas fa-mouse-alt text-white"></span>
+                    </span>
+                </a>
             </div>
-            {/* <a className="carousel-control-prev" href="#carouselExampleFade" role="button" data-bs-slide="prev">
-              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span className="visually-hidden">Previous</span>
-            </a>
-            <a className="carousel-control-next" href="#carouselExampleFade" role="button" data-bs-slide="next">
-              <span className="carousel-control-next-icon" aria-hidden="true"></span>
-              <span className="visually-hidden">Next</span>
-            </a> */}
-          </div> 
+        </div>
+    </div>
+               
         <div className="container-fluid">              
-          <div className="row featurette text-center">
-            <Section1 />
+          <div className="row featurette text-center" id="about-section">
+            <Section1  />
           </div>
           {/* <hr className="featurette-divider" /> */}
           <div className="row featurette text-center">
@@ -242,7 +286,7 @@ export default function AppAppBar(props) {
                 </div>
             </div>
         </section>                
-        <div className="container">
+        <div className="container" id="faq">
             <div className="row mb-5">
               <div className="col-12 text-center" data-bs-slide="fade">
                   <h2 className="section-title text-primary mt-5 mb-3">Frequently Ask Questions</h2>
