@@ -17,7 +17,7 @@ const redirectRoute = [
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/signin" />
+    component: () => <Redirect to="/" />
   }
 ];
 
@@ -31,7 +31,7 @@ const routes = [
   ...sessionRoutes,
   ...dashboardRoutes,
   ...pageRoutes,
-  // ...landingRoutes,
+  ...landingRoutes,
   // ...materialRoutes,
   // ...utilitiesRoutes,
   // ...dragAndDropRoute,

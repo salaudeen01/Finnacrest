@@ -13,7 +13,7 @@ import {
   List,
   ListSubheader,
 } from "@material-ui/core";
-import logo from "../../../../assets/logo3.png";
+import logo from "../../../../assets/logo1.jpeg";
 
 function Copyright() {
   return (
@@ -101,12 +101,12 @@ export default function Footer() {
           </Grid>
           <Grid item xs={6} sm={6} md={3} lg={3} className='p-5 text-white'>
             <Typography variant='h6' className="text-white">Social Media</Typography>
-            <br />
-            <Typography variant='p'>Savings</Typography>
-            <br />
-            <Typography variant='p'>Investment</Typography>
-            <br />
-            <Typography variant='p'>Free interest loan</Typography>
+            
+            <span style={{fontSize:26}} className="text-white px-2"><i class="fab fa-facebook-square"></i></span>
+            
+            <span style={{fontSize:26}} className="text-white px-2"><i class="fab fa-google-plus-square"></i></span>
+            
+            <span style={{fontSize:26}} className="text-white px-2"><i class="fab fa-twitter-square"></i></span>
           </Grid>
           <Grid item xs={6} sm={6} md={3} lg={3} className='p-15 text-white'>
             <img src={logo} width='100px' height='30px' alt='company-logo' />

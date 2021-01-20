@@ -77,6 +77,7 @@ class Landing extends Component {
       <div >
         
             <AppAppBar user={this.state.user} />
+            {/* <Section4 user={this.state.user} /> */}
         {/* <div className="m-sm-30">    
             <Grid container spacing={2}>
               <Grid item lg={12} md={12} sm={12} xs={12}>
