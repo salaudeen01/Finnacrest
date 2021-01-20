@@ -44,7 +44,7 @@ class AccountProfile extends Component{
     this.uploadedImage = React.createRef();
     this.imageUploader = React.createRef();
     this.state ={
-      avatar: '/assets/images/dummy.jpg',
+      avatar: '/assets/images/profile.svg',
       profile_pic:null,
     }
     this.handleProfileImage = this.handleProfileImage.bind(this)
@@ -93,7 +93,7 @@ render(){
         <div style={{display: 'block',textAlign:'center',alignContent:'center', alignItems:'center'}}>
            <div> 
             <img
-              style={{marginLeft: 'auto', height: 200, width: 200, flexShrink: 0, flexGrow: 0, borderRadius:100}}
+              style={{marginLeft: 'auto', height: 150, width: 150, flexShrink: 0, flexGrow: 0, borderRadius:100}}
               src={this.props.data.profile_pic != "" ? this.props.data.profile_pic:avatar}
               ref={this.uploadedImage}
               onClick={this.handleClick}

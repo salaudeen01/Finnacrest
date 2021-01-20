@@ -557,7 +557,7 @@ export default function AppAppBar(props) {
               </div>
               <div class="row">
                 <div class="col-md-12 mb-5">
-                  <form action="#" class="p-5 bg-white">
+                  <form action="#" class="p-5 bg-white w-570">
                     <h2 class="h4 text-black mb-5">Contact Form</h2>
                       <div class="row form-group">
                         <div class="col-md-12">
@@ -581,12 +581,10 @@ export default function AppAppBar(props) {
               </div>
             </div>
           </section>
-          <footer className="">
-            <Footer />
-          </footer>
-
       </div>
-    
+      <footer className="bg-primary container-fluid">
+         <Footer />
+      </footer>
       </div>
     </div>
   );
