@@ -11,6 +11,7 @@ import SimpleForm from "app/views/material-kit/forms/SimpleForm";
 import CustomForm from "./CustomForm";
 import img5 from "../../../../assets/image4.png";
 import img from "../../../../assets/baner2.png";
+import { Link } from "react-router-dom";
 
 class Section1 extends Component {
   render() {
@@ -47,7 +48,9 @@ class Section1 extends Component {
                           Our mission is to empower the member financially through participatory 
                           contribution and we have  been in the business for years now.  
                         </Typography>
-                        <Button style={{background: '#FFDF4D',}} className='text'>Get Started</Button>
+                        <Link to="/signin">
+                          <Button style={{background: '#FFDF4D',}} className='text'>Get Started</Button>
+                        </Link>
                       </div>
                   </Grid>
             

@@ -105,7 +105,7 @@ export default function AppAppBar(props) {
                 <div className="carousel-caption d-none d-md-block text-white" style={{top:350, left:500, width:400}}>
                   <h4 className="text-white">Savings</h4>
                   <p>Save periodically, automatically or manually. You can also save as you go, on your own terms. </p>
-                  <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="#" role="button">Get Started &raquo;</a></p>
+                  <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="/signin" role="button">Get Started &raquo;</a></p>
                 </div>
                 <img src={img4} className="d-block" width="100%" height="80%" alt="..." />
               </div>
@@ -114,7 +114,7 @@ export default function AppAppBar(props) {
                   <h4 className="text-white">Free Interest Loan</h4>
                   <p>Say bye-bye to high interest rates. Get access to zero interest Personal or Business loans to take care of
                      your most pressing needs, loans with workable payback periods. </p>
-                  <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="#" role="button">Get Started &raquo;</a></p>
+                  <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="/signin" role="button">Get Started &raquo;</a></p>
                 </div>
                 <img src={img4} className="d-block" width="100%" height="80%" alt="..." />
               </div>
@@ -122,7 +122,8 @@ export default function AppAppBar(props) {
                 <div className="carousel-caption d-none d-md-block text-white" style={{top:350, left:500, width:400}}>
                   <h4 className="text-white">Business Finance</h4>
                   <p>We financially support Small Scale Business or Personnal Business in other to achieve you business goal and plans   </p>
-                  <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="#" role="button">Get Started &raquo;</a></p>
+
+                  <p><a className="btn btn-secondary text-dark" style={{background:'#FFDF4D', borderColor:'#FFDF4D'}} href="/signin" role="button">Get Started &raquo;</a></p>
                 </div>
                 <img src={img4} className="d-block" width="100%" height="80%" alt="..." />
               </div>
