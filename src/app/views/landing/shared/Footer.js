@@ -107,6 +107,12 @@ export default function Footer() {
             <span style={{fontSize:26}} className="text-white px-2"><i class="fab fa-google-plus-square"></i></span>
             
             <span style={{fontSize:26}} className="text-white px-2"><i class="fab fa-twitter-square"></i></span>
+            <Typography className="text-white"> 
+                *Head office:* <br/>
+                Suite 1, 2nd floor, 
+                Alhaji safar jolaosho plaza, 
+                First bank building, 107 Mafoluku Road, via Lagos international airport road, Mafoluku oshodi, Lagos
+            </Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={3} lg={3} className='p-15 text-white'>
             <img src={logo} width='100px' height='30px' alt='company-logo' />

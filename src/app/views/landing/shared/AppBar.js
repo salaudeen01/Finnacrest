@@ -148,7 +148,7 @@ export default function AppAppBar(props) {
             <div className="container">
                 <div className="row mb-5">
                     <div className="col-12 text-center" data-bs-slide="fade">
-                        <h2 className="section-title mb-3">Our Services</h2>
+                        <h2 className="section-title mt-5 mb-3">Our Services</h2>
                     </div>
                 </div>
                 <div className="row align-items-stretch">
@@ -244,7 +244,7 @@ export default function AppAppBar(props) {
         <div className="container">
             <div className="row mb-5">
               <div className="col-12 text-center" data-bs-slide="fade">
-                  <h2 className="section-title text-primary mb-3">Frequently Ask Questions</h2>
+                  <h2 className="section-title text-primary mt-5 mb-3">Frequently Ask Questions</h2>
               </div>
             </div>
             <div className="row">
@@ -480,7 +480,7 @@ export default function AppAppBar(props) {
             <div class="container">
               <div class="row mb-5">
                 <div class="col-12 text-center">
-                  <h2 class="section-title mb-3">Contact Us</h2>
+                  <h2 class="section-title mt-5 mb-3">Contact Us</h2>
                 </div>
               </div>
               <div class="row mb-5">
