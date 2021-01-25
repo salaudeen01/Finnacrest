@@ -413,7 +413,7 @@ fetch(getConfig("showTransaction"), requestOptions)
             this.setState({loading: false });
             return Promise.reject(error);
             }
-            // console.log(data)
+            console.log(data)
             if(data.success == false){
               this.setState({ transactions: []});
             }else{

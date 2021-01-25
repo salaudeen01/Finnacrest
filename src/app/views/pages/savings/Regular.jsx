@@ -126,6 +126,9 @@ class Regular extends Component{
         this.handleSubmitFund = this.handleSubmitFund.bind(this);
         this.handleSubmitWithdraw = this.handleSubmitWithdraw.bind(this);
         this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
+        this.fetch_next_page = this.fetch_next_page.bind(this);
+        this.fetch_page = this.fetch_page.bind(this);
+        this.fetch_prev_page = this.fetch_prev_page.bind(this);
   }
 
   componentDidMount() {
@@ -277,6 +280,80 @@ componentDidUpdate(){
   }
 }
 
+fetch_next_page = ()=>{
+  const {pagination} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    console.log(data)
+    if(data.success == false){
+      this.setState({tdetails: [], loading:false });
+    }else{
+      this.setState({tdetails: data.data, pagination:data, loading:false });
+    }
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}      
+
+fetch_next_page = ()=>{
+  const {pagination} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, tdetails:data.data, pagination:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_prev_page = ()=>{
+  const {pagination} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(pagination.prev_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, tdetails:data.data, pagination:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_page = (index)=>{
+  const {pagination} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(pagination.path+"?page="+index, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, tdetails:data.data, pagination:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+
 close = () => {
   console.log("Payment closed");
 }
@@ -427,7 +504,7 @@ handleClose() {
     let {theme} = this.props
     const {balance, tdetails, share_balance, shareFee, shareMinFee, loading, cards, auto_save, id, add_card, 
             showSaveCard, email, bank_details, edit_data, showEdit, fund_data, withdraw_data, autoSave, showSave,
-            showWithdraw, data, show, savings} = this.state
+            showWithdraw, data, show, pagination, savings} = this.state
     return (
       <div className="m-sm-30">
        {loading ?
@@ -468,7 +545,9 @@ handleClose() {
         <Grid container spacing={3}>
               <Grid item lg={6} md={6} sm={12} xs={12}>
                 <h4 className="card-title text-muted mb-4">Latest Transactions</h4>
-                <TableCard transactions={tdetails}/>
+                <TableCard transactions={tdetails}
+                fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page}
+                fetch_prev_page={this.fetch_prev_page}/>
               </Grid>
               <Grid item lg={6} md={6} sm={12} xs={12}>
                   <h4 className="card-title text-muted mb-4">Auto Save Details</h4>

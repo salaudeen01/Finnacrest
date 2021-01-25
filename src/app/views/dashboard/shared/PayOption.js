@@ -52,9 +52,14 @@ close = () => {
         console.log(amount, email)
         let pay1 = (Number(amount) + (Number(amount) * 1.5 )/ 100)* 100
         let pay2 = (Number(amount) + ((Number(amount) * 1.5 )/ 100)+100)*100
+        let pay3 = ((Number(amount) * 1.5 )/ 100)
+        let pay4 = (((Number(amount) * 1.5 )/ 100)+100)
         console.log(pay1, pay2)
         return (
             <div>
+                <Typography>
+                    Paystack Gateway Commission : <span><b>{amount >= 2500 ? pay4: pay3}</b></span>
+                </Typography><br/>
                 {key ?
                 <PaystackButton
                     text="Make Payment"

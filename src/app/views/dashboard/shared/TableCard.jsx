@@ -81,8 +81,9 @@ class TableCard extends Component{
                   <TableCell className="px-0 capitalize" colSpan={5} align="left">
                     {product.transaction_category === 1 && product.transaction_type=== "credit" ? "Regular Savings": 
                     (product.transaction_category === 1 && product.transaction_type === "debit")? "Savings Withdrawal": 
-                    (product.transaction_category === 2 && product.transaction_type === " credit" ) ? "Target Savings":
-                    (product.transaction_category === 2 && product.transaction_type=== "debit") ? "Target Withdrawal":
+                    (product.transaction_category === 2 && (product.payment_method === "wallet" || product.payment_method === "debit card") ) ? "Target Savings":
+                    (product.transaction_category === 2 && product.payment_method === "Target Exit") ? "Target Exit":
+                    (product.transaction_category === 2 && product.payment_method === "Target Completed") ? "Target Completed":
                     (product.transaction_category === 3) ? "Shareholding":
                     (product.transaction_category === 21) ? "Loan Form":
                     (product.transaction_category === 20) ? "Membership Form":

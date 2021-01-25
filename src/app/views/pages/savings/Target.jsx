@@ -141,6 +141,9 @@ class Target extends Component{
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSubmitFund = this.handleSubmitFund.bind(this);
         this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
+        this.fetch_next_page = this.fetch_next_page.bind(this);
+        this.fetch_page = this.fetch_page.bind(this);
+        this.fetch_prev_page = this.fetch_prev_page.bind(this);
   }
 
 componentDidMount(){
@@ -307,6 +310,80 @@ fetchSingleTarget=(id)=>{
       this.setState({isLoading:false})
   });
 }
+
+fetch_next_page = ()=>{
+  const {pagination} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    console.log(data)
+    if(data.success == false){
+      this.setState({singleTargetTransaction: [], loading:false });
+    }else{
+      this.setState({singleTargetTransaction: data.data, pagination:data, loading:false });
+    }
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}      
+
+fetch_next_page = ()=>{
+  const {pagination} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, singleTargetTransaction:data.data, pagination:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_prev_page = ()=>{
+  const {pagination} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(pagination.prev_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, singleTargetTransaction:data.data, pagination:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_page = (index)=>{
+  const {pagination} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(pagination.path+"?page="+index, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, singleTargetTransaction:data.data, pagination:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
 
 close = () => {
 console.log("Payment closed");
@@ -676,7 +753,7 @@ completeTab(){
           obj.array[l] = l+1;
       }
     let {theme} = this.props
-    const {balance, tdetails, bal_amt, tar_amt, share_balance, shareFee, shareMinFee, loading, isLoading, tab, cards, add_card, showSaveCard, id, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, show, savings} = this.state
+    const {balance, tdetails, bal_amt, tar_amt, share_balance, shareFee, shareMinFee, loading, isLoading, tab, cards, add_card, showSaveCard, id, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, pagination, show, savings} = this.state
     const bal = tar_amt - bal_amt
     return (
       <div className="m-sm-10">
@@ -1286,7 +1363,10 @@ completeTab(){
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 {isLoading ?
                 <Typography>Loading...</Typography>:
-                <TableCard transactions={singleTargetTransaction} />
+                <TableCard transactions={singleTargetTransaction} pagination={pagination}
+                  fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page}
+                  fetch_prev_page={this.fetch_prev_page}
+                 />
                 }
               </Grid>
             </Grid>

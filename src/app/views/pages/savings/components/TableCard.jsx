@@ -7,11 +7,13 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  TableBody
+  TableBody,
+  TableFooter
 } from "@material-ui/core";
 import { Component } from "react";
 import { numberFormat } from '../../../../config/config'
 import dateFormat from 'dateformat';
+import Paginate from "../../transactions/paginate";
 
 class TableCard extends Component{
   constructor(props){
@@ -59,6 +61,13 @@ class TableCard extends Component{
                   </TableRow>
                 ))}
               </TableBody>
+              <TableFooter>
+                <Paginate pagination={this.props.pagination}
+                    fetch_prev_page={this.props.fetch_prev_page} 
+                    fetch_next_page={this.props.fetch_next_page} 
+                    fetch_page={this.props.fetch_page}
+                />
+            </TableFooter>
             </Table>
           </div>
         </Card>
