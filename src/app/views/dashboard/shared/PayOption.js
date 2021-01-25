@@ -49,12 +49,10 @@ close = () => {
     render() {
         const {email, key} = this.state
         const {amount, callback} = this.props
-        console.log(amount, email)
         let pay1 = (Number(amount) + (Number(amount) * 1.5 )/ 100)* 100
         let pay2 = (Number(amount) + ((Number(amount) * 1.5 )/ 100)+100)*100
         let pay3 = ((Number(amount) * 1.5 )/ 100)
         let pay4 = (((Number(amount) * 1.5 )/ 100)+100)
-        console.log(pay1, pay2)
         return (
             <div>
                 <Typography>

@@ -47,7 +47,6 @@ const GreenRadio = withStyles({
 
 const PayCard = ({cards, handleChange, open, value, id}) => {
 
-  console.log(cards)
   const [val, setVal] = React.useState('');
   const [check, setCheck] = React.useState(id? true : false);
   const change = (event) => {

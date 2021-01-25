@@ -188,7 +188,6 @@ export const setLastUrl = () =>{
 
 export const checkUserStatus = () =>{
   let user = JSON.parse(localStorage.getItem("user"));
-  console.log(user)
   if(user.member_status){
     return true    
   }else{
