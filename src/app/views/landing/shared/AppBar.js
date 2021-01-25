@@ -11,12 +11,12 @@ import Section5 from "./Section5";
 import Footer from "./Footer";
 import Section1 from "./Section1";
 import Section2 from "./Section2";
-import img5 from "../../../../assets/savings.svg";
+import img5 from "../../../../assets/wallet.svg";
 import img6 from "../../../../assets/finanace.svg";
 import un from "../../../../assets/un.svg";
 import target from "../../../../assets/untarget.svg";
 import invest from "../../../../assets/uninvest.svg";
-import process from "../../../../assets/unprocess.svg";
+import process from "../../../../assets/rich.svg";
 import finance from "../../../../assets/unfinance.svg";
 import cart from "../../../../assets/uncart.svg";
 
@@ -207,7 +207,7 @@ export default function AppAppBar(props) {
                                 <p>Save periodically, automatically or manually. You can also save as you go, on your
                                    own terms. You’re the boss of your savings, choose how you want to save.
                                    Save more inorder get more Loans.</p>
-                                <p><a href="#">Learn More</a></p>
+                                {/* <p><a href="/signin">Get Started</a></p> */}
                             </div>
                             </div>
                         </div>
@@ -224,7 +224,7 @@ export default function AppAppBar(props) {
                                     Dad’s surprise birthday? Check. A new car, special vacation? Check and check. 
                                     Target Savings helps you reach all your savings goals easily and faster.
                                 </p>
-                                <p><a href="#">Learn More</a></p>
+                                {/* <p><a href="/signin">Get Started</a></p> */}
                             </div>
                             </div>
                         </div>
@@ -239,50 +239,50 @@ export default function AppAppBar(props) {
                                 <p>Say bye-bye to high interest rates. Get access to zero interest Personal or Business loans 
                                   to take care of your most pressing needs, loans with workable payback periods. Build your 
                                   Savings Account to unlock larger loan amounts.</p>
-                                <p><a href="#">Learn More</a></p>
+                                  {/* <p><a href="/signin">Get Started</a></p> */}
                             </div>
                             </div>
                         </div>
                     </div> 
-                    <div className="col-md-6 col-lg-4 mb-4 mb-lg-4" data-bs-slide="fade-up">
+                    {/* <div className="col-md-6 col-lg-4 mb-4 mb-lg-4" data-bs-slide="fade-up">
                         <div className="unit-4">
                             <div className="unit-4-icon">
                                 <img src={finance} alt="Free Website Template by Free-Template.co" className="img-fluid w-25 mb-4" />
-                            {/* </div> */}
+                           
                             <div>
                                 <h3>Business Financing</h3>
                                 <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-                                <p><a href="#">Learn More</a></p>
+                                <p><a href="/signin">Get Started</a></p>
                             </div>
                             </div>
                         </div>
-                    </div>  
-                    <div className="col-md-6 col-lg-4 mb-4 mb-lg-4" data-bs-slide="fade-up" data-bs-delay="100">
+                    </div>   */}
+                    {/* <div className="col-md-6 col-lg-4 mb-4 mb-lg-4" data-bs-slide="fade-up" data-bs-delay="100">
                         <div className="unit-4">
                             <div className="unit-4-icon">
                                 <img src={cart} alt="Free Website Template by Free-Template.co" className="img-fluid w-25 mb-4" />
-                            {/* </div> */}
+                            
                             <div>
                                 <h3>Product Financing</h3>
                                 <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-                                <p><a href="#">Learn More</a></p>
+                                <p><a href="/signin">Get Started</a></p>
                             </div>
                             </div>
                         </div>
-                    </div> 
-                    <div className="col-md-6 col-lg-4 mb-4 mb-lg-4" data-bs-slide="fade-up" data-bs-delay="200">
+                    </div>  */}
+                    {/* <div className="col-md-6 col-lg-4 mb-4 mb-lg-4" data-bs-slide="fade-up" data-bs-delay="200">
                         <div className="unit-4">
                             <div className="unit-4-icon">
                                 <img src={un} alt="Free Website Template by Free-Template.co" className="img-fluid w-25 mb-4" />
-                            {/* </div> */}
+                            
                             <div>
                                 <h3>Shareholding</h3>
                                 <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-                                <p><a href="#">Learn More</a></p>
+                                <p><a href="/signin">Get Started</a></p>
                             </div>
                             </div>
                         </div>
-                    </div>                                                       
+                    </div>                                                        */}
                 </div>
             </div>
         </section>                
@@ -544,7 +544,7 @@ export default function AppAppBar(props) {
                 <div class="col-md-4 text-center">
                   <p class="mb-4">
                     <span class="fas fa-phone d-block h2 text-primary"></span>
-                    <a href="#">+1 232 3235 324</a>
+                    <a href="#">01 316 077 00</a>
                   </p>
                 </div>
                 <div class="col-md-4 text-center">

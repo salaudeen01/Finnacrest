@@ -119,8 +119,8 @@ export default function Footer() {
           </Grid>
         </Grid>
         <Divider variant='fullWidth' style={{ backgroundColor: "#ffffff" }} />        
-        <p className="text-white">&copy; 2017-2020 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        <p className="text-white">&copy;  2021 Sesis Powered by Techend Limited . &middot; <a href="http://techend.com.ng">Privacy</a> &middot; <a href="http://techend.com.ng">Terms</a></p>
       </Container>
     </div>
-  );
+  ); 
 }

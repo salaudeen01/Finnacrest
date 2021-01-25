@@ -451,17 +451,156 @@ handleSubmitFund(event) {
 }
 
 // data change handler
+// handleChange = event => {
+//   const {data} = this.state
+//   const {name, value, checked} = event.target
+//   if(name == "id"){
+//     this.setState({id:checked})
+//   }else if(name == "amount" || name == "targeted_amount"){
+//   this.setState({data:{...data, [name]:value.replace(/,/g, '')}})
+//   }else{
+//     this.setState({data:{...data, [name]:value}}) 
+//   }
+// };
+
 handleChange = event => {
   const {data} = this.state
   const {name, value, checked} = event.target
-  if(name == "id"){
+  if(name === "id"){
     this.setState({id:checked})
-  }else if(name == "amount" || name == "targeted_amount"){
-  this.setState({data:{...data, [name]:value.replace(/,/g, '')}})
+  }else if(name === "start_date"){
+    var currentDate = new Date(value);
+    let freq = Math.round(data.targeted_amount.replace(/,/g, '')  / data.amount.replace(/,/g, '') ); 
+    if(data.frequency === "Daily"){
+        let raw = currentDate.setDate(currentDate.getDate()+freq);
+        let end_date = new Date(raw);
+        let mn = end_date.getMonth()+1;
+        let day = end_date.getDate() < 10 ? "0"+ end_date.getDate() : end_date.getDate();
+        let month = mn <10 ? "0"+mn : mn;
+        let date = end_date.getFullYear() +'-'+month+'-'+ day;
+        this.setState({ data: {...data, end_date: date, start_date: value } })
+    }else if(data.frequency === "Weekly"){
+        let weeks = freq * 7;
+        let raw = currentDate.setDate(currentDate.getDate()+weeks);
+        let end_date = new Date(raw);
+        let mn = end_date.getMonth()+1;
+        let day = end_date.getDate() < 10 ? "0"+ end_date.getDate():end_date.getDate();
+        let month = mn < 10 ? "0"+mn : mn;
+        let date = end_date.getFullYear() +'-'+month+'-'+ day;
+        this.setState({ data: {...data, end_date: date, start_date: value } })
+    }else{
+        let raw = currentDate.setMonth(currentDate.getMonth()+freq);
+        let end_date = new Date(raw);
+        let mn = end_date.getMonth()+1;
+        let day = end_date.getDate() < 10 ? "0"+ end_date.getDate():end_date.getDate();
+        let month = mn < 10 ? "0"+mn : mn;
+        let date = end_date.getFullYear() +'-'+month+'-'+ day;
+        this.setState({ data: {...data, end_date: date, start_date: value } })
+    }
+  }else if(name === "frequency"){
+    if(data.start_date !== "" && data.amount !== "" && data.targeted_amount !== ""){
+        var currentDate = new Date(data.start_date);
+        let freq = Math.round(data.targeted_amount.replace(/,/g, '')  / data.amount.replace(/,/g, '') );
+        if(value === "Daily"){
+            let raw = currentDate.setDate(currentDate.getDate()+freq);
+            let end_date = new Date(raw);
+            let mn = end_date.getMonth()+1;
+            let day = end_date.getDate() < 10 ? "0"+ end_date.getDate() : end_date.getDate();
+            let month = mn <10 ? "0"+mn : mn;
+            let date = end_date.getFullYear() +'-'+month+'-'+ day;
+            this.setState({ data: {...data, end_date: date, [name]:value} })
+        }else if(value === "Weekly"){
+            let weeks = freq * 7;
+            let raw = currentDate.setDate(currentDate.getDate()+weeks);
+            let end_date = new Date(raw);
+            let mn = end_date.getMonth()+1;
+            let day = end_date.getDate() < 10 ? "0"+ end_date.getDate() : end_date.getDate();
+            let month = mn <10 ? "0"+mn : mn;
+            let date = end_date.getFullYear() +'-'+month+'-'+ day;
+            this.setState({ data: {...data, end_date: date, [name]:value} })
+        }else{
+            let raw = currentDate.setMonth(currentDate.getMonth()+freq);
+            let end_date = new Date(raw);
+            let mn = end_date.getMonth()+1;
+            let day = end_date.getDate() < 10 ? "0"+ end_date.getDate() : end_date.getDate();
+            let month = mn <10 ? "0"+mn : mn;
+            let date = end_date.getFullYear() +'-'+month+'-'+ day;
+            this.setState({ data: {...data, end_date: date, [name]:value } })
+        }
+    }else{
+        this.setState({ data: { ...data, [name]: value} });
+    }
+  }else if(name === "amount"){
+    if(data.targeted_amount !== "" && data.start_date !== "" && data.frequency !== ""){
+        var currentDate = new Date(data.start_date);
+        let freq = Math.round(data.targeted_amount / value);
+        if(data.frequency === "Daily"){
+            let raw = currentDate.setDate(currentDate.getDate()+freq);
+            let end_date = new Date(raw);
+            let mn = end_date.getMonth()+1;
+            let day = end_date.getDate() < 10 ? "0"+ end_date.getDate() : end_date.getDate();
+            let month = mn <10 ? "0"+mn : mn;
+            let date = end_date.getFullYear() +'-'+month+'-'+ day;
+            this.setState({ data: {...data, end_date: date, [name]:value} })
+        }else if(data.frequency === "Weekly"){
+            let weeks = freq * 7;
+            let raw = currentDate.setDate(currentDate.getDate()+weeks);
+            let end_date = new Date(raw);
+            let mn = end_date.getMonth()+1;
+            let day = end_date.getDate() < 10 ? "0"+ end_date.getDate() : end_date.getDate();
+            let month = mn <10 ? "0"+mn : mn;
+            let date = end_date.getFullYear() +'-'+month+'-'+ day;
+            this.setState({ data: {...data, end_date: date, [name]:value} })
+        }else{
+            let raw = currentDate.setMonth(currentDate.getMonth()+freq);
+            let end_date = new Date(raw);
+            let mn = end_date.getMonth()+1;
+            let day = end_date.getDate() < 10 ? "0"+ end_date.getDate() : end_date.getDate();
+            let month = mn <10 ? "0"+mn : mn;
+            let date = end_date.getFullYear() +'-'+month+'-'+ day;
+            this.setState({ data: {...data, end_date: date, [name]:value } })
+        }
+    }else{
+        this.setState({ data: { ...data, [name]: value,} });
+    }
+  }else if(name === "targeted_amount"){
+    if(data.amount !== "" && data.start_date !== "" && data.frequency !== ""){
+        var currentDate = new Date(data.start_date);
+        let freq = Math.round(value / data.amount);
+        if(data.frequency === "Daily"){
+            let raw = currentDate.setDate(currentDate.getDate()+freq);
+            let end_date = new Date(raw);
+            let mn = end_date.getMonth()+1;
+            let day = end_date.getDate() < 10 ? "0"+ end_date.getDate() : end_date.getDate();
+            let month = mn <10 ? "0"+mn : mn;
+            let date = end_date.getFullYear() +'-'+month+'-'+ day;
+            this.setState({ data: {...data, end_date: date, [name]:value} })
+        }else if(data.frequency === "Weekly"){
+            let weeks = freq * 7;
+            let raw = currentDate.setDate(currentDate.getDate()+weeks);
+            let end_date = new Date(raw);
+            let mn = end_date.getMonth()+1;
+            let day = end_date.getDate() < 10 ? "0"+ end_date.getDate() : end_date.getDate();
+            let month = mn <10 ? "0"+mn : mn;
+            let date = end_date.getFullYear() +'-'+month+'-'+ day;
+            this.setState({ data: {...data, end_date: date, [name]:value} })
+        }else{
+            let raw = currentDate.setMonth(currentDate.getMonth()+freq);
+            let end_date = new Date(raw);
+            let mn = end_date.getMonth()+1;
+            let day = end_date.getDate() < 10 ? "0"+ end_date.getDate() : end_date.getDate();
+            let month = mn <10 ? "0"+mn : mn;
+            let date = end_date.getFullYear() +'-'+month+'-'+ day;
+            this.setState({ data: {...data, end_date: date, [name]:value } })
+        }
+    }else{
+        this.setState({ data: { ...data, [name]: value.replace(/,/g, '') ,} });
+    }
   }else{
-    this.setState({data:{...data, [name]:value}}) 
+    this.setState({data:{...data, [name]:value}})
   }
 };
+
 handleChangeEdit = event => {
   const {edit_data} = this.state
   const {name, value, checked} = event.target
@@ -891,6 +1030,7 @@ completeTab(){
                 onChange={this.handleChange}
                 type="date"
                 name="start_date"
+                helperText="Start Date"
                 value={data.start_date}
                 validators={[
                   "required"
@@ -902,6 +1042,7 @@ completeTab(){
                 onChange={this.handleChange}
                 type="date"
                 name="end_date"
+                helperText="End Date"
                 value={data.end_date}
                 validators={[
                   "required"

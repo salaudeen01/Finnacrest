@@ -79,21 +79,21 @@ class TableCard extends Component{
                 {this.props.transactions.map((product, index) => (
                   <TableRow key={index}>                   
                   <TableCell className="px-0 capitalize" colSpan={5} align="left">
-                    {product.transaction_category == 1 && product.transaction_type== "debit" ? "Regular Savings": 
-                    (product.transaction_category == 1 && product.transaction_type == "credit")? "Savings Withdrawal": 
-                    (product.transaction_category == 2 && product.transaction_type == "debit" ) ? "Target Savings":
-                    (product.transaction_category == 2 && product.transaction_type== "credit") ? "Target Withdrawal":
-                    (product.transaction_category == 3) ? "Shareholding":
-                    (product.transaction_category == 21) ? "Loan Form":
-                    (product.transaction_category == 20) ? "Membership Form":
-                      (product.transaction_category == 4) ? "Loan Repayment":
-                      (product.transaction_category == 8) ? "Business Finance":
-                      (product.transaction_category == 9) ? "Products Financing":
-                      (product.transaction_category == 10) ? "Disbursement":
-                    (product.transaction_category == 7) ? (product.transaction_type == "credit")?"Wallet Funding":" Wallet Withdrawal": ""}
+                    {product.transaction_category === 1 && product.transaction_type=== "credit" ? "Regular Savings": 
+                    (product.transaction_category === 1 && product.transaction_type === "debit")? "Savings Withdrawal": 
+                    (product.transaction_category === 2 && product.transaction_type === " credit" ) ? "Target Savings":
+                    (product.transaction_category === 2 && product.transaction_type=== "debit") ? "Target Withdrawal":
+                    (product.transaction_category === 3) ? "Shareholding":
+                    (product.transaction_category === 21) ? "Loan Form":
+                    (product.transaction_category === 20) ? "Membership Form":
+                      (product.transaction_category === 4) ? "Loan Repayment":
+                      (product.transaction_category === 8) ? "Business Finance":
+                      (product.transaction_category === 9) ? "Products Financing":
+                      (product.transaction_category === 10) ? "Disbursement":
+                    (product.transaction_category === 7) ? (product.transaction_type === "credit")?"Wallet Funding":" Wallet Withdrawal": ""}
                   </TableCell>
                     <TableCell className="px-0" colSpan={4} className="secondary">
-                      <b style={{color: product.transaction_type == "credit"?'green':"red"}}>{product.transaction_type}</b>
+                      <b style={{color: product.transaction_type === "credit"?'green':"red"}}>{product.transaction_type}</b>
                     </TableCell>
                     <TableCell className="px-0 capitalize" align="left" colSpan={4}>
                       {numberFormat(product.amount)}
