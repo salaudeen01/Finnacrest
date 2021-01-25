@@ -47,6 +47,7 @@ const GreenRadio = withStyles({
 
 const PayCard = ({cards, handleChange, open, value, id}) => {
 
+  console.log(cards)
   const [val, setVal] = React.useState('');
   const [check, setCheck] = React.useState(id? true : false);
   const change = (event) => {
@@ -90,7 +91,7 @@ const classes = useStyles();
                   </Grid>
                 </Card>
                 </Grid>
-                {cards.map(card =>(
+                {cards && cards.map(card =>(
                 <Grid item md={12}>
                   <Card className="py-2 px-4 project-card">
                     <Grid container alignItems="center">

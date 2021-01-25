@@ -50,8 +50,9 @@ close = () => {
         const {email, key} = this.state
         const {amount, callback} = this.props
         console.log(amount, email)
-        let pay1 = (amount * 1.5 )/ 100
-        let pay2 = ((amount * 1.5 )/ 100)+100
+        let pay1 = (Number(amount) + (Number(amount) * 1.5 )/ 100)* 100
+        let pay2 = (Number(amount) + ((Number(amount) * 1.5 )/ 100)+100)*100
+        console.log(pay1, pay2)
         return (
             <div>
                 {key ?
@@ -64,7 +65,8 @@ close = () => {
                     embed={true}  
                     reference={getReference()}
                     email={email}
-                    amount={amount >= 2500 ? pay2 * 100: pay1 * 100}
+                    amount={amount >= 2500 ? pay2: pay1}
+                    // amount={amount}
                     paystackkey={key}
                     tag="button" 
                 />:
