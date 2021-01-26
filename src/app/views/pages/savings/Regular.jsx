@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
 import { Component } from "react";
-import TableCard from "./components/TableCard";
+import TableCard2 from "./components/TableCard2";
 import CloseIcon from "@material-ui/icons/Close";
 import swal from 'sweetalert'
 import PayOption from "app/views/dashboard/shared/PayOption";
@@ -196,7 +196,7 @@ class Regular extends Component{
       if (!response.ok) {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
-      }
+      } console.log(data)
       if(data.success == false){
         this.setState({tdetails: [], pagination:[], loading:false} );
       }else{
@@ -504,7 +504,7 @@ handleClose() {
     let {theme} = this.props
     const {balance, tdetails, share_balance, shareFee, shareMinFee, loading, cards, auto_save, id, add_card, 
             showSaveCard, email, bank_details, edit_data, showEdit, fund_data, withdraw_data, autoSave, showSave,
-            showWithdraw, data, show, pagination, savings} = this.state
+            showWithdraw, data, show, savings} = this.state
     return (
       <div className="m-sm-30">
        {loading ?
@@ -545,9 +545,10 @@ handleClose() {
         <Grid container spacing={3}>
               <Grid item lg={6} md={6} sm={12} xs={12}>
                 <h4 className="card-title text-muted mb-4">Latest Transactions</h4>
-                <TableCard transactions={tdetails}
-                fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page}
-                fetch_prev_page={this.fetch_prev_page}/>
+                <TableCard2 transactions={tdetails}
+                // fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page}
+                // fetch_prev_page={this.fetch_prev_page}
+                />
               </Grid>
               <Grid item lg={6} md={6} sm={12} xs={12}>
                   <h4 className="card-title text-muted mb-4">Auto Save Details</h4>
