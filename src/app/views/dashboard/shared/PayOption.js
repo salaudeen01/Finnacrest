@@ -56,7 +56,7 @@ close = () => {
         return (
             <div>
                 <Typography>
-                    Paystack Gateway Commission : <span><b>{amount >= 2500 ? pay4: pay3}</b></span>
+                    Paystack Gateway Commission : <span><b>{numberFormat(amount >= 2500 ? pay4: pay3)}</b></span>
                 </Typography><br/>
                 {key ?
                 <PaystackButton
