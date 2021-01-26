@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {getReference, getConfig, payID } from '../../../config/config'
+import {getReference, getConfig, payID, numberFormat } from '../../../config/config'
 import PaystackButton from 'react-paystack';
 import { authHeader } from "../../../redux/logic";
 import { withStyles } from "@material-ui/styles";
