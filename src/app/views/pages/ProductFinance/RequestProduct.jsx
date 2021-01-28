@@ -32,7 +32,7 @@ class RequestProduct extends Component {
     const id = this.props.match.params.id;
     setLastUrl()
     this.state = {
-      loading:false,
+      loading:true,
       products:[],
       count:[],
       totalbalance:0,
@@ -57,8 +57,8 @@ componentDidMount(){
       return Promise.reject(error);
   }
   console.log(data)
-  if(data.success == false){
-    this.setState({ products: []});
+  if(data.success === false || data.length === 0){
+    this.setState({ products: [],loading:false});
   }else{
     this.setState({products: data, loading:false });
   }  
@@ -79,9 +79,9 @@ componentDidMount(){
         return Promise.reject(error);
     }
     if(data.success == false || data.length == 0 ){
-      this.setState({cards: []});
+      this.setState({cards: [],loading:false});
     }else{
-      this.setState({cards: data});  
+      this.setState({cards: data,loading:false});  
     }
   })
   .catch(error => {
@@ -112,6 +112,10 @@ render(){
         </Button>
         </Toolbar>
         </AppBar>
+        {loading ?
+            <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
+              <Loading/>
+            </div>:
             <Grid container spacing={2}>
                 {/* <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Link to="/halal">
@@ -127,6 +131,7 @@ render(){
                     <RequestSummary count={count} total={totalbalance}/>
                 </Grid> */}
             </Grid>
+        }
       </div>
   );
 }

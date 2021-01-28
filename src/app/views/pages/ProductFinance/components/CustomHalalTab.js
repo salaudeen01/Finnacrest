@@ -69,7 +69,9 @@ render(){
             onChange={this.handleChange} aria-label="simple tabs example">
             <Tab label="REQUESTED PRODUCTS" {...a11yProps(0)} />
             <Tab label="PENDING REQUEST" {...a11yProps(1)} />
-            {/* <Tab label="Finance Investment" {...a11yProps(2)} /> */}
+            <span style={{marginLeft:"-10px", marginTop:10,marginBottom:20,paddingLeft:4,paddingRight:4,
+            color:'#fff', backgroundColor:'green', borderRadius:6}}>
+            {(this.props.tdetails.length)}</span>
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>

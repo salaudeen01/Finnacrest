@@ -15,6 +15,7 @@ import { userActions } from "../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
 import BusinessTop from "./components/BusinessTop";
 import BusinessCustomTab from "./components/BusinessCustomTab";
+import Loading from "matx/components/MatxLoadable/Loading";
 
 class Business extends Component {
   constructor(props){
@@ -29,7 +30,8 @@ class Business extends Component {
     let entry_date = currentDate.getFullYear() + "-" + month + "-" + day;
     // let rand_id =this.getRand()
     this.state={
-      requested_business:0
+      requested_business:0,
+      loading: true,
     }
 
     const requestOptions = {
@@ -47,17 +49,22 @@ class Business extends Component {
   }
   console.log(data)
   if(data.success == false  || data.length == 0 ){
-    this.setState({ requested_business: []});
+    this.setState({ requested_business: [], loading:false});
   }else{
     let newArray = [];
     data.forEach(d => {
       if(d.request_status == 0){
         newArray.push(d)
+      }else if (newArray.success === false || newArray.length === 0) {
+        this.setState({requested_business: [], loading:false });
+      } else{
+        this.setState({requested_business: newArray, loading:false });
       }
     });
     this.setState({requested_business: newArray, loading:false });
-  }  
+  }
 })
+
     .catch(error => {
       if (error === "Unauthorized") {
         this.props.timeOut()
@@ -67,12 +74,18 @@ class Business extends Component {
     
 
 render(){
-  const{requested_business} = this.state
+  const{requested_business,loading} = this.state
    return (
     <div className="m-sm-30">
-        <BusinessTop />
-        <BusinessCustomTab  tdetails={requested_business}/>
-     
+      {loading ?
+        <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
+          <Loading/>
+        </div>:
+        <>
+          <BusinessTop />
+          <BusinessCustomTab  tdetails={requested_business} />
+        </>
+      }
     </div>
   );
 }

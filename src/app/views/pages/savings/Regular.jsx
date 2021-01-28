@@ -1005,7 +1005,7 @@ handleClose() {
                 onChange={this.handleChange}
                 type="date"
                 name="start_date"
-                helperText="Please select Transaction Time"
+                helperText="Please select Start Date"
                 value={data.start_date}
                 validators={[
                   "required"

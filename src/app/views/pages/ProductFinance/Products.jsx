@@ -75,7 +75,7 @@ class Target extends Component {
         my_products:[],
         com_products:[],
         tab: true,
-        loading:false,
+        loading:true,
         showView:false,
         showViewTrans:false,
         isLoading:true,
@@ -113,9 +113,9 @@ componentDidMount() {
         return Promise.reject(error);
     }
     if(data.success == false || data.length == 0 ){
-      this.setState({cards: []});
+      this.setState({cards: [],loading:false});
     }else{
-      this.setState({cards: data});  
+      this.setState({cards: data, loading:false});  
     }
   })
   .catch(error => {
@@ -131,7 +131,7 @@ componentDidMount() {
           return Promise.reject(error);
         }
          if (data.success == false) {
-          this.setState({ my_products: [] });
+          this.setState({ my_products: [],loading:false });
         } else {
           let newArray = [];
           let newArrays = [];

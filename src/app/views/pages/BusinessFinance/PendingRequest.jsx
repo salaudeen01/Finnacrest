@@ -32,7 +32,7 @@ class PendingRequest extends Component {
     this.state={
       tab: true,
       requested_business:[],
-      loading:false
+      loading:true
     }
 
     
@@ -56,15 +56,16 @@ class PendingRequest extends Component {
   }
   console.log(data)
   if(data.success == false  || data.length == 0 ){
-    this.setState({ requested_business: []});
+    this.setState({ requested_business: [], loading:false});
   }else{
     let newArray = [];
     data.forEach(d => {
       if(d.request_status == 0 || d.request_status.length == []){
         newArray.push(d)
-      }
-      if(d.length == 0){
-        this.setState({requested_business:[]});
+      }else if(newArray.success === false || newArray.length === 0){
+        this.setState({ requested_business: [], loading:false});
+      }else{
+        this.setState({requested_business: newArray, loading:false});        
       }
     });
     this.setState({requested_business: newArray, loading:false });

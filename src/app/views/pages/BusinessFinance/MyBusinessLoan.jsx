@@ -62,7 +62,7 @@ class MyBusinessLoan extends Component {
       cards:[],
       loan_bal:0,
       id:true,
-      loading:false,
+      loading:true,
       showViewTrans:false,
       showManageLoan:false
     }
@@ -128,17 +128,21 @@ componentDidMount() {
       }
       console.log(data)
       if(data.success == false  || data.length == 0 ){
-        this.setState({ business_view: []});
+        this.setState({ business_view: [], loading:false});
       }else{
         let newArray = [];
         data.forEach(d => {
           if(d.request_status == 1 || d.request_status == 2 || d.request_status == 11){
             newArray.push(d)
+          }else if(newArray.success === [] || newArray === 0){
+            this.setState({ business_view: [], loading:false});
+          } else{        
+            this.setState({business_view: newArray, loading:false });
           }          
         });
         this.setState({business_view: newArray, loading:false });
       }  
-    })
+    })  
     .catch(error => {
       if (error === "Unauthorized") {
         this.props.timeOut()
