@@ -53,8 +53,9 @@ const PaginationTable = (props) => {
                 SES{data.id}
                 </TableCell>
                 <TableCell className="px-0 capitalize" align="left" colSpan={4}>
-                {(data.wallet_category || data.transaction_category) == 1 && (data.wallet_type == "debit" || data.transaction_type== "debit") ? "Savings Withdrawal": 
-                 ((data.wallet_category || data.transaction_category) == 1 && (data.wallet_type == "credit"|| data.transaction_type == "credit"))? "Regular Savings": 
+                {(data.transaction_category == 1 && data.transaction_type== "debit") ? "Savings Withdrawal": 
+                  (data.wallet_category == 1 && data.wallet_type == "debit") ? "Regular Savings": 
+                ((data.wallet_category || data.transaction_category) == 1 && (data.wallet_type == "credit"|| data.transaction_type == "credit"))? "Regular Savings": 
                  ((data.wallet_category || data.transaction_category) == 2 && (data.wallet_type == "debit" || data.transaction_type == "debit" )) ? "Target Withdrawal":
                  ((data.wallet_category || data.transaction_category) == 2 && (data.wallet_type == "credit"|| data.transaction_type== "credit")) ? "Target Savings":
                  ((data.wallet_category || data.transaction_category) == 3) ? "Shareholding":

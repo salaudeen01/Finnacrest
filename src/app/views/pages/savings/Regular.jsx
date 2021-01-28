@@ -845,6 +845,7 @@ handleClose() {
                   onChange={this.handleChangeEdit}
                   type="time"
                   name="transaction_time"
+                  helperText="Please select Transaction Time"
                   value={edit_data.transaction_time}
                   validators={[
                     "required"
@@ -856,6 +857,7 @@ handleClose() {
                   onChange={this.handleChangeEdit}
                   type="date"
                   name="start_date"
+                  helperText="Please select Start Date"
                   value={edit_data.start_date}
                   validators={[
                     "required"
@@ -991,6 +993,7 @@ handleClose() {
                 onChange={this.handleChange}
                 type="time"
                 name="transaction_time"
+                helperText="Please select Transaction Time"
                 value={data.transaction_time}
                 validators={[
                   "required"
@@ -1002,6 +1005,7 @@ handleClose() {
                 onChange={this.handleChange}
                 type="date"
                 name="start_date"
+                helperText="Please select Transaction Time"
                 value={data.start_date}
                 validators={[
                   "required"
@@ -1052,7 +1056,7 @@ handleClose() {
                     </Typography>
                   </Toolbar>
                 </AppBar>
-                <Card className="px-6 pt-2 pb-4">
+                <Card className="px-6 pt-2 pb-4" style={{width:580}}>
                 <ValidatorForm
                   ref="form"
                   onSubmit={this.handleSubmitWithdraw}

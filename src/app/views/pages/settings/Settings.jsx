@@ -627,14 +627,14 @@ render(){
               </Typography>
             </Toolbar>
           </AppBar>
-          <Card className="px-6 pt-2 pb-4">
+          <Card className="px-6 pt-2 pb-4" style={{width:500}}>
             {loading ? 
             <Typography>Loading...</Typography>:
             <ValidatorForm
               ref="form"
               onSubmit={this.handleSubmitBankDetails}
               onError={errors => null}>
-              <Grid container spacing={6}>
+              <Grid container spacing={2}>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
                     className="mb-4 w-full"
@@ -725,7 +725,7 @@ render(){
             onSubmit={this.handleSubmit}
             onError={errors => null}
           >
-            <Grid container spacing={6}>
+            <Grid container spacing={2}>
               <Grid item lg={6} md={6} sm={12} xs={12}>
                 <TextValidator
                   className="mb-4 w-full"
