@@ -49,7 +49,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
             payment_method: "",
             save_card:true,
             paystack_id: "",
-            card_id:"0"
+            card_id:"0",
+            remaining_amount:0
         },
         down_data:{
           total_down_payment: "",
@@ -57,7 +58,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
           form_payment: "",
           save_card:true,
           paystack_id: "",
-          card_id:"0"
+          card_id:"0",
+          // remaining_amount:0
       },
         add_card:{
             total: 100,
@@ -74,7 +76,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
         showSaveCard:false,
         total:0,
         amount:0,
-        price:0,
+        remaining_amount:0,
         products:[] 
       }
       this.getTotalAmount = this.getTotalAmount.bind(this);
@@ -150,7 +152,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   }
 
     getTotalAmount=()=>{
-      const {down_data, products} = this.state
+      const {down_data, fund_data, products} = this.state
       let amt = 0
       let tol = 0
       products.forEach(p => {
@@ -158,7 +160,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
         tol+=p.cart_price * p.cart_quantity
       });
       const price = tol - amt
-      this.setState({down_data: {...down_data, total_down_payment:amt}, total:tol, amount:amt, price:price})
+      this.setState({down_data: {...down_data, total_down_payment:amt}, total:tol, amount:amt, remaining_amount:price})
+      this.setState({fund_data: {...fund_data, remaining_amount:price}})
     
     }
     
@@ -246,7 +249,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
  render(){
    
     // const { count, products, down_amt, loading,} = this.props;
-    const { cards, fund_data, showSave, down_data, add_card, showSaveCard, total, amount, price } =this.state
+    const { cards, fund_data, showSave, down_data, add_card, showSaveCard, total, amount, remaining_amount} =this.state
   return (
     <Card elevation={3} className="mb-6">
     {/* <CardContent> */}
@@ -292,7 +295,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                 </Grid>
                 <Grid item lg={6} md={6} sm={6} xs={6} style={{textAlign:'right'}}>
                     <b>
-                    {numberFormat(price)}
+                    {numberFormat(remaining_amount)}
                     </b>
                 </Grid>
             </ListItem>
