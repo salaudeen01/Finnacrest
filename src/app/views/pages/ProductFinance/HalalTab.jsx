@@ -46,7 +46,7 @@ class Business extends Component {
     })
     .catch(error => {
       if (error === "Unauthorized") {
-            this.props.logout()
+        this.props.timeOut()
         }
       this.setState({loading:false, err : "internet error" });
       console.error('There was an error!', error);
