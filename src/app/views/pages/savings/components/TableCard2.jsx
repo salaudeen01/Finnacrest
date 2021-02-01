@@ -13,7 +13,7 @@ import {
 import { Component } from "react";
 import { numberFormat } from '../../../../config/config'
 import dateFormat from 'dateformat';
-import Paginate from "../../transactions/paginate";
+import Paginate from "./pagination";
 
 class TableCard2 extends Component{
   constructor(props){

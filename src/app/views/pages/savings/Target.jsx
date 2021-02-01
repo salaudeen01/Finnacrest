@@ -176,11 +176,11 @@ componentDidMount(){
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
-      console.log(data)
-      if(data.success == false){
+      if(data.success === false && data.length === []){
         this.setState({tdetails: [], balance: 0, completed: [], accounts:[], loading:false })
       }else{
-        this.setState({tdetails: data[1], tar_amt:data[1][0].targeted_amount, bal_amt:data[1][0].target_balance, balance: data[0], completed:data[2], accounts:data[3], loading:false })
+        console.log(data)
+        this.setState({tdetails: data[1], completed: data[2], balance: data[0], loading:false })
       }
     })
     .catch(error => {
@@ -755,6 +755,7 @@ completeTab(){
     let {theme} = this.props
     const {balance, tdetails, bal_amt, tar_amt, share_balance, shareFee, shareMinFee, loading, isLoading, tab, cards, add_card, showSaveCard, id, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, pagination, show, savings} = this.state
     const bal = tar_amt - bal_amt
+    console.log(completed)
     return (
       <div className="m-sm-10">
         {loading ?
@@ -828,7 +829,7 @@ completeTab(){
               </div>}
               {!tab &&
               <div className="px-2 bg-default">
-                {completed.length != 0?
+                {completed.length !== 0?                
                 completed.map((data, index)=>(
                   <TargetTransactionCard 
                   key={index} 
@@ -840,7 +841,7 @@ completeTab(){
                   edit={()=>this.handleEdit(data.id)}
                   />
                 )):
-                <Typography variant="body1">No Completed Target Savings</Typography>}
+                <Typography variant="body1">No Completed Target Savings</Typography> }               
               </div>
             }            
           </Grid>              

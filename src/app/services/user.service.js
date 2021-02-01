@@ -140,10 +140,8 @@ function editRegularSavings(data) {
     headers: { ...authHeader(), "Content-Type": "application/json" },
     body: JSON.stringify(data),
   };
-  return fetch(
-    getConfig("editRegularSavings") + data.id,
-    requestOptions
-  ).then(handleResponse);
+  return fetch(getConfig("editRegularSavings") + data.id,requestOptions).then(
+    handleResponse);
 }
 function withdrawRegularSavings(data) {
   const requestOptions = {

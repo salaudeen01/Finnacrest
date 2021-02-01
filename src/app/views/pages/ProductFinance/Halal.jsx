@@ -57,6 +57,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
         quantity:"",
         image: null
       },
+      search_term:"",
       current_value:"",
       categories:[],
       tab:true,
@@ -66,8 +67,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
       showSave:false,
       isLoading:true,
       loading:true,
-      pagination:[],
-      search:"",
+      pagination:[],     
       singleNews:[],
       singleInvestment:[],
       category:[],
@@ -99,6 +99,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     this.fetch_page = this.fetch_page.bind(this);
     this.searchChange = this.searchChange.bind(this);
     this.fetch_prev_page = this.fetch_prev_page.bind(this);
+    this.fetchOrders = this.fetchOrders.bind(this);
+    this.fetchOrders();
   }
 
 callback = (response) => {
@@ -126,9 +128,9 @@ handleSubmitRequest(event) {
   event.preventDefault();
 
   const { request_data } = this.state;
-    console.log(request_data);
+    
     if (request_data.product_name && request_data.short_description && request_data.quantity && request_data.image) {
-      // console.log(data);
+     
       
       const fd = new FormData();
         fd.append("product_name", request_data.product_name); 
@@ -221,36 +223,13 @@ componentDidMount() {
       method: 'GET',
       headers: { ...authHeader(), 'Content-Type': 'application/json' },
   };
-  fetch(getConfig('getHalaiNews'), requestOptions)
-    .then(async response => {
-    const data = await response.json();
-    if (!response.ok) {
-        const error = (data && data.message) || response.statusText;
-        this.setState({loading: false });
-        return Promise.reject(error);
-    }
-    console.log(data)
-    if(data.success == false){
-      this.setState({pagination: [], category: [], news: []})
-    }else{
-      this.setState({pagination: data.products, news:data.products.data, category: data.products.data})
-    }
-    // console.log(data)
-})
-.catch(error => {
-   if (error === "Unauthorized") {
-    this.props.timeOut()
-   }
-   this.setState({loading:false});
-    console.error('There was an error!', error );
-});
 fetch(getConfig("getHalaiCat"), requestOptions)
   .then(async (response) => {
     const data = await response.json();
     if (!response.ok) {
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
-    }console.log(data)
+    }
     if(data.success == false){
       this.setState({ categories: []});
     }else{
@@ -292,13 +271,42 @@ fetch(getConfig("getHalaiCat"), requestOptions)
       }else{
         this.setState({ count: data});
       }    
-      console.log(data)
     })
     .catch((error) => {
       if (error === "Unauthorized") {
         this.props.timeOut()
       }
     });
+}
+
+fetchOrders = () =>{
+  const {search_term} = this.state
+  const requestOptions = {
+    method: 'POST',
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+    body:JSON.stringify({search_term})
+  };
+  fetch(getConfig('getHalaiNews'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        this.setState({loading:false });
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }
+    if(data.success == false){
+      this.setState({pagination: [], category: [], news: [], loading:false})
+    }else{
+      this.setState({pagination: data.products, news:data.products.data, category: data.products.data, loading:false})
+    }
+  })
+  .catch(error => {
+    if (error === "Unauthorized") {
+      this.props.timeOut()
+    }
+    this.setState({loading:false });
+    console.error('There was an error!', error);
+  });
 }
 
 fetch_next_page = ()=>{
@@ -310,7 +318,6 @@ fetch_next_page = ()=>{
   };
   fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
     const data =await response.json();
-    console.log(data)
     this.setState({ loading: false, pagination: data.products, category: data.products.data });
   }).catch(error=>{
     if (error === "Unauthorized") {
@@ -353,42 +360,10 @@ fetch_page = (index)=>{
   })
 }
 
-//       this.setState({category: data.products.data, news:data.products, loading:false });
-
-
-fetchUsers = (search) =>{
-  const {token} = this.state
-  const requestOptions = {
-      method: 'POST',
-      headers: { ...authHeader(), 'Content-Type': 'application/json' },
-      body: JSON.stringify(search),
-  };
-  fetch(getConfig('searchProducts') + search +"?token=" + token, requestOptions)
-  .then(async response => {
-  const data = await response.json();
-  if (!response.ok) {
-      const error = (data && data.message) || response.statusText;
-      return Promise.reject(error);
-  }
-  console.log(data)
-  this.setState({users: data});
-})
-.catch(error => {
-  if (error === "Unauthorized") {
-    this.props.timeOut()
-     }
-  this.setState({loading:false, err : "internet error" });
-  console.error('There was an error!', error);
-});
-}
-
 searchChange(event) {
-  const { name, value } = event.target;
-  const { search, category, all } = this.state;
+  const { value } = event.target;
+  this.setState({  search_term: value, loading:true},()=>{ this.fetchOrders() });
   
-  this.setState({ search: value, category: value == "" ? category : category.filter((q)=>
-  q.product_name.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  || q.price.toLowerCase().indexOf(value.toLowerCase())  !== -1 )});
 }
 
 handleCloseView() {
@@ -435,7 +410,7 @@ tabbed = (id) => {
 };
   render(){
     const {theme} =this.props
-    const {tab,mTab, invest_data, search, request_data, pagination, categories, count, category, loading, singleInvestment, singleNews, isLoading, current_index, investment, showView, showSave, showInvest} = this.state
+    const {tab,mTab, invest_data, search_term, request_data, pagination, categories, count, category, loading, singleInvestment, singleNews, isLoading, current_index, investment, showView, showSave, showInvest} = this.state
     return (
       <div className="m-sm-30">
         <AppBar color="default" position="static">
@@ -452,12 +427,24 @@ tabbed = (id) => {
             </Grid>
             <Grid item lg={5} md={5} sm={5} xs={10}>
               <SearchInput
-                value={search}
+                value={search_term}
                 onChange={this.searchChange}
                 style={{marginRight: theme.spacing(2)}}
                 placeholder="Search Product"
               />
             </Grid>
+            {/* <div style={{height: '42px' ,alignItems: 'center', marginTop: theme.spacing(1)}}>
+              <TextField
+                style={{width:"30%"}}
+                label="search username"
+                margin="dense"
+                variant="outlined"
+                value={search}
+                onChange={this.searchChange}
+                style={{marginRight: theme.spacing(1)}}
+                placeholder="Search"
+              />
+            </div> */}
             
             <Grid item lg={1} md={1} sm={1} xs={2}> 
             <Link to="/detail/cart">
@@ -532,7 +519,7 @@ tabbed = (id) => {
         </Grid>
         
        }           
-        <div className="classes.pagination">
+        <div className="classes.pagination mt-4">
         {/* <Typography variant="caption">1-6 of 20</Typography> */}
         <Paginate 
               pagination={pagination}

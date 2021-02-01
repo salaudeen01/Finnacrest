@@ -1,4 +1,3 @@
-
 import React from 'react'
 import {Button, IconButton} from "@material-ui/core"
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -16,7 +15,7 @@ export default function Paginate(props) {
           variant={props.pagination.current_page == page ? "contained":""}
            onClick={()=>props.fetch_page(page)}>{page}</Button>
       ))}
-      {props.pagination.total > 21 &&<Button variant="contained" size="small" color="primary" style={{color:"white"}} 
+      {props.pagination.total > 11 &&<Button variant="contained" size="small" color="primary" style={{color:"white"}} 
       onClick={props.fetch_next_page}><ArrowForwardIosIcon/></Button>}
       </div>
     )
@@ -27,7 +26,7 @@ function page(pagination){
     var pageIndex = 0;
     var i = 0;
     while(i < pagination.total){
-      if(i % 21 == 0){
+      if(i % 11 == 0){
         pageIndex+=1
         pages.push(pageIndex)
       }else if(i == pagination.total){
@@ -38,4 +37,3 @@ function page(pagination){
     }
     return pages;
 }
-

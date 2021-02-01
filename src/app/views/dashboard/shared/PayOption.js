@@ -19,6 +19,7 @@ class PayOption extends Component {
             reference:"",
         }
         this.close = this.close.bind(this);
+        this.getReference = this.getReference.bind(this);
         
     }
 componentDidMount(){
@@ -43,11 +44,31 @@ componentDidMount(){
     });
 }
 
+getReference = () => {
+    const {type, targetId} =this.props
+    let user =   JSON.parse(localStorage.getItem('user'));
+    let id = this.pad(user.user_id, 5)
+    let text = "";
+    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.=";
+    for( let i=0; i < 7; i++ ){
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    
+    text= type + "-" + id.toString() + "-" + targetId + "-" +text
+    console.log(text)
+    this.setState({reference:text});
+  }
+
+pad(num, size) {
+    var s = "000000000" + num;
+    return s.substr(s.length-size);
+}
+
 close = () => {
     console.log("Payment closed");
 }
     render() {
-        const {email, key} = this.state
+        const {email,reference, key} = this.state
         const {amount, callback} = this.props
         let pay1 = (Number(amount) + (Number(amount) * 1.5 )/ 100)* 100
         let pay2 = (Number(amount) + ((Number(amount) * 1.5 )/ 100)+100)*100
@@ -66,7 +87,7 @@ close = () => {
                     close={this.close}
                     disabled={true}  
                     embed={true}  
-                    reference={getReference()}
+                    reference={reference}
                     email={email}
                     amount={amount >= 2500 ? pay2: pay1}
                     // amount={amount}

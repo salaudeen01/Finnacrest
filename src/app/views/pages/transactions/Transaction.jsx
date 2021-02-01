@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import SimpleTable from "./SimpleTable";
+import TransTop from "./TransTop";
 import PaginationTable from "./PaginationTable";
 import { Breadcrumb, SimpleCard } from "matx";
 import {getConfig, setLastUrl, checkUserStatus, numberFormat} from '../../../config/config'
@@ -9,8 +9,6 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
-import Lottie from 'react-lottie';
-import cube from "../../../../lottiefiles/26519-cube-spinning";
 import Loading from "matx/components/MatxLoading/MatxLoading";
 import { AppBar, Button, Card, Dialog, DialogActions, Grid, IconButton, Slide, Toolbar, Typography } from "@material-ui/core";
 import ModalForm from "./ModalForm";
@@ -57,7 +55,6 @@ class Transaction extends Component {
           this.setState({loading: false });
           return Promise.reject(error);
         }
-        console.log(data)
         this.setState({ loading: false, transactions:data.data, pagination: data});
       })
       .catch((error) => {
@@ -79,7 +76,6 @@ class Transaction extends Component {
           this.setState({loading: false });
           return Promise.reject(error);
         }
-        console.log(data)
         this.setState({ loading: false, registrationFee:data});
       })
       .catch((error) => {
@@ -104,7 +100,6 @@ class Transaction extends Component {
     };
     fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
       const data =await response.json();
-      console.log(data)
       this.setState({ loading: false, transactions:data.data, pagination:data });
     }).catch(error=>{
       if (error === "Unauthorized") {
@@ -150,7 +145,6 @@ class Transaction extends Component {
 
   componentDidMount(){
     let check = checkUserStatus()
-    // console.log(check)
     if(check != true){
       this.setState({modal:true})
     }
@@ -186,7 +180,10 @@ class Transaction extends Component {
           <Loading />
         </div>:
         <>
-        <div className="py-3" />        
+        <div className="py-3" /> 
+        {/* Date Search */}
+        {/* <TransTop />   */}
+        {/* <div className="py-2" />       */}
         <SimpleCard title="Transactions Table">
           <PaginationTable transactions={transactions} pagination={pagination}
             fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page}

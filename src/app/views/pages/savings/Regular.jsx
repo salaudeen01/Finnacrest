@@ -738,48 +738,50 @@ handleClose() {
         {/* Quick Save Dialog End */}
 
         {/* Edit Dialog start */}
-        <Dialog 
+
+        <Dialog
           TransitionComponent={Transition}
           aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        open={showEdit}
-        onClose={this.handleCloseEdit}>
+          aria-describedby="alert-dialog-slide-description" 
+          open={showEdit}
+          onClose={this.handleCloseEdit}
+          scroll="body">
           <AppBar style={{position: "relative",}} color='primary'>
-            <Toolbar>
-              <IconButton
-                edge="start"
-                color="primary"
-                onClick={this.handleCloseEdit}
-                aria-label="Close"
-              >
-                <CloseIcon style={{color:'#fff'}}/>
-              </IconButton>
-              <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="primary"
+              onClick={this.handleCloseEdit}
+              aria-label="Close"
+            >
+              <CloseIcon style={{color:'#fff'}}/>
+            </IconButton>
+            <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
                 Auto Save Details
-              </Typography>
-            </Toolbar>
+            </Typography>
+          </Toolbar>
           </AppBar>
           <Card className="px-6 pt-2 pb-4">
-          
-            <Grid container spacing={2}>
-              <Grid item lg={12} md={12} sm={12} xs={12}>
-              <ValidatorForm
-                  ref="form"
-                  onSubmit={this.handleSubmitEdit}
-                  onError={errors => null}
-                >
-                {/* <TextValidator
-                  className="mb-4 w-full"
-                  label="Enter Amount"
-                  onChange={this.handleChangeEdit}
-                  type="number"
-                  name="amount"
-                  value={edit_data.amount}
-                  validators={[
-                    "required"
-                  ]}
-                  errorMessages={["this field is required"]}
-                /> */}
+
+          <Grid container spacing={2}>
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+            <ValidatorForm
+                ref="form"
+                onSubmit={this.handleSubmitEdit}
+                onError={errors => null}
+              >
+              {/* <TextValidator
+                className="mb-4 w-full"
+                label="Enter Amount"
+                onChange={this.handleChangeEdit}
+                type="number"
+                name="amount"
+                value={edit_data.amount}
+                validators={[
+                  "required"
+                ]}
+                errorMessages={["this field is required"]}
+              /> */}
                 <NumberFormat
                   value={edit_data.amount}
                   thousandSeparator={true} 
@@ -793,78 +795,79 @@ handleClose() {
                   ]}
                   errorMessages={["this field is required"]}
                 />
-                <TextField
+              <TextField
                 className="mb-4 w-full"
-                  select
-                  label="Select Frequency"
-                  value={edit_data.frequency}
-                  name="frequency"
-                  onChange={this.handleChangeEdit}
-                  helperText="Please select frequency"
-                >
-                    <MenuItem value={"Daily"}>Daily</MenuItem>
-                    <MenuItem value={"Weekly"}> Weekly</MenuItem>
-                    <MenuItem value={"Monthly"}> Monthly </MenuItem>
-                </TextField>
-                {edit_data.frequency === 'Monthly' && 
-                <TextField
-                  className="mb-4 w-full"
-                  select
-                  label="Select Transaction Day"
-                  value={edit_data.transaction_month}
-                  name="transaction_month"
-                  onChange={this.handleChangeEdit}
-                  helperText="Please select Day"
-                >
-                  {obj.array.map((item) =>
-                    <MenuItem value={item}key={item}>{item}</MenuItem>
-                  )}
-                </TextField>
-                }
-                {edit_data.frequency === 'Weekly' && 
-                <TextField
-                  className="mb-4 w-full"
-                  select
-                  label=" Day of the Week"
-                  value={edit_data.transaction_day}
-                  name="transaction_day"
-                  onChange={this.handleChangeEdit}
-                  helperText="Please select Day"
-                >
-                    <MenuItem value={"1"}>Monday</MenuItem>
-                    <MenuItem value={"2"}>Tuesday</MenuItem>
-                    <MenuItem value={"3"}>Wednesday</MenuItem>
-                    <MenuItem value={"4"}>Thursday</MenuItem>
-                    <MenuItem value={"5"}>Friday</MenuItem>
-                    <MenuItem value={"6"}>Saturday</MenuItem>
-                    <MenuItem value={"7"}>Sunday</MenuItem>
-                </TextField>
-                }
-                <TextValidator
-                  className="mb-4 w-full"
-                  onChange={this.handleChangeEdit}
-                  type="time"
-                  name="transaction_time"
-                  helperText="Please select Transaction Time"
-                  value={edit_data.transaction_time}
-                  validators={[
-                    "required"
-                  ]}
-                  errorMessages={["this field is required"]}
-                />
-                <TextValidator
-                  className="mb-4 w-full"
-                  onChange={this.handleChangeEdit}
-                  type="date"
-                  name="start_date"
-                  helperText="Please select Start Date"
-                  value={edit_data.start_date}
-                  validators={[
-                    "required"
-                  ]}
-                  errorMessages={["this field is required"]}
-                />
-                
+                select
+                label="Select Frequency"
+                value={edit_data.frequency}
+                name="frequency"
+                onChange={this.handleChangeEdit}
+                helperText="Please select frequency"
+              >
+                  <MenuItem value={"Daily"}>Daily</MenuItem>
+                  <MenuItem value={"Weekly"}> Weekly</MenuItem>
+                  <MenuItem value={"Monthly"}> Monthly </MenuItem>
+              </TextField>
+              {edit_data.frequency === 'Monthly' && 
+              <TextField
+                className="mb-4 w-full"
+                select
+                label="Select Transaction Month"
+                value={edit_data.transaction_month}
+                name="transaction_month"
+                onChange={this.handleChangeEdit}
+                helperText="Please select Month"
+              >
+                {obj.array.map((item) =>
+                  <MenuItem value={item}key={item}>{item}</MenuItem>
+                )}
+              </TextField>
+              }
+              {edit_data.frequency === 'Weekly' && 
+              <TextField
+                className="mb-4 w-full"
+                select
+                label=" Day of the Week"
+                value={edit_data.transaction_day}
+                name="transaction_day"
+                onChange={this.handleChangeEdit}
+                helperText="Please select Day"
+              >
+                  <MenuItem value={"1"}>Monday</MenuItem>
+                  <MenuItem value={"2"}>Tuesday</MenuItem>
+                  <MenuItem value={"3"}>Wednesday</MenuItem>
+                  <MenuItem value={"4"}>Thursday</MenuItem>
+                  <MenuItem value={"5"}>Friday</MenuItem>
+                  <MenuItem value={"6"}>Saturday</MenuItem>
+                  <MenuItem value={"7"}>Sunday</MenuItem>
+              </TextField>
+              }
+              <TextValidator
+                className="mb-4 w-full"
+                onChange={this.handleChangeEdit}
+                type="time"
+                name="transaction_time"
+                helperText="Please select Transaction Time"
+                value={edit_data.transaction_time}
+                validators={[
+                  "required"
+                ]}
+                errorMessages={["this field is required"]}
+              />
+              <TextValidator
+                className="mb-4 w-full"
+                onChange={this.handleChangeEdit}
+                type="date"
+                name="start_date"
+                helperText="Please select Start Date"
+                value={edit_data.start_date}
+                validators={[
+                  "required"
+                ]}
+                errorMessages={["this field is required"]}
+              />
+              <Typography>Choose Card</Typography>
+              <PayCard cards={cards} id={id} value={edit_data.card_id} open={this.handleSaveCard} handleChangeEdit={this.handleChangeEdit}/>
               <Grid item lg={12} md={12} sm={12} xs={12}>
                   <div style={{textAlign:'center', alignItems:'center',alignContent:'center'}}>
                   {this.props.savings &&
@@ -872,16 +875,16 @@ handleClose() {
                     }  
                   </div>      
               </Grid>
-                <Button className="uppercase"
-                    type="submit"
-                    size="large"
-                    variant="contained"
+              <Button className="uppercase"
+                  type="submit"
+                  size="large"
+                  variant="contained"
                   style={{backgroundColor:"#222943", color:"#fff"}}>Save Changes</Button>
                   </ValidatorForm>
-              </Grid>
             </Grid>
+          </Grid>
           </Card>
-        </Dialog>
+          </Dialog>
         {/* Edit dialog end */}
 
         {/* Create Dialog start */}
