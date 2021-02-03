@@ -93,7 +93,9 @@ class Dashboard1 extends Component {
                 modalForm:false, 
                 modalFee:false,
                 shareFee:false,
-                registrationFee: 0,
+                registrationFee: 0,                
+                type:"",
+                targetId:"",
                 } ;
             this.handleSaveCard = this.handleSaveCard.bind(this);
             this.handleCloseSaveCard = this.handleCloseSaveCard.bind(this);
@@ -174,23 +176,31 @@ handleSubmit(acct_type) {
   }
 }
 
+
 handleChange(event) {
-const { name, value, checked } = event.target;
-const { data, accounts } = this.state;
-if(name == "target_name"){
-    accounts.forEach(dat => {
-      if(dat.target_name == value){
-        this.setState({data:{...data, id:dat.id, [name]:dat.target_name}})
-      }
-    });
-}else if(name == "acct_type" && value == "Wallet"){
-  this.setState({ data: { ...data, [name]: value, "payment_method": "Debit Card" }});
-}else if(name == "save_card"){
-    this.setState({ data:{...data, [name]:checked}})
-}else{
-  this.setState({ data: { ...data, [name]: value }});
+  const { name, value, checked } = event.target;
+  const { data, accounts } = this.state;
+  if(name == "target_name"){
+      accounts.forEach(dat => {
+        if(dat.target_name == value){
+          this.setState({data:{...data, id:dat.id, [name]:dat.target_name}, targetId:dat.id})
+        }
+      });
+    }else if(name == "acct_type" && value == "Wallet"){
+      this.setState({ data: { ...data, [name]: value, payment_method: "Debit Card" }, type:'07'});
+    }else if(name == "acct_type" && value == "Regular Savings"){
+      this.setState({ data: { ...data, [name]: value, payment_method: "" }, type:'01'});
+    }else if(name == "acct_type" && value == "Target Savings"){
+      this.setState({ data: { ...data, [name]: value, payment_method: ""}, type:'02'});
+    }else if(name == "acct_type" && value == "Shareholding"){
+      this.setState({ data: { ...data, [name]: value, payment_method: ""}, type:'03'});
+    }else if(name == "save_card"){
+        this.setState({ data:{...data, [name]:checked}})
+    }else{
+      this.setState({ data: { ...data, [name]: value }});
+    }
   }
-}
+
 handleClickOpen() {
   this.setState({show:true});
 }
@@ -480,7 +490,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
 
   render() {
     let { theme } = this.props;
-    const {error, accounts, show, wallet_balance, add_card, showSaveCard, cards, bank, profile, data, email, 
+    const {error, type, targetId, accounts, show, wallet_balance, add_card, showSaveCard, cards, bank, profile, data, email, 
       loading, shareFee, transactions, target_balance, continued, regular_balance, market_balance, share_balance, 
       loan_investment,shareMinFee, loan_avail_amount, halal_balance, modal, modalForm, registrationFee, modalFee} = this.state
     return (
@@ -676,7 +686,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
             </Grid>}
             {data.card_id == "" && data.payment_method == "Debit Card"  && 
             <Grid item lg={12} md={12} sm={12} xs={12}>
-              <PayOption callback={this.callback} amount={data.amount}/>
+              <PayOption callback={this.callback} amount={data.amount} type={type} targetId={targetId}  />
             </Grid>}
           </Grid>
           {this.props.savings &&

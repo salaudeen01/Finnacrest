@@ -343,7 +343,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                       </Grid>}
                       {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
                       <Grid item lg={12} md={12} sm={12} xs={12}>
-                      <PayOption callback={this.callback} amount={this.props.total}/>
+                      <PayOption callback={this.callback} amount={this.props.total} type={'09'} targetId={'00'}/>
                       </Grid>}
                   
                    </Grid>
@@ -503,7 +503,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
                     {down_data.card_id == "" && down_data.payment_method == "Debit Card" &&
                     <Grid item lg={12} md={12} sm={12} xs={12}>
-                      <PayOption callback={this.callback} amount={down_data.total_down_payment}/>
+                      <PayOption callback={this.callback} amount={down_data.total_down_payment} type={'09'} targetId={'00'}/>
                     </Grid>}
 
                   </Grid>

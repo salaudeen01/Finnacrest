@@ -182,7 +182,6 @@ fetch_next_page = ()=>{
   };
   fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
     const data =await response.json();
-    console.log(data)
     if(data.success == false){
       this.setState({wallet: [], loading:false });
     }else{
@@ -488,7 +487,7 @@ handleCloseConfirmWithdraw() {
                 </Button>}
               </Grid>
               {data.card_id == "" && <Grid item lg={12} md={12} sm={12} xs={12}>
-                <PayOption callback={this.callback} amount={data.amount}/>
+                <PayOption callback={this.callback} amount={data.amount} type={'07'} targetId={"00"}/>
               </Grid>}
             </Grid>
           </ValidatorForm>

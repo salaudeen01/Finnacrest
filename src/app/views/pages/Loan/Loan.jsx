@@ -302,7 +302,6 @@ componentDidMount() {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
     if(data.success == false || data.length == 0 ){
       this.setState({repayment_duration: []});
     }else{
@@ -322,7 +321,6 @@ componentDidMount() {
         this.setState({loading: false });
         return Promise.reject(error);
       }
-      console.log(data)
       this.setState({ loading: false, registrationFee:data});
     })
     fetch(getConfig('owner_savings_balance'), requestOptions)
@@ -347,7 +345,6 @@ fetch(getConfig("getLoanFee"), requestOptions)
     this.setState({loading: false });
     return Promise.reject(error);
   }
-  console.log(data)
   this.setState({ loading: false, LoanFee:data});
 })
 fetch(getConfig('showGuarantorTable'), requestOptions)
@@ -668,7 +665,6 @@ fetchUsers = (search) =>{
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
   }
-  console.log(data)
   this.setState({users: data});
 })
 .catch(error => {
@@ -998,13 +994,11 @@ handleChangeUsers = (event, values, id) =>{
   const {name, value } = event.target;
     const { formList, users } = this.state;
     let newArray = [...formList];
-    console.log(id)
   this.fetchUsers(value);
   users.forEach(user => {
     if(values == (user.first_name + " " + user.last_name) +" "+ user.email){
       const elementsIndex = formList.findIndex((element,index) => index == id )
       newArray[elementsIndex] = {...newArray[elementsIndex], user_id: user.id}
-      console.log(newArray)
     }
   });
   this.setState({formList: newArray});
@@ -1024,7 +1018,6 @@ handleDaChange(event, id) {
   const elementsIndex = formList.findIndex((element,index) => index == id )
   let newArray = [...formList]
   newArray[elementsIndex] = {...newArray[elementsIndex], [name]: value }
-  console.log(newArray)
   this.setState({formList: newArray});
 }
 render(){
@@ -1595,7 +1588,7 @@ render(){
               </Grid>
               {form_data.card_id == "" && form_data.form_payment == "Debit Card" &&
               <Grid item lg={12} md={12} sm={12} xs={12}>
-                <PayOption callback={this.callback} amount={LoanFee}/>
+                <PayOption callback={this.callback} amount={LoanFee} type={'21'} targetId={'00'} />
               </Grid>}
             </Grid>
           </ValidatorForm>

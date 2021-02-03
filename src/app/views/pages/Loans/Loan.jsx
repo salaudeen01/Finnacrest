@@ -1348,7 +1348,7 @@ render(){
                    Repay Loan
               </Button>}
                 {repay_data.payment_method === "Bank Account" && 
-                  <PayOption callback={this.callback} amount={repay_data.repayment_amount}/>
+                  <PayOption callback={this.callback} amount={repay_data.repayment_amount} type={'04'} targetId={'00'} />
                 }
             </Grid>
           </Grid>

@@ -196,7 +196,7 @@ class Regular extends Component{
       if (!response.ok) {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
-      } console.log(data)
+      } 
       if(data.success == false){
         this.setState({tdetails: [], pagination:[], loading:false} );
       }else{
@@ -289,7 +289,6 @@ fetch_next_page = ()=>{
   };
   fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
     const data =await response.json();
-    console.log(data)
     if(data.success == false){
       this.setState({tdetails: [], loading:false });
     }else{
@@ -442,7 +441,7 @@ handleSubmitFund(event) {
       swal(
           `${"All fields are required"}`
       );
-  }
+  }  
 }
 handleChangeEdit = event => {
   const {edit_data} = this.state
@@ -729,7 +728,7 @@ handleClose() {
               </Grid>
               {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
               <Grid item lg={12} md={12} sm={12} xs={12}>
-                <PayOption callback={this.callback} amount={fund_data.amount}/>
+                <PayOption callback={this.callback} amount={fund_data.amount} type={'01'} targetId={"00"} />
               </Grid>}
             </Grid>
           </ValidatorForm>

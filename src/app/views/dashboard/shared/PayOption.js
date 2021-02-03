@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react'
 import {getReference, getConfig, payID, numberFormat } from '../../../config/config'
 import PaystackButton from 'react-paystack';
@@ -16,11 +17,10 @@ class PayOption extends Component {
         this.state = {
             email: email,
             key: payID(),
-            reference:"",
+            reference:""
         }
         this.close = this.close.bind(this);
         this.getReference = this.getReference.bind(this);
-        
     }
 componentDidMount(){
     const requestOptions = {
@@ -34,20 +34,22 @@ componentDidMount(){
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
         }
+        // this.setState({key: data[0].public_key})
         localStorage.setItem("token", data[0].token);
-        this.setState({reference:data[0].code})
+
     })
     .catch((error) => {
         if (error === "Unauthorized") {
           this.props.timeOut()
         }
     });
+    this.getReference()
 }
 
 getReference = () => {
     const {type, targetId} =this.props
     let user =   JSON.parse(localStorage.getItem('user'));
-    let id = this.pad(user.user_id, 5)
+    let id = (user.user_id)
     let text = "";
     let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.=";
     for( let i=0; i < 7; i++ ){
@@ -55,7 +57,6 @@ getReference = () => {
     }
     
     text= type + "-" + id.toString() + "-" + targetId + "-" +text
-    console.log(text)
     this.setState({reference:text});
   }
 
@@ -68,7 +69,7 @@ close = () => {
     console.log("Payment closed");
 }
     render() {
-        const {email,reference, key} = this.state
+        const {email, key, reference} = this.state
         const {amount, callback} = this.props
         let pay1 = (Number(amount) + (Number(amount) * 1.5 )/ 100)* 100
         let pay2 = (Number(amount) + ((Number(amount) * 1.5 )/ 100)+100)*100
@@ -88,9 +89,9 @@ close = () => {
                     disabled={true}  
                     embed={true}  
                     reference={reference}
+                    // reference={getReference()}
                     email={email}
                     amount={amount >= 2500 ? pay2: pay1}
-                    // amount={amount}
                     paystackkey={key}
                     tag="button" 
                 />:

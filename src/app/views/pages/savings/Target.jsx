@@ -176,7 +176,7 @@ componentDidMount(){
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
-      if(data.success === false && data.length === []){
+      if(data.success === false && data.length === 0){
         this.setState({tdetails: [], balance: 0, completed: [], accounts:[], loading:false })
       }else{
         console.log(data)
@@ -383,7 +383,6 @@ fetch_page = (index)=>{
     }
   })
 }
-
 
 close = () => {
 console.log("Payment closed");
@@ -814,7 +813,7 @@ completeTab(){
                 {tdetails.length != 0?
                 tdetails.map((data, index)=>(
                   <TargetTransactionCard key={index} status={false} 
-                  withdrawStatus={data.withdraw_status} amount={numberFormat(data.targeted_amount)} 
+                  withdrawStatus={data.withdraw_status} amount={data.targeted_amount===null?numberFormat(0): numberFormat(data.targeted_amount)} 
                   value={(100 * data.target_balance)/data.targeted_amount}
                   autoSave={(e)=>this.handleTargetAutoSave(data.id, e)}
                   auto_status={data.auto_status}
@@ -826,7 +825,7 @@ completeTab(){
                 )):
                 <Typography variant="body1">No Ongoing Target Savings</Typography>
               }
-              </div>}
+              </div>} 
               {!tab &&
               <div className="px-2 bg-default">
                 {completed.length !== 0?                
@@ -965,7 +964,7 @@ completeTab(){
               </Grid>
                 {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
                 <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <PayOption callback={this.callback} amount={fund_data.amount}/>
+                  <PayOption callback={this.callback} type={'02'} targetId={"00"} amount={fund_data.amount}/>
                 </Grid>}
               </Grid>
             </ValidatorForm>

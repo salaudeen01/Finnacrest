@@ -141,6 +141,7 @@ class ShareholdingFee extends Component {
                     <PayOption
                       callback={this.callback}
                       amount={fund_data.amount}
+                      type={'03'} targetId={"00"}
                     />
                 </Grid>
               </Grid>

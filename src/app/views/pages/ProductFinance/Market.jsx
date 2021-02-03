@@ -422,7 +422,7 @@ tabbed = (id) => {
                             Buy Slot
                         </Button>}
                         {invest_data.payment_method == "Bank Account" && 
-                        <PayOption amount={invest_data.total} callback={this.callback}/>}
+                        <PayOption amount={invest_data.total} callback={this.callback} type={'09'} targetId={'00'} />}
                       </Grid>
                     </Grid>
                   </Card>

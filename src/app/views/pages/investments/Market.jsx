@@ -485,7 +485,7 @@ tabbed = (id) => {
                       </Grid>}
                       {invest_data.card_id == "" && invest_data.payment_method == "Debit Card" &&
                       <Grid item lg={12} md={12} sm={12} xs={12}>
-                        <PayOption callback={this.callback} amount={invest_data.total}/>
+                        <PayOption callback={this.callback} amount={invest_data.total} type={'09'} targetId={'00'}/>
                       </Grid>}
                     </Grid>
                   </Card>

@@ -377,7 +377,7 @@ componentDidMount() {
   }
 
 render(){
-  const {tab,loading,data,isLoading,requested_business,business_view,showSave,fund_data,cards,showManageLoan,repayment_details, showViewTrans} = this.state
+  const {tab,loading,data,type,targetId,isLoading,requested_business,business_view,showSave,fund_data,cards,showManageLoan,repayment_details, showViewTrans} = this.state
    return (
     <div className="">       
          {loading ? (
@@ -605,7 +605,7 @@ render(){
                   </Grid>}
                   {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
                   <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <PayOption callback={this.callback} amount={fund_data.repayment_amount}/>
+                    <PayOption callback={this.callback} type={'08'} targetId={'00'} amount={fund_data.repayment_amount}/>
                   </Grid>}
                 </Grid>
               </ValidatorForm>

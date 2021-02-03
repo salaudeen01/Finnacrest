@@ -619,6 +619,8 @@ class Halal extends Component {
                               <PayOption
                                 callback={this.callback}
                                 amount={invest_data.total}
+                                type={'09'} 
+                                targetId={'00'} 
                               />
                             </Grid>
                           )}

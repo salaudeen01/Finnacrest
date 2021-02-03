@@ -314,7 +314,6 @@ fetchLoanDetails=(id)=>{
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
-      console.log(data)
       if(data.success == false){
         this.setState({repayment_details: [], pagination:[]})
       }else{
@@ -333,7 +332,6 @@ fetchLoanDetails=(id)=>{
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);          
       }
-      console.log(data)
       if(data.success == false){
         this.setState({loan_approval: [], loading:false});
       }else{
@@ -454,7 +452,6 @@ fetch(getConfig("getLoan"), requestOptions)
       this.setState({loading:false})
       return Promise.reject(error);
   }
-  console.log(data)
   if(data.success == false){
       this.setState({loan_details: []})
   }else{
@@ -463,10 +460,8 @@ fetch(getConfig("getLoan"), requestOptions)
         data.forEach(d => {
           if(d.loan_status == 3 || d.loan_status == 9){
             newArray.push(d)
-            console.log(newArray)
           }else{
             newArrays.push(d)
-            console.log(newArrays)
           }
         });
       this.setState({Completed: newArray, loan_details: newArrays})
@@ -734,8 +729,7 @@ handleSubmitRepay(event) {
   event.preventDefault();
   const { repay_data } = this.state;
   if (repay_data.trans_date && repay_data.repayment_amount && repay_data.payment_method) {
-      this.props.addLoanRepayment(repay_data);     
-      console.log(repay_data)
+      this.props.addLoanRepayment(repay_data); 
   }else{
       swal(
           `${"All fields are required"}`
@@ -906,7 +900,6 @@ handleDelete = (loan_id) => {
   .then((willDelete) => {
     if (willDelete) {
       this.props.cancelLoan(loan_id);
-      console.log(loan_id)
       swal("Loading...",{   
         buttons:false
       });
@@ -1524,7 +1517,7 @@ render(){
               </Grid>
             {(repay_data.payment_method === "Debit Card"&& repay_data.card_id == "") &&
             <Grid item lg={12} md={12} sm={12} xs={12}>
-              <PayOption callback={this.callback} amount={repay_data.repayment_amount}/>
+              <PayOption callback={this.callback} amount={repay_data.repayment_amount} type={'04'} targetId={'00'} />
             </Grid>}
           </Grid>
         </Card>
