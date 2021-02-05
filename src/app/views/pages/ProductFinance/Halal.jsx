@@ -738,6 +738,9 @@ tabbed = (id) => {
                     validators={[
                       "required"
                     ]}
+                    inputProps={{
+                      maxLength: 50,
+                    }}
                     errorMessages={["this field is required"]}
                   />
                   <TextValidator

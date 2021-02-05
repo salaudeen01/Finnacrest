@@ -88,8 +88,8 @@ close = () => {
                     close={this.close}
                     disabled={true}  
                     embed={true}  
-                    reference={reference}
-                    // reference={getReference()}
+                    // reference={reference}
+                    reference={getReference()}
                     email={email}
                     amount={amount >= 2500 ? pay2: pay1}
                     paystackkey={key}
