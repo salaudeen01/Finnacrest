@@ -148,11 +148,27 @@ class MyProduct extends Component{
           </Typography>
        </Grid>
        </div>
+       :this.props.status == 5 ?
+       <div>
+         <Grid item lg={12} md={12} sm={12} xs={12}>
+         <Typography className="mb-2" style={{fontSize:16}}><span className="text-primary">Status:</span>
+            <span className="mb-4 py-1 px-3" style={{background:'BLUE',fontSize:12, color:'white', borderRadius:14}}>RECIEVED</span>
+          </Typography>
+       </Grid>
+       </div>
+       :this.props.status == 6 ?
+       <div>
+         <Grid item lg={12} md={12} sm={12} xs={12}>
+         <Typography className="mb-2" style={{fontSize:16}}><span className="text-primary">Status:</span>
+            <span className="mb-4 py-1 px-3" style={{background:'GREEN',fontSize:12, color:'white', borderRadius:14}}>COMPLETED</span>
+          </Typography>
+       </Grid>
+       </div>
        : ""
         }
         <Grid>
            <Grid item lg={3} md={3} sm={12} xs={12}>
-           { this.props.status == 3 ?
+           { this.props.status == 3 || this.props.status == 5 ?
            <ButtonGroup color="primary" aria-label="outlined primary button group">
               <Button className="mb-4"  size='small' variant="outlined" 
                 onClick={this.props.repay}
@@ -164,15 +180,10 @@ class MyProduct extends Component{
                 onClick={this.props.view}
                 >Detail</Button>
            </ButtonGroup>
-           :<div/>}
+           : <Button className="mb-4"  size='small' variant="outlined" onClick={this.props.view}>
+                Detail
+              </Button>}
           </Grid>
-           </Grid>
-           <Grid item lg={3} md={3} sm={12} xs={12}>
-           { this.props.status != 3 ?
-                <Button className="mb-4"  size='small' variant="outlined" 
-                onClick={this.props.view}
-                >Detail</Button>:
-                <div/>}
            </Grid>
         </Grid>
       </Grid>
