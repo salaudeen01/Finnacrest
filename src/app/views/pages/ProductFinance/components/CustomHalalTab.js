@@ -6,12 +6,14 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import Market from '../Market';
 import Halal from '../Halal';
 import Finance from '../Finance';
-import {useParams} from "react-router-dom"
+import {useParams, Link} from "react-router-dom"
 import Products from '../Products';
 import RequestProduct from '../RequestProduct';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,21 +61,28 @@ handleChange = (event, value) => {
   this.setState({value:value})
 };
 render(){
-  const {theme} = this.props
+  const {theme,count} = this.props
   const {value} = this.state
   return (
     <div style={{flexGrow: 1}}>
-      <AppBar position="static" color="default" >
+      {/* <AppBar position="static" color="default" > */}
         <Tabs value={value} indicatorColor="primary"
-            textColor="primary" style={{marginLeft:28}}
+            textColor="primary" style={{marginLeft:28,float:'left'}}
             onChange={this.handleChange} aria-label="simple tabs example">
             <Tab label="REQUESTED PRODUCTS" {...a11yProps(0)} />
             <Tab label="PENDING REQUEST" {...a11yProps(1)} />
             <span style={{marginLeft:"-10px", marginTop:10,marginBottom:20,paddingLeft:4,paddingRight:4,
             color:'#fff', backgroundColor:'green', borderRadius:6}}>
             {(this.props.tdetails.length)}</span>
-        </Tabs>
-      </AppBar>
+        </Tabs>        
+        <span style={{float:'right'}}>
+          <Link to="/detail/cart">
+              <Button style={{float:'right',color:'black'}}>
+                    <ShoppingCartIcon/> ({count})
+              </Button>
+          </Link>
+        </span>
+      {/* </AppBar> */}
       <TabPanel value={value} index={0}>
         <Products />
       </TabPanel>

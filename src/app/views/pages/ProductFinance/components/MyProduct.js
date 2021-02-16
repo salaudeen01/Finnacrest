@@ -152,7 +152,7 @@ class MyProduct extends Component{
        <div>
          <Grid item lg={12} md={12} sm={12} xs={12}>
          <Typography className="mb-2" style={{fontSize:16}}><span className="text-primary">Status:</span>
-            <span className="mb-4 py-1 px-3" style={{background:'BLUE',fontSize:12, color:'white', borderRadius:14}}>RECIEVED</span>
+            <span className="mb-4 py-1 px-3" style={{background:'green',fontSize:12, color:'white', borderRadius:14}}>DELIEVERED</span>
           </Typography>
        </Grid>
        </div>
@@ -168,7 +168,7 @@ class MyProduct extends Component{
         }
         <Grid>
            <Grid item lg={3} md={3} sm={12} xs={12}>
-           { this.props.status == 3 || this.props.status == 5 ?
+           { this.props.status === 5 ?
            <ButtonGroup color="primary" aria-label="outlined primary button group">
               <Button className="mb-4"  size='small' variant="outlined" 
                 onClick={this.props.repay}

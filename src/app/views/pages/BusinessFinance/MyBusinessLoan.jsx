@@ -118,7 +118,7 @@ componentDidMount() {
         this.props.timeOut()
       }
     });
-    fetch(getConfig('business_view'), requestOptions)
+    fetch(getConfig('display_request'), requestOptions)
       .then(async response => {
       const data = await response.json();
       if (!response.ok) {
@@ -139,7 +139,7 @@ componentDidMount() {
           } else{        
             this.setState({business_view: newArray, loading:false });
           }          
-        });
+        });console.log(newArray)
         this.setState({business_view: newArray, loading:false });
       }  
     })  
@@ -436,8 +436,8 @@ render(){
                             key={index}
                             status={false}
                             amount={numberFormat(data.requested_amount)}
-                            repaid={numberFormat(data.repaid)}
-                            admin_price={numberFormat(data.total_amount)}                           
+                            repaid={numberFormat(data.amount_repaid)}
+                            admin_price={data.total_amount}                           
                             status={data.request_status}
                             end_date={dateFormat(data.end_date, "mmmm dS, yyyy")}
                             title={data.business_name}
@@ -522,7 +522,7 @@ render(){
               <Toolbar>
                 <IconButton
                   edge="start"
-                  color="inherit"
+                  color="#fff"
                   onClick={this.handleCloseQuickSave}
                   aria-label="Close"
                 >
@@ -572,8 +572,9 @@ render(){
                   <Button className="uppercase"
                     type="submit"
                     size="large"
+                    color="primary"
                     variant="contained"
-                    style={{backgroundColor:"#0d60d8", color:"#fff"}}>
+                    style={{color:"#fff"}}>
                     Add Fund
                   </Button>}
                   </Grid>

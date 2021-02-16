@@ -1453,6 +1453,7 @@ render(){
                thousandSeparator={true} 
               //  prefix={'₦'}
                name="repayment_amount"
+               label="Enter Repayment Amount"
                className="mb-4 w-full"
                onChange={this.handleChangeRepay}
                customInput={TextValidator}

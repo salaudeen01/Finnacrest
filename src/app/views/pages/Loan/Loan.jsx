@@ -149,6 +149,7 @@ class Loan extends Component {
       shareMinFee:"",
       share_balance:"",
       shareFee:false,
+      bala:0,
       id:true
     }
     this.ongoingTab = this.ongoingTab.bind(this);
@@ -676,8 +677,16 @@ fetchUsers = (search) =>{
 });
 }
 handleIncrement = () =>{
-  const {formList} = this.state
-  this.setState({
+  const {formList,data,loan_avail_amount} = this.state  
+  const bal = data.loan_amount - loan_avail_amount
+  let dat = 0
+  let goo = 0
+  formList.forEach(list=>{
+    dat = list.guaranteed_amount
+  })
+  goo = bal - dat
+  console.log(goo, dat, bal, formList)
+  this.setState({ bala:bal,
     formList:[...formList, {
         user_id:"",
         guaranteed_amount:""
@@ -688,7 +697,7 @@ handleIncrement = () =>{
 handleRemove = (id) =>{
   const {formList} = this.state
   formList.splice(id, 1)
-  this.setState({
+  this.setState({ 
     formList:formList
   })
 }
@@ -1025,7 +1034,7 @@ render(){
      Completed, replace_data, share_balance, shareFee, shareMinFee, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage,
       showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, 
       group_name, LoanFormPayment, manage_details, loan_details, data, group_data, showDetails, modal, showManageLoan, 
-      modalForm, loan_avail_amount, LoanFee, registrationFee, modalFee, group_members, group_details, loading, form_data} = this.state
+      bala,modalForm, loan_avail_amount, LoanFee, registrationFee, modalFee, group_members, group_details, loading, form_data} = this.state
   
       let arr = []
       for (let index = 0; index < repayment_duration; index++) {
@@ -1227,8 +1236,12 @@ render(){
                  ))}
                </TextField>
              }
+             
              {data.loan_group == "Member" &&
-            
+             <>
+                <Typography color="black">
+                Remaining Guarante Amount : {numberFormat(bal)}
+              </Typography>
                <Grid container spacing={2}>
                {formList.map((dat, index)=>(
                <> 
@@ -1255,7 +1268,7 @@ render(){
                 <TextValidator
                   // fullWidth
                   // margin="normal"
-                  helperText={"Enter amount value " + bal}
+                  // helperText={"Remaining Guaranteed Amount" + bal}
                   label="Guarantee Amount"
                   name="guaranteed_amount"
                   onChange={(e)=>this.handleDaChange(e, index)}
@@ -1275,6 +1288,7 @@ render(){
                <Button variant="contained" className="mb-4" type="button" style={{background:"blue",color:"white"}} 
                onClick={this.handleIncrement} >Add More Guarantor</Button>
               </Grid>
+             </>
              }
             
                 <Grid item lg={12} md={12} sm={12} xs={12}>

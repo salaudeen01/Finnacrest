@@ -551,7 +551,7 @@ export default function AppAppBar(props) {
                   <p class="mb-0">
                     <span class="far fa-envelope d-block h2 text-primary"></span>
                     {/* <i class="far fa-envelope"></i> */}
-                    <a href="#"><span class="__cf_email__" data-cfemail="324b5d4740575f535b5e72565d5f535b5c1c515d5f">sesis@gmail.com</span></a>
+                    <a href="#"><span class="__cf_email__" data-cfemail="324b5d4740575f535b5e72565d5f535b5c1c515d5f">sesiscoop@yahoo.com</span></a>
                   </p>
               </div>
               </div>

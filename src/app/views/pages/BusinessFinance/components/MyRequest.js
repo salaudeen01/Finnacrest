@@ -77,7 +77,7 @@ class MyRequest extends Component{
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }console.log(data)
-    if(data.success == false){
+    if(data.success === false){
       this.setState({data: [], isLoading:false});
     }else{
       this.setState({data: data, isLoading:false});
@@ -112,34 +112,37 @@ class MyRequest extends Component{
         </Grid>
         {/* <Divider variant="middle"/> */}
         <div className="py-2" />
-        {this.props.status == 11?"":
+        {this.props.status === 11?"":
           <Grid item lg={12} md={12} sm={12} xs={12}>
           <Typography variant="h6" style={{fontSize:16}}><span>Requested Amount:</span> {this.props.amount} </Typography>
         </Grid>}
         <div className="py-2" /> 
-       { (this.props.status == 0 && this.props.admin_price != 0) || this.props.status == 11?
+       { (this.props.status === 0 && this.props.admin_price != 0) || this.props.status === 11?
         <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Typography variant="h6" style={{fontSize:16}}><span>Mark-up:</span> {this.props.admin_price} </Typography>
+          <Typography variant="h6" style={{fontSize:16}}><span>Mark-up:</span> {numberFormat(this.props.admin_price)} </Typography>
         </Grid>:
         <></>}
         <div className="py-2" />
-       {this.props.status == 1 || this.props.status == 11 ? 
+       {this.props.status === 1 || this.props.status === 11 ? 
        <Grid item lg={12} md={12} sm={12} xs={12}>
           <Typography variant="h6" style={{fontSize:16}}><span>Amount Repaid:</span> {this.props.repaid} </Typography>
         </Grid>:
         ""}
         <div className="py-2 " />
         <Grid item lg={12} md={12} sm={12} xs={12}>
-        {(this.props.status == 0 && this.props.admin_price == 0) ?
-           <Typography className=" text-primary" variant="h6" style={{fontSize:16}}>Request Status:
-           <span className="py-1 px-3" style={{background:'orange', fontSize:12, color:'white', borderRadius:14}}>PENDING</span>
+        {(this.props.status === 0 && this.props.admin_price === 0) ?
+         <div>
+         <Typography className=" text-primary" variant="h6" style={{fontSize:16}}>Request Status:
+            <span className="py-1 px-3" style={{background:'orange', fontSize:12, color:'white', borderRadius:14}}>PENDING</span>
          </Typography>
-        :
-        (this.props.status == 0 && this.props.admin_price != 0) ?
+         </div>:
+        (this.props.status === 0 && this.props.admin_price > 0) ?
+        <div>
         <Typography className=" text-primary" variant="h6" style={{fontSize:16}}>Request Status:
            <span className="py-1 px-3" style={{background:'orange', fontSize:12, color:'white', borderRadius:14}}>Awaiting Response</span>
          </Typography>
-        :  this.props.status == 11 ?
+        </div>: 
+         this.props.status === 11 ?
         <div>
           <Grid item lg={12} md={12} sm={12} xs={12}>
           <Typography className=" text-primary" variant="h6" style={{fontSize:16}}>Request Status:
@@ -147,7 +150,8 @@ class MyRequest extends Component{
           </Typography>
          {/* <Badge className="px-3"  badgeContent={'Approved'} {...defaultthis.Props}/> */}
         </Grid>       
-        </div>:  this.props.status == 2 ?
+        </div>:  
+        this.props.status === 2 ?
         <div>
           <Grid item lg={12} md={12} sm={12} xs={12}>
           <Typography className=" text-primary" variant="h6" style={{fontSize:16}}>Request Status:
@@ -156,7 +160,7 @@ class MyRequest extends Component{
          {/* <Badge className="px-3"  badgeContent={'Approved'} {...defaultthis.Props}/> */}
         </Grid>       
         </div>
-       :this.props.status == 9 ?
+       :this.props.status === 9 ?
        <div>
          <Grid item lg={12} md={12} sm={12} xs={12}>
          <Typography className=" text-primary" variant="h6" style={{fontSize:16}}>Request Status:
@@ -166,14 +170,14 @@ class MyRequest extends Component{
        </div>
        : ""
         } 
-       { this.props.status == 1 || this.props.status == 11?
+       { this.props.status === 1 || this.props.status === 11?
         <Grid item lg={12} md={12} sm={12} xs={12}>
           <Typography variant="h6" style={{fontSize:16}}><span>Due Date:</span> {this.props.end_date} </Typography>
         </Grid>:
         <></>}
         <Grid>
            <Grid item lg={12} md={12} sm={12} xs={12}>
-           {(this.props.status == 0 && this.props.admin_price != 0)  ?            
+           {(this.props.status === 0 && this.props.admin_price != 0)  ?            
         <ButtonGroup color="primary" aria-label="outlined primary button group">
            <Button className="mb-4"  size='small' variant="outlined" style={{borderColor:'green', color:'green'}}
              onClick={this.props.accept}
@@ -182,16 +186,16 @@ class MyRequest extends Component{
              onClick={this.props.decline}
              >Decline</Button>                             
         </ButtonGroup>:
-        this.props.status == 11 ?            
+        this.props.status === 11 ?            
         <ButtonGroup color="primary" aria-label="outlined primary button group">
            <Button className="mb-4"  size='small' variant="outlined" style={{borderColor:'blue', color:'blue'}}
              onClick={this.props.repay}
              >Repayment</Button>
               <Button className="mb-4"  size='small' variant="outlined" 
                 onClick={this.props.viewTrans}
-                >Transaction Detail</Button>               
+                >Transactions Details</Button>               
         </ButtonGroup>:
-          (this.props.status == 1 || this.props.status == 2 || (this.props.status == 0 && this.props.admin_price == 0)) ?            
+          (this.props.status === 1 || this.props.status === 2 || (this.props.status === 0 && this.props.admin_price === 0)) ?            
             <ButtonGroup color="primary" aria-label="outlined primary button group">
               <Button className="mb-4"  size='small' variant="outlined"  style={{borderColor:'red', color:'red'}}
                  onClick={this.props.decline}

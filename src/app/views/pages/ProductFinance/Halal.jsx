@@ -697,7 +697,6 @@ tabbed = (id) => {
         </Dialog>
         
         {/* Invest dialog end */}
-
         {/* Quick Upload product */}
         <Dialog 
           TransitionComponent={Transition}
@@ -813,7 +812,6 @@ tabbed = (id) => {
           </Card>
         </Dialog>
         {/* Quick Save Dialog End */}       
-
       </div>
     );
   }

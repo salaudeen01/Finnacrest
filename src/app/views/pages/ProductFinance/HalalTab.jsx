@@ -23,6 +23,7 @@ class Business extends Component {
     this.state={
       products:0,
       loading: true,
+      count:0
     }
 
     const requestOptions = {
@@ -51,11 +52,29 @@ class Business extends Component {
       this.setState({loading:false, err : "internet error" });
       console.error('There was an error!', error);
     });
+    fetch(getConfig("userCartCount"), requestOptions)
+    .then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+      }
+      if(data.success == false){
+        this.setState({ count: []});
+      }else{
+        this.setState({ count: data});
+      }    
+    })
+    .catch((error) => {
+      if (error === "Unauthorized") {
+        this.props.timeOut()
+      }
+    });
 }
     
 
 render(){
-  const{products,loading} = this.state
+  const{products,count,loading} = this.state
    return (
     <div className="m-sm-30">
       {loading ?
@@ -63,8 +82,7 @@ render(){
           <Loading/>
         </div>:
         <>
-          <CustomHalalTab tdetails={products} />
-
+          <CustomHalalTab tdetails={products} count={count} />
         </>
       }
     </div>

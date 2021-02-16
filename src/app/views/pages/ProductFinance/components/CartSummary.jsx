@@ -143,14 +143,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
           swal("Loading...", {
             buttons: false
           })
-      }else{
+      }else if(down_data.total_down_payment){
         this.setState({down_data:{...down_data, paystack_id: response.reference }})
         swal("Loading...", {
           buttons: false
         })
-    }
+      }else {
+        this.setState({add_card:{...add_card, paystack_id: response.reference }, showSaveCard:false})
+        swal("Saving Card...", {
+          buttons: false
+        })
+      }
   }
-
     getTotalAmount=()=>{
       const {down_data, fund_data, products} = this.state
       let amt = 0
@@ -459,9 +463,30 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                         </Typography>
                       </Card>
                     </Grid>
-                    
+                          {/* <Grid item lg={12} md={12} sm={12} xs={12}> */}
+                        <div style={{textAlign:'center', alignItems:'center',alignContent:'center'}}>
+                          {this.props.savings && (
+                            <img
+                              img
+                              alt=''
+                              src='data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=='
+                            />
+                          )}  
+                        </div>      
+                      {/* </Grid> */}
+                        {/* <Grid item lg={12} md={12} sm={12} xs={12}> */}
+                        {((down_data.form_payment == "Wallet") || (down_data.card_id !="0" && down_data.card_id !="")) && 
+                        <Button className="uppercase"
+                          type="submit"
+                          size="large"
+                          variant="contained"
+                          style={{backgroundColor:"#222943", color:"#fff"}}>
+                          Make Payment
+                        </Button>}
+                    {/* </Grid> */}
+
                     {down_data.form_payment == "Debit Card" &&
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
                       <Typography>Choose Card</Typography>
                       <PayCard cards={cards} value={down_data.card_id} 
                       open={(e)=>this.setState({ down_data:{...down_data, card_id:""}})} 
@@ -469,42 +494,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                     </Grid>}
 
                     {down_data.card_id == "" && down_data.form_payment == "Debit Card" &&
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <Checkbox
                             name="save_card"
                             checked={down_data.save_card}
                             onChange={this.handleChangeFunds}
                             inputProps={{ 'aria-label': 'primary checkbox' }}
                         /><Typography variant="caption">Would you like to save your card</Typography>
-                    </Grid>}
-
-                    <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <div style={{textAlign:'center', alignItems:'center',alignContent:'center'}}>
-                      {this.props.savings && (
-                        <img
-                          img
-                          alt=''
-                          src='data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=='
-                        />
-                      )}  
-                    </div>      
-                  </Grid>
-
-                    <Grid item lg={12} md={12} sm={12} xs={12}>
-                      {((down_data.form_payment == "Wallet") || (down_data.card_id !="0" && down_data.card_id !="")) && 
-                      <Button className="uppercase"
-                        type="submit"
-                        size="large"
-                        variant="contained"
-                        style={{backgroundColor:"#222943", color:"#fff"}}>
-                        Make Payment
-                      </Button>}
+                        <PayOption callback={this.callback} amount={down_data.total_down_payment} type={'09'} targetId={'00'}/>
                     </Grid>
-
-                    {down_data.card_id == "" && down_data.payment_method == "Debit Card" &&
-                    <Grid item lg={12} md={12} sm={12} xs={12}>
-                      <PayOption callback={this.callback} amount={down_data.total_down_payment} type={'09'} targetId={'00'}/>
-                    </Grid>}
+                    } 
 
                   </Grid>
                 </ValidatorForm>
