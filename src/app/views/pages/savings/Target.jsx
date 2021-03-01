@@ -179,7 +179,7 @@ componentDidMount(){
       if(data.success === false && data.length === 0){
         this.setState({tdetails: [], balance: 0, completed: [], accounts:[], loading:false })
       }else{
-        console.log(data)
+        // console.log(data)
         this.setState({tdetails: data[1], completed: data[2], balance: data[0], loading:false })
       }
     })
@@ -320,7 +320,7 @@ fetch_next_page = ()=>{
   };
   fetch(pagination.next_page_url, requestOptions).then(async (response) =>{
     const data =await response.json();
-    console.log(data)
+    // console.log(data)
     if(data.success == false){
       this.setState({singleTargetTransaction: [], loading:false });
     }else{
@@ -495,6 +495,7 @@ handleSubmitEdit(event) {
   const { edit_data } = this.state;
   if (edit_data.amount && edit_data.frequency && edit_data.start_date && edit_data.card_id && edit_data.end_date  && edit_data.payment_method) {
       this.props.editTargetSavings(edit_data);
+      // console.log(edit_data)
   }else{
       swal(
           `${"All fields are required"}`
@@ -506,7 +507,7 @@ handleSubmit(event) {
   const { data } = this.state;
   if (data.amount && data.frequency && data.start_date && data.payment_method && data.card_id) {
     this.props.createTargetSavings(data);
-    console.log(data)
+    // console.log(data)
   }else{
       swal(
           `${"check box to add new card "}`
@@ -518,7 +519,7 @@ handleSubmitFund(event) {
   const { fund_data } = this.state;
   if (fund_data.amount && fund_data != "") {
       this.props.addFundTargetSavings(fund_data);
-      console.log(fund_data)
+      // console.log(fund_data)
   }else{
       swal(
           `${"All fields are required"}`
@@ -754,7 +755,7 @@ completeTab(){
     let {theme} = this.props
     const {balance, tdetails, bal_amt, tar_amt, share_balance, shareFee, shareMinFee, loading, isLoading, tab, cards, add_card, showSaveCard, id, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, pagination, show, savings} = this.state
     const bal = tar_amt - bal_amt
-    console.log(completed)
+    // console.log(completed)
     return (
       <div className="m-sm-10">
         {loading ?

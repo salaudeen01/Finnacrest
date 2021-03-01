@@ -38,7 +38,7 @@ class StatCards extends Component {
               <CardMedia
              style={{height: 80,}}
             image={bgimage}
-            title="Contemplative Reptile"
+            title="Wallets"
           />
         </CardActionArea>
           </Card>
@@ -82,7 +82,7 @@ class StatCards extends Component {
               <CardMedia
              style={{height: 80,}}
             image={bgimage2}
-            title="Contemplative Reptile"
+            title="Shareholding"
           />
         </CardActionArea>
           </Card>
@@ -104,7 +104,7 @@ class StatCards extends Component {
               <CardMedia
              style={{height: 80,}}
             image={bgimage4}
-            title="Contemplative Reptile"
+            title="Target Savings"
           />
         </CardActionArea>
           </Card>

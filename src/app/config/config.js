@@ -1,10 +1,10 @@
 import history from '../../history';
 const serverVars = {
-  baseUrl: "http://142.93.152.229/sesis/api/",
-  // baseUrl: "https://api.sesiscoop.com/api/",
+  // baseUrl: "http://142.93.152.229/sesis/api/",
+  baseUrl: "https://api.sesiscoop.com/api/",
   authUrl: "auth/login",
   regUrl: "auth/signup",
-  resetPass: "profilesChangePassword",
+  resetPass: "profilesChangePassword?token=",
   verifypass:"auth/reset",
   verifyemail:"auth/signupVerifyEmail/",
   recoverpass:"auth/recovery",
@@ -250,7 +250,7 @@ export function getConfig(apiName) {
     case "verifypass":
       return serverVars.baseUrl + serverVars.verifypass;
     case "resetPass":
-      return serverVars.baseUrl + serverVars.resetPass;
+      return serverVars.baseUrl + serverVars.resetPass + user.token;
     case "signup":
       return serverVars.baseUrl + serverVars.regUrl;
     case "getPayStackId":

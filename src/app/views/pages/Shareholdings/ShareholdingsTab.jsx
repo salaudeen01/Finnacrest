@@ -924,7 +924,7 @@ class Shareholdings extends Component {
                     helperText='Please select Payment Method'
                   >
                     <MenuItem value={""}></MenuItem>
-                    {/* <MenuItem value={"Wallet"}> Wallet</MenuItem> */}
+                    <MenuItem value={"Wallet"}> Wallet</MenuItem>
                     {/* <MenuItem value={"Debit Card"}> Debit Card </MenuItem> */}
                   </TextField>
                   {this.props.savings && (
