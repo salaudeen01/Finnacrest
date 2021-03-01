@@ -325,7 +325,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                       >
                           <MenuItem value={""}></MenuItem>
                           <MenuItem value={"co-operative"}> Co-Operative</MenuItem>
-                          <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+                          {/* <MenuItem value={"Debit Card"}> Debit Card </MenuItem> */}
                       </TextField>                        
                       </Grid>
 
@@ -446,7 +446,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                       >
                         <MenuItem value={""}></MenuItem>
                         <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                        <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+                        {/* <MenuItem value={"Debit Card"}> Debit Card </MenuItem> */}
                     </TextField>
                     
                     </Grid>

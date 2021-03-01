@@ -675,7 +675,7 @@ handleClose() {
                 >
                   <MenuItem value={""}></MenuItem>
                   <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                  <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+                  {/* <MenuItem value={"Debit Card"}> Debit Card </MenuItem> */}
               </TextField>
               
               </Grid>

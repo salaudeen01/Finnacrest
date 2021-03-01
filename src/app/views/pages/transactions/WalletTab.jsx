@@ -365,18 +365,6 @@ handleCloseConfirmWithdraw() {
             <Grid item lg={12} md={12} sm={12} xs={12}>
               <StatCards2 title={"Wallet Balance"} color={"#87260e"} icon={"account_balance_wallet"} amount={numberFormat(wallet_bal)}/>
             </Grid>
-            {/* <Grid item lg={2} md={2} sm={12} xs={12}>
-              <Button className="uppercase"
-                size="large"
-                variant="contained"
-                style={{backgroundColor:"#222a45", color:"white"}}  onClick={this.handleClickOpen}>Add Fund</Button>
-            </Grid> */}
-            {/* <Grid item lg={2} md={2} sm={12} xs={12}>
-              <Button className="uppercase"
-                size="large"
-                variant="contained"
-                style={{backgroundColor:"#222a45", color:"white"}}  onClick={this.handleClickOpenWithdraw}>Withdraw</Button>
-            </Grid> */}
         </Grid>
         <Grid container spacing={1}>              
               <Grid item lg={3} md={3} sm={12} xs={12}>
