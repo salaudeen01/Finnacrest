@@ -303,9 +303,9 @@ export default function AppAppBar(props) {
                     </h2>
                     <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                          Make a payment of N2,000 to sesis GTBank account. send your teller to office or scan to our 
-                          email, get a form, fill and submit . Get registered and receive your membership card, pass book,
-                          bye-law etc.
+                           Fill the online form or hardcopy at our office, make a payment of N2,000 to sesis GTBank account. 
+                           Notify us through phone call or WhatsApp. Your membership number will be communicated to you after 
+                           payment confirmation.
                       </div>
                     </div>
                   </div>                  
@@ -314,12 +314,12 @@ export default function AppAppBar(props) {
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingTwo">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                        How much do I pay monthly?
+                        What else do I get after registration
                       </button>
                     </h2>
                     <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                        The minimum savings per month is N2,000. You can pay more than that if willingly up to N100,000
+                        your registration package will include membership card, pass book, bye-law etc.
                       </div>
                     </div>
                   </div>                  
@@ -328,13 +328,13 @@ export default function AppAppBar(props) {
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingThree">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                         Do you accept cash for any payment?
+                         How much do I pay monthly?
                       </button>
                     </h2>
                     <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                          NO! we advise you to pay directly to our Gtbank account or make a transfer for with payer ID showing in the
-                          transfer 
+                          The minimum savings per month is N2,000 and you can choose to pay more in a regular 
+                          and consistent amount. 
                       </div>
                     </div>
                   </div>                  
@@ -343,12 +343,12 @@ export default function AppAppBar(props) {
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingFour">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                        When do I get loan?
+                         Can I increase the amount I pledge to save
                       </button>
                     </h2>
                     <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                          You can get your loan after consecutive savings for 6 months and collect double of the 6 months savings.
+                          yes! you can do so but assessment will be based on a regular amount receive within the period.
                       </div>
                     </div>
                   </div>                  
@@ -358,12 +358,13 @@ export default function AppAppBar(props) {
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingFive">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
-                          Do I need guarantor?
+                          Do you accept cash for any payment?
                       </button>
                     </h2>
                     <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                          YES! 1 or 2 guarantors is required depending on the ability of 1 guarantor to secure the total sum of money requested.
+                          NO! we advise you to pay directly to our Gtbank account or make a transfer with payer ID 
+                          (membership number) showing in the transfer remark. eg Sauban 013 saving
                       </div>
                     </div>
                   </div>                  
@@ -372,12 +373,12 @@ export default function AppAppBar(props) {
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingSix">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
-                          Can I get full withdrawal without guarantor?
+                          When do I get loan?
                       </button>
                     </h2>
                     <div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                        YES! You can withdraw, if you do not request for double payment upon your savings
+                        You can get your loan after consecutive savings for 6 months and collect double of the 6months savings.
                       </div>
                     </div>
                   </div>                  
@@ -386,12 +387,14 @@ export default function AppAppBar(props) {
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingSeven">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseSeven">
-                        Can I bring guarantor from outside sesis members’ forum
+                         How do I get the loan
                       </button>
                     </h2>
                     <div id="flush-collapseSeven" class="accordion-collapse collapse" aria-labelledby="flush-headingSeven" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                         NO! he/she (guarantor) should be a member of sesis cooperative
+                         you are required to filled out a loan form, submit via ours channel after completion,
+                          fund will disburse after meeting the condition sets in.<br/>
+                          Note: only duly completed form is giving consideration
                       </div>
                     </div>
                   </div>                  
@@ -400,30 +403,28 @@ export default function AppAppBar(props) {
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingEight">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEight" aria-expanded="false" aria-controls="flush-collapseEight">
-                          Do I pay interest on loan collected?
+                          Can I backdate my payment?
                       </button>
                     </h2>
                     <div id="flush-collapseEight" class="accordion-collapse collapse" aria-labelledby="flush-headingEight" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                        NO!!! we do not collect interest on loan, it is interest free. A token fee of N200.00 is charged for 
-                        form, N1.00 per mile is recovered from bank as account maintenance charges and N50 stamp duty paid to 
-                        the Federal Government effect from 1st January 2016. 
+                         Your first date of payment marks the beginning of the six months.
                       </div>
                     </div>
                   </div>                  
                 </div>
-              </div>
-              <div className="col-md-6">                
+                  
                 <div class="accordion accordion-flush" id="accordionFlushExample">
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingNine">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseNine" aria-expanded="false" aria-controls="flush-collapseNine">
-                          Then, how does sesis make money to run its overhead and expenses?
+                          Do I need guarantor?
                       </button>
                     </h2>
                     <div id="flush-collapseNine" class="accordion-collapse collapse" aria-labelledby="flush-headingNine" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                        Each member pay some statutory fees such as development levy –N1,000; AGM fee - N1,500 yearly and shares – N5,000.
+                         YES! 1 or 2 guarantors is required depending on the ability of 1 guarantor to secure the 
+                         total sum of money requested.
                       </div>
                     </div>
                   </div>                  
@@ -432,13 +433,12 @@ export default function AppAppBar(props) {
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingTen">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTen" aria-expanded="false" aria-controls="flush-collapseTen">
-                         Shares N5,000 for what?
+                          Can I get full withdrawal without guarantor?
                       </button>
                     </h2>
                     <div id="flush-collapseTen" class="accordion-collapse collapse" aria-labelledby="flush-headingTen" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                        We use members’ share funds to invest in different Halal businesses which returns are partly use
-                         for overheads and profit/loss after accounting year are disburse as dividends to members based on share value/ratio.
+                        YES! You can withdraw, if you do not request for double payment upon your savings
                       </div>
                     </div>
                   </div>                  
@@ -447,12 +447,13 @@ export default function AppAppBar(props) {
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingEleven">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEleven" aria-expanded="false" aria-controls="flush-collapseEleven">
-                          Can I contribute more than N5,000 for my shares?
+                           Is money paid instantly on request?
                       </button>
                     </h2>
                     <div id="flush-collapseEleven" class="accordion-collapse collapse" aria-labelledby="flush-headingEleven" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                         YES! You can invest any amount for shares and returns/dividends will be shared based on your investment funds
+                         we do not operate transfer however a cheque in normally issue to member for payment and all form are
+                          treated once in a month. All requested are payable at four-week interval/ 
                       </div>
                     </div>
                   </div>                  
@@ -462,27 +463,30 @@ export default function AppAppBar(props) {
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingTwelve">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwelve" aria-expanded="false" aria-controls="flush-collapseTwelve">
-                        Do I need to be coming to meeting every month?
+                        Can I bring guarantor from outside sesis members’ forum?
                       </button>
                     </h2>
                     <div id="flush-collapseTwelve" class="accordion-collapse collapse" aria-labelledby="flush-headingTwelve" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                         YES! Meeting attendance carries 75% as criteria in granting loans and gives opportunity to
-                          participate friendly in the means of members.
+                         NO! he/she (guarantor) should be a member of sesis cooperative
                       </div>
                     </div>
                   </div>                  
                 </div>
+                
+               
+              </div>
+              <div className="col-md-6">                
                 <div class="accordion accordion-flush" id="accordionFlushExample">
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingThirteen">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThirteen" aria-expanded="false" aria-controls="flush-collapseThirteen">
-                        If am leaving in diaspora, can join SESIS?
+                        How long do I repay my loan?
                       </button>
                     </h2>
                     <div id="flush-collapseThirteen" class="accordion-collapse collapse" aria-labelledby="flush-headingThirteen" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                        YES! You get a form and complete with same N2,000 payable to our Gtbank account
+                        It can be paid back within 6 to 12 months, depending of the value of funds received.
                       </div>
                     </div>
                   </div>                  
@@ -491,12 +495,14 @@ export default function AppAppBar(props) {
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingFourteen">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFourteen" aria-expanded="false" aria-controls="flush-collapseFourteen">
-                         Does coming to meeting still compulsory for me in diaspora?
+                        Do I pay interest on loan collected?
                       </button>
                     </h2>
                     <div id="flush-collapseFourteen" class="accordion-collapse collapse" aria-labelledby="flush-headingFourteen" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                         Not necessarily but we want a participatory role either by mails or calls to get information about the progress.
+                        NO!!! we do not collect interest on loan, it is interest free. A token fee of N500.00 is charged 
+                        for form and account maintenance charges 1.00/mile. N50 stamp duty paid to the Federal Government
+                         effect from 1st January 2016. 
                       </div>
                     </div>
                   </div>                  
@@ -504,18 +510,156 @@ export default function AppAppBar(props) {
                 <div class="accordion accordion-flush" id="accordionFlushExample">
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingFifteen">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFifteen" aria-expanded="false" aria-controls="flush-collapseFifteen">
-                        Can I close my account at any time?
+                      <button class="accordion-button collapsed text-left" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFifteen" aria-expanded="false" aria-controls="flush-collapseFifteen">
+                        Then, how does sesis make money to run its overhead and <br/> expenses?
                       </button>
                     </h2>
                     <div id="flush-collapseFifteen" class="accordion-collapse collapse" aria-labelledby="flush-headingFifteen" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                      Yes! We just a need a month notification and state reason for closure of your account.
+                       Each member pays some statutory fees such as development levy –N1,000; AGM fee - N1,500 yearly and shares – N20,000.
                       </div>
                     </div>
                   </div>                  
                 </div>
-               
+                    
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingTwenty-One">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwenty-One" aria-expanded="false" aria-controls="flush-collapseTwenty-One">
+                        Shares N20,000 for what?
+                      </button>
+                    </h2>
+                    <div id="flush-collapseTwenty-One" class="accordion-collapse collapse" aria-labelledby="flush-headingTwenty-One" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body">
+                         we use members’ share funds to invest in different Halal businesses which returns are partly use for overheads 
+                         and profit/loss after accounting year are disburse as dividends to members based on share value/ratio.
+                      </div>
+                    </div>
+                  </div>                  
+                </div>
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingTwenty-Two">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwenty-Two" aria-expanded="false" aria-controls="flush-collapseTwenty-Two">
+                        Can I contribute more than N20,000 for my shares?
+                      </button>
+                    </h2>
+                    <div id="flush-collapseTwenty-Two" class="accordion-collapse collapse" aria-labelledby="flush-headingTwenty-Two" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body">
+                        NO! shares is currently fixed at twenty for every member.
+                      </div>
+                    </div>
+                  </div>                  
+                </div>
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingTwenty-Three">
+                      <button class="accordion-button collapsed text-left" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwenty-Three" aria-expanded="false" aria-controls="flush-collapseTwenty-Three">
+                        Any others investment opportunity if I had more moeny to <br/> investment
+                      </button>
+                    </h2>
+                    <div id="flush-collapseTwenty-Three" class="accordion-collapse collapse" aria-labelledby="flush-headingTwenty-Three" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body">
+                        YES ! we have others investment vehicle which can accommodate your additional fund in
+                         millions for investment with different maturity date.
+                      </div>
+                    </div>
+                  </div>                  
+                </div>
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingTwenty-Four">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwenty-Four" aria-expanded="false" aria-controls="flush-collapseTwenty-Four">
+                        How do I meet with member of the cooperative if I need a guarantor?
+                      </button>
+                    </h2>
+                    <div id="flush-collapseTwenty-Four" class="accordion-collapse collapse" aria-labelledby="flush-headingTwenty-Four" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body">
+                       Cooperative meeting now holds on quarterly basis and the executive meet on monthly basis. 
+                      </div>
+                    </div>
+                  </div>                  
+                </div>
+
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingSixteen">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSixteen" aria-expanded="false" aria-controls="flush-collapseSixteen">
+                        Do I need to be coming to meeting quartely?
+                      </button>
+                    </h2>
+                    <div id="flush-collapseSixteen" class="accordion-collapse collapse" aria-labelledby="flush-headingSixteen" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body">
+                        YES! Member are strongly advice to attend this quarterly as crucial matter affecting the cooperative are mostly 
+                        discussed at the meeting.
+                      </div>
+                    </div>
+                  </div>                  
+                </div>
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingSeventeen">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeventeen" aria-expanded="false" aria-controls="flush-collapseSeventeen">
+                        What other products is available to member to benefits from?
+                      </button>
+                    </h2>
+                    <div id="flush-collapseSeventeen" class="accordion-collapse collapse" aria-labelledby="flush-headingSeventeen" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body">
+                        sesis multipurpose status currently offer products 
+                        Target savings for hajj, school fee, house rent, Ramadhan <br/>
+                        Regular savings <br/>
+                        Double of savings loan for member only <br/>
+                        Business financing for member and non-member <br/>
+                        House appliances acquisition with flexible payment option for member and non-member <br/>
+                        Food stuff sales <br/>
+                        Ileya ram sales <br/>
+                      </div>
+                    </div>
+                  </div>                  
+                </div>
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingEighteen">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEighteen" aria-expanded="false" aria-controls="flush-collapseEighteen">
+                        If am leaving in diaspora or outside Lagos, can join SESIS?
+                      </button>
+                    </h2>
+                    <div id="flush-collapseEighteen" class="accordion-collapse collapse" aria-labelledby="flush-headingEighteen" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body">
+                         YES! You fill the online form and complete with same N2,000 payables to our Gtbank account
+                      </div>
+                    </div>
+                  </div>                  
+                </div>
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingNineteen">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseNineteen" aria-expanded="false" aria-controls="flush-collapseNineteen">
+                        Does coming to meeting still compulsory for me in diaspora?
+                      </button>
+                    </h2>
+                    <div id="flush-collapseNineteen" class="accordion-collapse collapse" aria-labelledby="flush-headingNineteen" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body">
+                       Not necessarily but we want a participatory role via WhatsApp or calls to get information about the progress.
+                      </div>
+                    </div>
+                  </div>                  
+                </div>
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingTwenty">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwenty" aria-expanded="false" aria-controls="flush-collapseTwenty">
+                        Can I close my account at any time?
+                      </button>
+                    </h2>
+                    <div id="flush-collapseTwenty" class="accordion-collapse collapse" aria-labelledby="flush-headingTwenty" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body">
+                        Yes! We just a need a month notification and state reason for closure of your account.
+
+                      </div>
+                    </div>
+                  </div>                  
+                </div>
               </div>
               
             </div>
@@ -535,23 +679,25 @@ export default function AppAppBar(props) {
                     {/* <i class="fas fa-map-marker-alt"></i> */}
                     <span>
                       *Head office:* <br/>
-                       Suite 1, 2nd floor, 
-                       Alhaji safar jolaosho plaza, 
-                       First bank building, 107 Mafoluku Road, via Lagos international airport road, Mafoluku oshodi, Lagos
+                      Suite 1, 2nd floor, 
+                      Alhaji Safar Jolaosho Plaza, 
+                      First Bank Building, 107 Oshodi Road, Via Lagos International Airport Road, Mafoluku,
+                      Oshodi, Lagos
                     </span>
                   </p>
                 </div>
                 <div class="col-md-4 text-center">
                   <p class="mb-4">
                     <span class="fas fa-phone d-block h2 text-primary"></span>
-                    <a href="#">01 316 077 00</a>
+                    <a href="#"> +2348 1663 63439</a><br/>
+                    <a href="#"> +2348 0236 93169</a>
                   </p>
                 </div>
                 <div class="col-md-4 text-center">
                   <p class="mb-0">
                     <span class="far fa-envelope d-block h2 text-primary"></span>
                     {/* <i class="far fa-envelope"></i> */}
-                    <a href="#"><span class="__cf_email__" data-cfemail="324b5d4740575f535b5e72565d5f535b5c1c515d5f">sesiscoop@yahoo.com</span></a>
+                    <a href="#"><span class="__cf_email__" data-cfemail="324b5d4740575f535b5e72565d5f535b5c1c515d5f">Info@sesiscoop.com</span></a>
                   </p>
               </div>
               </div>

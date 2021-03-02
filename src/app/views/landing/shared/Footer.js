@@ -110,8 +110,9 @@ export default function Footer() {
             <Typography className="text-white"> 
                 *Head office:* <br/>
                 Suite 1, 2nd floor, 
-                Alhaji safar jolaosho plaza, 
-                First bank building, 107 Mafoluku Road, via Lagos international airport road, Mafoluku oshodi, Lagos
+                Alhaji Safar Jolaosho Plaza, 
+                First Bank Building, 107 Oshodi Road, Via Lagos International Airport Road, Mafoluku,
+                Oshodi, Lagos
             </Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={3} lg={3} className='p-15 text-white'>
