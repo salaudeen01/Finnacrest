@@ -98,6 +98,7 @@ class MyRequest extends Component{
     this.setState({showView:false});
   }   
   render(){
+    const mark = (this.props.admin_price - this.props.amount);
     const { title, amount_paid, balance, status, repay, view, viewTrans} = this.props;
     const { showView, isLoading, data} = this.state;
   return (
@@ -114,12 +115,16 @@ class MyRequest extends Component{
         <div className="py-2" />
         {this.props.status === 11?"":
           <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Typography variant="h6" style={{fontSize:16}}><span>Requested Amount:</span> {this.props.amount} </Typography>
+          <Typography variant="h6" style={{fontSize:16}}><span>Requested Amount:</span> {numberFormat(this.props.amount)} </Typography>
+        </Grid>}
+        {this.props.status === 11?"":
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+          <Typography variant="h6" style={{fontSize:16}}><span>Mark-up:</span> {numberFormat(mark)} </Typography>
         </Grid>}
         <div className="py-2" /> 
        { (this.props.status === 0 && this.props.admin_price != 0) || this.props.status === 11?
         <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Typography variant="h6" style={{fontSize:16}}><span>Mark-up:</span> {numberFormat(this.props.admin_price)} </Typography>
+          <Typography variant="h6" style={{fontSize:16}}><span>Total Amount:</span> {numberFormat(this.props.admin_price)} </Typography>
         </Grid>:
         <></>}
         <div className="py-2" />

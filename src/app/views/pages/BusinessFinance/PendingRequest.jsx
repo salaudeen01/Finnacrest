@@ -167,7 +167,7 @@ render(){
                           <MyRequest
                             key={index}
                             status={false}
-                            amount={numberFormat(data.requested_amount)}
+                            amount={data.requested_amount}
                             // balance={numberFormat(data.remaining_balance)}
                             admin_price={data.total_amount}                           
                             status={data.request_status}

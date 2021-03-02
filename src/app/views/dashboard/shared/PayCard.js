@@ -68,7 +68,7 @@ const classes = useStyles();
                   label="Check box to add new card"
                 />}
                 <Grid item md={12}>
-                <Card onClick={open} className="py-4 px-4 project-card">
+                <Card onClick={open} className="px-4 project-card">
                   <Grid container alignItems="center">
                     <Grid item md={6} xs={7}>
                       <div className="flex items-center">
@@ -77,7 +77,7 @@ const classes = useStyles();
                           size="small">
                           <Icon>fiber_new</Icon>
                         </Fab>
-                        <span className="card__roject-name font-medium">
+                        <span className="card__project-name font-medium">
                           Use new card
                         </span>
                       </div>
@@ -92,7 +92,7 @@ const classes = useStyles();
                 </Grid>
                 {cards && cards.map(card =>(
                 <Grid item md={12}>
-                  <Card className="py-2 px-4 project-card">
+                  <Card className="py-1 px-4 project-card">
                     <Grid container alignItems="center">
                       <Grid item md={5} xs={5}>
                         <div className="flex items-center">

@@ -44,7 +44,7 @@ class MyBusinessLoan extends Component {
         repayment_amount: "",
         date_time: date,
         payment_method: "",
-        save_card:true,
+        save_card:"",
         paystack_id: "",
         card_id:"0"
       },
@@ -296,7 +296,7 @@ componentDidMount() {
     const {fund_data, loan_bal} = this.state
     const {name, value, checked} = event.target
     if(name == "save_card"){
-      this.setState({fund_data:{...fund_data, [name]:checked, save_card:true}})
+      this.setState({fund_data:{...fund_data, [name]:checked}})
     }else{
       this.setState({fund_data:{...fund_data, [name]:value}})
     }
@@ -435,7 +435,7 @@ render(){
                           <MyRequest
                             key={index}
                             status={false}
-                            amount={numberFormat(data.requested_amount)}
+                            amount={data.requested_amount}
                             repaid={numberFormat(data.amount_repaid)}
                             admin_price={data.total_amount}                           
                             status={data.request_status}
