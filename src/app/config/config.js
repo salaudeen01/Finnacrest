@@ -1,7 +1,7 @@
 import history from '../../history';
 const serverVars = {
-  // baseUrl: "http://142.93.152.229/sesis/api/",
-  baseUrl: "https://api.sesiscoop.com/api/",
+  baseUrl: "http://142.93.152.229/sesis/api/",
+  // baseUrl: "https://api.sesiscoop.com/api/",
   authUrl: "auth/login",
   regUrl: "auth/signup",
   resetPass: "profilesChangePassword?token=",

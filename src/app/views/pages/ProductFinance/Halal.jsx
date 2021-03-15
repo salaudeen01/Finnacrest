@@ -293,7 +293,7 @@ fetchOrders = () =>{
         this.setState({loading:false });
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
-    }
+    }console.log(data)
     if(data.success == false){
       this.setState({pagination: [], category: [], news: [], loading:false})
     }else{
