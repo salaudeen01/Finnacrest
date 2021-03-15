@@ -369,12 +369,12 @@ handleCloseConfirmWithdraw() {
         <Grid container spacing={1}>              
               <Grid item lg={3} md={3} sm={12} xs={12}>
               {/* <ButtonGroup color="primary" aria-label="outlined primary button group"> */}
-                {/* <Button className="uppercase"
+                <Button className="uppercase"
                   size="small"
                   variant="contained"
                   style={{backgroundColor:"#222943", color:"white"}}
                   onClick={this.handleClickOpen}>Add Fund
-                </Button> */}
+                </Button>
                 <Button className="uppercase"
                   size="small"
                   variant="outlined"

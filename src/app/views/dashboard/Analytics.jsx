@@ -657,7 +657,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                 helperText="Please select Payment Method"
               >
                   <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                  {/* <MenuItem value={"Debit Card"}> Debit Card</MenuItem> */}
+                  <MenuItem value={"Debit Card"}> Debit Card</MenuItem>
               </TextField>}
             </Grid>
             <Grid item lg={6} md={6} sm={12} xs={12}>

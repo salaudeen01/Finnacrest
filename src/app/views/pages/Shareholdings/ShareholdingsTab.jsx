@@ -596,7 +596,7 @@ class Shareholdings extends Component {
           >
             <MenuItem value={""}></MenuItem>
             <MenuItem value={"Wallet"}> Wallet</MenuItem>
-            {/* <MenuItem value={"Debit Card"}> Debit Card </MenuItem> */}
+            <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
           </TextField>                  
         </Grid>
 
@@ -779,7 +779,7 @@ class Shareholdings extends Component {
                   >
                     <MenuItem value={""}></MenuItem>
                     <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                    {/* <MenuItem value={"Debit Card"}> Debit Card </MenuItem> */}
+                    <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
                   </TextField>
                   {this.props.savings && (
                     <img
@@ -925,7 +925,7 @@ class Shareholdings extends Component {
                   >
                     <MenuItem value={""}></MenuItem>
                     <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                    {/* <MenuItem value={"Debit Card"}> Debit Card </MenuItem> */}
+                    <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
                   </TextField>
                   {this.props.savings && (
                     <img
