@@ -405,8 +405,7 @@ function resendGroupNotification(id) {
 }
 
 // Resend loan Notification
-function resendLoanNotification(loan_group, user_id) {
-  
+function resendLoanNotification(loan_group, user_id) { 
   const requestOptions = {
     method: "POST",
     headers: { ...authHeader(), "Content-Type": "application/json" },

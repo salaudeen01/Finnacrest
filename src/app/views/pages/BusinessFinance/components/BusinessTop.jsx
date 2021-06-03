@@ -268,7 +268,7 @@ class BusinessTop extends Component{
     let {theme} = this.props
     const {balance, data, showLoan, repayment_duration, balanceRegular,loading,savings} = this.state
     let arr = []
-    for (let index = 0; index < repayment_duration; index++) {
+    for (let index = 1; index < repayment_duration; index++) {
       arr.push((index)+1);    
     }
     // console.log(arr)
@@ -387,8 +387,9 @@ class BusinessTop extends Component{
                     //  helperText="Please select Loan Group"
                   >
                       <MenuItem value={""}>Select Loan Duration</MenuItem>
+                      <MenuItem value={"1"}>{(1) +" "+ 'month'}</MenuItem>
                     {arr.map((name, index) => (
-                      <MenuItem value={name}>{(name) +" "+ 'month'}</MenuItem>
+                      <MenuItem value={name}>{(name) +" "+ 'months'}</MenuItem>
                     ))}
                   </TextField>
                 <TextField

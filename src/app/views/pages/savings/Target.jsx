@@ -176,6 +176,7 @@ componentDidMount(){
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
+      console.log(data)
       if(data.success === false && data.length === 0){
         this.setState({tdetails: [], balance: 0, completed: [], accounts:[], loading:false })
       }else{

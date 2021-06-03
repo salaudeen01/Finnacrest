@@ -313,7 +313,7 @@ fetchLoanDetails=(id)=>{
       if (!response.ok) {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
-      }
+      }console.log(data)
       if(data.success == false){
         this.setState({repayment_details: [], pagination:[]})
       }else{
@@ -331,7 +331,7 @@ fetchLoanDetails=(id)=>{
       if (!response.ok) {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);          
-      }
+      }console.log(data)
       if(data.success == false){
         this.setState({loan_approval: [], loading:false});
       }else{

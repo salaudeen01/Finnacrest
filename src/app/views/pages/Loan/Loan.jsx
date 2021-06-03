@@ -1037,7 +1037,7 @@ render(){
       bala,modalForm, loan_avail_amount, LoanFee, registrationFee, modalFee, group_members, group_details, loading, form_data} = this.state
   
       let arr = []
-      for (let index = 0; index < repayment_duration; index++) {
+      for (let index = 1; index < repayment_duration; index++) {
         arr.push((index)+1);    
       };
       const bal = data.loan_amount - loan_avail_amount
@@ -1163,8 +1163,9 @@ render(){
                     //  helperText="Please select Loan Group"
                   >
                       <MenuItem value={""}>Select Loan Duration</MenuItem>
+                      <MenuItem value={"1"}>{(1) +" "+ 'month'}</MenuItem>
                     {arr.map((name, index) => (
-                      <MenuItem value={name}>{(name) +" "+ 'month'}</MenuItem>
+                      <MenuItem value={name}>{(name) +" "+ 'months'}</MenuItem>
                     ))}
                   </TextField>
                 <TextField

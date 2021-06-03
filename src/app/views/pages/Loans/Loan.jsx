@@ -391,7 +391,7 @@ fetch(getConfig("getLoan"), requestOptions)
       const error = (data && data.message) || response.statusText;
       this.setState({loading:false})
       return Promise.reject(error);
-  }
+  }console.log(data)
   if(data.success == false){
       this.setState({loan_details: []})
   }else{
@@ -432,7 +432,7 @@ fetch(getConfig("completedLoan"), requestOptions)
       const error = (data && data.message) || response.statusText;
       this.setState({loading:false})
       return Promise.reject(error);
-  }
+  }console.log(data)
   if(data.success == false){
       this.setState({Completed: []})
   }else{
