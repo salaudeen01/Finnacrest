@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {getConfig, payID, numberFormat } from '../../../config/config'
-import PaystackButton from 'react-paystack';
+import { PaystackButton, usePaystackPayment } from 'react-paystack';
 import { authHeader } from "../../../redux/logic";
 import { withStyles } from "@material-ui/styles";
 import { withRouter } from "react-router-dom";
