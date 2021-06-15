@@ -204,8 +204,11 @@ componentDidMount(){
 fetchBankDetails=()=>{
   const requestOptions = {
     method: 'GET',
-    headers: { 'authorization': 'Bearer sk_live_2972a846b2b8c7096a62cf2a19b3675fe57455a9', 'Content-Type': 'application/json' },
+    // headers: { 'authorization': 'Bearer sk_live_2972a846b2b8c7096a62cf2a19b3675fe57455a9', 'Content-Type': 'application/json' },
+    headers: { 'authorization': 'Bearer sk_test_629b392e2345d122b5941f00b27cdd91957ca848', 'Content-Type': 'application/json' },
+    // sk_test_629b392e2345d122b5941f00b27cdd91957ca848',
   };
+
   fetch('https://api.paystack.co/bank', requestOptions)
   .then(async response => {
   const data = await response.json();
@@ -250,7 +253,8 @@ check = (e)=>{
   if(e.target.value.length == 10){
     const requestOptions = {
       method: 'GET',
-      headers: { 'authorization': 'Bearer sk_live_2972a846b2b8c7096a62cf2a19b3675fe57455a9', 'Content-Type': 'application/json' },
+      //headers: { 'authorization': 'Bearer sk_live_2972a846b2b8c7096a62cf2a19b3675fe57455a9', 'Content-Type': 'application/json' },
+      headers: { 'authorization': 'Bearer sk_test_629b392e2345d122b5941f00b27cdd91957ca848', 'Content-Type': 'application/json' },
   };
     fetch('https://api.paystack.co/bank/resolve?account_number='+value+'&bank_code='+bank_code, requestOptions)
       .then(async response => {
@@ -626,74 +630,80 @@ render(){
                 Change Bank details
               </Typography>
             </Toolbar>
-          </AppBar>
-          <Card className="px-6 pt-2 pb-4" style={{width:500}}>
-            {loading ? 
-            <Typography>Loading...</Typography>:
-            <ValidatorForm
-              ref="form"
-              onSubmit={this.handleSubmitBankDetails}
-              onError={errors => null}>
-              <Grid container spacing={2}>
-                <Grid item lg={6} md={6} sm={12} xs={12}>
-                  <TextField
-                    className="mb-4 w-full"
-                    select
-                    label={bank_data.bank_name? bank_data.bank_name: "Select Bank Name"}
-                    name="bank_name"
-                    onChange={this.handleChangeBankDetails}
-                    helperText="Please select Bank Name">
-                    {banks.map((bank, index)=>(
-                      <MenuItem key={index} value={index}>{bank.name}</MenuItem>
-                    ))}
-                  </TextField>
-                  <TextValidator
-                    className="mb-4 w-full"
-                    label="Account Number"
-                    onChange={this.check}
-                    type="text"
-                    name="account_no"
-                    value={bank_data.account_no}
-                    validators={[
-                      "required"
-                    ]}
-                    errorMessages={["this field is required"]}
-                  />
-                  {isChecking && (
-                    <CircularProgress
-                      size={24}
-                    />)}
-                  <TextValidator
-                    className="mb-4 w-full"
-                    label="Account Name"
-                    type="text"
-                    name="account_name"
-                    value={bank_data.account_name}
-                    validators={[
-                      "required"
-                    ]}
-                    errorMessages={["this field is required"]}
-                  />
-                  {this.props.savings &&
-                  <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                  }
-                  <Button className="uppercase"
-                    type="submit"
-                    size="large"
-                    variant="contained"
-                    color="primary"
-                    style={{color:"#fff"}}>
-                    Save 
-                  </Button>
+          </AppBar>   
+            <Card className="px-6 pt-2 pb-4" style={{width:500}}>
+              {loading ? 
+              <Typography>Loading...</Typography>:
+              <ValidatorForm
+                ref="form"
+                onSubmit={this.handleSubmitBankDetails}
+                onError={errors => null}>
+                <Grid container spacing={0}>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      className="mb-4 w-full"
+                      select
+                      label={bank_data.bank_name? bank_data.bank_name: "Select Bank Name"}
+                      name="bank_name"
+                      onChange={this.handleChangeBankDetails}
+                      SelectProps={{
+                        native: true,
+                      }}
+                      variant="filled"
+                      helperText="Please select Bank Name">
+                      {banks.map((bank, index)=>(
+                        <option  key={index} value={index}>{bank.name}</option >
+                      ))}
+                    </TextField>
+                    <TextValidator
+                      className="mb-4 w-full"
+                      label="Account Number"
+                      onChange={this.check}
+                      variant="filled"
+                      type="text"
+                      name="account_no"
+                      value={bank_data.account_no}
+                      validators={[
+                        "required"
+                      ]}
+                      errorMessages={["this field is required"]}
+                    />
+                    {isChecking && (
+                      <CircularProgress
+                        size={24}
+                      />)}
+                    <TextValidator
+                      className="mb-4 w-full"
+                      label="Account Name"
+                      type="text"
+                      variant="filled"
+                      name="account_name"
+                      value={bank_data.account_name}
+                      validators={[
+                        "required"
+                      ]}
+                      errorMessages={["this field is required"]}
+                    />
+                    {this.props.savings &&
+                    <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                    }
+                    <Button className="uppercase"
+                      type="submit"
+                      size="large"
+                      variant="contained"
+                      color="primary"
+                      style={{color:"#fff"}}>
+                      Save 
+                    </Button>
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <Typography variant="subtitle1">{bank_data.bank_name}</Typography>
+                    <Typography variant="subtitle1">{bank_data.account_name}</Typography>
+                    <Typography variant="subtitle1">{bank_data.account_no}</Typography>
+                  </Grid>
                 </Grid>
-                <Grid item lg={6} md={6} sm={12} xs={12}>
-                  <Typography variant="subtitle1">{bank_data.bank_name}</Typography>
-                  <Typography variant="subtitle1">{bank_data.account_name}</Typography>
-                  <Typography variant="subtitle1">{bank_data.account_no}</Typography>
-                </Grid>
-              </Grid>
-            </ValidatorForm>}
-          </Card>
+              </ValidatorForm>}
+            </Card>
         </Dialog>
         {/* Bank Details Dialog End */}
 
