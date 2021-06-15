@@ -1,13 +1,12 @@
-
 import React, { Component } from 'react'
-import {getReference, getConfig, payID, numberFormat } from '../../../config/config'
+import {getConfig, payID, numberFormat } from '../../../config/config'
 import PaystackButton from 'react-paystack';
 import { authHeader } from "../../../redux/logic";
 import { withStyles } from "@material-ui/styles";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { userActions } from "../../../redux/actions/user.actions";
 import { Typography } from '@material-ui/core';
+import { userActions } from "../../../redux/actions/user.actions";
 import Loading from 'matx/components/MatxLoadable/Loading';
 
 class PayOption extends Component {
@@ -34,9 +33,7 @@ componentDidMount(){
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
         }
-        // this.setState({key: data[0].public_key})
         localStorage.setItem("token", data[0].token);
-
     })
     .catch((error) => {
         if (error === "Unauthorized") {
@@ -49,7 +46,7 @@ componentDidMount(){
 getReference = () => {
     const {type, targetId} =this.props
     let user =   JSON.parse(localStorage.getItem('user'));
-    let id = (user.user_id)
+    let id = this.pad(user.user_id, 5)
     let text = "";
     let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.=";
     for( let i=0; i < 7; i++ ){
@@ -57,6 +54,7 @@ getReference = () => {
     }
     
     text= type + "-" + id.toString() + "-" + targetId + "-" +text
+    console.log(text)
     this.setState({reference:text});
   }
 
@@ -89,7 +87,6 @@ close = () => {
                     disabled={true}  
                     embed={true}  
                     reference={reference}
-                    reference={getReference()}
                     email={email}
                     amount={amount >= 2500 ? pay2: pay1}
                     paystackkey={key}
