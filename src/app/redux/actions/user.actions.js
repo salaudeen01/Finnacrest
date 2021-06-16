@@ -1282,13 +1282,14 @@ function saveWallet(user) {
         if(user.success){
           dispatch(success(user.card_id));
           localStorage.setItem("card_id", user.card_id)
-          dispatch(alertActions.continues(user.message));
+          dispatch(alertActions.continues(user.message));          
+          history.push("/wallet");
         }else{
           dispatch(alertActions.error(user.message));
         }
         let last_url = localStorage.getItem("lasturl")
         if(last_url == "/wallet" || last_url == "/settings" || last_url == "/dashboard"){
-          window.location.reload()
+          // window.location.reload()
         }
       },
       (error) => {

@@ -1443,7 +1443,7 @@ render(){
       </AppBar>
       <ValidatorForm
         ref="form"
-        onSubmit={this.handleSubmitRepay}
+        // onSubmit={this.handleSubmitRepay}
         onError={errors => null}>
         <Card className="px-6 pt-2 pb-4">
           <Grid container spacing={2}>
@@ -1511,6 +1511,7 @@ render(){
               <Button className="uppercase"
                 type="submit"
                 size="large"
+                onClick={this.handleSubmitRepay}
                 variant="contained"
                 style={{backgroundColor:"#222943", color:"white"}}>
                    Repay Loan
@@ -1627,7 +1628,7 @@ render(){
               // loan_details={loan_details}
               data={loan_approval} 
               approvals={repayment_details} 
-              user = {user.id}
+              user = {user && user.id}
               resend_notif={()=>this.confirmAlert("Resend Loan Notification", 0, data.loan_group, data.user_id)} />
             </div>
             }

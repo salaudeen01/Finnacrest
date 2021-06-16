@@ -570,10 +570,10 @@ class Shareholdings extends Component {
         <Card className='px-6 pt-2 pb-4'>
         <ValidatorForm
         ref='form'
-        onSubmit={this.handleSubmitFund}
+        // onSubmit={this.handleSubmitFund}
         onError={(errors) => null}
         >
-        <Grid container spacing={6}>
+        <Grid container spacing={4}>
         <Grid item lg={6} md={6} sm={12} xs={12}>
           <TextValidator
             className='mb-4 w-full'
@@ -627,7 +627,7 @@ class Shareholdings extends Component {
             /><Typography variant="caption">Would you like to save your card</Typography>
             </Grid>}
 
-        <Grid item lg={12} md={12} sm={12} xs={12}>
+        {/* <Grid item lg={12} md={12} sm={12} xs={12}> */}
           <div style={{textAlign:'center', alignItems:'center',alignContent:'center'}}>
             {this.props.savings && (
               <img
@@ -637,13 +637,14 @@ class Shareholdings extends Component {
               />
             )}  
           </div>      
-        </Grid>
+        {/* </Grid> */}
         <Grid item lg={12} md={12} sm={12} xs={12}>
         {(fund_data.payment_method == "Wallet" || (fund_data.card_id !="0" && fund_data.card_id !="")) && 
           <Button className="uppercase"
             type="submit"
             size="large"
             variant="contained"
+            onClick={this.handleSubmitFund}
             style={{backgroundColor:"#222943", color:"#fff"}}>
             Add Fund
           </Button>}        

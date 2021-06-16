@@ -536,7 +536,7 @@ render(){
             <Card className="px-6 pt-2 pb-4">
               <ValidatorForm
                 ref="form"
-                onSubmit={this.handleSubmitFund}
+                // onSubmit={this.handleSubmitFund}
                 onError={errors => null}>
                 <Grid container spacing={6}>
                   <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -572,6 +572,7 @@ render(){
                   <Button className="uppercase"
                     type="submit"
                     size="large"
+                    onClick={this.handleSubmitFund}
                     color="primary"
                     variant="contained"
                     style={{color:"#fff"}}>

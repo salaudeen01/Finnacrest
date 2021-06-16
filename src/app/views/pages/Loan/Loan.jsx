@@ -1534,7 +1534,7 @@ render(){
            <ListItem>
               <ValidatorForm
             ref="form"
-            onSubmit={this.handleSubmitLoan}
+            // onSubmit={this.handleSubmitLoan}
             onError={errors => null}>
             <Grid container spacing={6}>
               <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -1580,7 +1580,7 @@ render(){
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                   /><Typography variant="caption">Would you like to save your card</Typography>
               </Grid>}
-              <Grid item lg={12} md={12} sm={12} xs={12}>
+              {/* <Grid item lg={12} md={12} sm={12} xs={12}> */}
               <div style={{textAlign:'center', alignItems:'center',alignContent:'center'}}>
                 {this.props.savings && (
                   <img
@@ -1590,13 +1590,14 @@ render(){
                   />
                 )}  
               </div>      
-            </Grid>
+            {/* </Grid> */}
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 {(form_data.form_payment == "Wallet" || (form_data.card_id !="0" && form_data.card_id !="")) && 
                 <Button className="uppercase"
                   type="submit"
                   size="large"
                   variant="contained"
+                  onClick={this.handleSubmitLoan}
                   style={{backgroundColor:"#222943", color:"#fff"}}>
                   Add Fund
                 </Button>}

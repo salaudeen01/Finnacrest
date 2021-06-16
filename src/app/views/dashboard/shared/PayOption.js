@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import {getConfig, payID, numberFormat } from '../../../config/config'
-import { PaystackButton, usePaystackPayment } from 'react-paystack';
+import {getReference, getConfig, payID, numberFormat } from '../../../config/config'
+import PaystackButton from 'react-paystack';
 import { authHeader } from "../../../redux/logic";
 import { withStyles } from "@material-ui/styles";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { Typography } from '@material-ui/core';
 import { userActions } from "../../../redux/actions/user.actions";
+import { Typography } from '@material-ui/core';
 import Loading from 'matx/components/MatxLoadable/Loading';
 
 class PayOption extends Component {
@@ -78,21 +78,23 @@ close = () => {
                 <Typography>
                     Paystack Gateway Commission : <span><b>{numberFormat(amount >= 2500 ? pay4: pay3)}</b></span>
                 </Typography><br/>
-                {key ?
+                {/* {key ? */}
                 <PaystackButton
-                    text="Make Payment"
+                    text="Make Payment with PayStack"
                     className="payButton"
                     callback={callback}
                     close={this.close}
-                    disabled={true}  
-                    embed={true}  
+                    disabled={false}  
+                    // embed={true}  
                     reference={reference}
+                    // reference={getReference()}
                     email={email}
                     amount={amount >= 2500 ? pay2: pay1}
                     paystackkey={key}
                     tag="button" 
-                />:
-                <Loading />}
+                />
+                {/* : */}
+                {/* <Loading />} */}
             </div>
         )
     }

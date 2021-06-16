@@ -424,7 +424,7 @@ handleCloseConfirmWithdraw() {
         <Card className="px-6 pt-2 pb-4">
           <ValidatorForm
             ref="form"
-            onSubmit={this.saveWallet}
+            // onSubmit={this.saveWallet}
             onError={errors => null}>
             <Grid container spacing={6}>
               <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -468,6 +468,7 @@ handleCloseConfirmWithdraw() {
                 <Button className="uppercase"
                   type="submit"
                   size="large"
+                  onClick={this.saveWallet}
                   variant="contained"
                   color="primary"
                   style={{color:"#fff"}}>

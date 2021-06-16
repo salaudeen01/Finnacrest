@@ -555,7 +555,7 @@ handleSubmitFund(event) {
         <Card className="px-6 pt-2 pb-4">
           <ValidatorForm
             ref="form"
-            onSubmit={this.handleSubmitFund}
+            // onSubmit={this.handleSubmitFund}
             onError={errors => null}>
             <Grid container spacing={6}>
               <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -623,6 +623,7 @@ handleSubmitFund(event) {
               {(fund_data.payment_method == "Wallet" || (fund_data.card_id !="0" && fund_data.card_id !="")) && 
               <Button className="uppercase"
                 type="submit"
+                onClick={this.handleSubmitFund}
                 size="large"
                 variant="contained"
                 style={{backgroundColor:"#222943", color:"#fff"}}>
