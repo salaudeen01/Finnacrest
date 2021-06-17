@@ -426,7 +426,7 @@ handleCloseConfirmWithdraw() {
             ref="form"
             // onSubmit={this.saveWallet}
             onError={errors => null}>
-            <Grid container spacing={6}>
+            <Grid container spacing={4}>
               <Grid item lg={6} md={6} sm={12} xs={12}>
                 <TextValidator
                   className="mb-4 w-full"
@@ -445,7 +445,7 @@ handleCloseConfirmWithdraw() {
                 }              
               </Grid>
               <Grid item lg={6} md={6} sm={12} xs={12}>
-                <Card className="px-6 pt-2 pb-4">
+                <Card className="px-6 pt-2 pb-2">
                   <Typography variant="h6" gutterBottom>
                     {numberFormat(data.amount)}
                   </Typography>
@@ -462,6 +462,9 @@ handleCloseConfirmWithdraw() {
                       onChange={this.handleChange}
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                   /><Typography variant="caption">Would you like to save your card</Typography>
+                {data.card_id == "" &&
+                  <PayOption callback={this.callback} amount={data.amount} type={'07'} targetId={"00"}/>
+                }
               </Grid>}
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 {(data.card_id != "" && data.card_id !="0") && 
@@ -475,9 +478,6 @@ handleCloseConfirmWithdraw() {
                   Add Fund
                 </Button>}
               </Grid>
-              {data.card_id == "" && <Grid item lg={12} md={12} sm={12} xs={12}>
-                <PayOption callback={this.callback} amount={data.amount} type={'07'} targetId={"00"}/>
-              </Grid>}
             </Grid>
           </ValidatorForm>
         </Card>

@@ -946,6 +946,9 @@ completeTab(){
                         onChange={this.handleChangeFund}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     /><Typography variant="caption">Would you like to save your card</Typography>
+                    {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+                      <PayOption callback={this.callback} type={'02'} targetId={"00"} amount={fund_data.amount}/>
+                    }
                 </Grid>} 
                 {/* <Grid item lg={12} md={12} sm={12} xs={12}> */}
                   <div style={{textAlign:'center', alignItems:'center',alignContent:'center'}}>
@@ -965,10 +968,6 @@ completeTab(){
                   Add Fund
                 </Button>}
               </Grid>
-                {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <PayOption callback={this.callback} type={'02'} targetId={"00"} amount={fund_data.amount}/>
-                </Grid>}
               </Grid>
             </ValidatorForm>
           </Card>

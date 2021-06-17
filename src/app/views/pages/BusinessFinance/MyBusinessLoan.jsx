@@ -604,10 +604,9 @@ render(){
                           onChange={this.handleChangeFund}
                           inputProps={{ 'aria-label': 'primary checkbox' }}
                       /><Typography variant="caption">Would you like to save your card</Typography>
-                  </Grid>}
-                  {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
-                  <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <PayOption callback={this.callback} type={'08'} targetId={'00'} amount={fund_data.repayment_amount}/>
+                      {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+                        <PayOption callback={this.callback} type={'08'} targetId={'00'} amount={fund_data.repayment_amount}/>
+                      }
                   </Grid>}
                 </Grid>
               </ValidatorForm>

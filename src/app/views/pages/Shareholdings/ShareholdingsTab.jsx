@@ -619,12 +619,15 @@ class Shareholdings extends Component {
             </Grid>}
             {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
             <Grid item lg={12} md={12} sm={12} xs={12}>
-            <Checkbox
-                name="save_card"
-                checked={fund_data.save_card}
-                onChange={this.handleChangeFund}
-                inputProps={{ 'aria-label': 'primary checkbox' }}
-            /><Typography variant="caption">Would you like to save your card</Typography>
+              <Checkbox
+                  name="save_card"
+                  checked={fund_data.save_card}
+                  onChange={this.handleChangeFund}
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
+              /><Typography variant="caption">Would you like to save your card</Typography>
+              {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+                <PayOption callback={this.callback} amount={fund_data.amount} type={'03'} targetId={"00"}/>
+              }
             </Grid>}
 
         {/* <Grid item lg={12} md={12} sm={12} xs={12}> */}
@@ -649,10 +652,6 @@ class Shareholdings extends Component {
             Add Fund
           </Button>}        
         </Grid>
-        {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-          <PayOption callback={this.callback} amount={fund_data.amount} type={'03'} targetId={"00"}/>
-        </Grid>}
         </Grid>
         </ValidatorForm>
         </Card>

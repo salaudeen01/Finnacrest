@@ -1502,6 +1502,9 @@ render(){
                       onChange={this.handleChangeRepay}
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                   /><Typography variant="caption">Would you like to save your card</Typography>
+                  {(repay_data.payment_method === "Debit Card"&& repay_data.card_id == "") &&
+                    <PayOption callback={this.callback} amount={repay_data.repayment_amount} type={'04'} targetId={'00'} />
+                  }
               </Grid>}
               <Grid item lg={12} md={12} sm={12} xs={12}>
               {this.props.savings &&
@@ -1517,10 +1520,6 @@ render(){
                    Repay Loan
               </Button>}
               </Grid>
-            {(repay_data.payment_method === "Debit Card"&& repay_data.card_id == "") &&
-            <Grid item lg={12} md={12} sm={12} xs={12}>
-              <PayOption callback={this.callback} amount={repay_data.repayment_amount} type={'04'} targetId={'00'} />
-            </Grid>}
           </Grid>
         </Card>
       </ValidatorForm>

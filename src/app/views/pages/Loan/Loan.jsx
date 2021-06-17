@@ -1579,6 +1579,11 @@ render(){
                       onChange={this.handleChangeForm}
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                   /><Typography variant="caption">Would you like to save your card</Typography>
+                  {form_data.card_id == "" && form_data.form_payment == "Debit Card" &&
+                  // <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <PayOption callback={this.callback} amount={LoanFee} type={'21'} targetId={'00'} />
+                  // </Grid>
+                  }
               </Grid>}
               {/* <Grid item lg={12} md={12} sm={12} xs={12}> */}
               <div style={{textAlign:'center', alignItems:'center',alignContent:'center'}}>
@@ -1602,10 +1607,6 @@ render(){
                   Add Fund
                 </Button>}
               </Grid>
-              {form_data.card_id == "" && form_data.form_payment == "Debit Card" &&
-              <Grid item lg={12} md={12} sm={12} xs={12}>
-                <PayOption callback={this.callback} amount={LoanFee} type={'21'} targetId={'00'} />
-              </Grid>}
             </Grid>
           </ValidatorForm>
           </ListItem>

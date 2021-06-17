@@ -683,10 +683,11 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                     onChange={this.handleChange}
                     inputProps={{ 'aria-label': 'primary checkbox' }}
                 /><Typography variant="caption">Would you like to save your card</Typography>
-            </Grid>}
-            {data.card_id == "" && data.payment_method == "Debit Card"  && 
-            <Grid item lg={12} md={12} sm={12} xs={12}>
-              <PayOption callback={this.callback} amount={data.amount} type={type} targetId={targetId}  />
+                {data.card_id == "" && data.payment_method == "Debit Card"  && 
+                // <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <PayOption callback={this.callback} amount={data.amount} type={type} targetId={targetId}  />
+                // </Grid>
+                }
             </Grid>}
           </Grid>
           {this.props.savings &&
