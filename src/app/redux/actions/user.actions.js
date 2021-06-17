@@ -250,7 +250,7 @@ function confirmWithdraw(data) {
       (user) => {
         dispatch(success(user));
         if(user.success){
-          dispatch(alertActions.success(user.message));
+          dispatch(alertActions.success(user.message));          
         }else{
           dispatch(alertActions.error(user.message));
         }
@@ -1319,17 +1319,17 @@ function saveWallet(user) {
     userService.saveWallet(user).then(
       (user) => {
         
-        if(user.success){
+        if(user.success){          
+          history.push("/wallet");
           dispatch(success(user.card_id));
           localStorage.setItem("card_id", user.card_id)
-          dispatch(alertActions.continues(user.message));          
-          history.push("/wallet");
+          dispatch(alertActions.continues(user.message));
+          window.location.reload()
         }else{
           dispatch(alertActions.error(user.message));
         }
         let last_url = localStorage.getItem("lasturl")
         if(last_url == "/wallet" || last_url == "/settings" || last_url == "/dashboard"){
-          // window.location.reload()
         }
       },
       (error) => {
