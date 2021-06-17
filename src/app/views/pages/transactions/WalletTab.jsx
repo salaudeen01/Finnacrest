@@ -73,6 +73,7 @@ class WalletTab extends Component{
       show: false,
       show_withdraw: false,
       email:email,
+      isButtonDisabled:false,
       bank_details:null
     };
 
@@ -267,12 +268,18 @@ fetch_page = (index)=>{
   saveWallet = () => {
     const { data } = this.state;
     this.props.saveWallet(data)
+    this.setState({
+      isButtonDisabled: true
+    });
   };
 
   handleSubmitWithdraw = () => {
     const { withdrawData } = this.state;
     if(withdrawData.amount && withdrawData.password){
       this.props.verifyWithdraw(withdrawData)
+      this.setState({
+        isButtonDisabled: true
+      });
       swal("loading...")
     }
       this.setState({show_withdraw:false});
@@ -282,6 +289,9 @@ fetch_page = (index)=>{
     const { withdrawData } = this.state;
     if(withdrawData.amount && withdrawData.withdrawal_pin){
       this.props.confirmWithdraw(withdrawData)
+      this.setState({
+        isButtonDisabled: true
+      });
       swal("loading...")
     }
   };
@@ -336,7 +346,7 @@ handleCloseModalFee() {
   render(){
     let {theme} = this.props
     const {pagination,wallet_bal, modal, wallet, modalForm, registrationFee, modalFee,  bank_details,
-           withdrawData, cards, loading, show, show_withdraw, data, email} = this.state
+           withdrawData, cards, loading, show, show_withdraw,isButtonDisabled, data, email} = this.state
     return (
       <div className="m-sm-30">
       { modal == false ?
@@ -422,7 +432,7 @@ handleCloseModalFee() {
         <Card className="px-6 pt-2 pb-4">
           <ValidatorForm
             ref="form"
-            // onSubmit={this.saveWallet}
+            onSubmit={this.saveWallet}
             onError={errors => null}>
             <Grid container spacing={4}>
               <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -470,6 +480,7 @@ handleCloseModalFee() {
                   type="submit"
                   size="large"
                   onClick={this.saveWallet}
+                  disabled={isButtonDisabled}
                   variant="contained"
                   color="primary"
                   style={{color:"#fff"}}>
@@ -581,6 +592,7 @@ handleCloseModalFee() {
                     type="submit"
                     size="large"
                     variant="contained"
+                    disabled={isButtonDisabled}
                     color="primary"
                     style={{color:"#fff"}}>
                     Withdraw
@@ -800,6 +812,7 @@ handleCloseModalFee() {
                   type="submit"
                   size="large"
                   variant="contained"
+                  disabled={isButtonDisabled}
                   color="primary"
                   style={{color:"#fff"}}>
                   Withdraw

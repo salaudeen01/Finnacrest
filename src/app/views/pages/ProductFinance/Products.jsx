@@ -82,6 +82,7 @@ class Target extends Component {
         showSave:false,
         showSaveCard:false,
         cards:[],
+        isButtonDisabled:false,
         id:true
     };    
     this.ongoingTab = this.ongoingTab.bind(this);
@@ -264,6 +265,9 @@ handleSubmitFund(event) {
   const { fund_data } = this.state;
   if (fund_data.repayment_amount) {
       this.props.orderRepayments(fund_data);
+      this.setState({
+        isButtonDisabled: true
+      });
       console.log(fund_data)
   }else{
       swal(
@@ -312,7 +316,7 @@ handleSubmitFund(event) {
       obj.array[l] = l + 1;
     }
     let { theme } = this.props;
-    const {my_products, com_products, tab, loading, showView, isLoading, data, 
+    const {my_products, com_products, tab, loading, showView, isLoading, data,isButtonDisabled, 
       singleTargetTransaction, fund_data, showSave ,cards,showViewTrans,} = this.state;
     return (
       <div className='m-sm-30'>
@@ -626,6 +630,7 @@ handleSubmitFund(event) {
                 type="submit"
                 onClick={this.handleSubmitFund}
                 size="large"
+                disabled={isButtonDisabled}
                 variant="contained"
                 style={{backgroundColor:"#222943", color:"#fff"}}>
                 Add Fund

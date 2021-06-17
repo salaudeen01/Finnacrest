@@ -64,7 +64,8 @@ class MyBusinessLoan extends Component {
       id:true,
       loading:true,
       showViewTrans:false,
-      showManageLoan:false
+      showManageLoan:false,
+      isButtonDisabled:false
     }
 
     
@@ -340,6 +341,9 @@ componentDidMount() {
       const { fund_data } = this.state;
       if (fund_data.repayment_amount && fund_data.card_id != "") {
           this.props.business_repayments(fund_data);
+          this.setState({
+            isButtonDisabled: true
+          });
       }else{
           swal(
               `${"All fields are required"}`
@@ -377,7 +381,7 @@ componentDidMount() {
   }
 
 render(){
-  const {tab,loading,data,type,targetId,isLoading,requested_business,business_view,showSave,fund_data,cards,showManageLoan,repayment_details, showViewTrans} = this.state
+  const {tab,loading,data,type,isButtonDisabled, targetId,isLoading,requested_business,business_view,showSave,fund_data,cards,showManageLoan,repayment_details, showViewTrans} = this.state
    return (
     <div className="">       
          {loading ? (
@@ -573,6 +577,7 @@ render(){
                     type="submit"
                     size="large"
                     onClick={this.handleSubmitFund}
+                    disabled={isButtonDisabled}
                     color="primary"
                     variant="contained"
                     style={{color:"#fff"}}>

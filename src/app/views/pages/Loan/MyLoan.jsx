@@ -127,6 +127,7 @@ class MyLoan extends Component {
       showManageLoan:false,
       isFetching:true,
       group_id: "",
+      isButtonDisabled:false,
       request_id:"",
       code:"",
       id:true
@@ -729,7 +730,10 @@ handleSubmitRepay(event) {
   event.preventDefault();
   const { repay_data } = this.state;
   if (repay_data.trans_date && repay_data.repayment_amount && repay_data.payment_method) {
-      this.props.addLoanRepayment(repay_data); 
+      this.props.addLoanRepayment(repay_data);
+      this.setState({
+        isButtonDisabled: true
+      }); 
   }else{
       swal(
           `${"All fields are required"}`
@@ -908,7 +912,7 @@ handleDelete = (loan_id) => {
   }
 
 render(){
-  const {repayment_details, user, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
+  const {repayment_details, isButtonDisabled, user, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
   return (
     <div className="">       
        {isFetching ?
@@ -1513,6 +1517,7 @@ render(){
               {(repay_data.payment_method === "Wallet" || (repay_data.card_id !="0" && repay_data.card_id !="")) &&
               <Button className="uppercase"
                 type="submit"
+                disabled={isButtonDisabled}
                 size="large"
                 onClick={this.handleSubmitRepay}
                 variant="contained"

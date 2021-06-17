@@ -107,6 +107,7 @@ class Target extends Component{
         showView:false,
         tab:true,
         tar_amt:0,
+        isButtonDisabled:false,
         bal_amt:0,
         shareMinFee:"",
         share_balance:"",
@@ -520,6 +521,9 @@ handleSubmitFund(event) {
   const { fund_data } = this.state;
   if (fund_data.amount && fund_data != "") {
       this.props.addFundTargetSavings(fund_data);
+      this.setState({
+        isButtonDisabled: true
+      });
       // console.log(fund_data)
   }else{
       swal(
@@ -754,7 +758,7 @@ completeTab(){
           obj.array[l] = l+1;
       }
     let {theme} = this.props
-    const {balance, tdetails, bal_amt, tar_amt, share_balance, shareFee, shareMinFee, loading, isLoading, tab, cards, add_card, showSaveCard, id, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, pagination, show, savings} = this.state
+    const {balance, tdetails, bal_amt,isButtonDisabled, tar_amt, share_balance, shareFee, shareMinFee, loading, isLoading, tab, cards, add_card, showSaveCard, id, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, pagination, show, savings} = this.state
     const bal = tar_amt - bal_amt
     // console.log(completed)
     return (
@@ -961,6 +965,7 @@ completeTab(){
                 {(fund_data.payment_method == "Wallet" || (fund_data.card_id !="0" && fund_data.card_id !="")) && 
                 <Button className="uppercase"
                   type="submit"
+                  disabled={isButtonDisabled}
                   size="large"
                   onClick={this.handleSubmitFund}
                   variant="contained"

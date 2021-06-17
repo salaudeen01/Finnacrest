@@ -150,6 +150,7 @@ class Loan extends Component {
       share_balance:"",
       shareFee:false,
       bala:0,
+      isButtonDisabled:false,
       id:true
     }
     this.ongoingTab = this.ongoingTab.bind(this);
@@ -808,7 +809,10 @@ handleSubmitLoan(event) {
     let dat = {first:[data], data: formList};
     if (form_data.form_payment && data.loan_amount && data.payment_duration) {
         this.props.createLoan(dat)    
-        this.props.loanFormFee(form_data);     
+        this.props.loanFormFee(form_data);  
+        this.setState({
+          isButtonDisabled: true
+        });   
     }else{
         swal(
             `${"All fields are required"}`
@@ -1034,7 +1038,7 @@ render(){
      Completed, replace_data, share_balance, shareFee, shareMinFee, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage,
       showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, 
       group_name, LoanFormPayment, manage_details, loan_details, data, group_data, showDetails, modal, showManageLoan, 
-      bala,modalForm, loan_avail_amount, LoanFee, registrationFee, modalFee, group_members, group_details, loading, form_data} = this.state
+      bala,modalForm, isButtonDisabled, loan_avail_amount, LoanFee, registrationFee, modalFee, group_members, group_details, loading, form_data} = this.state
   
       let arr = []
       for (let index = 1; index < repayment_duration; index++) {
@@ -1601,6 +1605,7 @@ render(){
                 <Button className="uppercase"
                   type="submit"
                   size="large"
+                  disabled={isButtonDisabled}
                   variant="contained"
                   onClick={this.handleSubmitLoan}
                   style={{backgroundColor:"#222943", color:"#fff"}}>

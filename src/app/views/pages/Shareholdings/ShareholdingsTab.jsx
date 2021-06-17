@@ -109,6 +109,7 @@ class Shareholdings extends Component {
       auto_save: "",
       show: false,
       showSave: false,
+      isButtonDisabled:false,
       showWithdraw: false,
       showEdit: false,
     };
@@ -320,6 +321,9 @@ class Shareholdings extends Component {
     const { fund_data } = this.state;
     if (fund_data.amount) {
       this.props.addFundShareholdings(fund_data);
+      this.setState({
+        isButtonDisabled: true
+      });
     } else {
       swal(`${"All fields are required"}`);
     }
@@ -383,6 +387,7 @@ class Shareholdings extends Component {
       autoSave,
       showSave,
       showWithdraw,
+      isButtonDisabled,
       data,
       cards,
       show,

@@ -108,6 +108,7 @@ class Regular extends Component{
             auto_save: "",
             shareFee:false,
             show:false,
+            isButtonDisabled: false,
             show_withdraw: false,
             showSave:false,
             // showWithdraw:false,
@@ -445,6 +446,7 @@ handleSubmitWithdraw = () => {
   const { withdrawData } = this.state;
   if(withdrawData.amount && withdrawData.password){
     this.props.verifyRegularWithdraw(withdrawData)
+    this.setState({isButtonDisabled:true});
     swal("loading...")
   }
     this.setState({show_withdraw:false});
@@ -454,6 +456,7 @@ handleConfirmWithdraw = () => {
   const { withdrawData } = this.state;
   if(withdrawData.amount && withdrawData.withdrawal_pin && withdrawData.payment_method && withdrawData.date_time){
     this.props.withdrawRegularSavings(withdrawData)
+    this.setState({isButtonDisabled:true});
     swal("loading...")
   }
 };
@@ -508,6 +511,9 @@ handleSubmitFund(event) {
   event.preventDefault();
   const { fund_data } = this.state;
   if (fund_data.amount && fund_data.card_id != "") {
+    this.setState({
+      isButtonDisabled: true
+    });
       this.props.addFundRegularSavings(fund_data);
   }else{
       swal(
@@ -570,7 +576,7 @@ handleClose() {
     let {theme} = this.props
     const {balance, tdetails, share_balance, shareFee, shareMinFee, loading, cards, auto_save, id, add_card, 
             showSaveCard, email, bank_details, edit_data, showEdit, fund_data, withdraw_data, autoSave, showSave,
-            showWithdraw, data, show, savings,withdrawData,show_withdraw} = this.state
+            showWithdraw, data, show, savings,withdrawData,show_withdraw,isButtonDisabled} = this.state
     return (
       <div className="m-sm-30">
        {loading ?
@@ -692,7 +698,7 @@ handleClose() {
         </Grid>
         </>}
         {/* Quick Save Dialog Start */}
-        <Dialog
+    <Dialog
         TransitionComponent={Transition}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description" 
@@ -794,6 +800,7 @@ handleClose() {
                   type="submit"
                   size="large"
                   onClick={this.handleSubmitFund}
+                  disabled={isButtonDisabled}
                   variant="contained"
                   style={{backgroundColor:"#222943", color:"#fff"}}>
                   Add Fund
@@ -1271,6 +1278,7 @@ handleClose() {
                       <Button className="uppercase"
                         type="submit"
                         size="large"
+                        disabled={isButtonDisabled}
                         variant="contained"
                         color="primary"
                         style={{color:"#fff"}}>
@@ -1340,6 +1348,7 @@ handleClose() {
                     size="large"
                     variant="contained"
                     color="primary"
+                    disabled={isButtonDisabled}
                     style={{color:"#fff"}}>
                     Withdraw
                   </Button>
