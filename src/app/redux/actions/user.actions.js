@@ -15,6 +15,7 @@ export const userActions = {
   resetpassword,
   createRegularSavings,
   withdrawRegularSavings,
+  verifyRegularWithdraw,
   addFundRegularSavings,
   editRegularSavings,
 
@@ -241,7 +242,6 @@ function verifyWithdraw(data) {
     );
   };
 }
-
 // confirm withdraw
 function confirmWithdraw(data) {
   return (dispatch) => {
@@ -264,22 +264,39 @@ function confirmWithdraw(data) {
   };
 
 }
-
-function withdrawRegularSavings(user) {
+// verify withdraw
+function verifyRegularWithdraw(data) {
   return (dispatch) => {
-    dispatch(request(user));
-
-    userService.withdrawRegularSavings(user).then(
+    dispatch(request(data));
+    userService.verifyRegularWithdraw(data).then(
       (user) => {
-          dispatch(success());
+        dispatch(success(user));
+       if(user.success){
+          dispatch(continues(true));
+        }
+        dispatch(alertActions.continues(user.message));
+       },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+}
+// confirm withdraw
+function withdrawRegularSavings(data) {
+  return (dispatch) => {
+    dispatch(request(data));
+    userService.withdrawRegularSavings(data).then(
+      (user) => {
+        dispatch(success(user));
         if(user.success){
-          history.push("/savings-tab/regular");
           dispatch(alertActions.success(user.message));
         }else{
           dispatch(alertActions.error(user.message));
         }
         
-      },
+       },
       (error) => {
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));
@@ -288,6 +305,29 @@ function withdrawRegularSavings(user) {
   };
 
 }
+// function withdrawRegularSavings(user) {
+//   return (dispatch) => {
+//     dispatch(request(user));
+
+//     userService.withdrawRegularSavings(user).then(
+//       (user) => {
+//           dispatch(success());
+//         if(user.success){
+//           history.push("/savings-tab/regular");
+//           dispatch(alertActions.success(user.message));
+//         }else{
+//           dispatch(alertActions.error(user.message));
+//         }
+        
+//       },
+//       (error) => {
+//         dispatch(failure(error.toString()));
+//         dispatch(alertActions.error(error.toString()));
+//       }
+//     );
+//   };
+
+// }
 
 function addFundRegularSavings(user) {
   return (dispatch) => {

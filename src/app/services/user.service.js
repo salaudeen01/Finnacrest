@@ -17,6 +17,7 @@ export const userService = {
   // regular savings
   createRegularSavings,
   withdrawRegularSavings,
+  verifyRegularWithdraw,
   addFundRegularSavings,
   editRegularSavings,
   deactivateAutoSave,
@@ -152,6 +153,16 @@ function withdrawRegularSavings(data) {
   return fetch(getConfig("withdrawRegularSavings"), requestOptions).then(
     handleResponse
   );
+}
+
+function verifyRegularWithdraw(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(
+    getConfig("verifyRegularWithdraw"), requestOptions).then(handleResponse);
 }
 
 function removeCard(id) {

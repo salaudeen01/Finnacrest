@@ -11,6 +11,8 @@ import { Grid, Card, Button, ButtonGroup, Switch, IconButton, TextField, MenuIte
   CircularProgress,
   Checkbox,
   Slide} from "@material-ui/core";
+import { userConstants } from "app/redux/_constants";
+import { Store } from "app/redux/Store";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
@@ -50,11 +52,18 @@ class Regular extends Component{
             payment_method: 'Debit Card',
             card_id:""
         },
-        withdraw_data: {
-          amount: 0,
+        //   withdraw_data: {
+        //     amount: 0,
+        //     payment_method: "Wallet", 
+        //     date_time: date
+        // },
+        withdrawData:{
+          password:"",
+          amount:"",
           payment_method: "Wallet", 
-          date_time: date
-      },
+          date_time: date,
+          withdrawal_pin:""
+        },
         fund_data:{
           amount: "",
           date_time: date,
@@ -95,11 +104,13 @@ class Regular extends Component{
             shareMinFee:"",
             share_balance:"",
             err:"",
+            bank_details:null,
             auto_save: "",
             shareFee:false,
             show:false,
+            show_withdraw: false,
             showSave:false,
-            showWithdraw:false,
+            // showWithdraw:false,
             showEdit:false,
             showSaveCard:false,
             id:true
@@ -108,13 +119,20 @@ class Regular extends Component{
         this.handleClose = this.handleClose.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeEdit = this.handleChangeEdit.bind(this);
-        this.handleChangeWithdraw = this.handleChangeWithdraw.bind(this);
         this.handleChangeFund = this.handleChangeFund.bind(this);
         this.handleChangeAddCard = this.handleChangeAddCard.bind(this);
         this.handleAutoSave = this.handleAutoSave.bind(this);
-        this.handleWithdraw = this.handleWithdraw.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
+        // this.handleChangeWithdraw = this.handleChangeWithdraw.bind(this);
+        // this.handleWithdraw = this.handleWithdraw.bind(this);
+        // this.handleCloseWithdraw = this.handleCloseWithdraw.bind(this);
+        // this.handleSubmitWithdraw = this.handleSubmitWithdraw.bind(this);
+        this.handleClickOpenWithdraw = this.handleClickOpenWithdraw.bind(this);
         this.handleCloseWithdraw = this.handleCloseWithdraw.bind(this);
+        this.handleSubmitWithdraw = this.handleSubmitWithdraw.bind(this);
+        this.handleConfirmWithdraw = this.handleConfirmWithdraw.bind(this);
+        this.handleClosePin = this.handleClosePin.bind(this);    
+        this.handleChangeWithdraw = this.handleChangeWithdraw.bind(this);
         this.handleCloseEdit = this.handleCloseEdit.bind(this);
         this.handleQuickSave = this.handleQuickSave.bind(this);
         this.handleSaveCard = this.handleSaveCard.bind(this);
@@ -124,7 +142,6 @@ class Regular extends Component{
         this.handleCloseSaveCard = this.handleCloseSaveCard.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSubmitFund = this.handleSubmitFund.bind(this);
-        this.handleSubmitWithdraw = this.handleSubmitWithdraw.bind(this);
         this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
         this.fetch_next_page = this.fetch_next_page.bind(this);
         this.fetch_page = this.fetch_page.bind(this);
@@ -190,6 +207,21 @@ class Regular extends Component{
           this.props.timeOut()
         }
       });
+      fetch(getConfig('getBank'), requestOptions)
+        .then(async response => {
+        const res = await response.json();
+        if (!response.ok) {
+          this.setState({loading: false });
+          const error = (res && res.message) || response.statusText;
+          return Promise.reject(error);
+        }
+          this.setState({bank_details: res[0]})
+      })
+      .catch(error => {
+      if (error === "Unauthorized") {
+        this.props.timeOut()
+      }
+    });
     fetch(getConfig('getRegularSavingsDetails'), requestOptions)
       .then(async response => {
       const data = await response.json();
@@ -386,8 +418,62 @@ handleCloseSaveCard() {
 handleCloseQuickSave() {
   this.setState({showSave:false});
 }
-handleWithdraw = event => {
-  this.setState({showWithdraw: true});
+// handleWithdraw = event => {
+//   this.setState({showWithdraw: true});
+// }
+// handleCloseWithdraw() {
+// this.setState({showWithdraw:false});
+// }
+// handleSubmitWithdraw(event) {
+//   event.preventDefault();
+//   const { withdraw_data } = this.state;
+//   if (withdraw_data.amount ) {
+//       this.props.withdrawRegularSavings(withdraw_data);
+//   }else{
+//       swal(
+//           `${"All fields are required"}`
+//       );
+//   }
+// }
+// handleChangeWithdraw = event => {
+//   const {withdraw_data} = this.state
+//   const {name, value} = event.target
+//   this.setState({withdraw_data:{...withdraw_data, [name]:value}})
+// };
+
+handleSubmitWithdraw = () => {
+  const { withdrawData } = this.state;
+  if(withdrawData.amount && withdrawData.password){
+    this.props.verifyRegularWithdraw(withdrawData)
+    swal("loading...")
+  }
+    this.setState({show_withdraw:false});
+};
+
+handleConfirmWithdraw = () => {
+  const { withdrawData } = this.state;
+  if(withdrawData.amount && withdrawData.withdrawal_pin && withdrawData.payment_method && withdrawData.date_time){
+    this.props.withdrawRegularSavings(withdrawData)
+    swal("loading...")
+  }
+};
+handleChangeWithdraw(event) {
+  const { name, value } = event.target;
+  const { withdrawData } = this.state;
+  this.setState({withdrawData: {...withdrawData, [name]: value }});
+}
+handleClosePin() {
+  Store.dispatch({
+    type:userConstants.SAVINGS_CONTINUES,
+    user:false
+  })
+  this.setState({showPin:false});
+}
+handleCloseWithdraw() {
+  this.setState({show_withdraw:false});
+}
+handleClickOpenWithdraw() {
+  this.setState({show_withdraw:true});
 }
 handleEdit = (id) => {
   const {edit_data} = this.state
@@ -396,20 +482,6 @@ handleEdit = (id) => {
 handleCloseEdit() {
   this.setState({showEdit:false});
   }
-handleCloseWithdraw() {
-this.setState({showWithdraw:false});
-}
-handleSubmitWithdraw(event) {
-  event.preventDefault();
-  const { withdraw_data } = this.state;
-  if (withdraw_data.amount ) {
-      this.props.withdrawRegularSavings(withdraw_data);
-  }else{
-      swal(
-          `${"All fields are required"}`
-      );
-  }
-}
 handleSubmit(event) {
   event.preventDefault();
   const { data } = this.state;
@@ -465,11 +537,6 @@ handleChange = event => {
   this.setState({data:{...data, [name]:value}})
   }
 };
-handleChangeWithdraw = event => {
-  const {withdraw_data} = this.state
-  const {name, value} = event.target
-  this.setState({withdraw_data:{...withdraw_data, [name]:value}})
-};
 handleChangeFund = event => {
   const {fund_data} = this.state
   const {name, value, checked} = event.target
@@ -503,7 +570,7 @@ handleClose() {
     let {theme} = this.props
     const {balance, tdetails, share_balance, shareFee, shareMinFee, loading, cards, auto_save, id, add_card, 
             showSaveCard, email, bank_details, edit_data, showEdit, fund_data, withdraw_data, autoSave, showSave,
-            showWithdraw, data, show, savings} = this.state
+            showWithdraw, data, show, savings,withdrawData,show_withdraw} = this.state
     return (
       <div className="m-sm-30">
        {loading ?
@@ -533,7 +600,9 @@ handleClose() {
                     size="small"
                     variant="outlined"
                     style={{borderColor:"#222943"}}
-                    onClick={this.handleWithdraw}>
+                    // onClick={this.handleWithdraw}
+                    onClick={this.handleClickOpenWithdraw}
+                    >
                       Withdraw
                   </Button>
             </ButtonGroup>}
@@ -1036,7 +1105,7 @@ handleClose() {
         {/* Create dialog end */}
         
         {/* withdraw Dialog start */}
-        <Dialog         
+        {/* <Dialog         
         TransitionComponent={Transition}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
@@ -1100,9 +1169,187 @@ handleClose() {
                   </Grid>
                 </ValidatorForm>
                 </Card>
-              </Dialog>
+              </Dialog> */}
         {/* withdraw dialog end */}
-        {/* Loan repayment Dialog Start */}
+      {/* withdraw Dialog start */}
+          <Dialog      
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+            open={show_withdraw}
+            onClose={this.handleCloseWithdraw}>
+              <AppBar style={{position: "relative"}} color="primary">
+                <Toolbar>
+                  <IconButton
+                    edge="start"
+                    color="inherit"
+                    onClick={this.handleCloseWithdraw}
+                    aria-label="Close"
+                  >
+                    <CloseIcon style={{color:'#fff'}}/>
+                  </IconButton>
+                  <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
+                    Withdraw
+                  </Typography>
+                </Toolbar>
+              </AppBar>
+              <Card className="px-6 pt-2 pb-4">
+                <Grid container spacing={1}>
+                    {bank_details == null ?
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                      <Typography variant="subtitle1">
+                        Please Go to settings to add Bank details
+                      </Typography>
+                    </Grid>:
+                    <>
+                    <Grid item lg={4} md={4} sm={12} xs={12}>
+                      <Typography variant="subtitle1">
+                      Bank Name:
+                      </Typography>
+                    </Grid>
+                    <Grid item lg={8} md={8} sm={12} xs={12}>
+                      <Typography variant="subtitle1">
+                        {bank_details.bank_name}
+                      </Typography>
+                    </Grid>
+                    <Grid item lg={4} md={4} sm={12} xs={12}>
+                      <Typography variant="subtitle1">
+                      Account Name:
+                      </Typography>
+                    </Grid>
+                    <Grid item lg={8} md={8} sm={12} xs={12}>
+                      <Typography variant="subtitle1">
+                        {bank_details.account_name}
+                      </Typography>
+                    </Grid>
+                    <Grid item lg={4} md={4} sm={12} xs={12}>
+                      <Typography variant="subtitle1">
+                      Account Number:
+                      </Typography>
+                    </Grid>
+                    <Grid item lg={8} md={8} sm={12} xs={12}>
+                      <Typography variant="subtitle1">
+                        {bank_details.account_no}
+                      </Typography>
+                    </Grid>
+                    </>}
+                </Grid>
+                <ValidatorForm
+                  ref="form"
+                  onSubmit={this.handleSubmitWithdraw}
+                  onError={errors => null}
+                >
+                  <Grid container spacing={3}>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextValidator
+                        className="mb-4 w-full"
+                        label="Enter Amount"
+                        onChange={this.handleChangeWithdraw}
+                        type="number"
+                        name="amount"
+                        value={withdrawData.amount}
+                        validators={[
+                          "required"
+                        ]}
+                        errorMessages={["this field is required"]}
+                      />
+                      <TextValidator
+                        className="mb-4 w-full"
+                        label="Password"
+                        onChange={this.handleChangeWithdraw}
+                        type="password"
+                        name="password"
+                        value={withdrawData.password}
+                        validators={[
+                          "required"
+                        ]}
+                        errorMessages={["this field is required"]}
+                      />
+                      {this.props.savings &&
+                      <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                      }
+                      <Button className="uppercase"
+                        type="submit"
+                        size="large"
+                        variant="contained"
+                        color="primary"
+                        style={{color:"#fff"}}>
+                        Withdraw
+                      </Button>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Card className="px-6 pt-2 pb-4">
+                        <Typography variant="h6" gutterBottom>
+                          {numberFormat(withdrawData.amount)}
+                        </Typography>
+                      </Card>
+                    </Grid>
+                  </Grid>
+                </ValidatorForm>
+            </Card>
+          </Dialog>
+      {/* withdraw dialog end */}
+      {/* confirm withdraw Dialog start */}
+        <Dialog
+          TransitionComponent={Transition}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+          open={this.props.proceed}
+          // onClose={this.handleClosePin}
+          >
+            <AppBar style={{position: "relative"}} color="primary">
+              <Toolbar>
+                {/* <IconButton
+                  edge="start"
+                  color="inherit"
+                  // onClick={this.handleClosePin}
+                  aria-label="Close"
+                >
+                  <CloseIcon style={{color:'#fff'}}/>
+                </IconButton> */}
+                <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
+                  Confirm Withdrawal
+                </Typography>
+              </Toolbar>
+            </AppBar>
+            <Card className="px-6 pt-2 pb-4">
+            <ValidatorForm
+              ref="form"
+              onSubmit={this.handleConfirmWithdraw}
+              onError={errors => null}
+            >
+              <Grid container spacing={3}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextValidator
+                    className="mb-4 w-full"
+                    label="Withdrawal Pin"
+                    onChange={this.handleChangeWithdraw}
+                    type="password"
+                    name="withdrawal_pin"
+                    value={withdrawData.withdrawal_pin}
+                    validators={[
+                      "required"
+                    ]}
+                    errorMessages={["this field is required"]}
+                  />
+                  {this.props.savings &&
+                  <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                  }
+                  <Button className="uppercase"
+                    type="submit"
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    style={{color:"#fff"}}>
+                    Withdraw
+                  </Button>
+                </Grid>
+              </Grid>
+            </ValidatorForm>
+          </Card>
+        </Dialog>
+      {/* confirm withdraw dialog end */}
+      {/* Loan repayment Dialog Start */}
         <Dialog
           TransitionComponent={Transition}
           aria-labelledby="alert-dialog-slide-title"
@@ -1136,7 +1383,7 @@ handleClose() {
               </Grid>
             </Card>
         </Dialog>
-        {/* Loan repayment Dialog End */}
+      {/* Loan repayment Dialog End */}
 
         <AddCardDialog callback={this.callback} showSave={showSaveCard} handleClose={this.handleCloseSaveCard} add_card={add_card} />
       </div>
@@ -1151,13 +1398,14 @@ const actionCreators = {
   deactivateAutoSave: userActions.deactivateAutoSave,
   createRegularSavings: userActions.createRegularSavings,
   addFundRegularSavings:userActions.addFundRegularSavings,
+  verifyRegularWithdraw: userActions.verifyRegularWithdraw,
   withdrawRegularSavings: userActions.withdrawRegularSavings,
   editRegularSavings:userActions.editRegularSavings
 };
 
 function mapState(state) {
-  const {savings} = state.savings
-  return {savings}
+  const {savings,proceed} = state.savings
+  return {savings,proceed}
 }
 export default withStyles({}, { withTheme: true })(
   withRouter(connect(mapState,  actionCreators)(Regular))

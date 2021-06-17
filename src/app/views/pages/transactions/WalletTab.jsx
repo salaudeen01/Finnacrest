@@ -77,15 +77,15 @@ class WalletTab extends Component{
     };
 
     this.handleClickOpen = this.handleClickOpen.bind(this);
-    this.handleClickOpenWithdraw = this.handleClickOpenWithdraw.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleClickOpenWithdraw = this.handleClickOpenWithdraw.bind(this);
     this.handleCloseWithdraw = this.handleCloseWithdraw.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.saveWallet = this.saveWallet.bind(this);
-    this.handleClosePin = this.handleClosePin.bind(this);    
     this.handleSubmitWithdraw = this.handleSubmitWithdraw.bind(this);
     this.handleConfirmWithdraw = this.handleConfirmWithdraw.bind(this);
     this.handleChangeWithdraw = this.handleChangeWithdraw.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.saveWallet = this.saveWallet.bind(this);
+    this.handleClosePin = this.handleClosePin.bind(this);    
     this.handleOpenModalForm = this.handleOpenModalForm.bind(this);
     this.handleCloseModalForm = this.handleCloseModalForm.bind(this);
     this.handleOpenModalFee = this.handleOpenModalFee.bind(this);
@@ -285,6 +285,24 @@ fetch_page = (index)=>{
       swal("loading...")
     }
   };
+  handleChangeWithdraw(event) {
+    const { name, value } = event.target;
+    const { withdrawData } = this.state;
+    this.setState({withdrawData: {...withdrawData, [name]: value }});
+  }
+  handleClosePin() {
+    Store.dispatch({
+      type:userConstants.SAVINGS_CONTINUES,
+      user:false
+    })
+    this.setState({showPin:false});
+  }
+  handleCloseWithdraw() {
+    this.setState({show_withdraw:false});
+  }
+  handleClickOpenWithdraw() {
+    this.setState({show_withdraw:true});
+  }
 
 handleChange(event) {
   const { name, value, checked } = event.target;
@@ -295,27 +313,13 @@ handleChange(event) {
     this.setState({data: {...data, [name]: value }});
   }
 }
-handleChangeWithdraw(event) {
-  const { name, value } = event.target;
-  const { withdrawData } = this.state;
-  this.setState({withdrawData: {...withdrawData, [name]: value }});
-}
+
 
 handleClickOpen() {
   this.setState({show:true});
 }
-handleClosePin() {
-  Store.dispatch({
-    type:userConstants.SAVINGS_CONTINUES,
-    user:false
-  })
-  this.setState({showPin:false});
-}
 handleClose() {
   this.setState({show:false});
-}
-handleClickOpenWithdraw() {
-  this.setState({show_withdraw:true});
 }
 handleOpenModalForm = () => {
   this.setState({modalForm: true});
@@ -328,12 +332,6 @@ handleOpenModalFee = () => {
 }
 handleCloseModalFee() {
   this.setState({modalFee:false});
-}
-handleCloseWithdraw() {
-  this.setState({show_withdraw:false});
-}
-handleCloseConfirmWithdraw() {
-  // this.setState({show_withdraw:false});
 }
   render(){
     let {theme} = this.props

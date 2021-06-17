@@ -1,7 +1,8 @@
+import swal from 'sweetalert';
 import history from '../../history';
 const serverVars = {
-  // baseUrl: "http://142.93.152.229/sesis/api/",
-  baseUrl: "https://api.sesiscoop.com/api/",
+  baseUrl: "http://142.93.152.229/sesis/api/",
+  // baseUrl: "https://api.sesiscoop.com/api/",
   authUrl: "auth/login",
   regUrl: "auth/signup",
   resetPass: "profilesChangePassword?token=",
@@ -20,7 +21,9 @@ const serverVars = {
   getRegularSavings: "saving",
   editRegularSavings: "saving/",
   addFundRegularSavings: "savingsFunds",
-  withdrawRegularSavings: "savingsWithdrawal",
+  withdrawRegularSavings: "savingsWithdrawal", 
+  verifyRegularWithdraw:"verifySavingsWithdrawal",
+
   totalFundRegularSavings: "savingsBalance",
   getRegularSavingsDetails: "savingsTransactions",
   deactivateAutoSave:"deactivateAutoSave",
@@ -168,8 +171,8 @@ export const numberFormat = (value) =>
   }).format(value);
 
 export const payID = () => {
-  // return "pk_test_c236c6a4facaed7a4cb7968769410ca980c10fdf";
-  return "pk_live_9f94d021a79f4c888fe318dd975c2f074ca5606a";
+  return "pk_test_c236c6a4facaed7a4cb7968769410ca980c10fdf";
+  // return "pk_live_9f94d021a79f4c888fe318dd975c2f074ca5606a";
 
 };
 
@@ -181,10 +184,23 @@ export const getReference = () => {
   return text;
 }
 
+// export const setLastUrl = () =>{
+//   var lasturl = window.location.href;
+//   var pathname = new URL(lasturl).pathname;
+//   localStorage.setItem("lasturl", pathname);
+// }
 export const setLastUrl = () =>{
+  var bank = localStorage.getItem("bank");
+  var profile = localStorage.getItem("profile");
+  if(bank == "false"){
+    swal("Please Update your profile and bank account to continue")
+    history.push({
+      pathname: "/settings"
+    });
+  }
   var lasturl = window.location.href;
   var pathname = new URL(lasturl).pathname;
-  localStorage.setItem("lasturl", pathname);
+  localStorage.setItem("last_url", pathname);
 }
 
 export const checkUserStatus = () =>{
@@ -280,6 +296,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.fetchAllTargetAccount;
     case "withdrawRegularSavings":
       return serverVars.baseUrl + serverVars.withdrawRegularSavings
+    case "verifyRegularWithdraw":
+      return serverVars.baseUrl + serverVars.verifyRegularWithdraw;
     case "totalFundRegularSavings":
       return serverVars.baseUrl + serverVars.totalFundRegularSavings
     case "getRegularSavingsDetails":
