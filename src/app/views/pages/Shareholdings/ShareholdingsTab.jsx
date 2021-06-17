@@ -548,7 +548,7 @@ class Shareholdings extends Component {
       </div>
             
         {/* Quick Save Dialog Start */}
-        <Dialog open={showSave} onClose={this.handleCloseQuickSave}
+    <Dialog open={showSave} onClose={this.handleCloseQuickSave}
         TransitionComponent={Transition}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
@@ -652,6 +652,7 @@ class Shareholdings extends Component {
             type="submit"
             size="large"
             variant="contained"
+            disabled={isButtonDisabled}
             onClick={this.handleSubmitFund}
             style={{backgroundColor:"#222943", color:"#fff"}}>
             Add Fund
