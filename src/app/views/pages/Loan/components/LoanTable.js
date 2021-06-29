@@ -49,6 +49,7 @@ class LoanTable extends Component{
                 {this.props.tdetails.length == 0?
                 <Typography variant="p" className="font-bold text-center px-20">You do not have any loan Request</Typography>:
                 this.props.tdetails.map((det, index) => (
+                  det.status == 2 ?<Typography variant="p" className="font-bold text-center px-20">You do not have any loan Request</Typography>:
                   <TableRow key='index'>
                     <TableCell className="px-4" colSpan={6} >
                     {(det.first_name +" "+ det.last_name)}

@@ -78,23 +78,23 @@ close = () => {
                 <Typography>
                     Paystack Gateway Commission : <span><b>{numberFormat(amount >= 2500 ? pay4: pay3)}</b></span>
                 </Typography><br/>
-                {/* {key ? */}
+                {key ?
                 <PaystackButton
                     text="Make Payment with PayStack"
                     className="payButton"
                     callback={callback}
                     close={this.close}
                     disabled={false}  
-                    // embed={true}  
+                    embed={true}  
                     reference={reference}
                     // reference={getReference()}
                     email={email}
                     amount={amount >= 2500 ? pay2: pay1}
                     paystackkey={key}
                     tag="button" 
-                />
-                {/* : */}
-                {/* <Loading />} */}
+                /> 
+                :
+                <Loading />}
             </div>
         )
     }

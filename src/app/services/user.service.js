@@ -849,7 +849,7 @@ function logout() {
   localStorage.removeItem("user");
   localStorage.removeItem("name");
   localStorage.removeItem("email");
-  localStorage.removeItem("lasturl");
+  // localStorage.removeItem("lasturl");
   localStorage.removeItem("token");
 }
 

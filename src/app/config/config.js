@@ -1,8 +1,8 @@
 import swal from 'sweetalert';
 import history from '../../history';
 const serverVars = {
-  // baseUrl: "http://142.93.152.229/sesis/api/",
-  baseUrl: "https://api.sesiscoop.com/api/",
+  baseUrl: "http://142.93.152.229/sesis/api/",
+  // baseUrl: "https://api.sesiscoop.com/api/",
   authUrl: "auth/login",
   regUrl: "auth/signup",
   resetPass: "profilesChangePassword?token=",
@@ -171,8 +171,8 @@ export const numberFormat = (value) =>
   }).format(value);
 
 export const payID = () => {
-  // return "pk_test_c236c6a4facaed7a4cb7968769410ca980c10fdf";
-  return "pk_live_9f94d021a79f4c888fe318dd975c2f074ca5606a";
+  return "pk_test_c236c6a4facaed7a4cb7968769410ca980c10fdf";
+  // return "pk_live_9f94d021a79f4c888fe318dd975c2f074ca5606a";
 
 };
 
@@ -187,6 +187,7 @@ export const getReference = () => {
 // export const setLastUrl = () =>{
 //   var lasturl = window.location.href;
 //   var pathname = new URL(lasturl).pathname;
+//   console.log(pathname)
 //   localStorage.setItem("lasturl", pathname);
 // }
 export const setLastUrl = () =>{
@@ -200,22 +201,13 @@ export const setLastUrl = () =>{
   }
   var lasturl = window.location.href;
   var pathname = new URL(lasturl).pathname;
-  localStorage.setItem("last_url", pathname);
+  localStorage.setItem("lasturl", pathname);
 }
-
-export const checkUserStatus = () =>{
-  let user = JSON.parse(localStorage.getItem("user"));
-  if(user && user.member_status){
-    return true    
-  }else{
-    return false
-  }  
-}
-
 
 export const checkLastUrl=()=>{
   let pathname = localStorage.getItem("lasturl");
   let user = JSON.parse(localStorage.getItem("user"));
+  console.log(pathname)
   if (pathname == null || pathname == "") {
     history.push({
       pathname: "/dashboard"
@@ -226,6 +218,16 @@ export const checkLastUrl=()=>{
       });
     }
 }
+export const checkUserStatus = () =>{
+  let user = JSON.parse(localStorage.getItem("user"));
+  if(user && user.member_status){
+    return true    
+  }else{
+    return false
+  }  
+}
+
+
 
 export const checkToken = ()=>{
   let pathname = localStorage.getItem("lasturl");

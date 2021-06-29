@@ -72,7 +72,7 @@ resend_notif = (group_id, loan_id)=>{
             <Typography variant="subtitle" color="text-secondary" className="font-medium">Status </Typography>
           </Grid>
           <Grid item lg={6} md={6} sm={6} xs={6}>
-            <Typography variant="subtitle" className={dat.status==0? "text-gray":dat.status==1?"text-green":"text-error"}> {dat.status !=1? "Pending":"Active"} </Typography>
+            <Typography variant="subtitle" className={dat.status==0? "text-gray":dat.status==1?"text-green":"text-error"}> {dat.status ==1 ? "Active": dat.status ==2 ? "Cancelled":"Pending"} </Typography>
           </Grid>
           <Grid item lg={12} md={12} sm={12} xs={12}>
             {dat.status!=1? 

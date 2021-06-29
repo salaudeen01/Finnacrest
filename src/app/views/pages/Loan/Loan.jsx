@@ -360,11 +360,16 @@ if(data.success == false){
   this.setState({tdetails: [], balance: 0, completed: [], accounts:[], loading:false })
 }else{
   let newArray = [];
+  let newArr = [];
   let newArrays = [];
       data.forEach(d => {
         if(d.loan_status == 0){
           newArray.push(d)
-        }else{
+        }
+        else if(d.loan_status == 2){
+          newArray.push(d)
+        }
+        else{
           newArrays.push(d)        }
       });
   this.setState({tdetails: newArray, balance: data[0], completed: newArrays, accounts:data[3], loading:false })
@@ -1088,13 +1093,13 @@ render(){
                     Request Loan
               </Button>:
               <Grid item lg={5} md={12} sm={12} xs={12}>
-                <Button className="uppercase"
+                {/* <Button className="uppercase"
                   size="large"
                   variant="contained"
                   style={{backgroundColor:"#1999ff", color:"white"}}
                   onClick={this.handleCreateGroup}>
                    Create Group
-                </Button>
+                </Button> */}
                 <Button className="uppercase"
                   size="large"
                   variant="outlined"
@@ -1172,19 +1177,21 @@ render(){
                       <MenuItem value={name}>{(name) +" "+ 'months'}</MenuItem>
                     ))}
                   </TextField>
-                <TextField
-                className="mb-4 w-full"
-                  select
-                  label="Select Frequency"
-                  name="frequency"
-                  value={data.frequency}
-                  onChange={this.handleChangeLoans}
-                  // helperText="Please select frequency"
-                >
-                    <MenuItem value={""}>Select Frequency</MenuItem>
-                    <MenuItem value={"Weekly"}> Weekly</MenuItem>
-                    <MenuItem value={"Monthly"}> Monthly </MenuItem>
-                </TextField>
+               
+                  <TextField
+                    className="mb-4 w-full"
+                    select
+                    label="Select Frequency"
+                    name="frequency"
+                    value={data.frequency}
+                    onChange={this.handleChangeLoans}
+                    // helperText="Please select frequency"
+                  >
+                      <MenuItem value={""}>Select Frequency</MenuItem>
+                      <MenuItem value={"Weekly"}> Weekly</MenuItem>
+                      <MenuItem value={"Monthly"}> Monthly </MenuItem>
+                  </TextField>
+                
                  {data.loan_amount && data.frequency && data.payment_duration &&
                   <NumberFormat
                       value={data.repayment_amount}
@@ -1213,18 +1220,20 @@ render(){
                   ]}
                   errorMessages={["this field is required"]}
                 />}
+              {data.loan_amount > loan_avail_amount &&
                 <TextField
-                 className="mb-4 w-full"
-                 select
-                 label="Select Loan Guarantor"
-                 name="loan_group"
-                 value={data.loan_group}
-                 onChange={this.handleChangeLoans}
-                //  helperText="Please select Loan Guarantor"
-             >
-               <MenuItem value={"Member"}>Member</MenuItem>
-               <MenuItem value={"Loan Group"}> Loan Group</MenuItem>
-             </TextField>
+                  className="mb-4 w-full"
+                  select
+                  label="Select Loan Guarantor"
+                  name="loan_group"
+                  value={data.loan_group}
+                  onChange={this.handleChangeLoans}
+                  //  helperText="Please select Loan Guarantor"
+                >
+                  <MenuItem value={"Member"}>Member</MenuItem>
+                  {/* <MenuItem value={"Loan Group"}> Loan Group</MenuItem> */}
+                </TextField>
+              }
              {data.loan_group == "Loan Group" &&
                <TextField
                  className="mb-4 w-full"
