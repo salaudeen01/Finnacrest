@@ -119,7 +119,7 @@ class MyRequest extends Component{
         </Grid>}
         {this.props.status === 11?"":
           <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Typography variant="h6" style={{fontSize:16}}><span>Mark-up:</span> {numberFormat(mark)} </Typography>
+          <Typography variant="h6" style={{fontSize:16}}><span>Mark-up:</span> {this.props.admin_price != 0 ? numberFormat(mark): numberFormat(0) } </Typography>
         </Grid>}
         <div className="py-2" /> 
        { (this.props.status === 0 && this.props.admin_price != 0) || this.props.status === 11?
