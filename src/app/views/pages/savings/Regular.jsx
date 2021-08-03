@@ -101,6 +101,7 @@ class Regular extends Component{
             cancreate: true, 
             autoSave: false,
             pagination:[],
+            pay_options:[],
             shareMinFee:"",
             share_balance:"",
             err:"",
@@ -154,6 +155,24 @@ class Regular extends Component{
       method: 'GET',
       headers: { ...authHeader(), 'Content-Type': 'application/json' },
       };
+      fetch(getConfig('payment_method'), requestOptions)
+      .then(async response => {
+      const data = await response.json();
+      if (!response.ok) {
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+      }console.log(data.data)
+      if(data.success == false){
+        this.setState({pay_options: []});
+      }else{
+        this.setState({pay_options: data.data});  
+      }
+    })
+    .catch(error => {
+      if (error === "Unauthorized") {
+        this.props.timeOut()
+        }
+    });
     fetch(getConfig('getRegularSavings'), requestOptions)
       .then(async response => {
       const data = await response.json();
@@ -574,7 +593,7 @@ handleClose() {
           obj.array[l] = l+1;
       }
     let {theme} = this.props
-    const {balance, tdetails, share_balance, shareFee, shareMinFee, loading, cards, auto_save, id, add_card, 
+    const {balance, tdetails,pay_options, share_balance, shareFee, shareMinFee, loading, cards, auto_save, id, add_card, 
             showSaveCard, email, bank_details, edit_data, showEdit, fund_data, withdraw_data, autoSave, showSave,
             showWithdraw, data, show, savings,withdrawData,show_withdraw,isButtonDisabled} = this.state
     return (
@@ -749,8 +768,9 @@ handleClose() {
                   helperText="Please select Payment Method"
                 >
                   <MenuItem value={""}></MenuItem>
-                  <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                  <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+                  {pay_options.map((name, index) => (
+                   <MenuItem value={name.name}>{name.name}</MenuItem>
+                 ))}
               </TextField>
               
               </Grid>
@@ -766,12 +786,12 @@ handleClose() {
                   </Typography>
                 </Card>
               </Grid>
-              {fund_data.payment_method == "Debit Card" &&
+              {fund_data.payment_method == "Paystack" &&
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Typography>Choose Card</Typography>
                 <PayCard cards={cards} value={fund_data.card_id} open={(e)=>this.setState({ fund_data:{...fund_data, card_id:""}})} handleChange={this.handleChangeFund}/>
               </Grid>}
-              {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+              {fund_data.card_id == "" && fund_data.payment_method == "Paystack" &&
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Checkbox
                     name="save_card"
@@ -779,7 +799,7 @@ handleClose() {
                     onChange={this.handleChangeFund}
                     inputProps={{ 'aria-label': 'primary checkbox' }}
                 /><Typography variant="caption">Would you like to save your card</Typography>
-                {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+                {fund_data.card_id == "" && fund_data.payment_method == "Paystack" &&
                   <PayOption callback={this.callback} amount={fund_data.amount} type={'01'} targetId={"00"} />
                 }
               </Grid>}

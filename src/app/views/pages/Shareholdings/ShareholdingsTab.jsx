@@ -104,6 +104,7 @@ class Shareholdings extends Component {
       cancreate: true,
       autoSave: false,
       pagination: [],
+      pay_options:[],
       modal:false,
       err: "",
       auto_save: "",
@@ -154,6 +155,24 @@ class Shareholdings extends Component {
       this.props.timeOut()
       }
     });
+    fetch(getConfig('payment_method'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }console.log(data.data)
+    if(data.success == false){
+      this.setState({pay_options: []});
+    }else{
+      this.setState({pay_options: data.data});  
+    }
+  })
+  .catch(error => {
+    if (error === "Unauthorized") {
+      this.props.timeOut()
+      }
+  });
     fetch(getConfig('getAllDebitCards'), requestOptions)
     .then(async response => {
     const data = await response.json();
@@ -386,6 +405,7 @@ class Shareholdings extends Component {
       withdraw_data,
       autoSave,
       showSave,
+      pay_options,
       showWithdraw,
       isButtonDisabled,
       data,
@@ -600,8 +620,9 @@ class Shareholdings extends Component {
             helperText='Please select frequency'
           >
             <MenuItem value={""}></MenuItem>
-            <MenuItem value={"Wallet"}> Wallet</MenuItem>
-            <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+            {pay_options.map((name, index) => (
+              <MenuItem value={name.name}>{name.name}</MenuItem>
+            ))}
           </TextField>                  
         </Grid>
 
@@ -617,12 +638,12 @@ class Shareholdings extends Component {
             </Typography>
           </Card>
         </Grid>
-          {fund_data.payment_method == "Debit Card" &&
+          {fund_data.payment_method == "Paystack" &&
             <Grid item lg={12} md={12} sm={12} xs={12}>
             <Typography>Choose Card</Typography>
             <PayCard cards={cards} value={fund_data.card_id} open={(e)=>this.setState({ fund_data:{...fund_data, card_id:""}})} handleChange={this.handleChangeFund}/>
             </Grid>}
-            {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+            {fund_data.card_id == "" && fund_data.payment_method == "Paystack" &&
             <Grid item lg={12} md={12} sm={12} xs={12}>
               <Checkbox
                   name="save_card"
@@ -630,7 +651,7 @@ class Shareholdings extends Component {
                   onChange={this.handleChangeFund}
                   inputProps={{ 'aria-label': 'primary checkbox' }}
               /><Typography variant="caption">Would you like to save your card</Typography>
-              {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+              {fund_data.card_id == "" && fund_data.payment_method == "Paystack" &&
                 <PayOption callback={this.callback} amount={fund_data.amount} type={'03'} targetId={"00"}/>
               }
             </Grid>}
@@ -784,8 +805,9 @@ class Shareholdings extends Component {
                     helperText='Please select Payment Method'
                   >
                     <MenuItem value={""}></MenuItem>
-                    <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                    <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+                    {pay_options.map((name, index) => (
+                      <MenuItem value={name.name}>{name.name}</MenuItem>
+                    ))}
                   </TextField>
                   {this.props.savings && (
                     <img
@@ -930,8 +952,9 @@ class Shareholdings extends Component {
                     helperText='Please select Payment Method'
                   >
                     <MenuItem value={""}></MenuItem>
-                    <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                    <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+                    {pay_options.map((name, index) => (
+                      <MenuItem value={name.name}>{name.name}</MenuItem>
+                    ))}
                   </TextField>
                   {this.props.savings && (
                     <img

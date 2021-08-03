@@ -98,6 +98,7 @@ class Target extends Component{
         loading: true,
         autoSave: false,
         pagination:[],
+        pay_options:[],
         err:"",
         auto_save: "",
         show:false,
@@ -152,6 +153,24 @@ componentDidMount(){
       method: 'GET',
       headers: { ...authHeader(), 'Content-Type': 'application/json' },
     };
+    fetch(getConfig('payment_method'), requestOptions)
+    .then(async response => {
+      const data = await response.json();
+      if (!response.ok) {
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+      }console.log(data.data)
+      if(data.success == false){
+        this.setState({pay_options: []});
+      }else{
+        this.setState({pay_options: data.data});  
+      }
+    })
+    .catch(error => {
+      if (error === "Unauthorized") {
+        this.props.timeOut()
+        }
+    });
     fetch(getConfig('getAllDebitCards'), requestOptions)
       .then(async response => {
       const data = await response.json();
@@ -758,7 +777,7 @@ completeTab(){
           obj.array[l] = l+1;
       }
     let {theme} = this.props
-    const {balance, tdetails, bal_amt,isButtonDisabled, tar_amt, share_balance, shareFee, shareMinFee, loading, isLoading, tab, cards, add_card, showSaveCard, id, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, pagination, show, savings} = this.state
+    const {balance, tdetails,pay_options, bal_amt,isButtonDisabled, tar_amt, share_balance, shareFee, shareMinFee, loading, isLoading, tab, cards, add_card, showSaveCard, id, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, pagination, show, savings} = this.state
     const bal = tar_amt - bal_amt
     // console.log(completed)
     return (
@@ -920,8 +939,9 @@ completeTab(){
                     helperText="Please select Payment Method"
                   >
                     <MenuItem value={""}></MenuItem>
-                    <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                    <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+                    {pay_options.map((name, index) => (
+                      <MenuItem value={name.name}>{name.name}</MenuItem>
+                    ))}
                   </TextField>              
                
                 </Grid>
@@ -937,12 +957,12 @@ completeTab(){
                     </Typography>
                   </Card>
                 </Grid>
-                {fund_data.payment_method == "Debit Card" &&
+                {fund_data.payment_method == "Paystack" &&
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                   <Typography>Choose Card</Typography>
                   <PayCard cards={cards} value={fund_data.card_id} open={(e)=>this.setState({ fund_data:{...fund_data, card_id:""}})} handleChange={this.handleChangeFund}/>
                 </Grid>}
-                {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+                {fund_data.card_id == "" && fund_data.payment_method == "Paystack" &&
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                     <Checkbox
                         name="save_card"
@@ -950,7 +970,7 @@ completeTab(){
                         onChange={this.handleChangeFund}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     /><Typography variant="caption">Would you like to save your card</Typography>
-                    {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+                    {fund_data.card_id == "" && fund_data.payment_method == "Paystack" &&
                       <PayOption callback={this.callback} type={'02'} targetId={"00"} amount={fund_data.amount}/>
                     }
                 </Grid>} 

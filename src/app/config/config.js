@@ -1,8 +1,8 @@
 import swal from 'sweetalert';
 import history from '../../history';
 const serverVars = {
-  // baseUrl: "http://142.93.152.229/sesis/api/",
-  baseUrl: "https://api.sesiscoop.com/api/",
+  baseUrl: "http://142.93.152.229/sesis/api/",
+  // baseUrl: "https://api.sesiscoop.com/api/",
   authUrl: "auth/login",
   regUrl: "auth/signup",
   resetPass: "profilesChangePassword?token=",
@@ -155,6 +155,7 @@ const serverVars = {
   getRegistrationFee: "get_registration_fee",
   addRegistrationFee: "registration_fee_payment?token=",
 
+  payment_method: "payment_methods",
   // Shareholdings
   addFundShareholdings: "addShareHoldingsFunds?token=",
   getTransactionsShareholdings: "shareHoldingsTransactions",
@@ -171,8 +172,8 @@ export const numberFormat = (value) =>
   }).format(value);
 
 export const payID = () => {
-  // return "pk_test_c236c6a4facaed7a4cb7968769410ca980c10fdf";
-  return "pk_live_9f94d021a79f4c888fe318dd975c2f074ca5606a";
+  return "pk_test_c236c6a4facaed7a4cb7968769410ca980c10fdf";
+  // return "pk_live_9f94d021a79f4c888fe318dd975c2f074ca5606a";
 
 };
 
@@ -284,6 +285,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.addFundRegularSavings;
     case "getRegularSavings":
       return serverVars.baseUrl + serverVars.getRegularSavings;
+    case "payment_method":
+      return serverVars.baseUrl + serverVars.payment_method;
     case "saveRegularSavings":
       return serverVars.baseUrl + serverVars.saveRegularSavings;
     case "fetchAllBalances":

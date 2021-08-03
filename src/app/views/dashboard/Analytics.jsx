@@ -72,6 +72,7 @@ class Dashboard1 extends Component {
                 profile:[],
                 bank:[],
                 cards:[],
+                pay_options:[],
                 wallet_balance:"" ,
                 regular_balance:"",
                 market_balance: "",
@@ -265,6 +266,25 @@ fetch(getConfig('getAllDebitCards'), requestOptions)
         this.props.timeOut()
         }
     });
+    
+  fetch(getConfig('payment_method'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }console.log(data.data)
+    if(data.success == false){
+      this.setState({pay_options: []});
+    }else{
+      this.setState({pay_options: data.data});  
+    }
+  })
+  .catch(error => {
+    if (error === "Unauthorized") {
+      this.props.timeOut()
+      }
+  });
 fetch(getConfig("showProfile"), requestOptions)
 .then(async response => {
     const profile = await response.json();
@@ -503,7 +523,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
 
   render() {
     let { theme } = this.props;
-    const {error, type, targetId, accounts, show, wallet_balance, add_card, showSaveCard, cards, bank, profile, data, email, 
+    const {error, type, targetId, pay_options, accounts, show, wallet_balance, add_card, showSaveCard, cards, bank, profile, data, email, 
       loading, shareFee,isButtonDisabled, transactions, target_balance, continued, regular_balance, market_balance, share_balance, 
       loan_investment,shareMinFee, loan_avail_amount, halal_balance, modal, modalForm, registrationFee, modalFee} = this.state
     return (
@@ -669,8 +689,10 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                 onChange={this.handleChange}
                 helperText="Please select Payment Method"
               >
-                  <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                  <MenuItem value={"Debit Card"}> Debit Card</MenuItem>
+                  <MenuItem value={""}></MenuItem>
+                  {pay_options.map((name, index) => (
+                    <MenuItem value={name.name}>{name.name}</MenuItem>
+                  ))}
               </TextField>}
             </Grid>
             <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -683,12 +705,12 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                 </Typography>
               </Card>
             </Grid>
-            {data.payment_method == "Debit Card" &&
+            {data.payment_method == "Paystack" &&
             <Grid item lg={12} md={12} sm={12} xs={12}>
               <Typography>Choose Card</Typography>
               <PayCard cards={cards} value={data.card_id} open={(e)=>this.setState({ data:{...data, card_id:""}})} handleChange={this.handleChange}/>
             </Grid>}
-            {data.card_id == "" && data.payment_method == "Debit Card"  && 
+            {data.card_id == "" && data.payment_method == "Paystack"  && 
             <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Checkbox
                     name="save_card"
@@ -696,7 +718,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                     onChange={this.handleChange}
                     inputProps={{ 'aria-label': 'primary checkbox' }}
                 /><Typography variant="caption">Would you like to save your card</Typography>
-                {data.card_id == "" && data.payment_method == "Debit Card"  && 
+                {data.card_id == "" && data.payment_method == "Paystack"  && 
                 // <Grid item lg={12} md={12} sm={12} xs={12}>
                   <PayOption callback={this.callback} amount={data.amount} type={type} targetId={targetId}  />
                 // </Grid>

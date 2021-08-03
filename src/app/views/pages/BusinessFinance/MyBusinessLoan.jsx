@@ -59,6 +59,7 @@ class MyBusinessLoan extends Component {
       tab: true,
       requested_business:[],
       business_view:[],
+      pay_options:[],
       cards:[],
       loan_bal:0,
       id:true,
@@ -119,6 +120,26 @@ componentDidMount() {
         this.props.timeOut()
       }
     });
+    
+    fetch(getConfig('payment_method'), requestOptions)
+    .then(async response => {
+      const data = await response.json();
+      if (!response.ok) {
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+      }console.log(data.data)
+      if(data.success == false){
+        this.setState({pay_options: []});
+      }else{
+        this.setState({pay_options: data.data});  
+      }
+    })
+    .catch(error => {
+      if (error === "Unauthorized") {
+        this.props.timeOut()
+        }
+    });
+
     fetch(getConfig('display_request'), requestOptions)
       .then(async response => {
       const data = await response.json();
@@ -381,7 +402,7 @@ componentDidMount() {
   }
 
 render(){
-  const {tab,loading,data,type,isButtonDisabled, targetId,isLoading,requested_business,business_view,showSave,fund_data,cards,showManageLoan,repayment_details, showViewTrans} = this.state
+  const {tab,loading,data, pay_options, type,isButtonDisabled, targetId,isLoading,requested_business,business_view,showSave,fund_data,cards,showManageLoan,repayment_details, showViewTrans} = this.state
    return (
     <div className="">       
          {loading ? (
@@ -566,8 +587,9 @@ render(){
                       helperText="Please select Payment Method"
                     >
                       <MenuItem value={""}></MenuItem>
-                      <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                      <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+                      {pay_options.map((name, index) => (
+                        <MenuItem value={name.name}>{name.name}</MenuItem>
+                      ))}
                   </TextField>
                   {this.props.savings &&
                   <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
@@ -596,12 +618,12 @@ render(){
                       </Typography>
                     </Card>
                   </Grid>
-                  {fund_data.payment_method == "Debit Card" &&
+                  {fund_data.payment_method == "Paystack" &&
                   <Grid item lg={12} md={12} sm={12} xs={12}>
                     <Typography>Choose Card</Typography>
                     <PayCard cards={cards} value={fund_data.card_id} open={(e)=>this.setState({ fund_data:{...fund_data, card_id:""}})} handleChange={this.handleChangeFund}/>
                   </Grid>}
-                  {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+                  {fund_data.card_id == "" && fund_data.payment_method == "Paystack" &&
                     <Grid item lg={12} md={12} sm={12} xs={12}>
                       <Checkbox
                           name="save_card"
@@ -609,7 +631,7 @@ render(){
                           onChange={this.handleChangeFund}
                           inputProps={{ 'aria-label': 'primary checkbox' }}
                       /><Typography variant="caption">Would you like to save your card</Typography>
-                      {fund_data.card_id == "" && fund_data.payment_method == "Debit Card" &&
+                      {fund_data.card_id == "" && fund_data.payment_method == "Paystack" &&
                         <PayOption callback={this.callback} type={'08'} targetId={'00'} amount={fund_data.repayment_amount}/>
                       }
                   </Grid>}

@@ -114,6 +114,7 @@ class MyLoan extends Component {
       group_members:[],
       group_name:[],
       Completed:[],
+      pay_options:[],
       showReplace:false,
       showSave:false,
       showLoan:false,
@@ -243,6 +244,26 @@ componentDidMount() {
         this.props.timeOut()
         }
     });
+    
+    fetch(getConfig('payment_method'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }console.log(data.data)
+    if(data.success == false){
+      this.setState({pay_options: []});
+    }else{
+      this.setState({pay_options: data.data});  
+    }
+  })
+  .catch(error => {
+    if (error === "Unauthorized") {
+      this.props.timeOut()
+      }
+  });
+
   fetch(getConfig("getLoanGroupName"), requestOptions)
   .then(async response => {
         const data = await response.json();
@@ -912,7 +933,7 @@ handleDelete = (loan_id) => {
   }
 
 render(){
-  const {repayment_details, isButtonDisabled, user, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
+  const {repayment_details, isButtonDisabled, pay_options, user, loan_approval, add_card, id, formList, index, showSave, cards, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
   return (
     <div className="">       
        {isFetching ?
@@ -1488,17 +1509,18 @@ render(){
                 helperText="Please select Payment Method"
               >
                   <MenuItem value={""}></MenuItem>
-                  <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                  <MenuItem value={"Debit Card"}> Debit Card </MenuItem>
+                  {pay_options.map((name, index) => (
+                    <MenuItem value={name.name}>{name.name}</MenuItem>
+                  ))}
               </TextField>
             
             </Grid>
-            {repay_data.payment_method == "Debit Card" &&
+            {repay_data.payment_method == "Paystack" &&
             <Grid item lg={12} md={12} sm={12} xs={12}>
               <Typography>Choose Card</Typography>
               <PayCard cards={cards} value={repay_data.card_id} open={(e)=>this.setState({ repay_data:{...repay_data, card_id:""}})} handleChange={this.handleChangeRepay}/>
             </Grid>}
-            {repay_data.payment_method == "Debit Card" && repay_data.card_id == "" &&
+            {repay_data.payment_method == "Paystack" && repay_data.card_id == "" &&
               <Grid item lg={12} md={12} sm={12} xs={12}>
                   <Checkbox
                       name="save_card"
@@ -1506,7 +1528,7 @@ render(){
                       onChange={this.handleChangeRepay}
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                   /><Typography variant="caption">Would you like to save your card</Typography>
-                  {(repay_data.payment_method === "Debit Card"&& repay_data.card_id == "") &&
+                  {(repay_data.payment_method === "Paystack"&& repay_data.card_id == "") &&
                     <PayOption callback={this.callback} amount={repay_data.repayment_amount} type={'04'} targetId={'00'} />
                   }
               </Grid>}
