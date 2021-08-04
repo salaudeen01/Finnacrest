@@ -204,8 +204,8 @@ componentDidMount(){
 fetchBankDetails=()=>{
   const requestOptions = {
     method: 'GET',
-    // headers: { 'authorization': 'Bearer sk_live_2972a846b2b8c7096a62cf2a19b3675fe57455a9', 'Content-Type': 'application/json' },
-    headers: { 'authorization': 'Bearer sk_test_629b392e2345d122b5941f00b27cdd91957ca848', 'Content-Type': 'application/json' },
+    headers: { 'authorization': 'Bearer sk_live_2972a846b2b8c7096a62cf2a19b3675fe57455a9', 'Content-Type': 'application/json' },
+    // headers: { 'authorization': 'Bearer sk_test_629b392e2345d122b5941f00b27cdd91957ca848', 'Content-Type': 'application/json' },
     // sk_test_629b392e2345d122b5941f00b27cdd91957ca848',
   };
 
@@ -253,8 +253,8 @@ check = (e)=>{
   if(e.target.value.length == 10){
     const requestOptions = {
       method: 'GET',
-      // headers: { 'authorization': 'Bearer sk_live_2972a846b2b8c7096a62cf2a19b3675fe57455a9', 'Content-Type': 'application/json' },
-      headers: { 'authorization': 'Bearer sk_test_629b392e2345d122b5941f00b27cdd91957ca848', 'Content-Type': 'application/json' },
+      headers: { 'authorization': 'Bearer sk_live_2972a846b2b8c7096a62cf2a19b3675fe57455a9', 'Content-Type': 'application/json' },
+      // headers: { 'authorization': 'Bearer sk_test_629b392e2345d122b5941f00b27cdd91957ca848', 'Content-Type': 'application/json' },
   };
     fetch('https://api.paystack.co/bank/resolve?account_number='+value+'&bank_code='+bank_code, requestOptions)
       .then(async response => {
