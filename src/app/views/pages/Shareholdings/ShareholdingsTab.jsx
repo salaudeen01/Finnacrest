@@ -464,7 +464,7 @@ class Shareholdings extends Component {
                     size='small'
                     variant='contained'
                     style={{
-                      backgroundColor: "#222943",
+                      backgroundColor: "green",
                       color: "white",
                       borderRadius: 4
                     }}
@@ -573,7 +573,7 @@ class Shareholdings extends Component {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
         scroll="body">
-        <AppBar style={{ position: "relative", }} color='primary'>
+        <AppBar style={{ position: "relative", backgroundColor:'green' }}>
         <Toolbar>
         <IconButton
         edge='start'
@@ -675,7 +675,7 @@ class Shareholdings extends Component {
             variant="contained"
             disabled={isButtonDisabled}
             onClick={this.handleSubmitFund}
-            style={{backgroundColor:"#222943", color:"#fff"}}>
+            style={{backgroundColor:"green", color:"#fff"}}>
             Add Fund
           </Button>}        
         </Grid>
@@ -690,7 +690,7 @@ class Shareholdings extends Component {
               TransitionComponent={Transition}
               aria-labelledby="alert-dialog-slide-title"
               aria-describedby="alert-dialog-slide-description">
-          <AppBar style={{ position: "relative", }} color='primary'>
+          <AppBar style={{ position: "relative", backgroundColor:'green' }}>
             <Toolbar>
               <IconButton
                 edge='start'
@@ -821,7 +821,7 @@ class Shareholdings extends Component {
                     type='submit'
                     size='large'
                     variant='contained'
-                    style={{ backgroundColor: "#222943", color: "#fff" }}
+                    style={{ backgroundColor: "green", color: "#fff" }}
                   >
                     Edit Auto Save
                   </Button>
@@ -837,7 +837,7 @@ class Shareholdings extends Component {
               TransitionComponent={Transition}
               aria-labelledby="alert-dialog-slide-title"
               aria-describedby="alert-dialog-slide-description">
-          <AppBar style={{ position: "relative", }} color='primary'>
+          <AppBar style={{ position: "relative", backgroundColor:'green' }}>
             <Toolbar>
               <IconButton
                 edge='start'
@@ -968,7 +968,7 @@ class Shareholdings extends Component {
                     type='submit'
                     size='large'
                     variant='contained'
-                    style={{ backgroundColor: "#222943", color: "#fff" }}
+                    style={{ backgroundColor: "green", color: "#fff" }}
                   >
                     Create Auto Save
                   </Button>
@@ -984,7 +984,7 @@ class Shareholdings extends Component {
               TransitionComponent={Transition}
               aria-labelledby="alert-dialog-slide-title"
               aria-describedby="alert-dialog-slide-description">
-          <AppBar style={{ position: "relative", }} color='primary'>
+          <AppBar style={{ position: "relative", backgroundColor:'green' }}>
             <Toolbar>
               <IconButton
                 edge='start'
@@ -1033,7 +1033,7 @@ class Shareholdings extends Component {
                     type='submit'
                     size='large'
                     variant='contained'
-                    style={{ backgroundColor: "#222943", color: "#fff" }}
+                    style={{ backgroundColor: "green", color: "#fff" }}
                   >
                     Withdraw Fund
                   </Button>

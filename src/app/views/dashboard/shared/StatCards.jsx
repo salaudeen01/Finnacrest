@@ -169,14 +169,14 @@ class StatCards extends Component {
                     <Button className="uppercase font-bold"
                     size="large"
                     variant="contained"
-                    color="primary"
-                    onClick={this.props.shareModal} style={{color:"#fff"}}>Quick Save</Button>:
+                    // color="primary"
+                    onClick={this.props.shareModal} style={{color:"#fff", backgroundColor:"green"}}>Quick Save</Button>:
 
                     <Button className="uppercase font-bold"
                     size="large"
                     variant="contained"
-                    color="primary"
-                    onClick={this.props.openModal} style={{color:"#fff"}}>Quick Save</Button>}
+                    // color="primary"
+                    onClick={this.props.openModal} style={{color:"#fff", backgroundColor:"green"}}>Quick Save</Button>}
                 </Grid>
               {/* </div> */}
             {/* </div> */}

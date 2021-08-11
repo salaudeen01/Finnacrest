@@ -947,24 +947,24 @@ render(){
             <Typography variant="h6">My Loans</Typography>
           </Grid>
           <Grid item lg={8} md={8} sm={12} xs={12}>
-            <div className="pb-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#222943", borderBottomRightRadius:20,
+            <div className="pb-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"green", borderBottomRightRadius:20,
                   borderTopLeftRadius:20}}>
               <Grid item lg={8} md={8} sm={12} xs={12}>
                 <Button size="small"
                     variant={tab == 0 ? "contained" : tab == 1 ?"outlined": "outlined"}
-                    style={{backgroundColor: tab == 0 ? "#222943":tab == 1 ?"":"", color:tab == 0 ? "#fff":tab == 1 ?"":"#000"}}
+                    style={{backgroundColor: tab == 0 ? "green":tab == 1 ?"":"", color:tab == 0 ? "#fff":tab == 1 ?"":"#000"}}
                     onClick={this.ongoingTab}
                     >Ongoing</Button>
                 {/* <Button 
                     size="small"
                     variant={tab == 0 ? "outlined" : tab == 1 ?"outlined": "contained"}
-                    style={{backgroundColor: tab == 0 ? "":tab == 1 ?"":"#222943", color:tab == 0 ? "#000":tab == 1 ?"#000":"#fff"}}
+                    style={{backgroundColor: tab == 0 ? "":tab == 1 ?"":"green", color:tab == 0 ? "#000":tab == 1 ?"#000":"#fff"}}
                     onClick={this.approvalTab}
                     >Approvals</Button> */}
                 <Button 
                     size="small"
                     variant={tab == 0 ? "outlined" : tab == 1 ?"contained": "outlined"}
-                    style={{backgroundColor: tab == 0 ? "":tab == 1 ?"#222943":"", color:tab == 0 ? "#000":tab == 1 ?"#fff":"#000"}}
+                    style={{backgroundColor: tab == 0 ? "":tab == 1 ?"green":"", color:tab == 0 ? "#000":tab == 1 ?"#fff":"#000"}}
                     onClick={this.completeTab}
                     >Completed</Button>
                 
@@ -1006,7 +1006,7 @@ render(){
       aria-describedby="alert-dialog-slide-description"
       open={showLoan}
       onClose={this.handleCloseLoan}>
-      <AppBar style={{position: "relative"}} color='primary'>
+      <AppBar style={{position: "relative",backgroundColor:'green'}}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1169,7 +1169,7 @@ render(){
                     type="submit"
                     size="large"
                     variant="contained"
-                  style={{backgroundColor:"#222943", color:"white"}}>Apply Loan</Button>
+                  style={{backgroundColor:"green", color:"white"}}>Apply Loan</Button>
                 
               </Grid>
             </Grid>
@@ -1349,7 +1349,7 @@ render(){
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#222943", color:"white", width:"100%"}}>Create Loan Group</Button>
+                 style={{backgroundColor:"green", color:"white", width:"100%"}}>Create Loan Group</Button>
             </Grid>
           </Grid>
         </Card>
@@ -1365,7 +1365,7 @@ render(){
       open={showManage}
       onClose={this.handleCloseManage} 
       scroll="body">
-      <AppBar style={{position: "relative"}} color='primary'>
+      <AppBar style={{position: "relative",backgroundColor:'green'}}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1388,7 +1388,7 @@ render(){
             <>
             <Typography variant="h6" className="font-bold text-green" >Group Members</Typography>
             
-            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#222943", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"green", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
             {manage_details.map((dat, index) => (
               <ManageLoanCard
               name={dat.name}
@@ -1414,7 +1414,7 @@ render(){
       open={showDetails}
       onClose={this.handleCloseDetails} 
       scroll="body">
-      <AppBar style={{position: "relative"}} color='primary'>
+      <AppBar style={{position: "relative",backgroundColor:'green'}}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1434,7 +1434,7 @@ render(){
           <Grid item lg={12} md={12} sm={12} xs={12}>
             {loading ?
             <Typography>Loading...</Typography>:
-            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#222943", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"green", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
               <LoanGroupDetailsCard data={group_details} members={group_members} />
             </div>
             }
@@ -1451,7 +1451,7 @@ render(){
       aria-describedby="alert-dialog-slide-description"
       open={showrepayment}
       onClose={this.handleCloseRepayment} >
-      <AppBar style={{position: "relative"}} color='primary'>
+      <AppBar style={{position: "relative",backgroundColor:'green'}}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1543,7 +1543,7 @@ render(){
                 size="large"
                 onClick={this.handleSubmitRepay}
                 variant="contained"
-                style={{backgroundColor:"#222943", color:"white"}}>
+                style={{backgroundColor:"green", color:"white"}}>
                    Repay Loan
               </Button>}
               </Grid>
@@ -1560,7 +1560,7 @@ render(){
       aria-describedby="alert-dialog-slide-description"
       open={showReplace}
       onClose={this.handleCloseReplace} >
-      <AppBar style={{position: "relative", }} color='primary'>
+      <AppBar style={{position: "relative",backgroundColor:'green'}}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1612,7 +1612,7 @@ render(){
                 type="submit"
                 size="large"
                 variant="contained"
-                style={{backgroundColor:"#222943", color:"white"}}>
+                style={{backgroundColor:"green", color:"white"}}>
                   {code == 0? "Replace Invite":"Replace Member "} 
               </Button>
             </Grid>
@@ -1630,7 +1630,7 @@ render(){
       open={showManageLoan}
       onClose={this.handleCloseManageLoan}
       scroll="body">
-      <AppBar style={{position: "relative", }} color='primary'>
+      <AppBar style={{position: "relative",backgroundColor:'green'}}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1649,7 +1649,7 @@ render(){
           <Grid item lg={12} md={12} sm={12} xs={12}>
             {loading ?
             <Typography>Loading...</Typography>:
-            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#222943", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"green", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
               <LoanDetailsCard 
               // loan_details={loan_details}
               data={loan_approval} 
@@ -1670,7 +1670,7 @@ render(){
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description" 
       onClose={this.handleCloseAction} aria-labelledby="simple-dialog-title" open={showAction}>
-      <AppBar style={{position: "relative", }} color='primary'>
+      <AppBar style={{position: "relative",backgroundColor:'green'}}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1729,7 +1729,7 @@ render(){
       open={showLoanApproval}
       onClose={this.handleCloseApproval}
       scroll="body">
-      <AppBar style={{position: "relative", }} color='primary'>
+      <AppBar style={{position: "relative",backgroundColor:'green'}}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -1748,7 +1748,7 @@ render(){
           <Grid item lg={12} md={12} sm={12} xs={12}>
             {loading ?
             <Typography>Loading...</Typography>:
-            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#222943", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"green", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
                { loan_activities.length == 0?
                  <Typography variant="p" className="font-bold">You currently do not have any loan that require your approval</Typography>:
                 loan_activities.map((data, index) =>(

@@ -50,7 +50,7 @@ const PaginationTable = (props) => {
               hover
               key={data.id}>
                 <TableCell className="px-0 capitalize" align="left" colSpan={4}>
-                SES{data.id}
+                Fin{data.id}
                 </TableCell>
                 <TableCell className="px-0 capitalize" align="left" colSpan={4}>
                 {(data.transaction_category == 1 && data.transaction_type== "debit") ? "Savings Withdrawal": 

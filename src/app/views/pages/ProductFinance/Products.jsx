@@ -367,7 +367,7 @@ handleSubmitFund(event) {
                     style={{
                       border: 1,
                       borderStyle: "solid",
-                      borderColor: "#222943",
+                      borderColor: "green",
                       borderRadius:8,
                     }}
                   >
@@ -415,7 +415,7 @@ handleSubmitFund(event) {
                     style={{
                       border: 1,
                       borderStyle: "solid",
-                      borderColor: "#222943",
+                      borderColor: "green",
                       borderBottomRightRadius: 20,
                       borderTopLeftRadius: 20,
                     }}
@@ -470,7 +470,7 @@ handleSubmitFund(event) {
           open={showView}
           onClose={this.handleCloseView}
           scroll="body">
-          <AppBar style={{position: "relative", }} color='primary'>
+          <AppBar style={{position: "relative", backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -632,7 +632,7 @@ handleSubmitFund(event) {
                 size="large"
                 disabled={isButtonDisabled}
                 variant="contained"
-                style={{backgroundColor:"#222943", color:"#fff"}}>
+                style={{backgroundColor:"green", color:"#fff"}}>
                 Add Fund
               </Button>}
               </Grid>

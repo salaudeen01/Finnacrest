@@ -1065,7 +1065,7 @@ render(){
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
           <Loading/>
         </div>:
-        <div className="pb-2 pt-7 px-8 " style={{background:"#222943"}}>      
+        <div className="pb-2 pt-7 px-8 " style={{background:"green"}}>      
           <Grid container spacing={3} className="mb-3">
             <Grid item xs={12} sm={6} md={6}>
                 <Card className="play-card p-sm-24" style={{backgroundColor:"#1999ff",height:171}} elevation={6}>
@@ -1125,8 +1125,7 @@ render(){
       TransitionComponent={Transition}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description">
-      <AppBar style={{position: "relative"}}
-      color="primary"      
+      <AppBar style={{position: "relative", backgroundColor:'green'}}     
       >
         <Toolbar>
           <IconButton
@@ -1317,9 +1316,8 @@ render(){
                     type="submit"
                     size="large"
                     variant="contained"
-                    onClick={this.handleLoanFormFee}
-                    color='primary'
-                    style={{color:"white"}}>Apply Loan
+                    onClick={this.handleLoanFormFee}                   
+                    style={{color:"white",backgroundColor:'green'}}>Apply Loan
                 </Button>
                 
               </Grid>
@@ -1517,7 +1515,7 @@ render(){
           open={LoanFormPayment}
           onClose={this.handleCloseForm}
           scroll="body">
-        <AppBar style={{position: "relative",}} color='primary'>
+        <AppBar style={{position: "relative",backgroundColor:'green'}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -1617,7 +1615,7 @@ render(){
                   disabled={isButtonDisabled}
                   variant="contained"
                   onClick={this.handleSubmitLoan}
-                  style={{backgroundColor:"#222943", color:"#fff"}}>
+                  style={{backgroundColor:"green", color:"#fff"}}>
                   Add Fund
                 </Button>}
               </Grid>
@@ -1812,8 +1810,8 @@ render(){
       TransitionComponent={Transition}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description">
-      <AppBar style={{position: "relative"}}
-      color='primary'>
+      <AppBar style={{position: "relative",backgroundColor:'green'}}
+      >
         <Toolbar>
           <IconButton
             edge="start"
@@ -1922,7 +1920,7 @@ render(){
     TransitionComponent={Transition}
     aria-labelledby="alert-dialog-slide-title"
     aria-describedby="alert-dialog-slide-description">
-      <AppBar style={{position: "relative"}} color='primary'>
+      <AppBar style={{position: "relative",backgroundColor:'green'}}>
         <Toolbar>
           <IconButton
             edge="start"

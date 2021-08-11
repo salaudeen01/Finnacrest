@@ -75,7 +75,7 @@ class SesisSavingTop extends Component{
     const {balance,wallet_bal, balanceRegular,loading} = this.state
     return (
       <div className="">
-        <div className="pb-7 pt-7 px-8 " style={{background:"#222943"}}>      
+        <div className="pb-7 pt-7 px-8 " style={{background:"green"}}>      
           <Grid container spacing={3} className="mb-3">
                 
               <Grid item xs={12} md={6}>

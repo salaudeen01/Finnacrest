@@ -609,7 +609,7 @@ handleClose() {
                   <Button className="uppercase"
                   size="small"
                   variant="contained"
-                  style={{backgroundColor:"#222943", color:"white"}}
+                  style={{backgroundColor:"green", color:"white"}}
                   onClick={this.handleShareOpen}>
                   Quick Save
                 </Button>
@@ -617,14 +617,14 @@ handleClose() {
                   <Button className="uppercase"
                     size="small"
                     variant="contained"
-                    style={{backgroundColor:"#222943", color:"white"}}
+                    style={{backgroundColor:"green", color:"white"}}
                     onClick={this.handleQuickSave}>
                     Quick Save
                   </Button>
                   <Button className="uppercase"
                     size="small"
                     variant="outlined"
-                    style={{borderColor:"#222943"}}
+                    style={{borderColor:"green"}}
                     // onClick={this.handleWithdraw}
                     onClick={this.handleClickOpenWithdraw}
                     >
@@ -706,7 +706,7 @@ handleClose() {
                       </Typography>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
-                      <Button onClick={()=>this.handleEdit(savings.id)} contained style={{color:"#fff", backgroundColor:"#222943"}}>Edit</Button>
+                      <Button onClick={()=>this.handleEdit(savings.id)} contained style={{color:"#fff", backgroundColor:"green"}}>Edit</Button>
                     </Grid>
                     </>:
                     <div></div>
@@ -724,7 +724,7 @@ handleClose() {
           open={showSave}
           onClose={this.handleCloseQuickSave}
           scroll="body">
-        <AppBar style={{position: "relative",}} color='primary'>
+        <AppBar style={{position: "relative",backgroundColor:'green'}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -822,7 +822,7 @@ handleClose() {
                   onClick={this.handleSubmitFund}
                   disabled={isButtonDisabled}
                   variant="contained"
-                  style={{backgroundColor:"#222943", color:"#fff"}}>
+                  style={{backgroundColor:"green", color:"#fff"}}>
                   Add Fund
                 </Button>}
               </Grid>
@@ -841,7 +841,7 @@ handleClose() {
           open={showEdit}
           onClose={this.handleCloseEdit}
           scroll="body">
-          <AppBar style={{position: "relative",}} color='primary'>
+          <AppBar style={{position: "relative",backgroundColor:'green'}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -974,7 +974,7 @@ handleClose() {
                   type="submit"
                   size="large"
                   variant="contained"
-                  style={{backgroundColor:"#222943", color:"#fff"}}>Save Changes</Button>
+                  style={{backgroundColor:"green", color:"#fff"}}>Save Changes</Button>
                   </ValidatorForm>
             </Grid>
           </Grid>
@@ -990,7 +990,7 @@ handleClose() {
         open={show}
         onClose={this.handleClose}
         scroll="body">
-        <AppBar style={{position: "relative",}} color='primary'>
+        <AppBar style={{position: "relative",backgroundColor:'green'}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -1123,7 +1123,7 @@ handleClose() {
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#222943", color:"#fff"}}>Create Auto Save</Button>
+                 style={{backgroundColor:"green", color:"#fff"}}>Create Auto Save</Button>
                  </ValidatorForm>
             </Grid>
           </Grid>
@@ -1139,7 +1139,7 @@ handleClose() {
           open={showWithdraw}
           onClose={this.handleCloseWithdraw}
         >
-                <AppBar style={{position: "relative",}} color='primary'>
+                <AppBar style={{position: "relative",backgroundColor:'green'}}>
                   <Toolbar>
                     <IconButton
                       edge="start"
@@ -1181,7 +1181,7 @@ handleClose() {
                         type="submit"
                         size="large"
                         variant="contained"
-                        style={{backgroundColor:"#222943", color:"#fff"}}>
+                        style={{backgroundColor:"green", color:"#fff"}}>
                         Withdraw Fund
                       </Button>
                     </Grid>

@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../../assets/logo3.png"
+import logo from "../../../assets/logo4.jpeg"
 import {Link} from "react-router-dom";
 import { Typography } from "@material-ui/core";
 

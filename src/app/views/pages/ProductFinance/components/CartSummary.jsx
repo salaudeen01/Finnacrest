@@ -368,7 +368,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                         size="medium"
                         fullWidth 
                         variant="contained"
-                        style={{backgroundColor:"#222943", color:"white", borderBottomRightRadius:10, 
+                        style={{backgroundColor:"green", color:"white", borderBottomRightRadius:10, 
                         borderBottomLeftRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10}}>
                    Checkout
                    </Button>}
@@ -378,7 +378,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                         size="medium"
                         fullWidth 
                         variant="contained"
-                        style={{backgroundColor:"#222943", color:"white", borderBottomRightRadius:10, 
+                        style={{backgroundColor:"green", color:"white", borderBottomRightRadius:10, 
                         borderBottomLeftRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10}}>
                     Checkout
                     </Button>}
@@ -396,7 +396,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
             open={showSave}
             onClose={this.handleCloseQuickSave}
             scroll="body">
-          <AppBar style={{position: "relative",}} color='primary'>
+          <AppBar style={{position: "relative", backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -480,7 +480,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                           type="submit"
                           size="large"
                           variant="contained"
-                          style={{backgroundColor:"#222943", color:"#fff"}}>
+                          style={{backgroundColor:"green", color:"#fff"}}>
                           Make Payment
                         </Button>}
                     {/* </Grid> */}

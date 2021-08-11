@@ -380,7 +380,7 @@ handleCloseModalFee() {
                 <Button className="uppercase"
                   size="small"
                   variant="contained"
-                  style={{backgroundColor:"#222943", color:"white"}}
+                  style={{backgroundColor:"green", color:"white"}}
                   onClick={this.handleClickOpen}>Add Fund
                 </Button>
                 <Button className="uppercase"

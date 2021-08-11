@@ -793,7 +793,7 @@ completeTab(){
                       <Button className="uppercase"
                         size="small"
                         variant="contained"
-                        style={{backgroundColor:"#222943", color:"white"}}
+                        style={{backgroundColor:"green", color:"white"}}
                         onClick={this.handleShareOpen}>
                          Create Target
                     </Button>:
@@ -801,33 +801,33 @@ completeTab(){
                     {tdetails.length != 0 && <Button className="uppercase"
                       size="small"
                       variant="contained"
-                      style={{backgroundColor:"#222943", color:"#fff"}}
+                      style={{backgroundColor:"green", color:"#fff"}}
                       onClick={this.handleQuickSave}>
                       Quick Save
                     </Button>}
                     <Button className="uppercase"
                       size="small"
                       variant="contained"
-                      style={{ backgroundColor:"#222943", color:"#fff"}}
+                      style={{ backgroundColor:"green", color:"#fff"}}
                       onClick={this.handleAutoSave}>
                         Create Target
                     </Button>
                  </ ButtonGroup> }
               </Grid>
             </Grid>
-    <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#222943",borderRadius:8}}>  
+    <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"green",borderRadius:8}}>  
     <Grid container spacing={3}>
           <Grid item lg={8} md={8} sm={12} xs={12}>
           <ButtonGroup color="primary" aria-label="outlined primary button group">
             <Button size="small"
                 variant={tab? "contained" : "outlined"}
-                style={{backgroundColor: tab ? "#222943":"", color: tab ? 'white':""}}
+                style={{backgroundColor: tab ? "green":"", color: tab ? 'white':""}}
                 onClick={this.ongoingTab}
                 >Ongoing</Button>
             <Button 
                 size="small"
                 variant={tab? "outlined" : "contained"}
-                style={{backgroundColor: tab ? "":"#222943", color: tab ? "":"white"}}
+                style={{backgroundColor: tab ? "":"green", color: tab ? "":"white"}}
                 onClick={this.completeTab}
                 >Completed</Button>
           </ButtonGroup>
@@ -880,7 +880,7 @@ completeTab(){
           open={showSave}
           onClose={this.handleCloseQuickSave}
           scroll="body">
-          <AppBar style={{position: "relative",}} color='primary'>
+          <AppBar style={{position: "relative",backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -989,7 +989,7 @@ completeTab(){
                   size="large"
                   onClick={this.handleSubmitFund}
                   variant="contained"
-                  style={{backgroundColor:"#222943", color:"#fff"}}>
+                  style={{backgroundColor:"green", color:"#fff"}}>
                   Add Fund
                 </Button>}
               </Grid>
@@ -1007,7 +1007,7 @@ completeTab(){
         scroll="body"
         open={show}
         onClose={this.handleClose}>
-        <AppBar style={{position: "relative",}} color='primary'>
+        <AppBar style={{position: "relative",backgroundColor:'green'}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -1169,7 +1169,7 @@ completeTab(){
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#222943", color:"white"}}>Create Target Plan</Button>
+                 style={{backgroundColor:"green", color:"white"}}>Create Target Plan</Button>
               </ValidatorForm>
             </Grid>
           </Grid>
@@ -1185,7 +1185,7 @@ completeTab(){
           scroll="body"
           open={showEdit}
           onClose={this.handleCloseEdit}>
-          <AppBar style={{position: "relative",}} color='primary'>
+          <AppBar style={{position: "relative",backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -1355,7 +1355,7 @@ completeTab(){
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#222943", color:"white"}}>Update</Button>
+                 style={{backgroundColor:"green", color:"white"}}>Update</Button>
             </ValidatorForm>
           }
         </Card>
@@ -1370,7 +1370,7 @@ completeTab(){
           open={showView}
           onClose={this.handleCloseView}
         >
-            <AppBar style={{position: "relative",}} color='primary'>
+            <AppBar style={{position: "relative",backgroundColor:'green'}}>
               <Toolbar>
                 <IconButton
                   edge="start"

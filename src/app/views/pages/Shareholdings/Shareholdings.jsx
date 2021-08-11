@@ -89,7 +89,7 @@ class Shareholdings extends Component {
           fullWidth={true}
           maxWidth={"sm"}
           onClose={this.handleCloseRepayment} >
-          <AppBar style={{position: "relative"}} color="primary">
+          <AppBar style={{position: "relative", backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -156,7 +156,7 @@ class Shareholdings extends Component {
           fullWidth={true}
           maxWidth={"sm"}
           onClose={this.handleCloseModalForm} >
-          <AppBar style={{position: "relative"}} color="primary">
+          <AppBar style={{position: "relative", backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -200,7 +200,7 @@ class Shareholdings extends Component {
           fullWidth={true}
           maxWidth={"sm"}
           onClose={this.handleCloseModalFee} >
-          <AppBar style={{position: "relative"}} color="primary">
+          <AppBar style={{position: "relative", backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"

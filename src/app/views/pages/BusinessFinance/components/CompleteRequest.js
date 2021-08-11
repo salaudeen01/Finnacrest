@@ -27,7 +27,7 @@ export default function CompleteRequest(props) {
 
   return (
     <div className="pt-4 mb-4 px-2 bg-default text-white" style={{flexGrow: 1, border:1, borderStyle:"solid", 
-    borderColor:"#222943", borderRadius:10}}>
+    borderColor:"green", borderRadius:10}}>
       
       <Grid container spacing={0}>      
         {/* <Divider variant="middle"/> */}

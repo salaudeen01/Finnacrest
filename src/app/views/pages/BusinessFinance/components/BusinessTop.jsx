@@ -274,7 +274,7 @@ class BusinessTop extends Component{
     // console.log(arr)
     return (
       <div className="">
-        <div className="pb-2 pt-7 px-8 " style={{background:"#222943"}}>      
+        <div className="pb-2 pt-7 px-8 " style={{background:"green"}}>      
             <Grid container spacing={3} className="mb-3">
                   
                 <Grid item xs={12} sm={6} md={6}>
@@ -317,7 +317,7 @@ class BusinessTop extends Component{
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
       >
-      <AppBar style={{position: "relative"}} color="primary">
+      <AppBar style={{position: "relative", backgroundColor:'green'}}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -468,7 +468,7 @@ class BusinessTop extends Component{
                     type="submit"
                     size="large"
                     variant="contained"
-                  style={{backgroundColor:"#222943", color:"white"}}>Submit Request</Button>
+                  style={{backgroundColor:"green", color:"white"}}>Submit Request</Button>
                 
               </Grid>
             </Grid>

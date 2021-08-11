@@ -9,14 +9,14 @@ export default function Paginate(props) {
     console.log(props.pagination)
     return (
       <div >
-      {props.pagination.total > 0 && <Button variant="contained" size="small" color="primary" style={{color:"white"}}
+      {props.pagination.total > 0 && <Button variant="contained" size="small" style={{color:"white", backgroundColor:'green'}}
       onClick={props.fetch_prev_page}><ArrowBackIosIcon/></Button>}
       {pages.map((page)=>(
           <Button component="span" size="small" 
           variant={props.pagination.current_page == page ? "contained":""}
            onClick={()=>props.fetch_page(page)}>{page}</Button>
       ))}
-      {props.pagination.total > 21 &&<Button variant="contained" size="small" color="primary" style={{color:"white"}} 
+      {props.pagination.total > 21 &&<Button variant="contained" size="small" style={{color:"white", backgroundColor:'green'}} 
       onClick={props.fetch_next_page}><ArrowForwardIosIcon/></Button>}
       </div>
     )

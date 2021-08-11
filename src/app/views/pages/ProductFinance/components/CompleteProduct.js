@@ -27,7 +27,7 @@ export default function CompleteProduct(props) {
 
   return (
     <div className="pt-7 mb-4 px-2 bg-default text-white" style={{flexGrow: 1, border:1, borderStyle:"solid", 
-    borderColor:"#222943", borderRadius:10}}>
+    borderColor:"green", borderRadius:10}}>
       <Grid container spacing={0}>
         <Grid item lg={12} md={12} sm={12} xs={12}>
           <Typography variant="h6" style={{fontSize:16}}>Order No: {props.title} </Typography>

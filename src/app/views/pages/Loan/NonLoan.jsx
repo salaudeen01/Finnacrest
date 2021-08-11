@@ -337,19 +337,19 @@ completeTab(){
           <Loading />
         </div>:
         <>
-        <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#222943",borderRadius:8}}>  
+        <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"green",borderRadius:8}}>  
           <Grid container spacing={3}>
                 <Grid item lg={8} md={8} sm={12} xs={12}>
                   <ButtonGroup color="primary" aria-label="outlined primary button group">
                       <Button size="small"
                           variant={tab? "contained" : "outlined"}
-                          style={{backgroundColor: tab ? "#222943":"", color: tab ? 'white':""}}
+                          style={{backgroundColor: tab ? "green":"", color: tab ? 'white':""}}
                           onClick={this.ongoingTab}>Ongoing
                       </Button>
                       <Button 
                           size="small"
                           variant={tab? "outlined" : "contained"}
-                          style={{backgroundColor: tab ? "":"#222943", color: tab ? "":"white"}}
+                          style={{backgroundColor: tab ? "":"green", color: tab ? "":"white"}}
                           onClick={this.completeTab}>Completed
                       </Button>
                   </ButtonGroup>
@@ -387,7 +387,7 @@ completeTab(){
           open={showSave}
           onClose={this.handleCloseQuickSave}
           scroll="body">
-          <AppBar style={{position: "relative",}} color='primary'>
+          <AppBar style={{position: "relative", backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -415,7 +415,7 @@ completeTab(){
           open={showView}
           onClose={this.handleClose}
           scroll="body">
-          <AppBar style={{position: "relative", backgroundColor:"#222943"}}>
+          <AppBar style={{position: "relative", backgroundColor:"green"}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -434,7 +434,7 @@ completeTab(){
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 {isLoading ?
                 <Typography>Loading...</Typography>:
-                <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#222943", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+                <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"green", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
                   <GuaranteeDetails
                   data={singleLoan} 
                   // approvals={repayment_details} 
@@ -456,7 +456,7 @@ completeTab(){
           scroll="body"
           open={showEdit}
           onClose={this.handleCloseEdit}>
-          <AppBar style={{position: "relative",}} color='primary'>
+          <AppBar style={{position: "relative", backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"

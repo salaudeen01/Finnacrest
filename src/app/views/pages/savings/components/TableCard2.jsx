@@ -47,7 +47,7 @@ class TableCard2 extends Component{
                 {this.props.transactions.map((product, index) => (
                   <TableRow key={index}>
                     <TableCell className="px-0 capitalize" colSpan={3}>
-                      SES{index+1}
+                      Fin{index+1}
                     </TableCell>
                     <TableCell className="px-0 capitalize" colSpan={4}>
                       {numberFormat(product.amount)}

@@ -107,7 +107,7 @@ class TableCard extends Component{
               </TableBody>
             </Table>
             {/* <ArrowForwardIcon> */}
-              <Button href="/transactions" variant="contained" size="small" className="text-white" color="primary">
+              <Button href="/transactions" variant="contained" size="small" className="text-white" style={{backgroundColor:'green'}}>
               See All<ArrowForwardIcon/> 
               </Button>
               {/* </ArrowForwardIcon> */}
