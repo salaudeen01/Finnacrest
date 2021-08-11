@@ -107,7 +107,7 @@ class SignUp extends Component {
             alignItems='center'
           >
             <Grid lg={11} md={11} sm={11} xs={11}>
-              <Card className='' style={{ background: "#224459", height:'60%'}}>
+              <Card className='' style={{ background: "green", height:'60%'}}>
                 <Grid container className='p-2' spacing={3}>
                   <Grid lg={4} md={4} sm={12} xs={12}>
                     <Card className='signup-card '>
@@ -235,7 +235,7 @@ class SignUp extends Component {
                                   type='submit'
                                   className='capitalize font-medium w-full'
                                   style={{
-                                    background: "#224459",
+                                    background: "green",
                                     color: "#fff",
                                     padding: 10,
                                   }}
@@ -290,7 +290,7 @@ class SignUp extends Component {
                           style={{ fontWeight: "bold", width: "10" }}
                         >
                           Welcome To <br />
-                          SESIS <br /> CO-OPERATIVE SOCIETY
+                          Finnacrest <br /> CO-OPERATIVE SOCIETY
                         </Typography>
                       </Grid>
                     </Hidden>

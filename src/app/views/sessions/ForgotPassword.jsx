@@ -67,7 +67,7 @@ class ForgotPassword extends Component {
 			justify='center'
 			alignItems='center'>
 		<Grid lg={11} md={11} sm={11} xs={11}>
-		<Card className='' style={{ background: '#224459' }}>
+		<Card className='' style={{ background: 'green' }}>
 			<Grid container className='p-2' spacing={3}>
 			<Grid lg={4} md={4} sm={12} xs={12}>
 			  <Card className='signup-card '>
@@ -131,7 +131,7 @@ class ForgotPassword extends Component {
 								type='submit'
 								className='capitalize font-medium w-full mb-4'
 								style={{
-									background: '#224459',
+									background: 'green',
 									color: '#fff',
 									// width: '84%',
 									padding: 10,
@@ -184,7 +184,7 @@ class ForgotPassword extends Component {
 							className='text-center text-white mt-25'
 							style={{ fontWeight: 'bold', width: '10' }}>
 							Welcome To <br />
-							SESIS <br /> CO-OPERATIVE SOCIETY
+							Finnacrest <br /> CO-OPERATIVE SOCIETY
 						</Typography>
 					</Grid></Hidden>
 				</Grid>

@@ -63,7 +63,7 @@ class VerifyEmail extends Component {
       justify='center'
       alignItems='center'>
       <Grid lg={8} md={8} sm={10} xs={10}>
-        <Card className='' style={{ background: '#224459' }}>
+        <Card className='' style={{ background: 'green' }}>
           <Grid container className='p-2' spacing={3}>
             <Grid lg={4} md={4} sm={12} xs={12}>
               <Card className='signup-card '>
@@ -100,7 +100,7 @@ class VerifyEmail extends Component {
                   style={{ textAlign: 'center' }}>
                   <Button onClick={this.handleFormSubmit} variant="contained" color='warning' type='submit'
                  className='capitalize font-medium w-full mb-4' size="large" 
-                 style={{ background: '#224459', color: '#fff', padding: 10}}>
+                 style={{ background: 'green', color: '#fff', padding: 10}}>
                    Complete Registration</Button>
                   {this.props.loggingIn && (
                     <CircularProgress
@@ -125,7 +125,7 @@ class VerifyEmail extends Component {
                   className='text-center text-white mt-10'
                   style={{ fontWeight: 'bold', width: '10' }}>
                   Welcome To <br />
-                  SESIS <br /> CO-OPERATIVE SOCIETY
+                  Finnacrest <br /> CO-OPERATIVE SOCIETY
                 </Typography>
               </Grid></Hidden>
             </Grid>
