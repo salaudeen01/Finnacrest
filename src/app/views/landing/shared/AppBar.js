@@ -4,21 +4,12 @@ import logo from "../../../../assets/sesis.jpg";
 import logos from "../../../../assets/logo4.jpeg";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import img4 from "../../../../assets/baner.png";
-import phone from "../../../../assets/phone1.png";
-import SolidGameCardDemo from "./CustomCard";
-import Section5 from "./Section5";
-import Footer from "./Footer";
-import Section1 from "./Section1";
-import Section2 from "./Section2";
 import mane from "../../../../assets/mane_img.jpg";
 import leptop from "../../../../assets/leptop.jpg";
 import tet1 from "../../../../assets/te1.png";
 import tet2 from "../../../../assets/te2.png";
-import invest from "../../../../assets/uninvest.svg";
-import process from "../../../../assets/rich.svg";
-import finance from "../../../../assets/unfinance.svg";
-import cart from "../../../../assets/uncart.svg";
+import './css/style.css'
+import './css/responsive.css'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,10 +41,10 @@ export default function AppAppBar(props) {
                     <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse navbar-right" id="navbarTogglerDemo02">
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul className="navbar-nav me-auto mb-lg-0">
                     </ul>
 
-                    <ul className="navbar-nav mb-2 mb-lg-0 navbar-right">
+                    <ul className="navbar-nav mb-lg-0 navbar-right">
                     <li className="nav-item mt-2">
                         <a className="nav-link text-dark active" aria-current="page" href="#home-section">Home</a>
                     </li>
@@ -118,7 +109,7 @@ export default function AppAppBar(props) {
                   <div class="row d_flex">
                      <div class="col-md-5">
                         <div class="text-bg">
-                           <h1>Find fun in saving or <br/>loaning for your next purchase</h1>
+                           <h1>Find fun in saving or <br/>get loan for your next purchase</h1>
                            <strong>Free Easy to use web app</strong>
                            <span>Some other contents will go here</span>
                            <Link to='/signin' className="nav-link">Register</Link>
@@ -142,7 +133,8 @@ export default function AppAppBar(props) {
                <div class="col-md-12">
                   <div class="titlepage">
                      <h2>About Loaning App</h2>
-                     <span>d to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum gener</span>
+                     <span>We are a Financial Cooperative that provides financial solutions to transform businesses and ideas.</span>
+                     <br/><span>And also help to achieve your targetted goals.</span>
                   </div>
                </div>
             </div>
@@ -163,27 +155,33 @@ export default function AppAppBar(props) {
                 <div class="col-md-12">
                     <div class="titlepage">
                       <h2>Meet Up With Your Budgets</h2>
-                      <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna</span>
+                      <span></span>
                     </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-4">
                     <div class="best_box">
-                      <h4>Admin <br/>Loaning</h4>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod t dolor in reprehenderit in voluptate velit</p>
+                      <h4>Regular <br/>Savings</h4>
+                      <p>Save periodically, automatically or manually. You can also save as you go, 
+                         on your own terms. You’re the boss of your savings, choose how you want to save.
+                          Save more inorder get more Loans.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="best_box">
-                      <h4>Cooperative <br/> Loaning</h4>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod t dolor in reprehenderit in voluptate velit</p>
+                      <h4>Target <br/> Savings</h4>
+                      <p>Reach all your unique savings goals. Got a savings goal in mind? We’ll help you reach it!
+                          Saving for a new phone? Check. Dad’s surprise birthday? Check. A new car, special vacation?
+                           Check and check. Target Savings helps you reach all your savings goals easily and faster.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="best_box">
-                      <h4>Individual <br/> Savings</h4>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod t dolor in reprehenderit in voluptate velit</p>
+                      <h4>Loan <br/> </h4>
+                      <p>Say bye-bye to high interest rates. Get access to zero interest Personal or Business loans to take 
+                         care of your most pressing needs, loans with workable payback periods.
+                          Build your Savings Account to unlock larger loan amounts.</p>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -198,8 +196,8 @@ export default function AppAppBar(props) {
                <div class="col-md-12">
                   <div class="titlepage">
                      <h2>Request a Call back</h2>
-                     <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor <br/>
-                     incididunt ut labore et dolore magna</span>
+                     {/* <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor <br/>
+                     incididunt ut labore et dolore magna</span> */}
                   </div>
                </div>
             </div>
@@ -252,7 +250,9 @@ export default function AppAppBar(props) {
                 <div class="col-md-6">
                     <div class="two_box_img">
                       <h2><span class="offer">Budgeting failed? </span></h2>
-                      <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable</p>
+                      <p>Say bye-bye to budget failure. Get easy access to Personal or Business loans to 
+                         take care of your most pressing needs, loans with workable payback periods. Build your Savings 
+                         Account to unlock larger loan amounts.</p>
                     </div>
                 </div>
               </div>
@@ -284,8 +284,8 @@ export default function AppAppBar(props) {
                                        <div class="test_box">
                                           <h3>Michl ro</h3>
                                           <p><i class="padd_rightt0">
-                                          <img src={tet1} alt='company-logo'/></i>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some <i class="padd_leftt0">
-                                          <img src={tet2} alt='company-logo'/></i> <br />form, by injected humour, or randomised words which don't look even slightly believable</p>
+                                          <img src={tet1} alt='company-logo'/></i>At first, I thought it wasn't legit, but I have saved my sister's School fee here with Finnacrest Target Savings.<i class="padd_leftt0">
+                                          <img src={tet2} alt='company-logo'/></i> <br /> Best savings platform </p>
                                        </div>
                                     </div>
                                  </div>
@@ -300,8 +300,8 @@ export default function AppAppBar(props) {
                                        <div class="test_box">
                                           <h3>Michl ro</h3>
                                           <p><i class="padd_rightt0">
-                                          <img src={tet1} alt='company-logo'/></i>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some <i class="padd_leftt0">
-                                          <img src={tet2} alt='company-logo'/></i> <br />form, by injected humour, or randomised words which don't look even slightly believable</p>
+                                          <img src={tet1} alt='company-logo'/></i>At first, I thought it wasn't legit, but I have saved my sister's School fee here with Finnacrest Target Savings.<i class="padd_leftt0">
+                                          <img src={tet2} alt='company-logo'/></i> <br /> Best savings platform </p>
                                        </div>
                                     </div>
                                  </div>
@@ -316,8 +316,8 @@ export default function AppAppBar(props) {
                                        <div class="test_box">
                                           <h3>Michl ro</h3>
                                           <p><i class="padd_rightt0">
-                                          <img src={tet1} alt='company-logo'/></i>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some <i class="padd_leftt0">
-                                          <img src={tet2} alt='company-logo'/></i> <br />form, by injected humour, or randomised words which don't look even slightly believable</p>
+                                          <img src={tet1} alt='company-logo'/></i>At first, I thought it wasn't legit, but I have saved my sister's School fee here with Finnacrest Target Savings.<i class="padd_leftt0">
+                                          <img src={tet2} alt='company-logo'/></i> <br /> Best savings platform </p>
                                        </div>
                                     </div>
                                  </div>
@@ -345,14 +345,14 @@ export default function AppAppBar(props) {
                     <div class="col-md-6">
                       <div class="cont">
                           <h3> <strong class="multi"> Easy and Reliable</strong><br />
-                            Trusted loan app
+                            Trusted Financial Cooperative
                           </h3>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="cont_call">
                           <h3> <strong class="multi"> Call Now</strong><br />
-                            (+234) 9076565365
+                            (+234) 706 974 1474
                           </h3>
                       </div>
                     </div>
@@ -362,7 +362,7 @@ export default function AppAppBar(props) {
                 <div class="container">
                     <div class="row">
                       <div class="col-md-12">
-                          <p>© 2019 All Rights Reserved.  Loaning App Cooperation</p>
+                          <p>© 2019 All Rights Reserved.  Techend Limited</p>
                       </div>
                     </div>
                 </div>

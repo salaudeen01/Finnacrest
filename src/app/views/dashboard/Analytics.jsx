@@ -694,6 +694,22 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                     <MenuItem value={name.name}>{name.name}</MenuItem>
                   ))}
               </TextField>}
+              {data.acct_type == "Wallet" &&
+              <TextField
+               className="mb-4 w-full"
+                id="standard-select-currency"
+                select
+                label="Select payment method"
+                value={data.payment_method}
+                name="payment_method"
+                onChange={this.handleChange}
+                helperText="Please select Payment Method"
+              >
+                  <MenuItem value={""}></MenuItem>
+                  {pay_options.slice(1).map((name, index) => (
+                    <MenuItem value={name.name}>{name.name}</MenuItem>
+                  ))}
+              </TextField>}
             </Grid>
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <Card className="px-6 pt-2 pb-4">
@@ -761,7 +777,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESIS
+                Welcome To Finnacrest
               </Typography>
             </Toolbar>
           </AppBar>
@@ -828,7 +844,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESIS
+                Welcome To Finnacrest
               </Typography>
             </Toolbar>
           </AppBar>
@@ -872,7 +888,7 @@ fetch(getConfig("getRegistrationFee"), requestOptions)
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESIS
+                Welcome To Finnacrest
               </Typography>
             </Toolbar>
           </AppBar>

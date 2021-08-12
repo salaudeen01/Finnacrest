@@ -65,6 +65,7 @@ class WalletTab extends Component{
       loading: true,
       wallet_bal: 0,
       wallet: [],
+      pay_options:[],
       modal:false,
       modalForm:false, 
       modalFee:false,
@@ -159,6 +160,24 @@ class WalletTab extends Component{
       .catch((error) => {
         if (error === "Unauthorized") {
           this.props.timeOut()
+        }
+    });
+    fetch(getConfig('payment_method'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }console.log(data.data)
+    if(data.success == false){
+      this.setState({pay_options: []});
+    }else{
+      this.setState({pay_options: data.data});  
+    }
+    })
+    .catch(error => {
+      if (error === "Unauthorized") {
+        this.props.timeOut()
         }
     });
      fetch(getConfig("getRegistrationFee"), requestOptions)
@@ -345,7 +364,7 @@ handleCloseModalFee() {
 }
   render(){
     let {theme} = this.props
-    const {pagination,wallet_bal, modal, wallet, modalForm, registrationFee, modalFee,  bank_details,
+    const {pagination,wallet_bal,pay_options, modal, wallet, modalForm, registrationFee, modalFee,  bank_details,
            withdrawData, cards, loading, show, show_withdraw,isButtonDisabled, data, email} = this.state
     return (
       <div className="m-sm-30">
@@ -414,7 +433,7 @@ handleCloseModalFee() {
         open={show}
         scroll="body"
         onClose={this.handleClose} >
-        <AppBar style={{position: "relative"}} color="primary">
+        <AppBar style={{position: "relative", backgroundColor:'green'}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -448,6 +467,21 @@ handleCloseModalFee() {
                   ]}
                   errorMessages={["this field is required"]}
                 />
+                <TextField
+                  className="mb-4 w-full"
+                  id="standard-select-currency"
+                  select
+                  label="Select payment method"
+                  value={data.payment_method}
+                  name="payment_method"
+                  onChange={this.handleChange}
+                  helperText="Please select Payment Method"
+                >
+                  <MenuItem value={""}></MenuItem>
+                  {pay_options.slice(1).map((name, index) => (
+                    <MenuItem value={name.name}>{name.name}</MenuItem>
+                  ))}
+              </TextField>
                 {this.props.savings.savings &&
                 <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                 }              
@@ -459,21 +493,25 @@ handleCloseModalFee() {
                   </Typography>
                 </Card>
               </Grid>
-              <Grid item lg={12} md={12} sm={12} xs={12}>
-                <Typography>Choose Card</Typography>
-                <PayCard cards={cards} value={data.card_id} open={(e)=>this.setState({ data:{...data, card_id:""}})} handleChange={this.handleChange}/>
-              </Grid>
-              {data.card_id == "" && <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Checkbox
-                      name="save_card"
-                      checked={data.save_card}
-                      onChange={this.handleChange}
-                      inputProps={{ 'aria-label': 'primary checkbox' }}
-                  /><Typography variant="caption">Would you like to save your card</Typography>
-                {data.card_id == "" &&
-                  <PayOption callback={this.callback} amount={data.amount} type={'07'} targetId={"00"}/>
-                }
-              </Grid>}
+              {data.payment_method == "Paystack" &&
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Typography>Choose Card</Typography>
+                  <PayCard cards={cards} value={data.card_id} open={(e)=>this.setState({ data:{...data, card_id:""}})} handleChange={this.handleChange}/>
+                </Grid>
+              }
+              {data.card_id == "" && data.payment_method == "Paystack"  && 
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Checkbox
+                        name="save_card"
+                        checked={data.save_card}
+                        onChange={this.handleChange}
+                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                    /><Typography variant="caption">Would you like to save your card</Typography>
+                  {data.card_id == "" && data.payment_method == "Paystack"  && 
+                    <PayOption callback={this.callback} amount={data.amount} type={'07'} targetId={"00"}/>
+                  }
+                </Grid>
+              }
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 {(data.card_id != "" && data.card_id !="0") && 
                 <Button className="uppercase"
@@ -482,8 +520,8 @@ handleCloseModalFee() {
                   onClick={this.saveWallet}
                   disabled={isButtonDisabled}
                   variant="contained"
-                  color="primary"
-                  style={{color:"#fff"}}>
+                  // color="primary"
+                  style={{color:"#fff",background:'green'}}>
                   Add Fund
                 </Button>}
               </Grid>
@@ -498,7 +536,7 @@ handleCloseModalFee() {
       aria-describedby="alert-dialog-slide-description"
         open={show_withdraw}
         onClose={this.handleCloseWithdraw}>
-          <AppBar style={{position: "relative"}} color="primary">
+          <AppBar style={{position: "relative", backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -620,7 +658,7 @@ handleCloseModalFee() {
           fullWidth={true}
           maxWidth={"sm"}
           onClose={this.handleCloseRepayment} >
-          <AppBar style={{position: "relative"}} color="primary">
+          <AppBar style={{position: "relative", backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -687,7 +725,7 @@ handleCloseModalFee() {
           fullWidth={true}
           maxWidth={"sm"}
           onClose={this.handleCloseModalForm} >
-          <AppBar style={{position: "relative"}} color="primary">
+          <AppBar style={{position: "relative", backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -738,7 +776,7 @@ handleCloseModalFee() {
           fullWidth={true}
           maxWidth={"sm"}
           onClose={this.handleCloseModalFee} >
-          <AppBar style={{position: "relative"}} color="primary">
+          <AppBar style={{position: "relative", backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -770,7 +808,7 @@ handleCloseModalFee() {
         aria-describedby="alert-dialog-slide-description"
         open={this.props.savings.proceed}
         onClose={this.handleClosePin}>
-          <AppBar style={{position: "relative"}} color="primary">
+          <AppBar style={{position: "relative", backgroundColor:'green'}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -813,8 +851,8 @@ handleCloseModalFee() {
                   size="large"
                   variant="contained"
                   // disabled={isButtonDisabled}
-                  color="primary"
-                  style={{color:"#fff"}}>
+                  // color="primary"
+                  style={{color:"#fff",background:'green'}}>
                   Withdraw
                 </Button>
               </Grid>

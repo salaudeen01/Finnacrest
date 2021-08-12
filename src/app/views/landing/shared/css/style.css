@@ -265,7 +265,7 @@ button {
      padding: 0 25px;
      color: #000;
      font-size: 16px;
-     line-height: 20px;
+     /* line-height: 20px; */
      text-transform: uppercase;
 }
 
