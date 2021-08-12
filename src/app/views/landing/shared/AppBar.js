@@ -132,7 +132,7 @@ export default function AppAppBar(props) {
             <div class="row">
                <div class="col-md-12">
                   <div class="titlepage">
-                     <h2>About Loaning App</h2>
+                     <h2>About Finnacrest</h2>
                      <span>We are a Financial Cooperative that provides financial solutions to transform businesses and ideas.</span>
                      <br/><span>And also help to achieve your targetted goals.</span>
                   </div>
