@@ -173,7 +173,9 @@ export const numberFormat = (value) =>
 
 export const payID = () => {
   // return "pk_test_c236c6a4facaed7a4cb7968769410ca980c10fdf";
-  return "pk_live_9f94d021a79f4c888fe318dd975c2f074ca5606a";
+  // return "pk_live_9f94d021a79f4c888fe318dd975c2f074ca5606a";
+  return "pk_test_f8bc0c060eb3baad5ff8d8d604d873722db7bbcf";
+
 
 };
 
