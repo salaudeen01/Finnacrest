@@ -1647,7 +1647,7 @@ render(){
               {/* <CloseIcon style={{color:"#fff"}} /> */}
             </IconButton>
             <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-              Welcome To SESIS
+              Welcome To Finnacrest
             </Typography>
           </Toolbar>
         </AppBar>
@@ -1711,7 +1711,7 @@ render(){
               {/* <CloseIcon style={{color:"#fff"}} /> */}
             </IconButton>
             <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-              Welcome To SESIS
+              Welcome To Finnacrest
             </Typography>
           </Toolbar>
         </AppBar>
@@ -1755,7 +1755,7 @@ render(){
               {/* <CloseIcon style={{color:"#fff"}} /> */}
             </IconButton>
             <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-              Welcome To SESIS
+              Welcome To Finnacrest
             </Typography>
           </Toolbar>
         </AppBar>

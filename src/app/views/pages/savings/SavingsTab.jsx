@@ -100,14 +100,14 @@ class SavingsTab extends Component {
                 {/* <CloseIcon /> */}
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESIS
+                Welcome To Finnacrest
               </Typography>
             </Toolbar>
           </AppBar>
           <Card className="px-6 pt-2 pb-4 text-center">
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Typography>
-                  We have INTEREST FREE LOAN which easily accesseable 
+                  We have INTEREST FREE LOAN, which is easily accesseable 
                 </Typography>
                 <Typography>
                   To access our LOAN, Click on the <span style={{color:"green"}}>Member button</span> to continue
@@ -167,7 +167,7 @@ class SavingsTab extends Component {
                 <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESIS
+                Welcome To Finnacrest
               </Typography>
             </Toolbar>
           </AppBar>
@@ -211,7 +211,7 @@ class SavingsTab extends Component {
                 <CloseIcon style={{color:'#fff'}}/>
               </IconButton>
               <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-                Welcome To SESIS
+                Welcome To Finnacrest
               </Typography>
             </Toolbar>
           </AppBar>
