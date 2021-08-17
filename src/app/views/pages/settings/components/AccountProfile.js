@@ -117,6 +117,13 @@ render(){
               {this.props.data.first_name +" "+ this.props.data.last_name}
             </Typography>
             <Typography
+              gutterBottom
+              variant="h6"
+              className="text-success"
+            >
+              FIN-{this.props.data.user_id}
+            </Typography>
+            <Typography
               variant="body1"
             >
               {this.props.data.email}
