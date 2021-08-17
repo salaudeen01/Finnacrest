@@ -1320,7 +1320,7 @@ function saveWallet(user) {
       (user) => {
         
         if(user.success){          
-          history.push("/wallet");
+          // history.push("/wallet");
           dispatch(success(user.card_id));
           localStorage.setItem("card_id", user.card_id)
           dispatch(alertActions.continues(user.message));

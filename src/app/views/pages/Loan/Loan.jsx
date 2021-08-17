@@ -903,7 +903,17 @@ handleCreateReplace = (request_id, id) => {
   this.setState({showReplace: true, request_id, code:id, replace_data:{...replace_data, id:id, request_id:request_id}});
 }
 handleCreateLoan = () => {
-  this.setState({showLoan: true});
+  if(this.state.loan_avail_amount){
+    this.setState({showLoan: true});
+  }else{
+    swal({
+      title: "Low Guanrantable amout",
+      text: "Your guarantable amount must be at least half of your proposed loan request",
+      icon: "warning",
+      buttons: true,
+      successMode: true,
+    })
+  }
 }
 handleShowAction = (group_id, request_id, code, group_member_status, group_request_status) => {
   this.setState({showAction:true, group_id, request_id, code, group_member_status, group_request_status })
@@ -940,22 +950,29 @@ handleCreateDetails = (id) => {
   this.setState({showDetails: true});
 }
 handleLoanFormFee = () => {
-  const {LoanFee} = this.state
-  swal({
-    title: "Loan Form Fee,",
-    text: "To make a loan request, you are required to pay"+' '+ numberFormat(LoanFee)+' '+ "as Loan Form Fee",
-    icon: "warning",
-    buttons: true,
-    successMode: true,
-  })
-  .then((willDelete) => {
-    if (willDelete) {
-      this.setState({LoanFormPayment: true})
-      // swal("Loading...",{   
-      //   buttons:false
-      // });
-    }
-  });
+  const {LoanFee, data, loan_avail_amount} = this.state
+  if(data.loan_amount/2 <= loan_avail_amount){
+    swal({
+      title: "Loan Form Fee,",
+      text: "To make a loan request, you are required to pay"+' '+ numberFormat(LoanFee)+' '+ "as Loan Form Fee",
+      icon: "warning",
+      buttons: true,
+      successMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+          this.setState({LoanFormPayment: true})
+      }
+    });
+  }else{
+    swal({
+      title: "Loan Form Fee,",
+      text: `Your guaranteed amount of ${numberFormat(loan_avail_amount)} is not sufficient to take this loan, you are only entitled to loan request of at most ${numberFormat(loan_avail_amount*2)}`,
+      icon: "warning",
+      buttons: true,
+      successMode: true,
+    })
+  }
 }
 handleCreateManageLoan = (id) => {
   this.setState({loading:true})
@@ -1084,22 +1101,15 @@ render(){
               </div>
             </Grid> 
             {share_balance < shareMinFee ?
-                <Button className="uppercase"
-                  size="large"
-                  className="ml-3" 
-                  variant="contained"
-                  style={{backgroundColor:"#1999ff", color:"white"}}
-                  onClick={this.handleShareOpen}>
-                    Request Loan
+              <Button className="uppercase"
+                size="large"
+                className="ml-3" 
+                variant="contained"
+                style={{backgroundColor:"#1999ff", color:"white"}}
+                onClick={this.handleShareOpen}>
+                  Request Loan
               </Button>:
               <Grid item lg={5} md={12} sm={12} xs={12}>
-                {/* <Button className="uppercase"
-                  size="large"
-                  variant="contained"
-                  style={{backgroundColor:"#1999ff", color:"white"}}
-                  onClick={this.handleCreateGroup}>
-                   Create Group
-                </Button> */}
                 <Button className="uppercase"
                   size="large"
                   variant="outlined"
@@ -1118,86 +1128,42 @@ render(){
   <></>}
 
 
-    {/* Quick Loan Dialog Start */}
-    <Dialog
-      open={showLoan}
-      onClose={this.handleCloseLoan}
-      TransitionComponent={Transition}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description">
-      <AppBar style={{position: "relative", backgroundColor:'green'}}     
-      >
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={this.handleCloseLoan}
-            aria-label="Close"
-          >
-            <CloseIcon style={{color:"#fff"}} />
-          </IconButton>
-          <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-            Create Loan Request
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <ValidatorForm
-        ref="form"
-        onError={errors => null}>
-        <Card className="px-6 pt-2 pb-4">
-            <Grid container spacing={2}>
-              <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <NumberFormat
-                    value={data.loan_amount}
-                    thousandSeparator={true} 
-                      // prefix={'₦'}
-                    label="Loan Amount"
-                    name="loan_amount"
-                    className="mb-4 w-full"
-                    onChange={this.handleChangeLoans}
-                    customInput={TextValidator}
-                    validators={[
-                      "required"
-                    ]}
-                    errorMessages={["this field is required"]}
-                  />
-                  <TextField
-                    className="mb-4 w-full"
-                    select
-                    label="Select Loan Duration"
-                    name="payment_duration"
-                    value={data.payment_duration}
-                    onChange={this.handleChangeLoans}
-                    //  helperText="Please select Loan Group"
-                  >
-                      <MenuItem value={""}>Select Loan Duration</MenuItem>
-                      <MenuItem value={"1"}>{(1) +" "+ 'month'}</MenuItem>
-                    {arr.map((name, index) => (
-                      <MenuItem value={name}>{(name) +" "+ 'months'}</MenuItem>
-                    ))}
-                  </TextField>
-               
-                  <TextField
-                    className="mb-4 w-full"
-                    select
-                    label="Select Frequency"
-                    name="frequency"
-                    value={data.frequency}
-                    onChange={this.handleChangeLoans}
-                    // helperText="Please select frequency"
-                  >
-                      <MenuItem value={""}>Select Frequency</MenuItem>
-                      <MenuItem value={"Weekly"}> Weekly</MenuItem>
-                      <MenuItem value={"Monthly"}> Monthly </MenuItem>
-                  </TextField>
-                
-                 {data.loan_amount && data.frequency && data.payment_duration &&
-                  <NumberFormat
-                      value={data.repayment_amount}
+      {/* Quick Loan Dialog Start */}
+      <Dialog
+        open={showLoan}
+        onClose={this.handleCloseLoan}
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description">
+        <AppBar style={{position: "relative", backgroundColor:'green'}}     
+        >
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.handleCloseLoan}
+              aria-label="Close"
+            >
+              <CloseIcon style={{color:"#fff"}} />
+            </IconButton>
+            <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+              Create Loan Request
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <ValidatorForm
+          ref="form"
+          onError={errors => null}>
+          <Card className="px-6 pt-2 pb-4">
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <p className="text-danger">Note* A sum of {numberFormat(LoanFee)} will be charge as loan form fee</p>
+                    <NumberFormat
+                      value={data.loan_amount}
                       thousandSeparator={true} 
                         // prefix={'₦'}
-                      label={data.frequency? data.frequency +" Repayment Amount": "Frequent Repayment" +" Amount"}
-                      name="repayment_amount"
+                      label="Loan Amount"
+                      name="loan_amount"
                       className="mb-4 w-full"
                       onChange={this.handleChangeLoans}
                       customInput={TextValidator}
@@ -1205,211 +1171,227 @@ render(){
                         "required"
                       ]}
                       errorMessages={["this field is required"]}
+                    />
+                    {data.loan_amount > loan_avail_amount*2 && <p className="text-danger">Loan amount must not be greater than {numberFormat(loan_avail_amount*2)}</p>}
+                    <TextField
+                      className="mb-4 w-full"
+                      select
+                      label="Select Loan Duration"
+                      name="payment_duration"
+                      value={data.payment_duration}
+                      onChange={this.handleChangeLoans}
+                      //  helperText="Please select Loan Group"
+                    >
+                        <MenuItem value={""}>Select Loan Duration</MenuItem>
+                        <MenuItem value={"1"}>{(1) +" "+ 'month'}</MenuItem>
+                      {arr.map((name, index) => (
+                        <MenuItem value={name}>{(name) +" "+ 'months'}</MenuItem>
+                      ))}
+                    </TextField>
+                
+                    <TextField
+                      className="mb-4 w-full"
+                      select
+                      label="Select Frequency"
+                      name="frequency"
+                      value={data.frequency}
+                      onChange={this.handleChangeLoans}
+                      // helperText="Please select frequency"
+                    >
+                        <MenuItem value={""}>Select Frequency</MenuItem>
+                        <MenuItem value={"Weekly"}> Weekly</MenuItem>
+                        <MenuItem value={"Monthly"}> Monthly </MenuItem>
+                    </TextField>
+                  
+                  {data.loan_amount && data.frequency && data.payment_duration &&
+                    <NumberFormat
+                        value={data.repayment_amount}
+                        thousandSeparator={true} 
+                          // prefix={'₦'}
+                        label={data.frequency? data.frequency +" Repayment Amount": "Frequent Repayment Amount"}
+                        name="repayment_amount"
+                        className="mb-4 w-full"
+                        // onChange={this.handleChangeLoans}
+                        customInput={TextValidator}
+                        validators={[
+                          "required"
+                        ]}
+                        errorMessages={["this field is required"]}
+                        disabled
+                    />}
+                  {data.loan_amount && data.frequency &&
+                    <TextValidator
+                    className="mb-4 w-full"
+                    onChange={this.handleChangeLoans}
+                    type="date"
+                    name="start_date"
+                    helperText="Start Date"
+                    value={data.start_date}
+                    validators={[
+                      "required"
+                    ]}
+                    errorMessages={["this field is required"]}
                   />}
-                {data.loan_amount && data.frequency &&
-                  <TextValidator
-                  className="mb-4 w-full"
-                  onChange={this.handleChangeLoans}
-                  type="date"
-                  name="start_date"
-                  helperText="Start Date"
-                  value={data.start_date}
-                  validators={[
-                    "required"
-                  ]}
-                  errorMessages={["this field is required"]}
-                />}
-              {data.loan_amount > loan_avail_amount &&
+                {data.loan_amount > loan_avail_amount &&
+                  <TextField
+                    className="mb-4 w-full"
+                    select
+                    label="Select Loan Guarantor"
+                    name="loan_group"
+                    value={data.loan_group}
+                    onChange={this.handleChangeLoans}
+                    //  helperText="Please select Loan Guarantor"
+                  >
+                    <MenuItem value={"Member"}>Member</MenuItem>
+                    {/* <MenuItem value={"Loan Group"}> Loan Group</MenuItem> */}
+                  </TextField>
+                }
+              {data.loan_group == "Loan Group" &&
                 <TextField
                   className="mb-4 w-full"
                   select
-                  label="Select Loan Guarantor"
+                  label="Select Loan Group"
                   name="loan_group"
                   value={data.loan_group}
                   onChange={this.handleChangeLoans}
-                  //  helperText="Please select Loan Guarantor"
+                  //  helperText="Please select Loan Group"
                 >
-                  <MenuItem value={"Member"}>Member</MenuItem>
-                  {/* <MenuItem value={"Loan Group"}> Loan Group</MenuItem> */}
+                    <MenuItem value={""}>Select Loan Group</MenuItem>
+                  {group_name.map((name, index) => (
+                    <MenuItem value={name.group_name}>{name.group_name}</MenuItem>
+                  ))}
                 </TextField>
               }
-             {data.loan_group == "Loan Group" &&
-               <TextField
-                 className="mb-4 w-full"
-                 select
-                 label="Select Loan Group"
-                 name="loan_group"
-                 value={data.loan_group}
-                 onChange={this.handleChangeLoans}
-                //  helperText="Please select Loan Group"
-               >
-                   <MenuItem value={""}>Select Loan Group</MenuItem>
-                 {group_name.map((name, index) => (
-                   <MenuItem value={name.group_name}>{name.group_name}</MenuItem>
-                 ))}
-               </TextField>
-             }
-             
-             {data.loan_group == "Member" &&
-             <>
-                <Typography color="black">
-                Remaining Guarante Amount : {numberFormat(bal)}
-              </Typography>
-               <Grid container spacing={2}>
-               {formList.map((dat, index)=>(
-               <> 
-               <Grid item lg={5} md={5} sm={5} xs={5}>
-              <Autocomplete
-                freeSolo
-                id="free-solo-2-demo"
-                disableClearable
-                onChange={(event, value) => this.handleChangeUsers(event, value, index)}
-                options={users.map((option) => (option.first_name + " " + option.last_name)+" "+(option.email))}
-                renderInput={(params) => (
-                  <TextValidator
-                    {...params}
-                    onChange={(event, value) => this.handleChangeUsers(event, value, index)}
-                    label="Search users"
-                    className="mb-1 w-full"
-                    // helperText="Search users"
-                    InputProps={{ ...params.InputProps, type: 'search' }}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item lg={5} md={5} sm={5} xs={5}>
-                <TextValidator
-                  // fullWidth
-                  // margin="normal"
-                  // helperText={"Remaining Guaranteed Amount" + bal}
-                  label="Guarantee Amount"
-                  name="guaranteed_amount"
-                  onChange={(e)=>this.handleDaChange(e, index)}
-                  value={dat.guaranteed_amount}
-                  type="number"
-                  className="mb-1 w-full"
-                  validators={[
-                      "required"
-                    ]}
+              
+              {data.loan_group == "Member" &&
+              <>
+                  <Typography color="black">
+                  Remaining Guarante Amount : {numberFormat(bal)}
+                </Typography>
+                <Grid container spacing={2}>
+                {formList.map((dat, index)=>(
+                <> 
+                <Grid item lg={5} md={5} sm={5} xs={5}>
+                <Autocomplete
+                  freeSolo
+                  id="free-solo-2-demo"
+                  disableClearable
+                  onChange={(event, value) => this.handleChangeUsers(event, value, index)}
+                  options={users.map((option) => (option.first_name + " " + option.last_name)+" "+(option.email))}
+                  renderInput={(params) => (
+                    <TextValidator
+                      {...params}
+                      onChange={(event, value) => this.handleChangeUsers(event, value, index)}
+                      label="Search users"
+                      className="mb-1 w-full"
+                      // helperText="Search users"
+                      InputProps={{ ...params.InputProps, type: 'search' }}
+                    />
+                  )}
                 />
-            </Grid>
-            <Grid item lg={2} md={2} sm={2} xs={2}>
-              {index != 0 &&<Button margin="normal" type="button" variant="contained" 
-              style={{background:"red",color:"white"}} onClick={()=>this.handleRemove(index)} >Remove</Button>}
-            </Grid>
-               </>))}                          
-               <Button variant="contained" className="mb-4" type="button" style={{background:"blue",color:"white"}} 
-               onClick={this.handleIncrement} >Add More Guarantor</Button>
               </Grid>
-             </>
-             }
-            
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                <Typography>Choose Card</Typography>
-                <PayCard cards={cards} id={id} value={data.card_id} open={this.handleQuickSave} handleChange={this.handleChangeLoans}/>
+              <Grid item lg={5} md={5} sm={5} xs={5}>
+                  <TextValidator
+                    // fullWidth
+                    // margin="normal"
+                    // helperText={"Remaining Guaranteed Amount" + bal}
+                    label="Guarantee Amount"
+                    name="guaranteed_amount"
+                    onChange={(e)=>this.handleDaChange(e, index)}
+                    value={dat.guaranteed_amount}
+                    type="number"
+                    className="mb-1 w-full"
+                    validators={[
+                        "required"
+                      ]}
+                  />
+              </Grid>
+              <Grid item lg={2} md={2} sm={2} xs={2}>
+                {index != 0 &&<Button margin="normal" type="button" variant="contained" 
+                style={{background:"red",color:"white"}} onClick={()=>this.handleRemove(index)} >Remove</Button>}
+              </Grid>
+                </>))}                          
+                <Button variant="contained" className="mb-4" type="button" style={{background:"blue",color:"white"}} 
+                onClick={this.handleIncrement} >Add More Guarantor</Button>
                 </Grid>
+              </>
+              }
+              
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Typography>Choose Card</Typography>
+                  <PayCard cards={cards} id={id} value={data.card_id} open={this.handleQuickSave} handleChange={this.handleChangeLoans}/>
+                  </Grid>
 
-                {this.props.savings && data.card_id &&
-                <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                }
-                <Button className="uppercase"
+                  {this.props.savings && data.card_id &&
+                  <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                  }
+                  <Button className="uppercase"
                     type="submit"
                     size="large"
                     variant="contained"
                     onClick={this.handleLoanFormFee}                   
                     style={{color:"white",backgroundColor:'green'}}>Apply Loan
-                </Button>
-                
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </Card>
-      </ValidatorForm>
-    </Dialog>
-    {/* Quick Loan Dialog End */}
+            </Card>
+        </ValidatorForm>
+      </Dialog>
+      {/* Quick Loan Dialog End */}
 
-    {/* Loan group Dialog Start */}
-    <Dialog
-      open={showGroup}
-      onClose={this.handleCloseGroup}      
-      TransitionComponent={Transition}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description">
-      <AppBar style={{position: "relative"}}
-      color="primary"      
-      >
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={this.handleCloseGroup}
-            aria-label="Close"
-          >
-            <CloseIcon style={{color:"#fff"}} />
-          </IconButton>
-          <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-            Create Group
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <ValidatorForm
-        ref="form"
-        onSubmit={this.handleSubmitGroup}
-        onError={errors => null}>
-      <Card className="px-6 pt-2 pb-4">
-          <Grid container spacing={2}>
-            <Grid item lg={12} md={12} sm={12} xs={12}>
-              <TextValidator
-                className="mb-4 w-full"
-                label="Enter Group Name"
-                onChange={this.handleChangeGroup}
-                type="text"
-                name="group_name"
-                value={group_data.group_name}
-                validators={[
-                  "required"
-                ]}
-                errorMessages={["this field is required"]}
-              />
-              </Grid>
-            <Grid container spacing={2} item lg={12} md={12} sm={12} xs={12}>
-              <Grid item lg={6} md={6} sm={6} xs={6}>
+      {/* Loan group Dialog Start */}
+      <Dialog
+        open={showGroup}
+        onClose={this.handleCloseGroup}      
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description">
+        <AppBar style={{position: "relative"}}
+        color="primary"      
+        >
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.handleCloseGroup}
+              aria-label="Close"
+            >
+              <CloseIcon style={{color:"#fff"}} />
+            </IconButton>
+            <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+              Create Group
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <ValidatorForm
+          ref="form"
+          onSubmit={this.handleSubmitGroup}
+          onError={errors => null}>
+        <Card className="px-6 pt-2 pb-4">
+            <Grid container spacing={2}>
+              <Grid item lg={12} md={12} sm={12} xs={12}>
                 <TextValidator
                   className="mb-4 w-full"
-                  label="Member 2 Name"
+                  label="Enter Group Name"
                   onChange={this.handleChangeGroup}
                   type="text"
-                  name="name2"
-                  value={group_data.name2}
+                  name="group_name"
+                  value={group_data.group_name}
                   validators={[
                     "required"
                   ]}
                   errorMessages={["this field is required"]}
                 />
-              </Grid>
-              <Grid item lg={6} md={6} sm={6} xs={6}>
-                <TextValidator
-                  className="mb-4 w-full"
-                  label="Member 2 email"
-                  onChange={this.handleChangeGroup}
-                  type="text"
-                  value={group_data.email2}
-                  name="email2"
-                  validators={[
-                    "required"
-                  ]}
-                  errorMessages={["this field is required"]}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={2} item lg={12} md={12} sm={12} xs={12}>
-              <Grid item lg={6} md={6} sm={6} xs={6}>
+                </Grid>
+              <Grid container spacing={2} item lg={12} md={12} sm={12} xs={12}>
+                <Grid item lg={6} md={6} sm={6} xs={6}>
                   <TextValidator
                     className="mb-4 w-full"
-                    label="Member 3 Name"
+                    label="Member 2 Name"
                     onChange={this.handleChangeGroup}
                     type="text"
-                    name="name3"
-                    value={group_data.name3}
+                    name="name2"
+                    value={group_data.name2}
                     validators={[
                       "required"
                     ]}
@@ -1419,11 +1401,11 @@ render(){
                 <Grid item lg={6} md={6} sm={6} xs={6}>
                   <TextValidator
                     className="mb-4 w-full"
-                    label="Member 3 email"
+                    label="Member 2 email"
                     onChange={this.handleChangeGroup}
                     type="text"
-                    value={group_data.email3}
-                    name="email3"
+                    value={group_data.email2}
+                    name="email2"
                     validators={[
                       "required"
                     ]}
@@ -1431,84 +1413,114 @@ render(){
                   />
                 </Grid>
               </Grid>
-            <Grid container spacing={2} item lg={12} md={12} sm={12} xs={12}>
-              <Grid item lg={6} md={6} sm={6} xs={6}>
-                <TextValidator
-                  className="mb-4 w-full"
-                  label="Member 4 Name"
-                  onChange={this.handleChangeGroup}
-                  type="text"
-                  name="name4"
-                  value={group_data.name4}
-                  validators={[
-                    "required"
-                  ]}
-                  errorMessages={["this field is required"]}
-                />
-              </Grid>
-              <Grid item lg={6} md={6} sm={6} xs={6}>
-                <TextValidator
-                  className="mb-4 w-full"
-                  label="Member 4 email"
-                  onChange={this.handleChangeGroup}
-                  type="text"
-                  value={group_data.email4}
-                  name="email4"
-                  validators={[
-                    "required"
-                  ]}
-                  errorMessages={["this field is required"]}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={2} item lg={12} md={12} sm={12} xs={12}>
-              <Grid item lg={6} md={6} sm={6} xs={6}>
-                <TextValidator
-                  className="mb-4 w-full"
-                  label="Member 5 Name"
-                  onChange={this.handleChangeGroup}
-                  type="text"
-                  name="name5"
-                  value={group_data.name5}
-                  validators={[
-                    "required"
-                  ]}
-                  errorMessages={["this field is required"]}
-                />
-              </Grid>
-              <Grid item lg={6} md={6} sm={6} xs={6}>
+              <Grid container spacing={2} item lg={12} md={12} sm={12} xs={12}>
+                <Grid item lg={6} md={6} sm={6} xs={6}>
+                    <TextValidator
+                      className="mb-4 w-full"
+                      label="Member 3 Name"
+                      onChange={this.handleChangeGroup}
+                      type="text"
+                      name="name3"
+                      value={group_data.name3}
+                      validators={[
+                        "required"
+                      ]}
+                      errorMessages={["this field is required"]}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={6} xs={6}>
+                    <TextValidator
+                      className="mb-4 w-full"
+                      label="Member 3 email"
+                      onChange={this.handleChangeGroup}
+                      type="text"
+                      value={group_data.email3}
+                      name="email3"
+                      validators={[
+                        "required"
+                      ]}
+                      errorMessages={["this field is required"]}
+                    />
+                  </Grid>
+                </Grid>
+              <Grid container spacing={2} item lg={12} md={12} sm={12} xs={12}>
+                <Grid item lg={6} md={6} sm={6} xs={6}>
                   <TextValidator
                     className="mb-4 w-full"
-                    label="Member 5 email"
+                    label="Member 4 Name"
                     onChange={this.handleChangeGroup}
                     type="text"
-                    value={group_data.email5}
-                    name="email5"
+                    name="name4"
+                    value={group_data.name4}
                     validators={[
                       "required"
                     ]}
                     errorMessages={["this field is required"]}
                   />
+                </Grid>
+                <Grid item lg={6} md={6} sm={6} xs={6}>
+                  <TextValidator
+                    className="mb-4 w-full"
+                    label="Member 4 email"
+                    onChange={this.handleChangeGroup}
+                    type="text"
+                    value={group_data.email4}
+                    name="email4"
+                    validators={[
+                      "required"
+                    ]}
+                    errorMessages={["this field is required"]}
+                  />
+                </Grid>
+              </Grid>
+              <Grid container spacing={2} item lg={12} md={12} sm={12} xs={12}>
+                <Grid item lg={6} md={6} sm={6} xs={6}>
+                  <TextValidator
+                    className="mb-4 w-full"
+                    label="Member 5 Name"
+                    onChange={this.handleChangeGroup}
+                    type="text"
+                    name="name5"
+                    value={group_data.name5}
+                    validators={[
+                      "required"
+                    ]}
+                    errorMessages={["this field is required"]}
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={6} xs={6}>
+                    <TextValidator
+                      className="mb-4 w-full"
+                      label="Member 5 email"
+                      onChange={this.handleChangeGroup}
+                      type="text"
+                      value={group_data.email5}
+                      name="email5"
+                      validators={[
+                        "required"
+                      ]}
+                      errorMessages={["this field is required"]}
+                    />
+                </Grid>
+              </Grid>
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                {this.props.savings &&
+                <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                }
+                <Button className="uppercase"
+                    type="submit"
+                    size="large"
+                    variant="contained"
+                  style={{backgroundColor:"#04956a", color:"white", width:"100%"}}>Create Loan Group</Button>
               </Grid>
             </Grid>
-            <Grid item lg={12} md={12} sm={12} xs={12}>
-              {this.props.savings &&
-               <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-              }
-              <Button className="uppercase"
-                  type="submit"
-                  size="large"
-                  variant="contained"
-                 style={{backgroundColor:"#04956a", color:"white", width:"100%"}}>Create Loan Group</Button>
-            </Grid>
-          </Grid>
-        </Card>
-      </ValidatorForm>
-    </Dialog>
-    {/* Loan group Dialog End */}
+          </Card>
+        </ValidatorForm>
+      </Dialog>
+      {/* Loan group Dialog End */}
 
-    {/* Quick Save Dialog Start */}
-    <Dialog
+      {/* Quick Save Dialog Start */}
+      <Dialog
         TransitionComponent={Transition}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description" 
@@ -1625,10 +1637,10 @@ render(){
         </List>
         </Card>
       </Dialog>
-    {/* Quick Save Dialog End */}
+      {/* Quick Save Dialog End */}
 
-    {/* Loan repayment Dialog Start */}
-    <Dialog
+      {/* Loan repayment Dialog Start */}
+      <Dialog
         open={modal}
         fullWidth={true}
         maxWidth={"sm"}
@@ -1694,8 +1706,9 @@ render(){
             </Card>
       </Dialog>
       {/* Loan repayment Dialog End */}
+
       {/* Loan repayment Dialog Start */}
-    <Dialog
+      <Dialog
         open={modalForm}
         fullWidth={true}
         maxWidth={"sm"}
@@ -1732,11 +1745,12 @@ render(){
                   variant="outlined"> Continue
               </Button>
             </Grid> <br/>
-              </Card>
+          </Card>
       </Dialog>
       {/* Loan repayment Dialog End */}
+      
       {/* Loan repayment Dialog Start */}
-    <Dialog
+      <Dialog
         open={modalFee}
         fullWidth={true}
         maxWidth={"sm"}
@@ -1767,249 +1781,249 @@ render(){
       </Dialog>
       {/* Loan repayment Dialog End */}
 
-    {/* Loan repayment Dialog Start */}
-    <Dialog
-      TransitionComponent={Transition}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
-      open={shareFee}
-      fullWidth={true}
-      maxWidth={"sm"}
-      onClose={this.handleShareClose} >
-      <AppBar style={{position: "relative"}} color="primary">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="white"
-            className="text-white"
-            onClick={this.handleShareClose}
-            aria-label="Close"
-          >
-            <CloseIcon />
-          </IconButton>
-          <Typography variant="h6" className="text-white text-center" style={{ flex: 1, color:"#fff"}}>
-                Shareholding Funding
-          </Typography>
-        </Toolbar>
-      </AppBar> 
-      <Card className="px-1 pt-2 pb-4">
-        <Grid item lg={12} md={12} sm={12} xs={12}>                      
-          <Typography variant="h6" className="text-primary text-center" style={{ flex: 1,}}>
-              A minimum of {numberFormat(shareMinFee)} is required in your Shareholding before you can Request for Loan 
-            </Typography>             
-            <ShareholdingFee />
-          </Grid>
-        </Card>
-    </Dialog>
-    {/* Loan repayment Dialog End */}
+      {/* Loan repayment Dialog Start */}
+      <Dialog
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+        open={shareFee}
+        fullWidth={true}
+        maxWidth={"sm"}
+        onClose={this.handleShareClose} >
+        <AppBar style={{position: "relative"}} color="primary">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="white"
+              className="text-white"
+              onClick={this.handleShareClose}
+              aria-label="Close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" className="text-white text-center" style={{ flex: 1, color:"#fff"}}>
+                  Shareholding Funding
+            </Typography>
+          </Toolbar>
+        </AppBar> 
+        <Card className="px-1 pt-2 pb-4">
+          <Grid item lg={12} md={12} sm={12} xs={12}>                      
+            <Typography variant="h6" className="text-primary text-center" style={{ flex: 1,}}>
+                A minimum of {numberFormat(shareMinFee)} is required in your Shareholding before you can Request for Loan 
+              </Typography>             
+              <ShareholdingFee />
+            </Grid>
+          </Card>
+      </Dialog>
+      {/* Loan repayment Dialog End */}
 
-    {/* Replace or Invite new Member Dialog Start */}
-    <Dialog
-      open={showReplace}
-      onClose={this.handleCloseReplace} 
-      TransitionComponent={Transition}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description">
-      <AppBar style={{position: "relative",backgroundColor:'green'}}
-      >
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={this.handleCloseReplace}
-            aria-label="Close" >
-            <CloseIcon style={{color:"#fff"}} />
-          </IconButton>
-          <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-            {code == 0? "Replace Invite":"Replace Member "} 
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <ValidatorForm
-        ref="form"
-        onSubmit={this.handleSubmitReplace}
-        onError={errors => null}>
+      {/* Replace or Invite new Member Dialog Start */}
+      <Dialog
+        open={showReplace}
+        onClose={this.handleCloseReplace} 
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description">
+        <AppBar style={{position: "relative",backgroundColor:'green'}}
+        >
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.handleCloseReplace}
+              aria-label="Close" >
+              <CloseIcon style={{color:"#fff"}} />
+            </IconButton>
+            <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+              {code == 0? "Replace Invite":"Replace Member "} 
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <ValidatorForm
+          ref="form"
+          onSubmit={this.handleSubmitReplace}
+          onError={errors => null}>
+          <Card className="px-6 pt-2 pb-4">
+            <Grid container spacing={2}>
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextValidator
+                  className="mb-4 w-full"
+                  label="Member Name"
+                  onChange={this.handleChangeReplace}
+                  type="text"
+                  value={replace_data.name}
+                  name="name"
+                  validators={[
+                    "required"
+                  ]}
+                  errorMessages={["this field is required"]}
+                />
+                <TextValidator
+                  className="mb-4 w-full"
+                  label="Member Email"
+                  onChange={this.handleChangeReplace}
+                  type="email"
+                  value={replace_data.email}
+                  name="email"
+                  validators={[
+                    "required"
+                  ]}
+                  errorMessages={["this field is required"]}
+                />
+                {this.props.savings &&
+                <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                }
+                <Button className="uppercase"
+                  type="submit"
+                  size="large"
+                  variant="contained"
+                  style={{backgroundColor:"#04956a", color:"white"}}>
+                    {code == 0? "Replace Invite":"Replace Member "} 
+                </Button>
+              </Grid>
+            </Grid>
+          </Card>
+        </ValidatorForm>
+      </Dialog>
+      {/* Replace or Invite new Member Dialog End */}
+
+      {/* Loan Manage Dialog Start */}
+      <Dialog
+        open={showManageLoan}
+        onClose={this.handleCloseManageLoan}
+        scroll="body"
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description">
+        <AppBar style={{position: "relative"}}
+        color="primary">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.handleCloseManageLoan}
+              aria-label="Close">
+              <CloseIcon style={{color:"#fff"}} />
+            </IconButton>
+            <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+              Loan Details
+            </Typography>
+          </Toolbar>
+        </AppBar>
         <Card className="px-6 pt-2 pb-4">
           <Grid container spacing={2}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
-                <TextValidator
-                className="mb-4 w-full"
-                label="Member Name"
-                onChange={this.handleChangeReplace}
-                type="text"
-                value={replace_data.name}
-                name="name"
-                validators={[
-                  "required"
-                ]}
-                errorMessages={["this field is required"]}
-              />
-              <TextValidator
-                className="mb-4 w-full"
-                label="Member Email"
-                onChange={this.handleChangeReplace}
-                type="email"
-                value={replace_data.email}
-                name="email"
-                validators={[
-                  "required"
-                ]}
-                errorMessages={["this field is required"]}
-              />
-              {this.props.savings &&
-              <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+              {loading ?
+              <Typography>Loading...</Typography>:
+              <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+                <LoanDetailsCard 
+                data={loan_approval} 
+                approvals={repayment_details} 
+                resend_notif={()=>this.confirmAlert("Resend Loan Notification", 0, data.loan_group, data.user_id)} />
+              </div>
               }
-              <Button className="uppercase"
-                type="submit"
-                size="large"
-                variant="contained"
-                style={{backgroundColor:"#04956a", color:"white"}}>
-                  {code == 0? "Replace Invite":"Replace Member "} 
-              </Button>
             </Grid>
           </Grid>
         </Card>
-      </ValidatorForm>
-    </Dialog>
-    {/* Replace or Invite new Member Dialog End */}
+      </Dialog>
+      {/* Loan Manage Dialog End */}
 
-    {/* Loan Manage Dialog Start */}
-    <Dialog
-      open={showManageLoan}
-      onClose={this.handleCloseManageLoan}
-      scroll="body"
-      TransitionComponent={Transition}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description">
-      <AppBar style={{position: "relative"}}
-      color="primary">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={this.handleCloseManageLoan}
-            aria-label="Close">
-            <CloseIcon style={{color:"#fff"}} />
-          </IconButton>
-          <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-            Loan Details
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Card className="px-6 pt-2 pb-4">
-        <Grid container spacing={2}>
-          <Grid item lg={12} md={12} sm={12} xs={12}>
-            {loading ?
-            <Typography>Loading...</Typography>:
-            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
-              <LoanDetailsCard 
-              data={loan_approval} 
-              approvals={repayment_details} 
-              resend_notif={()=>this.confirmAlert("Resend Loan Notification", 0, data.loan_group, data.user_id)} />
-            </div>
-            }
+      {/* Show Group Action Dialog Start */}
+      <Dialog onClose={this.handleCloseAction} 
+        aria-labelledby="simple-dialog-title" open={showAction}
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description">
+        <AppBar style={{position: "relative",backgroundColor:'green'}}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.handleCloseAction}
+              aria-label="Close"
+            >
+              <CloseIcon style={{color:"#fff"}} />
+            </IconButton>
+            <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+              Actions
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        {/* <DialogTitle id="simple-dialog-title"></DialogTitle> */}
+        <List>
+            {group_request_status != 1 && <>
+            <ListItem button onClick={()=>this.confirmAlert("join", code, 0, 0)}>
+              <ListItemAvatar>
+                <Avatar style={{backgroundColor: blue[100], color: blue[600]}}>
+                  <DoneAll />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Join Group" />
+            </ListItem>
+            <ListItem button onClick={()=>this.confirmAlert("reject", request_id, 0, 0)}>
+              <ListItemAvatar>
+                <Avatar style={{ backgroundColor: blue[100], color: blue[600]}}>
+                  <CloseIcon style={{color:"#fff"}} />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Reject Group" />
+            </ListItem>
+            </>}
+            {(group_member_status != 0) && (group_member_status != null)  &&
+            <ListItem button onClick={()=>this.confirmAlert("exit", group_id, 0, 0)}>
+              <ListItemAvatar>
+                <Avatar style={{ backgroundColor: blue[100], color: blue[600]}}>
+                  <ExitToApp />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Exit Group" />
+            </ListItem>}
+        </List>
+      </Dialog>
+      {/* Show Group Action Dialog End */}
+
+      {/* Loan Approval Dialog Start */}
+      <Dialog
+        open={showLoanApproval}
+        onClose={this.handleCloseApproval}
+        scroll="body"
+        TransitionComponent={Transition}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description">
+        <AppBar style={{position: "relative"}} color="primary">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.handleCloseApproval}
+              aria-label="Close">
+              <CloseIcon style={{color:"#fff"}} />
+            </IconButton>
+            <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+              Loan Approvals
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Card className="px-6 pt-2 pb-4">
+          <Grid container spacing={2}>
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+              {loading ?
+              <Typography>Loading...</Typography>:
+              <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+                { loan_activities.length == 0?
+                  <Typography variant="p" className="font-bold">You currently do not have any loan that require your approval</Typography>:
+                  loan_activities.map((data, index) =>(
+                  <LoanApprovalCard key={index} data={data}
+                  accept={()=>this.confirmAlert("accept", 0, data.loan_group, data.loan_id)} 
+                  decline={()=>this.confirmAlert("decline", 0, data.loan_group, data.loan_id)}/>
+                ))}
+              </div>
+              }
+            </Grid>
           </Grid>
-        </Grid>
-      </Card>
-    </Dialog>
-    {/* Loan Manage Dialog End */}
-
-    {/* Show Group Action Dialog Start */}
-    <Dialog onClose={this.handleCloseAction} 
-    aria-labelledby="simple-dialog-title" open={showAction}
-    TransitionComponent={Transition}
-    aria-labelledby="alert-dialog-slide-title"
-    aria-describedby="alert-dialog-slide-description">
-      <AppBar style={{position: "relative",backgroundColor:'green'}}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={this.handleCloseAction}
-            aria-label="Close"
-          >
-            <CloseIcon style={{color:"#fff"}} />
-          </IconButton>
-          <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-            Actions
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      {/* <DialogTitle id="simple-dialog-title"></DialogTitle> */}
-      <List>
-          {group_request_status != 1 && <>
-          <ListItem button onClick={()=>this.confirmAlert("join", code, 0, 0)}>
-            <ListItemAvatar>
-              <Avatar style={{backgroundColor: blue[100], color: blue[600]}}>
-                <DoneAll />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Join Group" />
-          </ListItem>
-          <ListItem button onClick={()=>this.confirmAlert("reject", request_id, 0, 0)}>
-            <ListItemAvatar>
-              <Avatar style={{ backgroundColor: blue[100], color: blue[600]}}>
-                <CloseIcon style={{color:"#fff"}} />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Reject Group" />
-          </ListItem>
-          </>}
-          {(group_member_status != 0) && (group_member_status != null)  &&
-          <ListItem button onClick={()=>this.confirmAlert("exit", group_id, 0, 0)}>
-            <ListItemAvatar>
-              <Avatar style={{ backgroundColor: blue[100], color: blue[600]}}>
-                <ExitToApp />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Exit Group" />
-          </ListItem>}
-      </List>
-    </Dialog>
-    {/* Show Group Action Dialog End */}
-
-    {/* Loan Approval Dialog Start */}
-    <Dialog
-      open={showLoanApproval}
-      onClose={this.handleCloseApproval}
-      scroll="body"
-      TransitionComponent={Transition}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description">
-      <AppBar style={{position: "relative"}} color="primary">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={this.handleCloseApproval}
-            aria-label="Close">
-            <CloseIcon style={{color:"#fff"}} />
-          </IconButton>
-          <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
-            Loan Approvals
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Card className="px-6 pt-2 pb-4">
-        <Grid container spacing={2}>
-          <Grid item lg={12} md={12} sm={12} xs={12}>
-            {loading ?
-            <Typography>Loading...</Typography>:
-            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
-               { loan_activities.length == 0?
-                 <Typography variant="p" className="font-bold">You currently do not have any loan that require your approval</Typography>:
-                loan_activities.map((data, index) =>(
-                 <LoanApprovalCard key={index} data={data}
-                 accept={()=>this.confirmAlert("accept", 0, data.loan_group, data.loan_id)} 
-                 decline={()=>this.confirmAlert("decline", 0, data.loan_group, data.loan_id)}/>
-               ))}
-            </div>
-            }
-          </Grid>
-        </Grid>
-      </Card>
-    </Dialog>
-    {/* Loan Approval Dialog End */}
+        </Card>
+      </Dialog>
+      {/* Loan Approval Dialog End */}
     </div>
   );
 }
