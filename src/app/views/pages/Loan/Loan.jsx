@@ -908,11 +908,18 @@ handleCreateLoan = () => {
   }else{
     swal({
       title: "Low Guanrantable amout",
-      text: "Your guarantable amount must be at least half of your proposed loan request",
+      subTitle: "Your guarantable amount must be at least half of your proposed loan request",
+      text: "Click Ok to Fund your Regular Savings account",
       icon: "warning",
       buttons: true,
       successMode: true,
-    })
+    // }).then(function() {
+    //   window.location.href = "/savings-tab/regular";
+  }).then(okay => {
+    if (okay) {
+     window.location.href = "/savings-tab/regular";
+   }
+ });
   }
 }
 handleShowAction = (group_id, request_id, code, group_member_status, group_request_status) => {
@@ -1283,7 +1290,7 @@ render(){
                       {...params}
                       onChange={(event, value) => this.handleChangeUsers(event, value, index)}
                       label="Search users"
-                      className="mb-1 w-full"
+                      className="mb-1 w-full pb-4"
                       // helperText="Search users"
                       InputProps={{ ...params.InputProps, type: 'search' }}
                     />
@@ -1300,7 +1307,7 @@ render(){
                     onChange={(e)=>this.handleDaChange(e, index)}
                     value={dat.guaranteed_amount}
                     type="number"
-                    className="mb-1 w-full"
+                    className="mb-1 w-full pb-4"
                     validators={[
                         "required"
                       ]}

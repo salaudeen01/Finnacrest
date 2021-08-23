@@ -112,7 +112,7 @@ export default function AppAppBar(props) {
                            <h1>Find fun in saving or <br/>get loan for your next purchase</h1>
                            <strong>Free Easy to use web app</strong>
                            <span>Some other contents will go here</span>
-                           <Link to='/signin' className="nav-link">Register</Link>
+                           <Link to='/signup' className="nav-link">Register</Link>
                         </div>
                      </div>
                      <div class="col-md-7 padding_right1">

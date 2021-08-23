@@ -503,7 +503,7 @@ render(){
         aria-describedby="scroll-dialog-description"
           open={updateProfile}
           onClose={this.closeUpdateProfile}>
-          <AppBar color="primary" style={{position: "relative"}}>
+          <AppBar style={{background:'green',position: "relative"}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -537,7 +537,7 @@ render(){
         aria-describedby="alert-dialog-slide-description"
           open={editPassword}
           onClose={this.closeEditPassword}>
-          <AppBar color="primary" style={{position: "relative"}}>
+          <AppBar style={{background:'green',position: "relative"}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -599,9 +599,8 @@ render(){
                   <Button className="uppercase"
                     type="submit"
                     size="large"
-                    color="primary"
-                    variant="contained"
-                    style={{ color:"#fff"}}>
+                    style={{background:'green', color:"#fff"}}
+                    variant="contained">
                     Change Password
                   </Button>
                 </Grid>
@@ -618,7 +617,7 @@ render(){
         aria-describedby="alert-dialog-slide-description"
           open={editBankDetails}
           onClose={this.closeEditBankDetails}>
-          <AppBar color="primary" style={{position: "relative"}}>
+          <AppBar style={{background:'green',position: "relative"}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -693,8 +692,7 @@ render(){
                       type="submit"
                       size="large"
                       variant="contained"
-                      color="primary"
-                      style={{color:"#fff"}}>
+                      style={{background:'green',color:"#fff"}}>
                       Save 
                     </Button>
                   </Grid>
@@ -716,7 +714,7 @@ render(){
         aria-describedby="alert-dialog-slide-description"
           open={withdrawFund}
           onClose={this.closeWithdraw}>
-          <AppBar color="primary" style={{position: "relative"}}>
+          <AppBar style={{background:'green',position: "relative"}}>
             <Toolbar>
               <IconButton
                 edge="start"

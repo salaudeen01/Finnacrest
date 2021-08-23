@@ -447,9 +447,9 @@ render(){
                   Back
                 </Button>
           <Button
-            color='primary'
+            
             variant='contained'
-            style={{ color: "#fff" }}
+            style={{background:'green', color: "#fff" }}
             onClick={this.handleSubmit}
           >
             Update Profile
@@ -465,7 +465,7 @@ render(){
                 >
                   Back
                 </Button>
-                <Button variant="contained" color="primary" className='text-white' onClick={this.handleNext} >
+                <Button variant="contained" style={{background:'green'}} className='text-white' onClick={this.handleNext} >
                   {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                 </Button>
               </div>

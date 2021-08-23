@@ -402,12 +402,14 @@ handleCloseModalFee() {
                   style={{backgroundColor:"green", color:"white"}}
                   onClick={this.handleClickOpen}>Add Fund
                 </Button>
-                <Button className="uppercase"
-                  size="small"
-                  variant="outlined"
-                  style={{borderColor:"#0d60d8"}}
-                  onClick={this.handleClickOpenWithdraw}>Withdraw
-                </Button>
+                {wallet_bal > 0 &&
+                  <Button className="uppercase"
+                    size="small"
+                    variant="outlined"
+                    style={{borderColor:"#0d60d8"}}
+                    onClick={this.handleClickOpenWithdraw}>Withdraw
+                  </Button>
+                }
         {/* </ButtonGroup> */}
               </Grid>
           </Grid>
