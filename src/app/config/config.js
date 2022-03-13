@@ -1,7 +1,8 @@
 import swal from 'sweetalert';
 import history from '../../history';
 const serverVars = {
-  baseUrl: "http://142.93.152.229/sesis/api/",
+  //baseUrl: "http://142.93.152.229/sesis/api/",
+  baseUrl: "https://api.cubevest.com/sesis/",
   // baseUrl: "https://api.sesiscoop.com/api/",
   authUrl: "auth/login",
   regUrl: "auth/signup",
